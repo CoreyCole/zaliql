@@ -38,6 +38,7 @@ matchit(
     - "treat": discards only treated units outside the support of the distance measure of the control units.
 - reestimate
   - BOOLEAN, default: FALSE. Specifies whether the model for distance measure should be reestimated after units are discarded.
+
 # Discretization
 ## Discretize
 Discretize outputs a materialized table that is a superset of the passed source_table. The additional columns represent the desired discretized covariates.
