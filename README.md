@@ -1,5 +1,10 @@
 # ZaliSQL
 A SQL-Based Framework for Drawing Causal Inference from Big Data
+### Table of Contents
+- [Matching](https://gitlab.cs.washington.edu/bsalimi/ZaliSQL#matching)
+- [Discretization](https://gitlab.cs.washington.edu/bsalimi/ZaliSQL#discretization)
+- [Binning](https://gitlab.cs.washington.edu/bsalimi/ZaliSQL#binning)
+- [Summary Statistics](https://gitlab.cs.washington.edu/bsalimi/ZaliSQL#summary-statistics)
 # Matching
 ## MatchIt
 ZaliSQL's matching functions are modeled after the R package [MatchIt]((https://cran.r-project.org/web/packages/MatchIt/MatchIt.pdf)).
