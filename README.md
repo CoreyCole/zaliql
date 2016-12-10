@@ -128,7 +128,12 @@ bin_equal_frequency(
 ## Matching Summary
 Matching summary outputs matching result statistics about the given table to standard out. This is modeled after the output of the `matchit()` function from the R package [MatchIt]((https://cran.r-project.org/web/packages/MatchIt/MatchIt.pdf)). This can only be called on a source_table that has been output by one of ZaliQL's matching functions.
 ```
-matching_summary(text source_table)
+matching_summary(
+  source_table,
+  target_covariates,
+  verbose,
+  output_table
+)
 ```
 ### Arguments
 - source_table
@@ -165,7 +170,12 @@ matching_summary(text source_table)
 ## Statistical Summary
 Statistical summary outputs generic summary statistics about the given table to standard out. This is modeled after the output of the `summary(dataframe)` function from the R standard library.
 ```
-stat_summary(text source_table)
+stat_summary(
+  source_table,
+  verbose,
+  target_cols,
+  output_table
+)
 ```
 ### Arguments
 - source_table
