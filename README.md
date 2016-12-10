@@ -83,6 +83,7 @@ bin_quantile(
   - TEXT. The name of the materialized source_table subclass where the binned data will be appended or updated.
 - num_buckets
   - INTEGER. The number of intervals to split the continuous data into.
+
 ## Equal Width Binning
 Bin equal width splits continuous data into intervals of a prescribed width.
 ```
@@ -102,6 +103,7 @@ bin_equal_width(
   - TEXT. The name of the materialized source_table subclass where the binned data will be appended or updated.
 - width
   - NUMERIC. The prescribed width to be assigned to each interval.
+
 ## Equal Frequency Binning
 Bin equal frequency splits continuous data into intervals that approximately contain the same number of values.
 ```
@@ -159,6 +161,7 @@ matching_summary(text source_table)
     - comp_eQQ_med NUMERIC
     - comp_eQQ_mean NUMERIC
     - comp_eQQ_max NUMERIC
+
 ## Statistical Summary
 Statistical summary outputs generic summary statistics about the given table to standard out. This is modeled after the output of the `summary(dataframe)` function from the R standard library.
 ```
