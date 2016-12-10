@@ -62,6 +62,7 @@ discretize(
   - TEXT. The name of the function input variable and its value, separated by an `=`. (e.g. `"num_buckets=42"`)
 - output_table
   - TEXT. The name of the materialized source_table subclass where the additional columns will be appended or updated.
+
 # Binning
 ## Quantile Binning
 Bin quantile splits continuous data into a prescribed number of intervals with approximately equal number of values in each interval. (e.g. 3 intervals would split the data into quartiles)
@@ -120,6 +121,7 @@ bin_equal_frequency(
   - TEXT. The name of the materialized source_table subclass where the binned data will be appended or updated.
 - frequency
   - INTEGER. The approximate number of values to be contained within each bin.
+
 # Summary Statistics
 ## Matching Summary
 Matching summary outputs matching result statistics about the given table to standard out. This is modeled after the output of the `matchit()` function from the R package [MatchIt]((https://cran.r-project.org/web/packages/MatchIt/MatchIt.pdf)). This can only be called on a source_table that has been output by one of ZaliQL's matching functions.
