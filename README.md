@@ -15,8 +15,6 @@ matchit(
   treatment
   covariates,
   method,
-  distance_function,
-  distance_function_input,
   discard,
   reestimate
 )
@@ -32,10 +30,6 @@ matchit(
   - TEXT, default: "nearest". The name of the desired matching method. Currently, "exact" (exact matching), "full" (full matching), "genetic" (genetic matching), "nearest" (nearest neighbor matching), "optimal" (optimal matching), and "subclass" (Subclassification) are available.
 - method_input (optional)
   - TEXT, default: NULL. This optional argument specifies the optional arguments that are passed to the selected matching method.
-- distance_function
-  - TEXT, default: "logit". The name of the desired method to estimate the distance measure. The default is the logistic regression supported by [Madlib](http://madlib.incubator.apache.org/docs/latest/group__grp__logreg.html). A variety of other methods are available.
-- distance_function_input (optional)
-  - TEXT. This optional argument specifies the optional arguments that are passed to the model for estimating the distance measure.
 - discard
   - TEXT, default: "none". Specifies whether to discard units that fall outside some measure of support of the distance score before matching, and not allow them to be used at all in the matching procedure. Note that discarding units may change the quantity of interest being estimated. The supported options are:
     - "none" (default): discard no units before matching.

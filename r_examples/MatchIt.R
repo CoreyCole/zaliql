@@ -7,4 +7,3 @@ m.out1 <- matchit(treat ~ age + educ + nodegree,
                   method = "nearest",
                   distance = "logit")
 summary(m.out1)
- 
