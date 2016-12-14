@@ -8,13 +8,15 @@ A SQL-Based Framework for Drawing Causal Inference from Big Data
 
 # Matching
 ## MatchIt
-ZaliSQL's matching functions are modeled after the R package [MatchIt]((https://cran.r-project.org/web/packages/MatchIt/MatchIt.pdf)).
+ZaliSQL's matching functions are modeled after the R package [MatchIt]((https://cran.r-project.org/web/packages/MatchIt/MatchIt.pdf)). MatchIt implements the suggestions of Ho, Imai, King, and Stuart (2004) for improving parametric statistical models by preprocessing data with nonparametric matching methods. After preprocessing with MatchIt, researchers can use whatever parametric model they would have used without MatchIt, but produce inferences with substantially more robustness and less sensitivity to modeling assumptions.
+ZaliSQL's MatchIt function uses a logistic regression function to estimate the distance measure.
 ```
 matchit(
   source_table,
   treatment
   covariates,
   method,
+  method_input,
   discard,
   reestimate
 )
@@ -26,6 +28,8 @@ matchit(
   - TEXT. The name of the column containing the binary treatment indicator
 - covariates
   - TEXT. A comma-separated list of the covariate column names.
+- output_table
+  - TEXT. The name of the materialized source_table subclass where the additional columns will be appended or updated.
 - method
   - TEXT, default: "nearest". The name of the desired matching method. Currently, "exact" (exact matching), "full" (full matching), "genetic" (genetic matching), "nearest" (nearest neighbor matching), "optimal" (optimal matching), and "subclass" (Subclassification) are available.
 - method_input (optional)
@@ -57,9 +61,9 @@ discretize(
 - covariates
   - TEXT. A comma-separated list of the covariate column names.
 - bin_function
-  - TEXT. The name of the desired binning function (e.g. `binEqualWidth`, `binEqualFrequency`, `binQuantile`)
+  - TEXT. The name of the desired binning function (e.g. `bin_equal_width`, `bin_equal_frequency`, or `bin_quantile`)
 - bin_function_input
-  - TEXT. The name of the function input variable and its value, separated by an `=`. (e.g. `"num_buckets=42"`)
+  - NUMERIC. The value of the binning function input variable.
 - output_table
   - TEXT. The name of the materialized source_table subclass where the additional columns will be appended or updated.
 
@@ -130,7 +134,7 @@ Matching summary outputs matching result statistics about the given table to sta
 ```
 matching_summary(
   source_table,
-  target_covariates,
+  covariates,
   verbose,
   output_table
 )
@@ -138,7 +142,7 @@ matching_summary(
 ### Arguments
 - source_table
   - TEXT. The name of the table containing the data to be summarized.
-- target_covariates
+- covariates
   - TEXT. A comma-separated list of the covariate column names.
 - verbose (optional)
   - BOOLEAN, default: TRUE. Print verbose output to standard out.
