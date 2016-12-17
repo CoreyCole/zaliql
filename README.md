@@ -19,8 +19,6 @@ matchit(
   covariates,
   method,
   method_input,
-  discard,
-  reestimate
 )
 ```
 ### Arguments
@@ -36,14 +34,6 @@ matchit(
   - TEXT, default: "nearest". The name of the desired matching method. Currently, "exact" (exact matching), "nearest" (nearest neighbor matching), and "subclass" (Subclassification) are available.
 - method_input (optional)
   - TEXT, default: NULL. This optional argument specifies the optional arguments that are passed to the selected matching method.
-- discard
-  - TEXT, default: "none". Specifies whether to discard units that fall outside some measure of support of the distance score before matching, and not allow them to be used at all in the matching procedure. Note that discarding units may change the quantity of interest being estimated. The supported options are:
-    - "none" (default): discard no units before matching.
-    - "both": discards all units (treated and control) that are outside the support of the distance measure.
-    - "control": discards only control units outside the support of the distance measure of the treated units.
-    - "treat": discards only treated units outside the support of the distance measure of the control units.
-- reestimate
-  - BOOLEAN, default: FALSE. Specifies whether the model for distance measure should be reestimated after units are discarded.
 
 # Discretization
 ## Discretize
