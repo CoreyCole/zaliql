@@ -8,5 +8,7 @@ CREATE OR REPLACE FUNCTION discretize(
   discard TEXT,       -- discard units outside distance measure, default "none"
   reestimate BOOLEAN, -- reestimate distance measure after discarding units
 ) RETURNS TEXT AS $func$
+BEGIN
 
+END;
 $func$ LANGUAGE plpgsql;

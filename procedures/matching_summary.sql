@@ -4,5 +4,7 @@ CREATE OR REPLACE FUNCTION matching_summary(
   verbose BOOLEAN,    -- (optional) print to std out
   output_table TEXT  -- output table name
 ) RETURNS TEXT AS $func$
+BEGIN
 
+END;
 $func$ LANGUAGE plpgsql;

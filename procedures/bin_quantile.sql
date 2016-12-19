@@ -4,5 +4,7 @@ CREATE OR REPLACE FUNCTION bin_quantile(
   output_table TEXT,    -- output table name
   num_intervals NUMERIC -- number of intervals to split data into
 ) RETURNS TEXT AS $func$
+BEGIN
 
+END;
 $func$ LANGUAGE plpgsql;

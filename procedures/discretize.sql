@@ -6,5 +6,7 @@ CREATE OR REPLACE FUNCTION discretize(
   output_table TEXT,          -- output table name
   width NUMERIC               -- width of each bin interval
 ) RETURNS TEXT AS $func$
+BEGIN
 
+END;
 $func$ LANGUAGE plpgsql;
