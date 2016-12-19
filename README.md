@@ -7,9 +7,11 @@ A SQL-Based Framework for Drawing Causal Inference from Big Data
 - [Summary Statistics](https://gitlab.cs.washington.edu/bsalimi/ZaliSQL#summary-statistics)
 
 # Matching
+ZaliSQL's matching functions are modeled after the R packages [MatchIt]((https://cran.r-project.org/web/packages/MatchIt/MatchIt.pdf) and [CEM]((https://cran.r-project.org/web/packages/cem/cem.pdf). Matching is a pre-processing methods that makes the esstimation 
+causal effect less model-dependant and biased. After preprocessing data with matching methods, researchers can use whatever parametric model they would have used without matching, but produce inferences with substantially more robustness and less sensitivity to modeling assumptions.
 ## MatchIt
-ZaliSQL's matching functions are modeled after the R package [MatchIt]((https://cran.r-project.org/web/packages/MatchIt/MatchIt.pdf)). MatchIt implements the suggestions of Ho, Imai, King, and Stuart (2004) for improving parametric statistical models by preprocessing data with nonparametric matching methods. After preprocessing with MatchIt, researchers can use whatever parametric model they would have used without MatchIt, but produce inferences with substantially more robustness and less sensitivity to modeling assumptions.
-ZaliSQL's MatchIt function uses a logistic regression function to estimate the distance measure.
+ZaliSQL's MatchIt function uses a logistic regression function to estimate propensity score.
+
 ```
 matchit(
   source_table,
@@ -17,8 +19,6 @@ matchit(
   covariates,
   method,
   method_input,
-  discard,
-  reestimate
 )
 ```
 ### Arguments
@@ -31,17 +31,9 @@ matchit(
 - output_table
   - TEXT. The name of the materialized source_table subclass where the additional columns will be appended or updated.
 - method
-  - TEXT, default: "nearest". The name of the desired matching method. Currently, "exact" (exact matching), "full" (full matching), "genetic" (genetic matching), "nearest" (nearest neighbor matching), "optimal" (optimal matching), and "subclass" (Subclassification) are available.
+  - TEXT, default: "nearest". The name of the desired matching method. Currently, "exact" (exact matching), "nearest" (nearest neighbor matching), and "subclass" (Subclassification) are available.
 - method_input (optional)
   - TEXT, default: NULL. This optional argument specifies the optional arguments that are passed to the selected matching method.
-- discard
-  - TEXT, default: "none". Specifies whether to discard units that fall outside some measure of support of the distance score before matching, and not allow them to be used at all in the matching procedure. Note that discarding units may change the quantity of interest being estimated. The supported options are:
-    - "none" (default): discard no units before matching.
-    - "both": discards all units (treated and control) that are outside the support of the distance measure.
-    - "control": discards only control units outside the support of the distance measure of the treated units.
-    - "treat": discards only treated units outside the support of the distance measure of the control units.
-- reestimate
-  - BOOLEAN, default: FALSE. Specifies whether the model for distance measure should be reestimated after units are discarded.
 
 # Discretization
 ## Discretize
