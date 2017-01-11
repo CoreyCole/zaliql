@@ -4,5 +4,7 @@ CREATE OR REPLACE FUNCTION bin_equal_frequency(
   output_table TEXT,  -- output table name
   frequency NUMERIC   -- ~number of values in each bin
 ) RETURNS TEXT AS $func$
+BEGIN
 
+END;
 $func$ LANGUAGE plpgsql;

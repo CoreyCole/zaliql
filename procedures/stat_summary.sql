@@ -4,5 +4,7 @@ CREATE OR REPLACE FUNCTION stat_summary(
   target_cols TEXT,   -- comma-separated covariate column names
   output_table TEXT   -- output table name
 ) RETURNS TEXT AS $fun
+BEGIN
 
+END;
 $func$ LANGUAGE plpgsql;

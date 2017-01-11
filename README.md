@@ -7,7 +7,7 @@ A SQL-Based Framework for Drawing Causal Inference from Big Data
 - [Summary Statistics](https://gitlab.cs.washington.edu/bsalimi/ZaliSQL#summary-statistics)
 
 # Matching
-ZaliSQL's matching functions are modeled after the R packages [MatchIt]((https://cran.r-project.org/web/packages/MatchIt/MatchIt.pdf) and [CEM]((https://cran.r-project.org/web/packages/cem/cem.pdf). Matching is a pre-processing methods that makes the esstimation 
+ZaliSQL's matching functions are modeled after the R packages [MatchIt](https://cran.r-project.org/web/packages/MatchIt/MatchIt.pdf) and [CEM](https://cran.r-project.org/web/packages/cem/cem.pdf). Matching is a pre-processing method that makes the estimation 
 causal effect less model-dependant and biased. After preprocessing data with matching methods, researchers can use whatever parametric model they would have used without matching, but produce inferences with substantially more robustness and less sensitivity to modeling assumptions.
 ## MatchIt
 ZaliSQL's MatchIt function uses a logistic regression function to estimate propensity score.
@@ -17,6 +17,7 @@ matchit(
   source_table,
   treatment
   covariates,
+  output_table,
   method,
   method_input,
 )
