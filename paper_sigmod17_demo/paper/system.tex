@@ -1,0 +1,88 @@
+<<<<<<< HEAD
+\section{The \GSQL \ System}
+=======
+\section{The Viska System}
+
+We are developing a system/toolkit called Viska, which is aimed at automating
+and guiding the three core tasks of performance analysis: generating,
+exploring and analyzing performance data.
+
+The primary contribution of our toolkit is a set of tools to support
+data analysis.
+This includes a web-based interactive data visualization app, and a
+Python library that makes it possible to leverage existing data
+analytics and machine learning platform, including Jupyter Notebook
+and scikit-learn.
+Additionally, we are developing a
+library that enables hypothesis testing through state-of-the-art causal inference
+techniques. % statistical validity, rigor, ...
+
+\subsection{Generating performance data}
+Experimental design. Input variables, observed variables, outcome variables.
+Viska allows you to define these and use as parameters in exploration and
+analyzing.
+
+\subsection{Exploring performance data}
+Python library and web app. Exploring data to find correlations, interesting
+behavior. Preparing data for further analysis: removing unnecessary features,
+merging features, bucketing, etc.
+
+We have developed an interactive visualization
+tool that supports exploratory analysis of complex performance
+data. Drawing inspiration from the principles of exploratory
+data analysis and various visualization techniques,
+we provide an engaging way for users to explore performance
+results. The system aims to give a clear overview
+of available data, while focusing the attention of the users to
+select subsets of features and data to be combined into a single
+customized dashboard targeted to the hypothesis being
+investigated.
+
+\subsection{Analyzing performance results}
+% What is the causal relationship between two features, the \emph{treatment} 
+% (cause) and the \emph{outcome} (effect). Causal inference basics. Need to
+% adjust for confounding effects of other variables. Consider relevant variables
+% as covariates in causal inference. Hard to control for everything, so we
+% use graph generation algorithms to help with covariate selection. 
+% Hypothesis testing, statistical validation.
+Interactive visualization makes it easier to discover correlations
+between workload parameters, system metrics, and performance results
+-- but do these imply causation's? Viska's
+interactive visualization interface integrates a new library we
+developed for statistically sound hypothesis testing.
+
+Viska's hypothesis testing is based on \emph{causality inference},
+using the Neyman-Rubin model. At a high level, causality inference
+measures the influence of one variable (the \emph{treatment})
+on an outcome, isolating it from other confounding factors.
+
+%How causality inference works...
+In this model, we select a single binary attribute $T$ as the
+\emph{treatment}.  For each unit (i.e., experiment run), the unit is either
+treated ($T = 1$) or subjected to control ($T = 0$).  Another attribute $Y$ is
+selected as the \emph{outcome}; $Y(0), Y(1)$ represent \emph{potential
+outcomes} when the unit is exposed to the treatment ($Y(1)$) or the control
+($Y(0)$). As an example, we could select query duration as our outcome, and
+whether or not the query is an aggregate as our treatment.
+A vector $X$ represents potentially confounding variables, called \emph{covariates}.
+These can be attributes such as the number of input and output rows.
+
+The goal is to compute the \emph{average treatment effect (ATE)}:
+$$
+\text{ATE} = \mathbb{E}[Y(1) - Y(0)] = \mathbb{E}[Y(1)] - \mathbb{E}[Y(0)] 
+$$
+% For example, our experiments show a correlation between queries containing
+% aggregates and Spark outperforming Myria. However, the ATE computation reveals
+% that this is spurious: the performance difference is actually associated with a
+% covariate. Queries with aggregates have fewer output rows, and it is on these
+% that Spark outperforms Myria.
+
+The challenge in computing ATE is that the model assumes that both
+$Y(1)$ and $Y(0)$ are available for each unit, which is not the case
+in reality.
+Viska's analysis library uses several techniques, including 
+\emph{coarsened exact matching (CEM)}, which
+prunes results so that the remaining data achieves \emph{balance}
+between the treated and control groups, and thus controls for the confounding
+influence of the covariates.
+>>>>>>> 61cbea7c490bf41aa51f4cc1691b2ed66a6001eb

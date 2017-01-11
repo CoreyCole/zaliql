@@ -1,0 +1,8 @@
+This is BibTeX, Version 0.99dThe top-level auxiliary file: paper.aux
+I couldn't open style file ACM-Reference-Format.bst
+---line 27 of file paper.aux
+ : \bibstyle{ACM-Reference-Format
+ :                               }
+I'm skipping whatever remains of this command
+I found no style file---while reading file paper.aux
+(There were 2 error messages)

@@ -1,0 +1,36 @@
+\section{Demonstration Details}
+
+Task is to investigate performance of new version of PostgreSQL compared to
+old. We use a workload based on SSB data. We are interested in read performance
+so we generate simple select/project queries from a large fact table. We vary
+selected columns, size of table, filtering predicates.
+
+\begin{enumerate}
+\item Show some plots with Viska where some features $F_1$ through $F_k$ seem to
+influence runtime.
+\item Use Viska to show that a subset of these features are causes while others
+are not causes.
+\item Enable attendees to drill into the details of how we generate these
+results (i.e.\, the different steps of the pipeline).
+\item Show what happens for different configurations of the Viska system:
+e.g.\, different parameters to graph-generation algorithms, different bucketing
+strategies, etc.
+\end{enumerate}
+
+\paragraph{Performance Data.}
+
+Viska generates and analyzes performance data obtained by benchmarking
+systems. This performance data consists of a set of records
+each representing a single execution of an experiment. This record has
+a set of ``input'' variables that we vary between experiments, such as
+type of queries run, data set used, or configuration parameters. Viska
+records these along with a set of ``observed'' variables: properties
+of the execution (e.g., number of rows processed), system-level
+metrics (e.g., CPU and disk utilization), and outcome variables (e.g.,
+query execution time).
+
+The Viska toolkit includes tools to generate and analyze this
+performance data. We do not describe the tools for workload
+generation, system deployment, and metric gathering here.
+
+
