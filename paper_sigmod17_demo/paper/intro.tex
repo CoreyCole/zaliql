@@ -115,7 +115,7 @@ scale to billions of records. In this demonstration we use \GSQL\ to perform cau
 \vspace{-0.3cm}
 \end{figure}
 
-\begin{example} \em \delay. \ \em
+\begin{example} \em \delay \ \em
 Flight delays pose a serious and widespread problem in the United States and
  significantly strain on the national air travel system, costing society many billions of dollars each year \cite{ball2010total}.
 According to FAA statistics,\footnote{National Aviation Statistic \url{http://www.faa.gov/}}
@@ -127,8 +127,8 @@ Even though predictive analysis, in this context, might help make certain polici
 We conduct this causal analysis as a running example through this paper.
 To this end, we acquired flight departure details for all commercial flights within the US from 2000 to 2015
   (105M entries) and integrated it with the relevant historical weather data (35M entries) (see Section \ref{sec:setup}).
-These are relatively large data sets for causal inference that can not be handseled by the existing tools. 
-
+These are relatively large data sets for causal inference that can not be handseled by the existing tools.
+\end{example}
 \ignore{
 Table \ref{tab:attlist} presents the list of attributes from each data set that is relevant to our analysis.
 }
@@ -210,7 +210,7 @@ In causal analysis, the difficulty arises from the fact that here the objective 
 \vspace{-0.3cm}
 \end{figure*}
 
-\begin{example} \em \delay \.  \label{ex:press} \em
+\begin{example} \em \delay   \label{ex:press} \em
   Suppose we want to explore the effect of low-pressure on flight departure delays.
   High pressure is generally associated with clear weather,
     while low-pressure is associated with unsettled weather, e.g.,
@@ -219,7 +219,7 @@ In causal analysis, the difficulty arises from the fact that here the objective 
     low-pressure as a predictor for flight delays.
   However, low-pressure does not have any causal impact on departure delay
     (low-pressure only requires longer takeoff distance) \cite{FAA08}.
-  That is, low-pressure is most highly a correlated attribute with flight delays, 
+  That is, low-pressure is most highly a correlated attribute with flight delays,
     however \GSQL\ found that other attributes such as thunder, low-visibility, high-wind-speed and
     snow have the largest causal effect on flight delays (see Sec. \ref{sec:endtoend});
   this is confirmed by the results reported by the FAA and ...
