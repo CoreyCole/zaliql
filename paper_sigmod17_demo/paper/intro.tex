@@ -116,14 +116,14 @@ scale to billions of records. In this demonstration we use \GSQL\ to perform cau
 }
 \begin{figure}
 \includegraphics[scale=0.5]{figures/counf.png}
-\caption{A typical scenario for Causal inference}
+\caption{A typical scenario for causal hypothesis testing}
 
 \label{fig:cv}
 \vspace{-0.3cm}
 \end{figure}
 \begin{figure}
   \includegraphics[scale=0.3]{Figures/Matching-Flowchart.png}
-\caption{Matching observational data for Causal inference \babak{causal hypothesis, Data-> Pruning data by matching-> Checking Balance-> Conduct Analysis please lable the arrow from balance checking to analysis with "Balanced mated data" and the arrow from balance to mathicng as "imbalanced matched data" non need for the "bad match" node }}
+\caption{Matching observational data for Causal inference \babak{causal hypothesis, Data-> Pruning data by matching-> Checking Balance-> Conduct Analysis please lable the arrow from balance checking to analysis with "Balanced mated data" and the arrow from balance to matching as "imbalanced matched data" non need for the "bad match" node }}
 \label{fig:flowchart}
 \vspace{-0.3cm}
 \end{figure}
@@ -276,7 +276,8 @@ confounding influence of that affect both treatment and outcome. A papular metho
 performing this task is statistic and social science is that of {\em matching} \cite{IacKinPor09}.
 The key goal of matching is to prune observations from the data so that
 the remaining data have better balance between the treated and control groups meaning that the empirical
-distributions of the confounding variables (a.k.a covariates) in the groups are more similar. A typical workfellow of causal inference via matching is shown in Figure \ref{fig:flowchart}. 
+distributions of the confounding variables (a.k.a covariates) in the groups are more similar. A typical workfellow of causal inference via matching is shown in Figure \ref{fig:flowchart}. As depicted causal inference from observational data includes an iterative process of matching and balance checking until a satisfactory matched subset is obtained (See \ref{IacKinPor09}) for more detailed discussion). Thus developing efficient methods for performing various matching methods
+is crucial to scale causal inference to large observational data.
 
 The demonstration will enable the attendees to experiment with various matching method for causal inference and experience their benefits and limitations.
 The attendees will select a causal question by specifying a treatment,

@@ -1,14 +1,14 @@
 \section{Demonstration Details}
 \label{sec:dd}
 
-The demonstration starts with weather and flight data.   
+The demonstration starts with weather and flight data.
 
 \ignore{
 \begin{enumerate}
 \item {\it Selecting a causal hypothesis:}
   the attendee selects a causal hypothesis to test by specifying a treatment (potential cause)
-  and an outcome (potential effect) (cf, Example \ref{sfig:testaa}).  
-\item {\it Matching method:} The user select a matching method to 
+  and an outcome (potential effect) (cf, Example \ref{sfig:testaa}).
+\item {\it Matching method:} The user select a matching method to
 \item Enable attendees to drill into the details of how we generate these
 results (i.e.\, the different steps of the pipeline).
 \item Show what happens for different configurations of the Viska system:
@@ -18,26 +18,30 @@ strategies, etc.
 }
 
 \begin{enumerate}
-  \item {\it Form a causal hypothesis:}
-    e.g. snow causes flight delays
-  \item {\it Setup database parameters:} (cf, Example \ref{sfig:testaa})
+  \item {\it Form causal hypotheses:} the attendee forms a set of causal hypotheses, e.g., 
+   e.g. weather low-visibility causes fight delays at John F. Kennedy International Airport(JFK), by
     \begin{enumerate}
-      \item specify treatments (potential cause)
-      \begin{enumerate}
-        \item specify at least one treatment
-        \item specify a matching method for each of those treatments (e.g. propensity score matching)
-      \end{enumerate}
-      \item for each treatment, specify a set of covariates (matching attributes)
-      \item specify at least one outcome (potential effect)
+      \item specifying a set of binary treatments, e.g., low-visibility, Snow, ... (potential causes)
+      \item specifying an outcome of interest (potential effect) e.g., departure delay, cancelation, ..
+      \item specifying a subset of data that relevant to the analysis with e.g., flights at JFK airport
     \end{enumerate}
-  \item {\it View matching assesment:} (cf, Example \ref{sfig:testbb})
+ 
+  \item {\it Setup inference parameters:} The user select and tune the matching algorithms as follows:
+     \begin{enumerate}
+      \item For each treatment the user the user specifics a set of variables that judged to confound it with the associated outcome.  
+          \item The user specifies a matching methods supported by \GSQL\ and adjust its tuning parameters 
+\end{enumerate}
+
+  \item {\it View matching assessment:} (cf, Example \ref{sfig:testbb})
     \begin{enumerate}
-      \item if any one treatment does not have sufficient results, one can re-run the procedure, for just that treatment,
-        using a different matching method (i.e. Thunder in \ref{sfig:testbb})
+      \item The user asses how the matching methods was successful by checking the numerical summaries and plots provided by \GSQL \ignore{  balance of covariates after matching, including numerical summaries such as the mean Diff. (difference in means), and summaries based on quantile quantile plots and multivariate histograms that compare the empirical distributions of each covariate} as shown in Figure \ref{fig:inteface}(c).
+      \item
+      if the matched data associated to  particular treatment is still imbalance, the user can re-run the procedure, for the treatment,
+        using a different matching method or by tuning the relevant parameters (i.e. Thunder in \ref{sfig:testbb})
     \end{enumerate}
-  \item {\it Export for further analysis:} (cf, Example \ref{sfig:testcc})
+  \item {\it Hypothesis testing:} 
     \begin{enumerate}
-      \item export data for any treatment, or all treatments, to CSV file format
+      \item The user can select and perform a proffered statistical methods for hypothesis e.g., Chi-square test on the matched data.
     \end{enumerate}
 \end{enumerate}
 
