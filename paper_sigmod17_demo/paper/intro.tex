@@ -43,11 +43,11 @@ softwares to DBMS can be error prone, difficult, time consuming and inefficient.
 cases, it would be helpful to push statistical methods for causal inference into the DBMS.
 
 
-
+\ignore{
 Both predictive and causal analysis are needed to generate
-and test theories,  policy and decision making and to evaluate hypotheses, yet each plays a different role in doing so. In fact, performing predictive analysis to address questions that are causal in nature could lead to a flood of false discovery claims. In many cases, researchers who want to discover causality from data analysis settle for predictive analysis either because they think it is causal or lack of available alternatives.
+and test theories,  policy and decision making and to evaluate hypotheses, yet each plays a different role in doing so. In fact, performing predictive analysis to address questions that are causal in nature could lead to a flood of false discovery claims. In many cases, researchers who want to discover causality from data analysis settle for predictive analysis either because they think it is causal or lack of available alternatives.}
 
-This work introduces \GSQL,\footnote{ The prefix Zali refers to
+We design and develop \GSQL,\footnote{ The prefix Zali refers to
   al-Ghzali (1058-1111), a medieval Persian philosopher. It is known
   that David Hume (1711-1776), a Scottish philosopher, who gave the
   first explicit definition of causation in terms of counterfactuals,
@@ -55,12 +55,11 @@ This work introduces \GSQL,\footnote{ The prefix Zali refers to
   \cite{shalizi2013advanced}.}  a SQL-based framework for drawing
 causal inference that circumvents the scalability issue with the
 existing tools.  ZaliQL supports state-of-the-art methods for causal
-inference and runs at scale within a database engine.  We show how to
-express the existing advanced causal inference methods in SQL, and
+inference and runs at scale within a database engine.  In \GSQL we develop 
 develop a series of optimization techniques allowing our system to
-scale to billions of records. We evaluate our system on a real
-dataset.  Before describing the contributions of this paper, we
-illustrate causal inference on the following real example.
+scale to billions of records.   In this demonstration we use \GSQL \ to perform causal inference in the following scenario:  
+
+
 
 \begin{table*}[!htb] \scriptsize
     \begin{subtable}{.5\linewidth}
@@ -261,127 +260,13 @@ experimentally, using real data from the U.S. DOT and Weather
 Underground \cite{flightdata,Weatherdata}
 }
 
-<<<<<<< HEAD
+
 \vspace{-2mm}
-=======
-The high level goal of the system is to understand and analyze performance
-characteristics of systems. We want to identify bottlenecks, understand
-what causes changes, dips or peaks in performance, to improve performance
-or avoid regressions. This is a common goal in systems research, both in
-academia and in industry. 
 
-Much of systems research consists of performance analysis -- to learn
-when one system outperforms another, to identify architectural choices
-responsible for the difference, or to identify performance anomalies
-in particular workloads, for example. However, despite recent advances
-in data analytics and interactive data visualization, the tools we use
-for performance analysis remain remarkably primitive.
+The demonstration will enable the attendees to experiment with various algorithms for causal inference and experience their benefits and limitations. The attendees will select a causal question by specifying 
+a treatment, an outcome and particular method to perform causal inference.
 
-The Viska project aims to close this gap by providing a new toolkit
-for systems researchers to generate and interpret performance
-measurement results, helping users derive meaningful and statistically
-sound conclusions. Viska leverages cutting-edge techniques from big
-data analytics and data visualization to aid and automate this
-analysis.
 
-Motivating Scenarios
-\begin{itemize}
-\item Comparing performance across systems. Why is one system faster than 
-another for a given query? Each system is hard to tune and student needs
-to become an expert in each system.
-\item Performance in distributed systems. Multiple components, frequent
-releases.
-\item Performance tuning in database systems. Why is a particular system
-configuration affecting runtime. Systems evolve over time, with patches
-and upgrades. Hundreds of configuration knobs to tune that may depend on
-the underlying platform and available resources.
-\end{itemize}
 
-Related work discussion with citations. These papers on ``rapid exploration''
-might be worth citing: \cite{binning2017towards,chirigati2016data,vartak2014seedb}.
 
-Analyzing performance data presents several challenges:% among them:
-\begin{itemize}
-\item High dimensionality: the data consists of tens of thousands of
-  runs of experiments with different workloads, configuration
-  settings, and deployments. Each has a large set of features
-  extracted from workload properties and system metrics.
 
-  % In run tens of thousands of experiments on
-  %   different systems with multiple configuration settings.  On every
-  %   system, thousands of different queries are executed, where each query
-  %   has a large set of features extracted from logical relational algebra
-  %   operators and properties of the input and output data, as well as
-  %   additional features extracted from system-specific query plans, such as
-  %   which operators are used and how jobs are scheduled. We monitor roughly
-  %   60 low-level systems metrics, sampled at one second granularity at each
-  %   compute node for the duration of every query execution, resulting in
-  %   dozens of variable length time series associated with each data record.
-  %   It goes without saying, that a researcher presented with data can
-  %   quickly become overwhelmed.
-% \item Evolving set of features. The system must be able to allow
-%   experimenters to gradually increase the number of variables as new
-%   questions are raised.
-
-    % Given the extremely large space
-    % of potential variables to tune in running experiments, it is
-    % impossible to collect them all. As researchers, we have to
-    % decide on an initial set of parameters to vary and then gradually
-    % increase the number of variables. It is important to
-    % learn from each round of experiments to guide what knobs
-    % to turn next, and these insights often lead to the addition of
-    % variables that were observed from the start. Having the flexibility
-    % to add and remove features without invalidating prior
-    % experiments is crucial and helps avoid a potential rabbit hole
-    % situation where making changes and additions is considered
-    % too much work.
-% \item Missing data. Many features apply to some experiments but
-%     not others: some queries may not be supported in all systems
-%     and some metrics may not be available in all deployments.
-%     % One way to deal with this is to limit experiments to a set
-%     % of features that are common to all systems. However, this
-%     % reduces the input domain, excludes potentially valuable information,
-%     % and may therefor limit discovery.
-% \item Dirty data: systems don't always produce repeatable results,
-%   for a variety of reasons. While transient anomalies can be
-%   interesting, they must be identified as such rather than used to
-%   make conclusions about intrinsic properties of systems.
-  
-  % Failures and stragglers occur,
-  %   sporadic resource contention can cause unusually high
-  %   latency, a garbage collector may interfere with normal operations,
-  %   multi-tenancy issues can arise, to name a few. While
-  %   these anomalies can be interesting to inspect, it is important
-  %   to identify them as such and take that into account when
-  %   making conclusions about performance characteristics that
-  %   are intrinsic to the system, rather than one-off occurrences.
-\item Unclear relationship of variables. Variables in this data
-    set, as in so many others, are rarely conditionally independent.
-    In fact, many are highly correlated. The system should be able to
-    draw statistically sound conclusions
-    % with each other. Determining
-    % these (in)dependencies can be extremely valuable
-    % in providing insight into what features are relevant to certain
-    % performance properties. For example, if we can determine
-    % that the metric that measures time spent in kernel space is
-    % causally related to whether a system is faster or slower at
-    % table scans, we can pinpoint a design feature (in this case,
-    % bypassing the kernel during file I/O) as the deciding factor
-    % for that operation, without any familiarity or instrumentation
-    % of system internals. 
-  \item Evolving research questions. The system must support
-    interactive data exploration, allowing the user to re-evaluate and
-    re-iterate different hypotheses easily and effectively
-
-    % In certain situations, there is
-    % a clear research question to ask of the data. This is especially
-    % true during debugging or when evaluating a specific change
-    % in a system. While asking specific questions is an important
-    % step in any data analysis, a dataset such as this can contain
-    % mountains of information that can easily go undiscovered if
-    % someone does not think of the right questions to ask. There is
-    % a clear need to allowing the user to re-evaluate and re-iterate
-    % different hypotheses easily and effectively
-  \end{itemize}
-
->>>>>>> 61cbea7c490bf41aa51f4cc1691b2ed66a6001eb
