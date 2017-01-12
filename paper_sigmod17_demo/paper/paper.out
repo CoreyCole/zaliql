@@ -1,6 +1,9 @@
 \BOOKMARK [1][-]{section*.2}{Abstract}{}% 1
 \BOOKMARK [1][-]{section.1}{1 Introduction}{}% 2
 \BOOKMARK [1][-]{section.2}{2 Demonstration Details}{}% 3
-\BOOKMARK [1][-]{section.3}{3 The Viska System}{}% 4
-\BOOKMARK [1][-]{section.4}{4 Conclusions}{}% 5
-\BOOKMARK [1][-]{section*.4}{Acknowledgments}{}% 6
+\BOOKMARK [1][-]{section.3}{3 The ZaliQL System}{}% 4
+\BOOKMARK [1][-]{section.4}{4 The Viska System}{}% 5
+\BOOKMARK [2][-]{subsection.4.1}{4.1 Generating performance data}{section.4}% 6
+\BOOKMARK [2][-]{subsection.4.2}{4.2 Exploring performance data}{section.4}% 7
+\BOOKMARK [2][-]{subsection.4.3}{4.3 Analyzing performance results}{section.4}% 8
+\BOOKMARK [1][-]{section.5}{5 Conclusions}{}% 9
