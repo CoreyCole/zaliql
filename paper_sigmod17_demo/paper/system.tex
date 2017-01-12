@@ -353,17 +353,7 @@ function computed using a sort algorithm.
 
 
 \begin{figure}
-\begin{alltt} \scriptsize
-CREATE VIEW \(\crele\) AS
-(SELECT *, (CASE WHEN \(x\sb{1}<c\sb{1}\)  THEN \(1 \ldots\)
-                 WHEN \(x\sb{1}>c\sb{(k\sb{1}-1)}\) THEN \(k\sb{1}\)) AS \(cx\sb{1}\),
-              . . .
-           (CASE WHEN \(x\sb{n}<c\sb{n}\)  THEN \(1 \ldots\)
-                 WHEN \(x\sb{n}>c\sb{(k\sb{n}-1)}\) THEN \(k\sb{n}\)) AS \(cx\sb{n}\)
-from \(\rel\));
-\end{alltt} \vspace{-.2cm} \hspace{0.7cm}
-{(a)Coarsening wrt. a set of prespecified cutpoints}
-\vspace{-.3cm}
+
 \begin{alltt} \scriptsize
 CREATE VIEW \(\cem\) AS
 SELECT ID, T, \(\ccv\), Y, subclass

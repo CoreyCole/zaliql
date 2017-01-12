@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (MiKTeX 2.9) (preloaded format=pdflatex 2016.1.8)  11 JAN 2017 20:54
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (MiKTeX 2.9) (preloaded format=pdflatex 2016.1.8)  11 JAN 2017 20:57
 entering extended mode
 **Z:/ZaliSQL/paper_sigmod17_demo/paper/paper.tex
 (Z:/ZaliSQL/paper_sigmod17_demo/paper/paper.tex
@@ -1260,9 +1260,13 @@ LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/b/n' will be
 (Font)              scaled to size 8.0pt on input line 9.
 LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/it' will be
 (Font)              scaled to size 8.0pt on input line 9.
+
+
+LaTeX Warning: Reference `TotPages' on page 1 undefined on input line 9.
+
 LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/n' will be
 (Font)              scaled to size 6.2pt on input line 9.
- (intro.tex
+(intro.tex
 LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/it' will be
 (Font)              scaled to size 9.0pt on input line 27.
 LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/b/n' will be
@@ -1284,7 +1288,7 @@ LaTeX Warning: Reference `sec:setup' on page 1 undefined on input line 126.
 
 LaTeX Warning: Reference `tab:attlist' on page 1 undefined on input line 127.
 
-<Figures/dummy.png, id=43, 867.24pt x 542.025pt>
+<Figures/dummy.png, id=30, 867.24pt x 542.025pt>
 File: Figures/dummy.png Graphic file (type png)
  <use Figures/dummy.png>
 Package pdftex.def Info: Figures/dummy.png used on input line 206.
@@ -1422,46 +1426,52 @@ Package natbib Warning: Citation `rosenbaum1984reducing' on page 3 undefined on
  input line 330.
 
 
+LaTeX Warning: Reference `fig:subpr' on page 3 undefined on input line 334.
+
+
 Package natbib Warning: Citation `Rubin1983b' on page 3 undefined on input line
  337.
 
 
 Package natbib Warning: Citation `IacKinPor09' on page 3 undefined on input lin
-e 403.
+e 393.
 
 ) (concl.tex) (paper.bbl)
 
 Package natbib Warning: There were undefined citations.
 
-
-Underfull \vbox (badness 1688) has occurred while \output is active []
-
- [3.3]
-[4.4
-
-]
+[3.3]
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 18.
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 18.
  (paper.aux)
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 18.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 18.
-Package rerunfilecheck Info: File `paper.out' has not changed.
-(rerunfilecheck)             Checksum: DE39CDB207134136353CED01CFBAF111;594.
 
+
+Package rerunfilecheck Warning: File `paper.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `paper.out':
+(rerunfilecheck)             Before: 42C221F577279993E0F7943046B637CE;375
+(rerunfilecheck)             After:  DE39CDB207134136353CED01CFBAF111;594.
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
 
 LaTeX Warning: There were undefined references.
 
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 18.
  ) 
 Here is how much of TeX's memory you used:
- 14900 strings out of 493634
- 232124 string characters out of 3134424
- 356450 words of memory out of 3000000
- 17531 multiletter control sequences out of 15000+200000
- 98373 words of font info for 312 fonts, out of 3000000 for 9000
+ 14897 strings out of 493634
+ 232145 string characters out of 3134424
+ 354063 words of memory out of 3000000
+ 17528 multiletter control sequences out of 15000+200000
+ 98064 words of font info for 312 fonts, out of 3000000 for 9000
  1186 hyphenation exceptions out of 8191
  60i,11n,94p,545b,663s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Users/bsalimi/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/dvips/newtx/lib
@@ -1492,9 +1502,9 @@ sers/bsalimi/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/txfonts/txsyb
 .pfb><C:/Users/bsalimi/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/new
 tx/txsys.pfb><C:/Users/bsalimi/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/pu
 blic/newtx/zxlri.pfb>
-Output written on paper.pdf (4 pages, 601541 bytes).
+Output written on paper.pdf (3 pages, 597945 bytes).
 PDF statistics:
- 165 PDF objects out of 1000 (max. 8388607)
- 28 named destinations out of 1000 (max. 500000)
- 46158 words of extra memory for PDF output out of 51595 (max. 10000000)
+ 150 PDF objects out of 1000 (max. 8388607)
+ 27 named destinations out of 1000 (max. 500000)
+ 46134 words of extra memory for PDF output out of 51595 (max. 10000000)
 
