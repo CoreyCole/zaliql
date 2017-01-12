@@ -1,7 +1,5 @@
-<<<<<<< HEAD
+
 \section{The \GSQL \ System}
-=======
-\section{The Viska System}
 
 We are developing a system/toolkit called Viska, which is aimed at automating
 and guiding the three core tasks of performance analysis: generating,
@@ -39,11 +37,11 @@ customized dashboard targeted to the hypothesis being
 investigated.
 
 \subsection{Analyzing performance results}
-% What is the causal relationship between two features, the \emph{treatment} 
+% What is the causal relationship between two features, the \emph{treatment}
 % (cause) and the \emph{outcome} (effect). Causal inference basics. Need to
 % adjust for confounding effects of other variables. Consider relevant variables
 % as covariates in causal inference. Hard to control for everything, so we
-% use graph generation algorithms to help with covariate selection. 
+% use graph generation algorithms to help with covariate selection.
 % Hypothesis testing, statistical validation.
 Interactive visualization makes it easier to discover correlations
 between workload parameters, system metrics, and performance results
@@ -69,7 +67,7 @@ These can be attributes such as the number of input and output rows.
 
 The goal is to compute the \emph{average treatment effect (ATE)}:
 $$
-\text{ATE} = \mathbb{E}[Y(1) - Y(0)] = \mathbb{E}[Y(1)] - \mathbb{E}[Y(0)] 
+\text{ATE} = \mathbb{E}[Y(1) - Y(0)] = \mathbb{E}[Y(1)] - \mathbb{E}[Y(0)]
 $$
 % For example, our experiments show a correlation between queries containing
 % aggregates and Spark outperforming Myria. However, the ATE computation reveals
@@ -80,7 +78,7 @@ $$
 The challenge in computing ATE is that the model assumes that both
 $Y(1)$ and $Y(0)$ are available for each unit, which is not the case
 in reality.
-Viska's analysis library uses several techniques, including 
+Viska's analysis library uses several techniques, including
 \emph{coarsened exact matching (CEM)}, which
 prunes results so that the remaining data achieves \emph{balance}
 between the treated and control groups, and thus controls for the confounding
