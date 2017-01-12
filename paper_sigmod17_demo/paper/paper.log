@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (MiKTeX 2.9) (preloaded format=pdflatex 2016.1.8)  11 JAN 2017 17:31
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (MiKTeX 2.9) (preloaded format=pdflatex 2016.1.8)  11 JAN 2017 18:52
 entering extended mode
 **Z:/ZaliSQL/paper_sigmod17_demo/paper/paper.tex
 (Z:/ZaliSQL/paper_sigmod17_demo/paper/paper.tex
@@ -1014,94 +1014,94 @@ nment
 ) (paper.aux)
 \openout1 = `paper.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/nxlmi/m/it on input line 5.
-LaTeX Font Info:    Try loading font information for OML+nxlmi on input line 5.
+LaTeX Font Info:    Checking defaults for OML/nxlmi/m/it on input line 4.
+LaTeX Font Info:    Try loading font information for OML+nxlmi on input line 4.
 
 
 ("C:\Users\bsalimi\AppData\Local\Programs\MiKTeX 2.9\tex\latex\newtx\omlnxlmi.f
 d"
 File: omlnxlmi.fd 2013/11/19 Fontinst v1.933 font definitions for OML/nxlmi.
 )
-LaTeX Font Info:    ... okay on input line 5.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 5.
-LaTeX Font Info:    ... okay on input line 5.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 5.
-LaTeX Font Info:    ... okay on input line 5.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 5.
-LaTeX Font Info:    ... okay on input line 5.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 5.
-LaTeX Font Info:    ... okay on input line 5.
-LaTeX Font Info:    Checking defaults for U/ntxexa/m/n on input line 5.
-LaTeX Font Info:    Try loading font information for U+ntxexa on input line 5.
+LaTeX Font Info:    ... okay on input line 4.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 4.
+LaTeX Font Info:    ... okay on input line 4.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 4.
+LaTeX Font Info:    ... okay on input line 4.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 4.
+LaTeX Font Info:    ... okay on input line 4.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 4.
+LaTeX Font Info:    ... okay on input line 4.
+LaTeX Font Info:    Checking defaults for U/ntxexa/m/n on input line 4.
+LaTeX Font Info:    Try loading font information for U+ntxexa on input line 4.
 
 ("C:\Users\bsalimi\AppData\Local\Programs\MiKTeX 2.9\tex\latex\newtx\untxexa.fd
 "
 File: untxexa.fd 2012/04/16 Fontinst v1.933 font definitions for U/ntxexa.
 )
-LaTeX Font Info:    ... okay on input line 5.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 5.
-LaTeX Font Info:    ... okay on input line 5.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 5.
-LaTeX Font Info:    Try loading font information for TS1+cmr on input line 5.
+LaTeX Font Info:    ... okay on input line 4.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 4.
+LaTeX Font Info:    ... okay on input line 4.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 4.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 4.
  ("C:\Users\bsalimi\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\ts1cmr.fd"
 File: ts1cmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 5.
-LaTeX Font Info:    Checking defaults for LMS/ntxsy/m/n on input line 5.
-LaTeX Font Info:    Try loading font information for LMS+ntxsy on input line 5.
+LaTeX Font Info:    ... okay on input line 4.
+LaTeX Font Info:    Checking defaults for LMS/ntxsy/m/n on input line 4.
+LaTeX Font Info:    Try loading font information for LMS+ntxsy on input line 4.
 
 
 ("C:\Users\bsalimi\AppData\Local\Programs\MiKTeX 2.9\tex\latex\newtx\lmsntxsy.f
 d"
 File: lmsntxsy.fd 2016/07/02 Fontinst v1.933 font definitions for LMS/ntxsy.
 )
-LaTeX Font Info:    ... okay on input line 5.
-LaTeX Font Info:    Checking defaults for LMX/ntxexx/m/n on input line 5.
-LaTeX Font Info:    Try loading font information for LMX+ntxexx on input line 5
+LaTeX Font Info:    ... okay on input line 4.
+LaTeX Font Info:    Checking defaults for LMX/ntxexx/m/n on input line 4.
+LaTeX Font Info:    Try loading font information for LMX+ntxexx on input line 4
 .
 
 ("C:\Users\bsalimi\AppData\Local\Programs\MiKTeX 2.9\tex\latex\newtx\lmxntxexx.
 fd"
 File: lmxntxexx.fd 2016/07/03 Fontinst v1.933 font definitions for LMX/ntxexx.
 )
-LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    ... okay on input line 4.
 LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/n' will be
-(Font)              scaled to size 7.0pt on input line 5.
+(Font)              scaled to size 7.0pt on input line 4.
 LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/n' will be
-(Font)              scaled to size 7.3pt on input line 5.
+(Font)              scaled to size 7.3pt on input line 4.
 LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/n' will be
-(Font)              scaled to size 5.5pt on input line 5.
-LaTeX Font Info:    Try loading font information for U+msa on input line 5.
+(Font)              scaled to size 5.5pt on input line 4.
+LaTeX Font Info:    Try loading font information for U+msa on input line 4.
 
 ("C:\Users\bsalimi\AppData\Local\Programs\MiKTeX 2.9\tex\latex\amsfonts\umsa.fd
 "
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 5.
+LaTeX Font Info:    Try loading font information for U+msb on input line 4.
 
 ("C:\Users\bsalimi\AppData\Local\Programs\MiKTeX 2.9\tex\latex\amsfonts\umsb.fd
 "
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-LaTeX Font Info:    Try loading font information for U+ntxmia on input line 5.
+LaTeX Font Info:    Try loading font information for U+ntxmia on input line 4.
 
 ("C:\Users\bsalimi\AppData\Local\Programs\MiKTeX 2.9\tex\latex\newtx\untxmia.fd
 "
 File: untxmia.fd 2016/01/31 Fontinst v1.933 font definitions for U/ntxmia.
 )
-LaTeX Font Info:    Try loading font information for U+ntxsym on input line 5.
+LaTeX Font Info:    Try loading font information for U+ntxsym on input line 4.
 
 ("C:\Users\bsalimi\AppData\Local\Programs\MiKTeX 2.9\tex\latex\newtx\untxsym.fd
 "
 File: untxsym.fd 2015/03/20 Fontinst v1.933 font definitions for U/ntxsym.
 )
-LaTeX Font Info:    Try loading font information for U+ntxsyc on input line 5.
+LaTeX Font Info:    Try loading font information for U+ntxsyc on input line 4.
 
 ("C:\Users\bsalimi\AppData\Local\Programs\MiKTeX 2.9\tex\latex\newtx\untxsyc.fd
 "
 File: untxsyc.fd 2012/04/12 Fontinst v1.933 font definitions for U/ntxsyc.
 )
-LaTeX Info: Redefining \microtypecontext on input line 5.
+LaTeX Info: Redefining \microtypecontext on input line 4.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using default protrusion set `alltext'.
@@ -1117,7 +1117,7 @@ Package microtype Info: Loading generic settings for font family
 (microtype)             See the microtype manual for details.
  ABD: EveryShipout initializing macros
 \AtBeginShipoutBox=\box34
-Package hyperref Info: Link coloring OFF on input line 5.
+Package hyperref Info: Link coloring OFF on input line 4.
 
 ("C:\Users\bsalimi\AppData\Local\Programs\MiKTeX 2.9\tex\latex\hyperref\nameref
 .sty"
@@ -1129,9 +1129,9 @@ Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
 \c@section@level=\count140
 )
-LaTeX Info: Redefining \ref on input line 5.
-LaTeX Info: Redefining \pageref on input line 5.
-LaTeX Info: Redefining \nameref on input line 5.
+LaTeX Info: Redefining \ref on input line 4.
+LaTeX Info: Redefining \pageref on input line 4.
+LaTeX Info: Redefining \nameref on input line 4.
  (paper.out) (paper.out)
 \@outlinefile=\write4
 \openout4 = `paper.out'.
@@ -1199,9 +1199,9 @@ Package caption Info: float package is loaded.
 Package caption Info: End \AtBeginDocument code.
  (data.tex)
 LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/n' will be
-(Font)              scaled to size 17.28pt on input line 15.
+(Font)              scaled to size 17.28pt on input line 9.
 LaTeX Font Info:    Try loading font information for OT1+LinuxBiolinumT-TLF on 
-input line 15.
+input line 9.
 
 ("C:\Users\bsalimi\AppData\Local\Programs\MiKTeX 2.9\tex\latex\libertine\ot1lin
 uxbiolinumt-tlf.fd"
@@ -1209,7 +1209,7 @@ File: OT1LinuxBiolinumT-TLF.fd 2012/11/26 (autoinst) Font definitions for OT1/L
 inuxBiolinumT-TLF.
 )
 LaTeX Font Info:    Font shape `OT1/LinuxBiolinumT-TLF/m/n' will be
-(Font)              scaled to size 17.28pt on input line 15.
+(Font)              scaled to size 17.28pt on input line 9.
 Package microtype Info: Loading generic settings for font family
 (microtype)             `LinuxBiolinumT-TLF' (encoding: OT1).
 (microtype)             For optimal results, create family-specific settings.
@@ -1217,13 +1217,13 @@ Package microtype Info: Loading generic settings for font family
 LaTeX Font Info:    Font shape `OT1/LinuxBiolinumT-TLF/bx/n' in size <17.28> no
 t available
 (Font)              Font shape `OT1/LinuxBiolinumT-TLF/b/n' tried instead on in
-put line 15.
+put line 9.
 LaTeX Font Info:    Font shape `OT1/LinuxBiolinumT-TLF/b/n' will be
-(Font)              scaled to size 17.28pt on input line 15.
+(Font)              scaled to size 17.28pt on input line 9.
 LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/n' will be
-(Font)              scaled to size 12.0pt on input line 15.
+(Font)              scaled to size 12.0pt on input line 9.
 LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/n' will be
-(Font)              scaled to size 10.0pt on input line 15.
+(Font)              scaled to size 10.0pt on input line 9.
 
 ("C:\Users\bsalimi\AppData\Local\Programs\MiKTeX 2.9\tex\latex\microtype\mt-msa
 .cfg"
@@ -1234,9 +1234,9 @@ File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 )
 LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/it' will be
-(Font)              scaled to size 7.0pt on input line 15.
+(Font)              scaled to size 7.0pt on input line 9.
 LaTeX Font Info:    Try loading font information for TS1+LinuxLibertineT-TLF on
- input line 15.
+ input line 9.
 
 ("C:\Users\bsalimi\AppData\Local\Programs\MiKTeX 2.9\tex\latex\libertine\ts1lin
 uxlibertinet-tlf.fd"
@@ -1244,29 +1244,25 @@ File: TS1LinuxLibertineT-TLF.fd 2012/11/26 (autoinst) Font definitions for TS1/
 LinuxLibertineT-TLF.
 )
 LaTeX Font Info:    Font shape `TS1/LinuxLibertineT-TLF/m/n' will be
-(Font)              scaled to size 7.0pt on input line 15.
+(Font)              scaled to size 7.0pt on input line 9.
 Package microtype Info: Loading generic settings for font family
 (microtype)             `LinuxLibertineT-TLF' (encoding: TS1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
 LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/b/n' will be
-(Font)              scaled to size 9.0pt on input line 15.
+(Font)              scaled to size 9.0pt on input line 9.
 LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/b/n' will be
-(Font)              scaled to size 10.95pt on input line 15.
+(Font)              scaled to size 10.95pt on input line 9.
  (abstr.tex)
 LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/n' will be
-(Font)              scaled to size 8.0pt on input line 15.
+(Font)              scaled to size 8.0pt on input line 9.
 LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/b/n' will be
-(Font)              scaled to size 8.0pt on input line 15.
+(Font)              scaled to size 8.0pt on input line 9.
 LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/it' will be
-(Font)              scaled to size 8.0pt on input line 15.
-
-
-LaTeX Warning: Reference `TotPages' on page 1 undefined on input line 15.
-
+(Font)              scaled to size 8.0pt on input line 9.
 LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/n' will be
-(Font)              scaled to size 6.2pt on input line 15.
-(intro.tex
+(Font)              scaled to size 6.2pt on input line 9.
+ (intro.tex
 LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/it' will be
 (Font)              scaled to size 9.0pt on input line 27.
 
@@ -1296,36 +1292,63 @@ LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/b/n' will be
 Package natbib Warning: Citation `shalizi2013advanced' on page 1 undefined on i
 nput line 55.
 
-LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/n' will be
-(Font)              scaled to size 6.0pt on input line 64.
-LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/n' will be
-(Font)              scaled to size 6.5pt on input line 68.
-LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/b/n' will be
-(Font)              scaled to size 6.0pt on input line 71.
 LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/scit' will be
-(Font)              scaled to size 9.0pt on input line 118.
+(Font)              scaled to size 9.0pt on input line 122.
 
 Package natbib Warning: Citation `ball2010total' on page 1 undefined on input l
-ine 120.
+ine 124.
 
 
-LaTeX Warning: Reference `sec:setup' on page 1 undefined on input line 129.
+LaTeX Warning: Reference `sec:setup' on page 1 undefined on input line 133.
 
 
-Package natbib Warning: Citation `FAA08' on page 1 undefined on input line 218.
+LaTeX Warning: Reference `tab:attlist' on page 1 undefined on input line 134.
+
+<Figures/dummy.png, id=39, 867.24pt x 542.025pt>
+File: Figures/dummy.png Graphic file (type png)
+ <use Figures/dummy.png>
+Package pdftex.def Info: Figures/dummy.png used on input line 213.
+(pdftex.def)             Requested size: 200.49318pt x 122.33908pt.
+
+Overfull \hbox (17.8434pt too wide) in paragraph at lines 213--214
+[]  [] 
+ []
+
+LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/b/n' will be
+(Font)              scaled to size 6.0pt on input line 214.
+File: Figures/dummy.png Graphic file (type png)
+<use Figures/dummy.png>
+Package pdftex.def Info: Figures/dummy.png used on input line 219.
+(pdftex.def)             Requested size: 183.77989pt x 122.33908pt.
+
+Overfull \hbox (11.65793pt too wide) in paragraph at lines 219--220
+ []|  [] 
+ []
+
+File: Figures/dummy.png Graphic file (type png)
+<use Figures/dummy.png>
+Package pdftex.def Info: Figures/dummy.png used on input line 225.
+(pdftex.def)             Requested size: 183.77989pt x 122.33908pt.
+
+Overfull \hbox (16.70163pt too wide) in paragraph at lines 225--226
+ [] 
+ []
+
+
+Package natbib Warning: Citation `FAA08' on page 1 undefined on input line 245.
 
 
 
-LaTeX Warning: Reference `sec:endtoend' on page 1 undefined on input line 222.
+LaTeX Warning: Reference `sec:endtoend' on page 1 undefined on input line 249.
 
 
-Package natbib Warning: Citation `weather' on page 1 undefined on input line 22
-3.
+Package natbib Warning: Citation `weather' on page 1 undefined on input line 25
+0.
 
 [1.1{C:/Users/bsalimi/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}
 
 ]
-LaTeX Font Info:    Try loading font information for OT1+zi4 on input line 267.
+LaTeX Font Info:    Try loading font information for OT1+zi4 on input line 294.
 
 
 ("C:\Users\bsalimi\AppData\Local\Programs\MiKTeX 2.9\tex\latex\inconsolata\ot1z
@@ -1333,77 +1356,52 @@ i4.fd"
 File: ot1zi4.fd 2016/12/29 OT1/zi4 (Inconsolata)
 )
 LaTeX Font Info:    Font shape `OT1/zi4/m/n' will be
-(Font)              scaled to size 9.0pt on input line 267.
+(Font)              scaled to size 9.0pt on input line 294.
 Package microtype Info: Loading generic settings for font family
 (microtype)             `zi4' (encoding: OT1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
 
 
-LaTeX Warning: Reference `' on page 2 undefined on input line 271.
+LaTeX Warning: Reference `' on page 2 undefined on input line 298.
 
-) (details.tex
-
-LaTeX Warning: Reference `' on page 2 undefined on input line 7.
-
-
-Overfull \hbox (1.37987pt too wide) in paragraph at lines 6--8
+) (interdetails.tex
+Overfull \hbox (1.37987pt too wide) in paragraph at lines 10--12
 \OT1/LinuxLibertineT-TLF/m/n/9 (-20) hy-poth-e-sis to test by spec-i-fy-ing a t
 reat-ment(potential cause)
  []
 
-
-Overfull \hbox (1.86542pt too wide) in paragraph at lines 12--15
-\OT1/LinuxLibertineT-TLF/m/n/9 (-20) Viska sys-tem: e.g. dif-fer-ent pa-ram-e-t
-ers to graph-generation
- []
-
 ) (system.tex
-LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/n' will be
-(Font)              scaled to size 10.95pt on input line 2.
 LaTeX Font Info:    Font shape `OT1/LinuxBiolinumT-TLF/m/n' will be
-(Font)              scaled to size 9.0pt on input line 52.
- [2.2]) (concl.tex) (interf.tex) (paper.bbl)
+(Font)              scaled to size 9.0pt on input line 51.
+ [2.2 <./Figures/dummy.png>]) (concl.tex) (paper.bbl)
 
 Package natbib Warning: There were undefined citations.
-
-
-Package caption Warning: Unused \captionsetup[subfigure] on input line 23.
-See the caption package documentation for explanation.
 
 [3.3
 
 ]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 29.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 29.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 18.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 18.
  (paper.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 29.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 29.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 18.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 18.
+Package rerunfilecheck Info: File `paper.out' has not changed.
+(rerunfilecheck)             Checksum: FF3F1CAD296214ED40F0A3A3929FA4C9;516.
 
-
-Package rerunfilecheck Warning: File `paper.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `paper.out':
-(rerunfilecheck)             Before: C7F7715AA36A0063E089020DF63D85C9;453
-(rerunfilecheck)             After:  C050A6A2C32635256882A785AE74FAB6;548.
 
 LaTeX Warning: There were undefined references.
 
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 29.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 18.
  ) 
 Here is how much of TeX's memory you used:
- 14823 strings out of 493634
- 230891 string characters out of 3134424
- 356731 words of memory out of 3000000
- 17496 multiletter control sequences out of 15000+200000
- 93149 words of font info for 279 fonts, out of 3000000 for 9000
+ 14816 strings out of 493634
+ 230721 string characters out of 3134424
+ 351963 words of memory out of 3000000
+ 17484 multiletter control sequences out of 15000+200000
+ 86052 words of font info for 271 fonts, out of 3000000 for 9000
  1186 hyphenation exceptions out of 8191
- 60i,12n,94p,502b,651s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 60i,11n,94p,545b,663s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Users/bsalimi/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/dvips/inconsola
 ta/i4-ot1-4.enc}{C:/Users/bsalimi/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/d
 vips/libertine/lbtn_c6xmqr.enc}{C:/Users/bsalimi/AppData/Local/Programs/MiKTeX 
@@ -1427,9 +1425,9 @@ c/txfonts/rtxr.pfb><C:/Users/bsalimi/AppData/Local/Programs/MiKTeX 2.9/fonts/ty
 pe1/public/txfonts/txsyb.pfb><C:/Users/bsalimi/AppData/Local/Programs/MiKTeX 2.
 9/fonts/type1/public/newtx/txsys.pfb><C:/Users/bsalimi/AppData/Local/Programs/M
 iKTeX 2.9/fonts/type1/public/newtx/zxlri.pfb>
-Output written on paper.pdf (3 pages, 419533 bytes).
+Output written on paper.pdf (3 pages, 414189 bytes).
 PDF statistics:
- 125 PDF objects out of 1000 (max. 8388607)
- 23 named destinations out of 1000 (max. 500000)
- 45625 words of extra memory for PDF output out of 51595 (max. 10000000)
+ 132 PDF objects out of 1000 (max. 8388607)
+ 21 named destinations out of 1000 (max. 500000)
+ 44102 words of extra memory for PDF output out of 51595 (max. 10000000)
 

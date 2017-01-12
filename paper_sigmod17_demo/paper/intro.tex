@@ -61,6 +61,9 @@ scale to billions of records.   In this demonstration we use \GSQL \ to perform 
 
 
 
+
+
+\ignore{
 \begin{table*}[!htb] \scriptsize
     \begin{subtable}{.5\linewidth}
       \centering
@@ -114,6 +117,7 @@ scale to billions of records.   In this demonstration we use \GSQL \ to perform 
  \vspace{-0.1cm}   \caption{\bf{List of attributes from the flight(a) and weather(b)  datasets that are relevant to our analysis.}}
 \label{tab:attlist}
 \end{table*}
+}
 
 \begin{example} \em \delay. \ \em   Flight delays pose a serious
 and widespread problem in the United States and
@@ -204,6 +208,29 @@ enforcing $X = x$ uniformly over the population.  In causal analysis, the diffic
    {\em counterfactuals} from the (observed) {\em factual} premises.
 
 
+\begin{figure*}[t]
+\begin{subfigure}{0.33\linewidth}
+\hspace{-.6cm} \includegraphics[height=4.3cm,width=1.2\linewidth]{Figures/dummy.png}
+\caption{\scriptsize }
+\label{sfig:testaa}
+\end{subfigure}\hfill
+\begin{subfigure}{0.33\linewidth}
+\centering
+\hspace*{-.23cm} \includegraphics[height=4.3cm,width=1.1\linewidth]{Figures/dummy.png}
+\caption{\scriptsize }
+\label{sfig:testbb}
+\end{subfigure}\hfill
+\begin{subfigure}{0.33\linewidth}
+\centering
+\hspace{-.3cm}\includegraphics[height=4.3cm,width=1.1\linewidth]{Figures/dummy.png}
+\caption{\scriptsize S}
+\label{fig:push}
+\end{subfigure}\hfill
+\caption{Demonstration screenshot described in Section \ref{sec:dd}}
+\label{fig:inteface}
+		\vspace{-0.3cm}
+\end{figure*}
+
 
    \begin{example} \em \delay \ (Cont.).  \label{ex:press} \em Suppose
      we want to explore the effect of low-pressure on flight departure
@@ -269,6 +296,5 @@ The demonstration will enable the attendees to experiment with various algorithm
 The demonstration will make two contributions. It will explain and demonstrate the pipeline 
 of drawing valid causal conclusions from large data sets. It will also enable the attendees to 
 experience different methods for causal inference including coarsen exact matching \ref{} and propensity score matching \ref{ex:press} and the hybrid approaches.
-
 
 
