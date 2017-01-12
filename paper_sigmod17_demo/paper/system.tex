@@ -65,9 +65,44 @@ The goal of causal analysis is to compute the {\em average treatment
 The so-called {\em fundamental problem of causal inference(FPCI)} is that
 for each unit we only know either $Y(1)$ or $Y(0)$ but not both
 \cite{Holland1986}, and causal inference is reduced to a missing data
-problem \cite{RosenbaumRubin1983}. It is known that under {\em randomized (or controlled) experiments} in which the treatments are assigned randomly to the units; the treated and control groups are directly comparable. Because under proper randomization, it is expected that both groups are similar on the values of covariates. Causal inference in the lack of randomization is called observational studies. By contrary  to the popular
+problem \cite{RosenbaumRubin1983}.In a {\em randomized (or controlled) experiments} the treatments are
+assigned randomly to the units; for example, in medical trials each
+subject is randomly assigned the treatment or a placebo.  Randomized
+experiments are the gold standard for causal analysis, and they
+satisfy the following {\em independence assumption}: $\indep(\jout,T)$,
+where $\jout$ denotes the joint variables $(Y(1),Y(0))$.  This implies
+$E[Y(1)]=E[Y(1)|T=1]$ and similarly $E[Y(0)]=E[Y(0)|T=0]$ and we have:
+%
+%\vspace{-0.5cm}
+\begin{eqnarray}
+  ATE &=& E[Y(1)|T=1]-E[Y(0)|T=0] \label{eq:indeass}
+\end{eqnarray}
+\vspace{-0.5cm}
+ 
+In order to derive any causal relationship in observational data one
+must make the {\em unconfoundendess assumption}, which states that the
+potential outcomes and the treatment assignment are conditionally
+independent given the covariates $X$, \ie, $\indep(\jout, T, X)$~\cite{RosenbaumRubin1983}. It essentially means one can assume that within each group defined by
+different values of $X=x$, a randomized experiment is carried out (we
+discuss in next thrust the challenge of how to select the {\em
+  confounding variables})
+% $X$ that ensure unconfoundedness.
+In
+addition, one also requires the {\em overlap} assumption, which states
+that at least one treated and one control unit must exist each group
+(otherwise one of the outcomes $Y(0)$ or $Y(1)$ is undefined for
+$X=x$). Together, these two assumptions are called the {\em Strongly
+  Ignorable Treatment Assumption} or {\em SITA}, and they enable us
+(in theory!) to estimate the average treatment effect separately for
+each group, then aggregating over all the groups:
+\begin{equation}
+ATE ~~=~~ E_x[E[Y(1)-Y(0)| X=x]] ~~ =~~ E_x[E[Y(1)|T=1,X=x]] \newline -E_x[E[Y(0)|T=0, X=x]]\label{eq:oatt}
+\end{equation}
+ 
+ \ignore{
+ Causal inference in the lack of randomization is called observational studies. By contrary  to the popular
 belief that it is nearly impossible to infer causality from data, such inference is possible under some strict
-assumptions and following the careful methodology that has been developed within the statistics, economics and social sciences literature. In this direction one of the most popular method developed for causal inference is matching. Next we overview the matching methods supported by \GSQL\ and their implementation.
+assumptions and following the careful methodology that has been developed within the statistics, economics and social sciences literature. In this direction one of the most popular method developed for causal inference is matching. Next we overview the matching methods supported by \GSQL\ and their implementation.}
 
 
 
@@ -86,7 +121,7 @@ described in the NRCM (cf. Section \ref{subsec:causalitystatistics}),
 and $Y$ represent the available outcome, i.e., $Y=Y(z)$ for iff $T=z$. For each matching method, we define a view over $\rel$ such that
 materializing the extension of the view over any instance of $\rel$
 computes a corresponding matched subset of the instance.
- 
+
 {\bf Nearest Neighbor Matching}
 \label{sec:nnm}
 The most common matching method is that of $k:1$ nearest neighbor
