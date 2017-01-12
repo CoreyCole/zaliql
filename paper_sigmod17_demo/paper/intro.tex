@@ -38,18 +38,25 @@ Both predictive and causal analysis are needed to generate and test theories,
 In fact, performing predictive analysis to address questions that are causal in nature could lead to a flood of false discovery claims.
 In many cases, researchers who want to discover causality from data analysis settle for predictive analysis either because they think it is causal or lack of available alternatives.
 }
+Causal inference has been studied extensively in statistics and
+computer science \cite{Fisher1935design,Rubin2005,holland1986statistics,PearlBook2000\ignore{,Spirtes:book01}}.
+Many tools perform causal inference
+ using statistical software such as SAS, SPSS, or R project. However, these toolkits do not scale to large datasets.  Furthermore, in many of the most interesting Big Data settings, the data
+is highly relational (e.g, social networks, biological networks, sensor networks and more) and likely to pour into SQL systems. There is a rich ecosystem of tools and organizational requirements that encourage this. Transferring
+data from DBMS to statistical softwares or connecting these
+softwares to DBMS can be error prone, difficult, time consuming and inefficient. For these
+cases, it would be helpful to push statistical methods for causal inference into the DBMS.
+\ignore{\corey{should go over the scalability / current tool problem here before jumping into the solution?}}
 
-\corey{should go over the scalability / current tool problem here before jumping into the solution?}
-We design and develop \GSQL,\footnote{ The prefix Zali refers to
+In this demonstration we propose \GSQL,\footnote{ The prefix Zali refers to
   al-Ghzali (1058-1111), a medieval Persian philosopher. It is known
   that David Hume (1711-1776), a Scottish philosopher, who gave the
   first explicit definition of causation in terms of counterfactuals,
   was heavily influenced by al-Ghzali's conception of causality
   \cite{shalizi2013advanced}.}
-  a SQL-based framework for drawing causal inference that circumvents the scalability issue with the existing tools.
-ZaliQL supports state-of-the-art methods for causal
-inference and runs at scale within a database engine.  In \GSQL\ we develop
-develop a series of optimization techniques allowing our system to
+  a SQL-based framework for drawing causal inference that circumvents the scalability issue with the existing tools. ZaliQL supports state-of-the-art methods for causal
+inference and runs at scale within a database engine.   \GSQL\ is designed and implemented as an extender for PostgreSQL object-relational database
+system and includes a series of optimization techniques allowing our system to
 scale to billions of records. In this demonstration we use \GSQL\ to perform causal inference in the following scenario:
 
 \ignore{
@@ -107,10 +114,16 @@ scale to billions of records. In this demonstration we use \GSQL\ to perform cau
 \label{tab:attlist}
 \end{table*}
 }
+\begin{figure}
+\includegraphics[scale=0.5]{figures/counf.png}
+\caption{A typical scenario for Causal inference}
 
+\label{fig:cv}
+\vspace{-0.3cm}
+\end{figure}
 \begin{figure}
   \includegraphics[scale=0.3]{Figures/Matching-Flowchart.png}
-\caption{Matching observational data for causal inference}
+\caption{Matching observational data for Causal inference}
 \label{fig:flowchart}
 \vspace{-0.3cm}
 \end{figure}
@@ -210,20 +223,22 @@ In causal analysis, the difficulty arises from the fact that here the objective 
 \vspace{-0.3cm}
 \end{figure*}
 
-\begin{example} \em \delay   \label{ex:press} \em
-  Suppose we want to explore the effect of low-pressure on flight departure delays.
-  High pressure is generally associated with clear weather,
-    while low-pressure is associated with unsettled weather, e.g.,
-    cloudy, rainy, or snowy weather\ignore{\cite{weba2,barometricpressureheadache:article}}.
-  Therefore, conducting any sort of predictive analysis identifies
+
+It is known that causal inference is possible under careful random \emph{randomized} or \emph{controlled} experiment, in which a treatment (the potential cause) is assigned randomly to subjects. However, most of the big data available today are observational meaning that unlike collected opportunistically. The major problem in causal inference from observational data is the existence of the so-called {\em confounding variables} between a treatment and a outcome which makes the direct comparison between the group that received treatment and the grout that subject to control infeasible. The following example explains this issue.
+
+
+
+\begin{example} \em \delay (cont.) \ \em   Suppose we want to explore the effect of the low-pressure(treatment) on flight departure delays (outcome).  The direct comparison of 
+flight delay between the those flight that happen during low-pressure (treated groups) and the opposite group is misleading.  It is known that high pressure is generally associated with clear weather,    while low-pressure is associated with unsettled weather, e.g.,
+    cloudy, rainy, or snowy weather\ignore{\cite{weba2,barometricpressureheadache:article}}. Thus, as shown in Figure \ref{fig:cv}, factors such as thunder, snow, visibility confound pressure and delay. Therefore, conducting any sort of predictive analysis identifies
     low-pressure as a predictor for flight delays.
   However, low-pressure does not have any causal impact on departure delay
-    (low-pressure only requires longer takeoff distance) \cite{FAA08}.
-  That is, low-pressure is most highly a correlated attribute with flight delays,
-    however \GSQL\ found that other attributes such as thunder, low-visibility, high-wind-speed and
+    (low-pressure only requires longer takeoff distance) \cite{FAA08}. That is, low-pressure is most highly a correlated attribute with flight delays. By performing a careful casual analysis
+    \GSQL\ found that other attributes such as thunder, low-visibility, high-wind-speed and
     snow have the largest causal effect on flight delays (see Sec. \ref{sec:endtoend});
-  this is confirmed by the results reported by the FAA and ...
+  this is confirmed by the results reported by the FAA.
 \end{example}
+
 
 % They defined a very simple model, where we
 % want to conclude \dan{Lise: what's your comment here?}  if one
@@ -255,14 +270,19 @@ Underground \cite{flightdata,Weatherdata}
 }
 
 \vspace{-2mm}
+Roughly speaking, in order to draw valid causal conclusion one need to control for the
+confounding influence of that affect both treatment and outcome. A papular method for 
+performing this task is statistic and social science is that of {\em matching}.
+The key goal of matching is to prune observations from the data so that
+the remaining data have better balance between the treated and control groups meaning that the empirical
+distributions of the confounding variables (a.k.a covariates) in the groups are more similar. A typical workfellow of causal inference via matching is shown in picture \ref{fig:flowchart}. 
 
-The demonstration will enable the attendees to experiment with various algorithms for causal inference
-  and experience their benefits and limitations.
+The demonstration will enable the attendees to experiment with various matching method for causal inference and experience their benefits and limitations.
 The attendees will select a causal question by specifying a treatment,
   an outcome and particular method to perform causal inference.
 The attendee will also able to adjust the tunable parameters for these algorithms.
 The demonstration will run a remotely served web application that interfaces with our demo flight and weather database.
 
 The demonstration will make two contributions. It will
-  (1) explain and demonstrate the pipeline of drawing valid causal conclusions from large data sets and
-  (2) enable the attendees to experience different methods for causal inference including coarsen exact matching, \ref{} propensity score matching \ref{ex:press} and the hybrid approaches.
+  (1) explain and demonstrate the pipeline of drawing valid causal conclusions from data and
+  (2) enable the attendees to experience different methods for causal inference and investigate their proc and cons.
