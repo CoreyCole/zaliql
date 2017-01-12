@@ -1,25 +1,34 @@
-Q=@
-all: paper.pdf abstr.txt
+REPORT=paper
+LATEX=pdflatex
+BIBTEX=bibtex
 
-paper.pdf: $(wildcard *.tex) $(wildcard figs/*.tex) $(wildcard code/*) $(wildcard *.bib)
-	@printf '\\gdef\\therev{%s}\n\\gdef\\thedate{%s}\n' `git rev-parse --short HEAD` "`git log -1 --format='%ci' HEAD`" > rev.tex
-	$(Q)bin/latexrun --bibtex-args=-min-crossrefs=100 paper
+SRCS=$(wildcard *.tex)
+REFS=$(wildcard *.bib)
+FIGS=$(wildcard Figures/*)
 
-abstr.txt: abstr.tex
-	@cat $< | \
-          sed -e 's/\\emph//g' | \
-          sed -e 's/\\LaTeX/LaTeX/g' | \
-          sed -e 's/{//g' | \
-          sed -e 's/}//g' | \
-		  sed -e /^[%].*/d | \
-		  sed -e 's/~/ /g' | \
-		  sed -e 's/\\Y/Y/g' | \
-          fmt -w72 > $@
+$(REPORT).pdf: $(SRCS) $(REFS) $(FIGS) 
+	$(LATEX) $(REPORT)
+	$(BIBTEX) $(REPORT)
+	$(LATEX) $(REPORT)
+	$(LATEX) $(REPORT)
+
+
+force: $(SRCS) $(REFS) $(FIGS) 
+	$(LATEX) $(REPORT)
+
+bibs: $(SRCS) $(REFS)
+	$(BIBTEX) $(REPORT)
+
+full: $(SRCS) $(REFS) $(FIGS) 
+	$(LATEX) $(REPORT)
+	$(BIBTEX) $(REPORT)
+	$(LATEX) $(REPORT)
+	$(LATEX) $(REPORT)
+
+pdf: $(REPORT).pdf
+
+count: response.txt
+	grep -Ev "^#" $^ | wc -c
 
 clean:
-	rm -rf paper.pdf latex.out
-
-
-.PHONY: abstr.txt clean
-
-include Makefile.spell
+	rm -f *.dvi *.aux *.log *.blg *.bbl *~ $(REPORT).ps $(REPORT).pdf

@@ -1,8 +1,57 @@
-This is BibTeX, Version 0.99dThe top-level auxiliary file: paper.aux
-I couldn't open style file ACM-Reference-Format.bst
----line 54 of file paper.aux
- : \bibstyle{ACM-Reference-Format
- :                               }
-I'm skipping whatever remains of this command
-I found no style file---while reading file paper.aux
-(There were 2 error messages)
+This is BibTeX, Version 0.99d (TeX Live 2015)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: paper.aux
+The style file: ACM-Reference-Format.bst
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
+Database file #1: ref.bib
+Warning--I didn't find a database entry for "RosenbaumRubin1983"
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Warning--empty publisher in ball2010total
+Warning--empty address in ball2010total
+Warning--page numbers missing in both pages and numpages fields in ball2010total
+Warning--no number and no volume in cochran1968effectiveness
+Warning--no number and no volume in IacKinPor09
+Warning--empty address in shalizi2013advanced
+You've used 14 entries,
+            5551 wiz_defined-function locations,
+            1388 strings with 17355 characters,
+and the built_in function-call counts, 14634 in all, are:
+= -- 2138
+> -- 423
+< -- 0
++ -- 120
+- -- 199
+* -- 909
+:= -- 1495
+add.period$ -- 70
+call.type$ -- 14
+change.case$ -- 79
+chr.to.int$ -- 14
+cite$ -- 20
+duplicate$ -- 1147
+empty$ -- 833
+format.name$ -- 188
+if$ -- 3675
+int.to.chr$ -- 1
+int.to.str$ -- 0
+missing$ -- 51
+newline$ -- 155
+num.names$ -- 112
+pop$ -- 383
+preamble$ -- 1
+purify$ -- 149
+quote$ -- 0
+skip$ -- 391
+stack$ -- 0
+substring$ -- 1249
+swap$ -- 142
+text.length$ -- 71
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 190
+warning$ -- 6
+while$ -- 130
+width$ -- 0
+write$ -- 279
+(There were 7 warnings)
