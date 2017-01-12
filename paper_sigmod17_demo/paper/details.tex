@@ -3,10 +3,11 @@
 
 The demonstration starts with weather and flight data.   
 
+\ignore{
 \begin{enumerate}
-\item {\it Selecting a causal hypothesis:} the attendee selects a causal hypothesis to test by 
-specifying a treatment(potential cause) and an outcome (potential effect) (cf, Example \ref{}).  
-
+\item {\it Selecting a causal hypothesis:}
+  the attendee selects a causal hypothesis to test by specifying a treatment (potential cause)
+  and an outcome (potential effect) (cf, Example \ref{sfig:testaa}).  
 \item {\it Matching method:} The user select a matching method to 
 \item Enable attendees to drill into the details of how we generate these
 results (i.e.\, the different steps of the pipeline).
@@ -14,7 +15,34 @@ results (i.e.\, the different steps of the pipeline).
 e.g.\, different parameters to graph-generation algorithms, different bucketing
 strategies, etc.
 \end{enumerate}
+}
 
+\begin{enumerate}
+  \item {\it Form a causal hypothesis:}
+    e.g. snow causes flight delays
+  \item {\it Setup database parameters:} (cf, Example \ref{sfig:testaa})
+    \begin{enumerate}
+      \item specify treatments (potential cause)
+      \begin{enumerate}
+        \item specify at least one treatment
+        \item specify a matching method for each of those treatments (e.g. propensity score matching)
+      \end{enumerate}
+      \item for each treatment, specify a set of covariates (matching attributes)
+      \item specify at least one outcome (potential effect)
+    \end{enumerate}
+  \item {\it View matching assesment:} (cf, Example \ref{sfig:testbb})
+    \begin{enumerate}
+      \item if any one treatment does not have sufficient results, one can re-run the procedure, for just that treatment,
+        using a different matching method (i.e. Thunder in \ref{sfig:testbb})
+    \end{enumerate}
+  \item {\it Export for further analysis:} (cf, Example \ref{sfig:testcc})
+    \begin{enumerate}
+      \item export data for any treatment, or all treatments, to CSV file format
+    \end{enumerate}
+\end{enumerate}
+
+
+\ignore{
 \paragraph{Performance Data.}
 
 Viska generates and analyzes performance data obtained by benchmarking
@@ -30,3 +58,4 @@ query execution time).
 The Viska toolkit includes tools to generate and analyze this
 performance data. We do not describe the tools for workload
 generation, system deployment, and metric gathering here.
+}
