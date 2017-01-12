@@ -1,9 +1,9 @@
+# LaTeX
 latex.out
 paper.pdf
 abstr.txt
 *.bst
 *.swp
-
 *.aux
 *.glo
 *.idx
