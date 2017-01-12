@@ -1,19 +1,29 @@
 \documentclass[sigconf]{acmart}
 
-\input{macros}
+\input{cmds}
+\input{macros.tex}
 \begin{document}
+
 \input{data}
+
 \begin{abstract}
-   \input{abstr}
+    \input{abstr}
 \end{abstract}
+
+
+
 \maketitle
+
 \input{intro}
-\input{interdetails}
+
+\input{details}
 \input{system}
 \input{concl}
+\input{interf}
 
- \input{ack}
+% \input{ack}
+
 \bibliographystyle{ACM-Reference-Format}
-\cite{hougardy2006approximating}
 \bibliography{ref}
+
 \end{document}
