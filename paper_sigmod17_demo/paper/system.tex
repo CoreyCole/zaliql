@@ -1,86 +1,467 @@
 
-\section{The ZaliQL System}
-
-We are developing a system/toolkit called Viska, which is aimed at automating
-and guiding the three core tasks of performance analysis: generating,
-exploring and analyzing performance data.
-
-The primary contribution of our toolkit is a set of tools to support
-data analysis.
-This includes a web-based interactive data visualization app, and a
-Python library that makes it possible to leverage existing data
-analytics and machine learning platform, including Jupyter Notebook
-and scikit-learn.
+\section{Architecture and Overview}
+We will first describe \GSQL\ and overview the entire framework.
+\subsection{The ZaliQL System}
+We are developing a Postgres extension called \GSQL, which is aimed at
+performing causal inference
+on Big relational data in a Postgres engine. The primary contribution of is to represent the main tasks involved with causal inference in SQL,
+in order to integrate causal analysis with other data analytic operations supported by DBMS.
+In addition, \GSQL\ leverage existing technics
+in data management, including semantic query optimization and data-cube aggregation and database indices, to efficiently assess several causal hypotheses.
 Additionally, we are developing a
-library that enables hypothesis testing through state-of-the-art causal inference
-techniques. % statistical validity, rigor, ...
+an interface ... % statistical validity, rigor, ...
 
-\subsection{Generating performance data}
-Experimental design. Input variables, observed variables, outcome variables.
-Viska allows you to define these and use as parameters in exploration and
-analyzing.
 
-\subsection{Exploring performance data}
-Python library and web app. Exploring data to find correlations, interesting
-behavior. Preparing data for further analysis: removing unnecessary features,
-merging features, bucketing, etc.
 
-We have developed an interactive visualization
-tool that supports exploratory analysis of complex performance
-data. Drawing inspiration from the principles of exploratory
-data analysis and various visualization techniques,
-we provide an engaging way for users to explore performance
-results. The system aims to give a clear overview
-of available data, while focusing the attention of the users to
-select subsets of features and data to be combined into a single
-customized dashboard targeted to the hypothesis being
-investigated.
 
-\subsection{Analyzing performance results}
-% What is the causal relationship between two features, the \emph{treatment}
-% (cause) and the \emph{outcome} (effect). Causal inference basics. Need to
-% adjust for confounding effects of other variables. Consider relevant variables
-% as covariates in causal inference. Hard to control for everything, so we
-% use graph generation algorithms to help with covariate selection.
-% Hypothesis testing, statistical validation.
-Interactive visualization makes it easier to discover correlations
-between workload parameters, system metrics, and performance results
--- but do these imply causation's? Viska's
-interactive visualization interface integrates a new library we
-developed for statistically sound hypothesis testing.
 
-Viska's hypothesis testing is based on \emph{causality inference},
-using the Neyman-Rubin model. At a high level, causality inference
-measures the influence of one variable (the \emph{treatment})
-on an outcome, isolating it from other confounding factors.
+\subsection{Problem Description}
 
-%How causality inference works...
-In this model, we select a single binary attribute $T$ as the
-\emph{treatment}.  For each unit (i.e., experiment run), the unit is either
-treated ($T = 1$) or subjected to control ($T = 0$).  Another attribute $Y$ is
-selected as the \emph{outcome}; $Y(0), Y(1)$ represent \emph{potential
-outcomes} when the unit is exposed to the treatment ($Y(1)$) or the control
-($Y(0)$). As an example, we could select query duration as our outcome, and
-whether or not the query is an aggregate as our treatment.
-A vector $X$ represents potentially confounding variables, called \emph{covariates}.
-These can be attributes such as the number of input and output rows.
+The basic causal model in statistics is called the
+\ignore{Neyman-Rubin Causal Model (NRCM) (also referred to as} the
+{\em potential outcome framework (POF)}. In this model, we are given a
+table with $N$ rows called {\em units} indexed by $i=1 \ldots N$ (see
+Table~ \ref{fig:causal:inference}).  The binary attribute $T$ denotes {\em treatment assignment}.
+%sr: already in first para. ($T=1$ means the unit was treated; $T=0$ means the unit was subjected to control);
+$X$ is a vector of
+background characteristics (e.g., sex, race, age, \ldots) of each unit
+called {\em covariates}, unaffected by treatment; and the two
+attributes $Y(0), Y(1)$ represent {\em potential outcomes}: $Y(1)$ is
+the outcome of the unit if it is exposed to the treatment and $Y(0)$
+is the outcome when it is exposed to the control.
+%For any attribute $T$, we write $T_i$ for the value of the $i$'s unit.
+The {\em
+  treatment effect}
+caused by the treatment $T_i$ for the $i$th unit  is defined as $Y_i(1)-Y_i(0)$.
+The goal of causal analysis is to compute the {\em average treatment
+  effect (ATE)}:
 
-The goal is to compute the \emph{average treatment effect (ATE)}:
-$$
-\text{ATE} = \mathbb{E}[Y(1) - Y(0)] = \mathbb{E}[Y(1)] - \mathbb{E}[Y(0)]
-$$
-% For example, our experiments show a correlation between queries containing
-% aggregates and Spark outperforming Myria. However, the ATE computation reveals
-% that this is spurious: the performance difference is actually associated with a
-% covariate. Queries with aggregates have fewer output rows, and it is on these
-% that Spark outperforms Myria.
 
-The challenge in computing ATE is that the model assumes that both
-$Y(1)$ and $Y(0)$ are available for each unit, which is not the case
-in reality.
-Viska's analysis library uses several techniques, including
-\emph{coarsened exact matching (CEM)}, which
-prunes results so that the remaining data achieves \emph{balance}
-between the treated and control groups, and thus controls for the confounding
-influence of the covariates.
->>>>>>> 61cbea7c490bf41aa51f4cc1691b2ed66a6001eb
+\vspace{-0.5cm}
+\begin{align}
+  ATE = E[Y(1)-Y(0)] = E[Y(1)] - E[Y(0)] \ignore{=\frac{1}{N} \sum_i (Y_i(1)-Y_i(0))}  \label{eq:ate}
+\end{align}
+\vspace{-0.5cm}
+
+
+\begin{figure}
+  \centering
+{\scriptsize
+  \begin{tabular}{|c|c|c|c|c|c|} \hline
+    Unit & Covariates & Treatment & Treatment & Control & Causal  Effect \\
+   & $X$ & assignment $T$ & outcome $Y(1)$ & outcome $Y(0)$ & $Y(1)-Y(0)$ \\
+    \hline
+    1 & $X_1$ & $T_1$ & $Y_1(1)$ & $Y_1(0)$ & $Y_1(1) - Y_1(0)$ \\
+    2 & $X_2$ & $T_2$ & $Y_2(1)$ & $Y_2(0)$ & $Y_2(1) - Y_2(0)$ \\
+    $\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ \\
+    N & $X_N$ & $T_N$ & $Y_N(1)$ & $Y_N(0)$ & $Y_N(1) - Y_N(0)$ \\ \hline
+  \end{tabular}
+}
+\caption{The Potential Outcome Framework~\cite{Rubin2005}}
+  \label{fig:causal:inference}
+  \vspace{-3mm}
+\end{figure}
+\noindent
+The so-called {\em fundamental problem of causal inference(FPCI)} is that
+for each unit we only know either $Y(1)$ or $Y(0)$ but not both
+\cite{Holland1986}, and causal inference is reduced to a missing data
+problem \cite{RosenbaumRubin1983}. It is known that under {\em randomized (or controlled) experiments} in which the treatments are assigned randomly to the units; the treated and control groups are directly comparable. Because under proper randomization, it is expected that both groups are similar on the values of covariates. Causal inference in the lack of randomization is called observational studies. By contrary  to the popular
+belief that it is nearly impossible to infer causality from data, such inference is possible under some strict
+assumptions and following the careful methodology that has been developed within the statistics, economics and social sciences literature. In this direction one of the most popular method developed for causal inference is matching. Next we overview the matching methods supported by \GSQL\ and their implementation.
+
+
+
+
+
+
+
+
+\subsection{Subclassification and matching algorithms}
+
+ We demonstrate the following matching and subclassification algorithms.
+We consider a single relation $\rel(ID,T,\cv,Y)$,
+where $ID$ is an integer-valued primary-key, $T$ and $\cv$
+respectively denote the treatment and covariate attributes as
+described in the NRCM (cf. Section \ref{subsec:causalitystatistics}),
+and $Y$ represent the available outcome, i.e., $Y=Y(z)$ for iff $T=z$. For each matching method, we define a view over $\rel$ such that
+materializing the extension of the view over any instance of $\rel$
+computes a corresponding matched subset of the instance.
+ 
+{\bf Nearest Neighbor Matching}
+\label{sec:nnm}
+The most common matching method is that of $k:1$ nearest neighbor
+matching (NNM) wrt. propensity score \cite{Rubin1983b,ho2005,Stuart10},  where $E(x) = \textrm{Pr}(T = 1 | X=x)$ This method selects
+the $k$ nearest \ignore{(wrt. one of the distance metrics discussed in
+  Section \ref{sec:matching})} control matches for each treated
+unit and can be done with or without replacement; we denote
+them respectively by NNMWR and NNMNR.  In the former case, a control
+unit can be used more than once as a match, while in the latter case
+it is considered only once. Matching with replacement can often
+decrease bias because controls that look similar to the treated units
+can be used multiple times.  \ignore{This method is helpful in settings where
+there are few control units available.} However, since control units
+are no longer independent, complex inference is required to estimate
+the causal effect \cite{dehejia99}. In practice, matching is usually
+performed without replacement.  Notice that NNM faces the risk of bad
+matches if the closest neighbor is far away. This issue can be
+resolved by imposing a tolerance level on the maximum distance, known
+as the {\em caliper} (see e.g., \cite{lunt2014selecting}). \ignore{There are some rules of thumb for choosing the
+calipers (see e.g., \cite{lunt2014selecting}).}
+
+\begin{figure}
+  \centering
+\begin{alltt} \scriptsize
+CREATE VIEW \(\nnmnr\)
+AS WITH potential_matches AS
+  (SELECT treated.ID AS tID, control.ID AS cID,
+          \(\delta(treated.\cv,control.\cv)\)  AS distance
+   FROM \(\rel\) AS control, \(\rel\) AS treated
+   WHERE control.T=0 AND treated.T=1
+     AND \(\delta(treated.\cv,control.\cv)\) < \(caliper\))),
+            ordered_potential_matches AS
+  (SELECT *, ROW_NUMBER() over (ORDER BY distance) AS order
+   FROM potential_matches)
+SELECT *
+FROM ordered_potential_matches AS rp
+WHERE NOT EXISTS
+    (SELECT *
+     FROM ordered_potential_matches AS z
+     WHERE z.order < rp.order AND z.cID=rp.cID)
+  AND (SELECT count(*)
+     FROM ordered_potential_matches AS rp
+     WHERE z.order < rp.order AND z.tID=rp.tID)\( \leq k\);
+\end{alltt} \vspace{-.5cm}
+  \caption{\bf SQL implementation of NNMNR}\label{fig:nnmnr}
+\end{figure}
+
+
+\ignore{
+{\bf NNM With Replacement}
+We propose two alternative ways for computing  NNMWR in SQL, shown in
+Figure \ref{fig:nnmwr}. In Figure \ref{fig:nnmwr}(a), each treated unit is joined with $k$ closest control units that are closer than the caliper. In this solution, nearest control units are identified by means of an anti-join. \ignore{Note that when $k=1$ the aggregate expression may be replaced by NOT EXISTS.}  In Figure \ref{fig:nnmwr}(b), all potential matches and their distances are identified by
+joining the treated with the control units that are closer than
+the caliper. Then, this set is sorted into ascending order of
+distances.  In addition, the order of each row in the sorted set is identified
+using the window function {\verb|ROW_NUMBER|}. Finally, all units with the order of less than or equal to $k$ are selected as the matched units.
+
+
+The ani-join based statement requires a three-way join. \ignore{However, in a particular case when
+  $k=1$ and the caliper is zero, this solution can becomes linear for
+  matching based on propensity score.} The window function based
+solution has a quadratic complexity. It requires a nested-loop to
+perform a spatial-join and a window aggregate to impose
+minimality. Note that window functions are typically implemented in
+DBMS using a sort algorithm, and even more efficient algorithms have
+been recently proposed~\cite{Neumann15}.
+
+
+
+
+
+
+\begin{figure}
+  \centering
+\begin{alltt} \scriptsize
+CREATE VIEW \(\nnmnr\)
+AS WITH potential_matches AS
+  (SELECT treated.ID AS tID, control.ID AS cID,
+          \(\delta(treated.\cv,control.\cv)\)  AS distance
+   FROM \(\rel\) AS control, \(\rel\) AS treated
+   WHERE control.T=0 AND treated.T=1
+     AND \(\delta(treated.\cv,control.\cv)\) < \(caliper\))),
+            ordered_potential_matches AS
+  (SELECT *, ROW_NUMBER() over (ORDER BY distance) AS order
+   FROM potential_matches)
+SELECT *
+FROM ordered_potential_matches AS rp
+WHERE NOT EXISTS
+    (SELECT *
+     FROM ordered_potential_matches AS z
+     WHERE z.order < rp.order AND z.cID=rp.cID)
+  AND (SELECT count(*)
+     FROM ordered_potential_matches AS rp
+     WHERE z.order < rp.order AND z.tID=rp.tID)\( \leq k\);
+\end{alltt} \vspace{-.5cm}
+  \caption{\bf SQL implementation of NNMNR}\label{fig:nnmnr}
+\end{figure}
+
+
+{\bf NNM Without Replacement} \ignore{Expressing NNMNR in a declarative manner
+can be complicated. In fact,} This method aims
+to minimize the average absolute distance between matched units and can performed in either greedy or optimal manner. The latter is called {\em optimal matching}
+\cite{Rosenbaum93}. Before we describe our proposed SQL implementation for NNMWR, we prove
+that optimal matching is not expressible in SQL: this justifies
+focusing on approximate matches.  For our inexpressibility result,
+notice that in the special case when $k=1$ NNMWR is the {\em weighted
+  bipartite graph matching problem (WBGM)}, which is defined as
+follows: given a bipartite graph $G=(V,E)$ and a weight function
+$w: E \rightarrow \mathbb{R}_{>0}$, find a set of vertex-disjoint
+edges $M \subseteq E$ such that $M$ minimise the total weight
+$w(M) = \sum_{e \in M} w(e)$.  The exact complexity of this problem
+is unknown (see, e.g. \cite{Avis83}), however we prove a \NLOGSPACE\
+lower bound:
+
+\vspace{-.2cm}
+\begin{proposition} \label{pro:om}
+Computing  maximum weight matching for  weighted bipartite graphs is hard for \NLOGSPACE.
+\end{proposition}
+
+\begin{proof} The following {\em Graph Reachability Problem} is known
+  to be \NLOGSPACE\ complete: given a directed graph $G(V,E)$ and two
+  nodes $s,t$, check if there exists a path from $s$ to $t$.  We prove
+  a reduction from graph reachability to the {\em bipartite perfect
+    matching problem} which is a special case of optimal WBGM. For
+  that we construct the graph $G'$ with $V= V \cup V'$ where, $V'$ is
+  a copy of $V$ with primed labels and
+  $E'= \{(x,x')| \forall x \in V -\{s,t\} \} \cup \{(x,y')| \forall
+  (x,y) \in E\} \cup \{(t,s')\}$.
+  Notice that the subset $\setof{(x,x')}{x \in V} \subseteq E$ is
+  almost a perfect matching, except that it misses the nodes $s, t'$.
+  We prove: there exists a path from $s$ to $t$ in $G$ iff $G'$ has a
+  perfect matching.  First assume $P=s, x_1, x_2, \ldots, x_m, t$ is a
+  path in $G$. Then the following forms a perfect matching in $G'$:
+  $M=\set{(s,x_1'), (x_1,x_2'), \ldots, (x_{m},t'), (t,s')} \cup
+  \setof{(y,y')}{y \not\in \set{s,x_1, \ldots, x_m,t}}$.
+  Conversely, assume $G'$ has a perfect matching. Write
+  $f : V \rightarrow V'$ the corresponding bijection, i.e. every $x$
+  is matched to $y'=f(x)$.  Denoting the nodes in $V$ as
+  $V=\set{x_1, \ldots, x_n}$, we construct inductively the following
+  sequence: $x_{i_1}' = f(s)$, $x_{i_2}' = f(x_{i_3})$, \ldots,
+  $x_{i_{k+1}}' = f(x_{i_k})$.  Then $i_1, i_2, \ldots$ are distinct
+  (since $f$ is a matching), hence this sequence must eventually reach
+  $t'$: $t' = f(x_{i_m})$.  Then
+  $s,x_{i_1},x_{i_2}, \ldots, x_{i_m}, t$ forms a path from $s$ to $t$
+  in $G$.  This completes the proof.
+\end{proof}
+
+The proposition implies that optimal matching is not expressible in
+SQL without the use of recursion.  Optimal matching can be solved in
+\PTIME using, for example, the {\em Hungarian} algorithm, which, in
+theory, could be expressed using recursion in SQL.  However, optimal
+matching is rarely used in practice and, in fact, it is known that it
+does not in general perform any better than the greedy NNM (discussed
+next) in terms of reducing degree of covariate imbalance
+\cite{Rosenbaum93}.   For that reason, we did not implement optimal
+matching in our system.
+
+
+1:1 NNMWR can be approximated with a simple greedy algorithm that
+sorts all edges of the underlying graph in ascending order of weights
+and iterates through this sorted list, marking edges as ``matched"
+while maintaining the one-to-one invariant. \ignore{This algorithm can return
+a maximal matching that is at least $\frac{1}{2}$-optimal
+\cite{Avis83}.} Figure \ref{fig:nnmnr} adopts this greedy algorithm to
+express $1:k$ NNMWR in SQL.  This algorithm is very similar to that of
+NNMWR in Figure \ref{fig:nnmwr}(b), with the main difference that in
+the matching step it imposes the restriction that a control unit is
+matched with a treated unit only if it is not not already matched with
+another treated with a lower order.  This solution also has a
+quadratic complexity.
+
+{\bf Choosing the distance function} We briefly discuss now the choice
+of the distance function $\delta$ in NNM (see Fig.~\ref{fig:metrics}).
+The propensity score distance is by far the most prominent metric in
+NNM.  However, it has been the subject of some recent criticisms
+\cite{king15}.  It has been shown that, unlike other matching methods,
+in propensity score matching the imbalance reduction is only
+guaranteed across the spectrum of all samples. In observational
+settings, we typically have only one sample, so other matching methods
+dominate propensity score matching \cite{king15}. An alternative is to use the mahalanobis distance.  This has been
+shown to exhibit some odd behavior when covariates are not normally
+distributed, when there are relatively large number of covariates, or
+there are dichotomous covariates
+\cite{rosenbaum2002observational}. Therefore, this method has a
+limited practical applicability.
+
+
+We should mention that there is huge literature in the database
+community on finding the nearest neighbor. In fact this type of
+queries are subject of an active research and development efforts in
+the context of spatial-databases (see, e.g.,
+\cite{obe2015postgis}). Our work is different from these efforts in that: 1) much of the work in this area has focused on finding sub-linear algorithm for identifying nearest neighbors of a single data item (e.g., by using spatial-index). In contrast, in our setting
+we need to find all nearest neighbors, which is by necessity quadratic; 2) these works resulted in specialized algorithm,
+implemented in general purposed languages. In contrast, we focus on finding a representation in SQL, in order to integrate causal
+ analysis with other data analytic operations.  \ignore{ Recent developments in this context are
+applicable to our problem.  However, due to the enumerated
+shortcomings of NNM based on Mahalanobis and propensity score
+distance, this paper focuses on other matching methods.  \dan{which
+  other matching methods?  also, if we don't use the current matching
+  methods then why do we mention them?  and if research on NN is
+  relevant, then what is novel here?}}}
+
+
+
+
+
+
+
+
+
+\begin{figure}
+\begin{alltt} \scriptsize
+CREATE VIEW \(\sbc\) AS
+(WITH tmp0 AS
+  (SELECT *. ntile(\(n\)) over w subclass,
+   FROM \(\rel\) window w AS (ORDER BY ps))
+SELECT ID, T, \(\ccv\), Y, subclass,
+             max(T) over w maxT, min(T) over w minT
+FROM tmp0  window w AS (PARTITION BY BY subclass)
+WHERE maxT!=minT)
+\end{alltt}
+\vspace{-0.3cm}
+  \caption{\bf{SQL implementation of subclassification based on the
+      propensity score.}}\label{fig:subpr}
+\end{figure}
+
+
+{\bf Subclassification}
+\label{sec:sub}
+It is easy to see that NNM does not necessarily use all the data,
+meaning that many control units despite being in the range of a
+treatment unit are discarded.  In subclassification, the aim is to
+form subclasses for which, the distribution of covariates for the
+treated and control groups are as similar as possible. \ignore{The use of
+subclassification for matching can be traced back to
+\cite{cochran1968effectiveness}, which examined this method on a
+single covariate (age), investigating the relationship between lung
+cancer and smoking.} It is shown that using just five subclasses based
+on univariate continues covariates or propensity score removes over
+$90\%$ of covariates imbalance \cite{cochran1968effectiveness,
+  rosenbaum1984reducing}.
+
+{\it Subclassification based on the propensity score} We describe the
+SQL implementation of subclassification based on $n$ quintiles of the
+propensity score in Figure \ref{fig:subpr}.  We assumed that $\rel$
+includes another attribute $ps$ for the propensity score of each unit;
+the value of $ps$ needs to be learned from the data, using logistic
+regression \cite{Rubin1983b}.  The SQL query seeks to partition
+the units into five subclasses with propensity scores as equal as
+possible using the window function {\verb|ntile|} and ensure the overlap within each subclass. \ignore{. Finally,
+subclasses for which the maximum and minimum of the treatment are not
+equal retained (the discarded subclasses do not enjoy the overlap
+assumption).} This solution has the order of $nlog(n)$ if the window
+function computed using a sort algorithm.
+
+
+%%%%  we haven't defined univariates; i don't know what they are
+% Subclassification based on univariate continues covariates is a
+% particular case of coarsen exact matching, which is discussed in the
+% next section.
+
+
+
+
+
+\begin{figure}
+\begin{alltt} \scriptsize
+CREATE VIEW \(\crele\) AS
+(SELECT *, (CASE WHEN \(x\sb{1}<c\sb{1}\)  THEN \(1 \ldots\)
+                 WHEN \(x\sb{1}>c\sb{(k\sb{1}-1)}\) THEN \(k\sb{1}\)) AS \(cx\sb{1}\),
+              . . .
+           (CASE WHEN \(x\sb{n}<c\sb{n}\)  THEN \(1 \ldots\)
+                 WHEN \(x\sb{n}>c\sb{(k\sb{n}-1)}\) THEN \(k\sb{n}\)) AS \(cx\sb{n}\)
+from \(\rel\));
+\end{alltt} \vspace{-.2cm} \hspace{0.7cm}
+{(a)Coarsening wrt. a set of prespecified cutpoints}
+\vspace{-.3cm}
+\begin{alltt} \scriptsize
+CREATE VIEW \(\cem\) AS
+SELECT ID, T, \(\ccv\), Y, subclass
+FROM
+  (SELECT *,
+          max(ID) OVER w AS subclass, max(T) OVER w AS minT,
+          min(T) OVER w AS maxT
+   FROM \(\crele\)
+   WINDOW w (PARTITION BY \(\ccv\)))
+WHERE mint!=maxt
+\end{alltt}\vspace{-.2cm} \hspace{2.5cm}
+(b)Window function based
+\vspace{-.3cm}
+\begin{alltt} \scriptsize
+CREATE VIEW \(\cem\) AS
+WITH subclasses AS
+  (SELECT *,
+          max(ID) OVER w subclass, max(T) OVER w AS minT,
+          min(T) OVER w AS maxT
+   FROM \(\crele\)
+   Group by \(\ccv\))
+SELECT ID, T, \(\ccv\), Y, subclass
+FROM subclasses,\(\crele\)
+WHERE subclasses.\(\ccv\)=\(\crele\).\(\ccv\)  AND  minT!=maxT
+
+\end{alltt}\vspace{-.2cm}\hspace{2.5cm}
+(c) Group-by based
+\vspace{-.1cm}
+  \caption{\bf{SQL implementation of CEM.}}\label{fig:cem}
+\end{figure}
+
+
+% \subsection{Coarsen Exact Matching (CEM)}
+% \label{sec:cem}
+
+{\it Coarsening Exact Matching (CEM)} This method as proposed
+recently in \cite{IacKinPor09},  is a particular form of subclassification in which the vector of covariates $\cv$ is
+coarsened according to a set of user-defined cutpoints or any
+automatic discretization algorithm.  Then all units with similar
+coarsened covariates values are placed in unique subclasses. All
+subclasses with at least one treated and one control unit are retained
+and the rest of units are discarded.  Intuitively, this is a group-by
+operation, followed by eliminating all groups that have no treated, or
+no control unit. \ignore{Subclassification based
+  on univariate continues covariate (cf Section \ref{sec:sub}) can bee
+  seen as a particular form of CEM.}
+
+
+
+
+
+
+
+\ignore{
+\begin{figure*}[t]
+\begin{subfigure}{0.33\linewidth}
+\hspace{-.6cm} \includegraphics[height=4.3cm,width=1.2\linewidth]{Figures/ATT.png}
+\caption{\scriptsize Effect of Weather on Flight Delay}
+\label{sfig:testaa}
+\end{subfigure}\hfill
+\begin{subfigure}{0.33\linewidth}
+\centering
+\hspace*{-.23cm} \includegraphics[height=4.3cm,width=1.1\linewidth]{Figures/exact.png}
+\caption{\scriptsize Scalability Comparison (Subclassification)}
+\label{sfig:testbb}
+\end{subfigure}\hfill
+\begin{subfigure}{0.33\linewidth}
+\centering
+\hspace{-.3cm}\includegraphics[height=4.3cm,width=1.1\linewidth]{Figures/NNM.png}
+\caption{\scriptsize Scalability Comparison (Matching)}
+\label{fig:push}
+\end{subfigure}\hfill
+\caption{{ (Results from preliminary work)~~ Performance and Scalability Evaluation of \GSQL}: we explored: nearest neighbor matching
+ with and without replacement (NNMNR and NNMNR, respectively); subclassification bases on exact distance (EM), coarsen exact distance (CEM) and propensity score (Subc.)}
+\label{fig:perfresults}
+		\vspace{-0.3cm}
+\end{figure*}
+
+
+\subsection{Analyzing performance}
+
+ We
+explored four candidate causes for flight departure delays and
+cancellations: Thunder, WindSpeed, LowVisibility, and Snow.  For
+example ``what is the causal effect of {\em Thunder} (a Boolean
+attribute in the weather data) on flight departure delay and
+cancellation''.  As an illustration, Fig.~\ref{fig:perfresults}(a)
+shows the results for delays at various airports: Thunder has the
+largest causal effect at IAH (Houston, TX) and EWR
+(Newark, NJ), while snow has the largest causal effect at JFK and LGA
+(both in New York, NY); we note that these findings are consistent
+with the finding \cite{weather}. More interestingly we investigated the performance of our
+subclassification and matching techniques expressed in SQL with state
+of the art tools in R namely, MatchIt \cite{ho1737matchit}
+and CEM \cite{iacus2009cem}. The performance for subclassification improves
+by two orders of magnitude (Fig.~\ref{fig:perfresults}(b)) and for matching by a
+factor of 2 (Fig.~\ref{fig:perfresults}(c)).
+}
+
+\section{Overview of the optimization technics}
+

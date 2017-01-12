@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (MiKTeX 2.9) (preloaded format=pdflatex 2016.1.8)  11 JAN 2017 19:00
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (MiKTeX 2.9) (preloaded format=pdflatex 2016.1.8)  11 JAN 2017 20:54
 entering extended mode
 **Z:/ZaliSQL/paper_sigmod17_demo/paper/paper.tex
 (Z:/ZaliSQL/paper_sigmod17_demo/paper/paper.tex
@@ -1265,90 +1265,67 @@ LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/n' will be
  (intro.tex
 LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/it' will be
 (Font)              scaled to size 9.0pt on input line 27.
-
-
-Package natbib Warning: Citation `Fisher1935design' on page 1 undefined on inpu
-t line 37.
-
-
-Package natbib Warning: Citation `Rubin2005' on page 1 undefined on input line 
-37.
-
-
-Package natbib Warning: Citation `holland1986statistics' on page 1 undefined on
- input line 37.
-
-
-Package natbib Warning: Citation `PearlBook2000' on page 1 undefined on input l
-ine 37.
-
-
-Package natbib Warning: Citation `Spirtes:book01' on page 1 undefined on input 
-line 37.
-
 LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/b/n' will be
-(Font)              scaled to size 7.0pt on input line 55.
+(Font)              scaled to size 7.0pt on input line 48.
+
 
 Package natbib Warning: Citation `shalizi2013advanced' on page 1 undefined on i
-nput line 55.
+nput line 48.
 
 LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/scit' will be
-(Font)              scaled to size 9.0pt on input line 122.
+(Font)              scaled to size 9.0pt on input line 115.
 
 Package natbib Warning: Citation `ball2010total' on page 1 undefined on input l
-ine 124.
+ine 117.
 
 
-LaTeX Warning: Reference `sec:setup' on page 1 undefined on input line 133.
+LaTeX Warning: Reference `sec:setup' on page 1 undefined on input line 126.
 
 
-LaTeX Warning: Reference `tab:attlist' on page 1 undefined on input line 134.
+LaTeX Warning: Reference `tab:attlist' on page 1 undefined on input line 127.
 
-<Figures/dummy.png, id=39, 867.24pt x 542.025pt>
+<Figures/dummy.png, id=43, 867.24pt x 542.025pt>
 File: Figures/dummy.png Graphic file (type png)
  <use Figures/dummy.png>
-Package pdftex.def Info: Figures/dummy.png used on input line 213.
+Package pdftex.def Info: Figures/dummy.png used on input line 206.
 (pdftex.def)             Requested size: 200.49318pt x 122.33908pt.
 
-Overfull \hbox (17.8434pt too wide) in paragraph at lines 213--214
+Overfull \hbox (17.8434pt too wide) in paragraph at lines 206--207
 []  [] 
  []
 
 LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/b/n' will be
-(Font)              scaled to size 6.0pt on input line 214.
+(Font)              scaled to size 6.0pt on input line 207.
 File: Figures/dummy.png Graphic file (type png)
 <use Figures/dummy.png>
-Package pdftex.def Info: Figures/dummy.png used on input line 219.
+Package pdftex.def Info: Figures/dummy.png used on input line 212.
 (pdftex.def)             Requested size: 183.77989pt x 122.33908pt.
 
-Overfull \hbox (11.65793pt too wide) in paragraph at lines 219--220
+Overfull \hbox (11.65793pt too wide) in paragraph at lines 212--213
  []|  [] 
  []
 
 File: Figures/dummy.png Graphic file (type png)
 <use Figures/dummy.png>
-Package pdftex.def Info: Figures/dummy.png used on input line 225.
+Package pdftex.def Info: Figures/dummy.png used on input line 218.
 (pdftex.def)             Requested size: 183.77989pt x 122.33908pt.
 
-Overfull \hbox (16.70163pt too wide) in paragraph at lines 225--226
+Overfull \hbox (16.70163pt too wide) in paragraph at lines 218--219
  [] 
  []
 
 
-Package natbib Warning: Citation `FAA08' on page 1 undefined on input line 245.
+Package natbib Warning: Citation `FAA08' on page 1 undefined on input line 238.
 
 
 
-LaTeX Warning: Reference `sec:endtoend' on page 1 undefined on input line 249.
+LaTeX Warning: Reference `sec:endtoend' on page 1 undefined on input line 242.
 
 
-Package natbib Warning: Citation `weather' on page 1 undefined on input line 25
-0.
+Package natbib Warning: Citation `weather' on page 1 undefined on input line 24
+3.
 
-[1.1{C:/Users/bsalimi/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}
-
-]
-LaTeX Font Info:    Try loading font information for OT1+zi4 on input line 294.
+LaTeX Font Info:    Try loading font information for OT1+zi4 on input line 287.
 
 
 ("C:\Users\bsalimi\AppData\Local\Programs\MiKTeX 2.9\tex\latex\inconsolata\ot1z
@@ -1356,14 +1333,16 @@ i4.fd"
 File: ot1zi4.fd 2016/12/29 OT1/zi4 (Inconsolata)
 )
 LaTeX Font Info:    Font shape `OT1/zi4/m/n' will be
-(Font)              scaled to size 9.0pt on input line 294.
+(Font)              scaled to size 9.0pt on input line 287.
 Package microtype Info: Loading generic settings for font family
 (microtype)             `zi4' (encoding: OT1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
+ [1.1{C:/Users/bsalimi/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}
 
+]
 
-LaTeX Warning: Reference `' on page 2 undefined on input line 298.
+LaTeX Warning: Reference `' on page 2 undefined on input line 291.
 
 ) (interdetails.tex
 Overfull \hbox (1.37987pt too wide) in paragraph at lines 10--12
@@ -1372,13 +1351,93 @@ reat-ment(potential cause)
  []
 
 ) (system.tex
+LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/n' will be
+(Font)              scaled to size 6.0pt on input line 49.
+LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/n' will be
+(Font)              scaled to size 6.5pt on input line 50.
+
+
+Package natbib Warning: Citation `Rubin2005' on page 2 undefined on input line 
+60.
+
+
+Package natbib Warning: Citation `Rubin2005' on page 2 undefined on input line 
+60.
+
+
+Package natbib Warning: Citation `Holland1986' on page 2 undefined on input lin
+e 67.
+
+
+Package natbib Warning: Citation `RosenbaumRubin1983' on page 2 undefined on in
+put line 68.
+
 LaTeX Font Info:    Font shape `OT1/LinuxBiolinumT-TLF/m/n' will be
-(Font)              scaled to size 9.0pt on input line 51.
- [2.2 <./Figures/dummy.png>]) (concl.tex) (paper.bbl)
+(Font)              scaled to size 9.0pt on input line 71.
+[2.2 <./Figures/dummy.png>]
+
+LaTeX Warning: Reference `subsec:causalitystatistics' on page 3 undefined on in
+put line 85.
+
+
+Package natbib Warning: Citation `Rubin1983b' on page 3 undefined on input line
+ 93.
+
+
+Package natbib Warning: Citation `ho2005' on page 3 undefined on input line 93.
+
+
+
+Package natbib Warning: Citation `Stuart10' on page 3 undefined on input line 9
+3.
+
+
+Package natbib Warning: Citation `dehejia99' on page 3 undefined on input line 
+104.
+
+
+Package natbib Warning: Citation `lunt2014selecting' on page 3 undefined on inp
+ut line 108.
+
+
+Overfull \hbox (10.39397pt too wide) in paragraph at lines 90--110
+[]\OT1/LinuxLibertineT-TLF/b/n/9 Nearest Neigh-bor Match-ing []\OT1/LinuxLibert
+ineT-TLF/m/n/9 (-20) The most com-mon match-ing method
+ []
+
+LaTeX Font Info:    Font shape `OT1/zi4/m/n' will be
+(Font)              scaled to size 6.0pt on input line 113.
+
+LaTeX Font Warning: Font shape `OT1/zi4/m/sc' undefined
+(Font)              using `OT1/zi4/m/n' instead on input line 114.
+
+LaTeX Font Info:    Font shape `OT1/zi4/m/n' will be
+(Font)              scaled to size 5.5pt on input line 114.
+
+Package natbib Warning: Citation `cochran1968effectiveness' on page 3 undefined
+ on input line 330.
+
+
+Package natbib Warning: Citation `rosenbaum1984reducing' on page 3 undefined on
+ input line 330.
+
+
+Package natbib Warning: Citation `Rubin1983b' on page 3 undefined on input line
+ 337.
+
+
+Package natbib Warning: Citation `IacKinPor09' on page 3 undefined on input lin
+e 403.
+
+) (concl.tex) (paper.bbl)
 
 Package natbib Warning: There were undefined citations.
 
-[3.3
+
+Underfull \vbox (badness 1688) has occurred while \output is active []
+
+ [3.3]
+[4.4
 
 ]
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 18.
@@ -1387,7 +1446,10 @@ Package atveryend Info: Empty hook `AfterLastShipout' on input line 18.
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 18.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 18.
 Package rerunfilecheck Info: File `paper.out' has not changed.
-(rerunfilecheck)             Checksum: FF3F1CAD296214ED40F0A3A3929FA4C9;516.
+(rerunfilecheck)             Checksum: DE39CDB207134136353CED01CFBAF111;594.
+
+
+LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
 
 LaTeX Warning: There were undefined references.
@@ -1395,39 +1457,44 @@ LaTeX Warning: There were undefined references.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 18.
  ) 
 Here is how much of TeX's memory you used:
- 14816 strings out of 493634
- 230721 string characters out of 3134424
- 351963 words of memory out of 3000000
- 17484 multiletter control sequences out of 15000+200000
- 86052 words of font info for 271 fonts, out of 3000000 for 9000
+ 14900 strings out of 493634
+ 232124 string characters out of 3134424
+ 356450 words of memory out of 3000000
+ 17531 multiletter control sequences out of 15000+200000
+ 98373 words of font info for 312 fonts, out of 3000000 for 9000
  1186 hyphenation exceptions out of 8191
  60i,11n,94p,545b,663s stack positions out of 5000i,500n,10000p,200000b,50000s
-{C:/Users/bsalimi/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/dvips/inconsola
-ta/i4-ot1-4.enc}{C:/Users/bsalimi/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/d
-vips/libertine/lbtn_c6xmqr.enc}{C:/Users/bsalimi/AppData/Local/Programs/MiKTeX 
-2.9/fonts/enc/dvips/fontname/8r.enc}{C:/Users/bsalimi/AppData/Local/Programs/Mi
-KTeX 2.9/fonts/enc/dvips/libertine/lbtn_w6afmj.enc}{C:/Users/bsalimi/AppData/Lo
-cal/Programs/MiKTeX 2.9/fonts/enc/dvips/libertine/lbtn_naooyc.enc}{C:/Users/bsa
-limi/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/dvips/libertine/lbtn_xogrpz.en
-c}{C:/Users/bsalimi/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/dvips/libertine
-/lbtn_lu7m2n.enc}{C:/Users/bsalimi/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/
-dvips/libertine/lbtn_c7kyj5.enc}<C:/Users/bsalimi/AppData/Local/Programs/MiKTeX
- 2.9/fonts/type1/public/inconsolata/Inconsolata-zi4r.pfb><C:/Users/bsalimi/AppD
-ata/Local/Programs/MiKTeX 2.9/fonts/type1/public/libertine/LinBiolinumT.pfb><C:
-/Users/bsalimi/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/libertine/L
-inBiolinumTB.pfb><C:/Users/bsalimi/AppData/Local/Programs/MiKTeX 2.9/fonts/type
-1/public/libertine/LinLibertineT.pfb><C:/Users/bsalimi/AppData/Local/Programs/M
-iKTeX 2.9/fonts/type1/public/libertine/LinLibertineTB.pfb><C:/Users/bsalimi/App
-Data/Local/Programs/MiKTeX 2.9/fonts/type1/public/libertine/LinLibertineTI.pfb>
-<C:/Users/bsalimi/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/txfonts/
-rtxmi.pfb><C:/Users/bsalimi/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/publi
-c/txfonts/rtxr.pfb><C:/Users/bsalimi/AppData/Local/Programs/MiKTeX 2.9/fonts/ty
-pe1/public/txfonts/txsyb.pfb><C:/Users/bsalimi/AppData/Local/Programs/MiKTeX 2.
-9/fonts/type1/public/newtx/txsys.pfb><C:/Users/bsalimi/AppData/Local/Programs/M
-iKTeX 2.9/fonts/type1/public/newtx/zxlri.pfb>
-Output written on paper.pdf (3 pages, 414189 bytes).
+{C:/Users/bsalimi/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/dvips/newtx/lib
+ertinealt.enc}{C:/Users/bsalimi/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/dvi
+ps/inconsolata/i4-ot1-4.enc}{C:/Users/bsalimi/AppData/Local/Programs/MiKTeX 2.9
+/fonts/enc/dvips/libertine/lbtn_c6xmqr.enc}{C:/Users/bsalimi/AppData/Local/Prog
+rams/MiKTeX 2.9/fonts/enc/dvips/fontname/8r.enc}{C:/Users/bsalimi/AppData/Local
+/Programs/MiKTeX 2.9/fonts/enc/dvips/libertine/lbtn_w6afmj.enc}{C:/Users/bsalim
+i/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/dvips/libertine/lbtn_naooyc.enc}{
+C:/Users/bsalimi/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/dvips/libertine/lb
+tn_xogrpz.enc}{C:/Users/bsalimi/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/dvi
+ps/libertine/lbtn_lu7m2n.enc}{C:/Users/bsalimi/AppData/Local/Programs/MiKTeX 2.
+9/fonts/enc/dvips/libertine/lbtn_c7kyj5.enc}<C:/Users/bsalimi/AppData/Local/Pro
+grams/MiKTeX 2.9/fonts/type1/public/inconsolata/Inconsolata-zi4r.pfb><C:/Users/
+bsalimi/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/libertine/LinBioli
+numT.pfb><C:/Users/bsalimi/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public
+/libertine/LinBiolinumTB.pfb><C:/Users/bsalimi/AppData/Local/Programs/MiKTeX 2.
+9/fonts/type1/public/libertine/LinLibertineT.pfb><C:/Users/bsalimi/AppData/Loca
+l/Programs/MiKTeX 2.9/fonts/type1/public/libertine/LinLibertineTB.pfb><C:/Users
+/bsalimi/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/libertine/LinLibe
+rtineTI.pfb><C:/Users/bsalimi/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/pub
+lic/newtx/fxlri-5letters.pfb><C:/Users/bsalimi/AppData/Local/Programs/MiKTeX 2.
+9/fonts/type1/public/newtx/fxlri-7letters.pfb><C:/Users/bsalimi/AppData/Local/P
+rograms/MiKTeX 2.9/fonts/type1/public/txfonts/rtxmi.pfb><C:/Users/bsalimi/AppDa
+ta/Local/Programs/MiKTeX 2.9/fonts/type1/public/newtx/rtxmi7.pfb><C:/Users/bsal
+imi/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/txfonts/rtxr.pfb><C:/U
+sers/bsalimi/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/txfonts/txsyb
+.pfb><C:/Users/bsalimi/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/new
+tx/txsys.pfb><C:/Users/bsalimi/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/pu
+blic/newtx/zxlri.pfb>
+Output written on paper.pdf (4 pages, 601541 bytes).
 PDF statistics:
- 132 PDF objects out of 1000 (max. 8388607)
- 21 named destinations out of 1000 (max. 500000)
- 44102 words of extra memory for PDF output out of 51595 (max. 10000000)
+ 165 PDF objects out of 1000 (max. 8388607)
+ 28 named destinations out of 1000 (max. 500000)
+ 46158 words of extra memory for PDF output out of 51595 (max. 10000000)
 
