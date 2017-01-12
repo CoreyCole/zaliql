@@ -131,6 +131,20 @@ ATE ~~=~~ E_x[E[Y(1)-Y(0)| X=x]] ~~ =~~ E_x[E[Y(1)|T=1,X=x]]  -E_x[E[Y(0)|T=0, X
 belief that it is nearly impossible to infer causality from data, such inference is possible under some strict
 assumptions and following the careful methodology that has been developed within the statistics, economics and social sciences literature. In this direction one of the most popular method developed for causal inference is matching. Next we overview the matching methods supported by \GSQL\ and their implementation.}
 
+\begin{figure*} \scriptsize
+  \centering
+  \begin{tabular}{|l|l|l|} \hline
+    \bf{Name} &  $\delta(x_i,x_j)=$ & \bf{Comments} \\ \hline
+Coarsened distance & 0 if $C(x_i)=C(x_j)$ & Where $C(x)$ is a function that coarsen \\
+               & $\infty$ if $C(x_i) \neq C(x_j)$ & a vector of continues covariate~\cite{IacKinPor09}\\ \hline
+Propensity score  & $|E(x_i) - E(x_j)|$ & where $E(x) = \textrm{Pr}(T = 1 | X=x)$\\
+distance (PS)   &  & is the propensity score~\cite{Rubin1983b} \\ \hline
+Mahalanobis Distance (MD) & $(x_i-x_j)'\Sigma^{-1} (x_i-x_j)$ & where $\Sigma=$ covariance matrix~\cite{Stuart10} \\ \hline
+  \end{tabular}
+  \caption{Distance Measures used in Matching}
+  \label{fig:metrics}
+\end{figure*}
+
 In practice, however, a direct application of this method is
 impossible, because the data is typically very sparse: for any value
 $X=x$ we either have no data values at all, or very few such values,
@@ -138,15 +152,15 @@ which means that estimating $E[Y(T)|T=1\mbox{ or }0,X=x]$ as an
 average from the database leads to a large sampling error. A solution adopted in statistics is {\em matching and subclassification}~\cite{Rubin1983b}.  The idea is to match each treated unit with one or multiple control
 units with ``close'' values of the covariate attributes $X$, where
 closeness is defined using some distance function between the covariate values of two units.  The most
-commonly used distance functions are propensity score distance\cite{Rubin1983b}, and coarsen exact distance \cite{IacKinPor09} . The efficacy
+commonly used distance functions are presented  in Table \ref{fig:metrics}. The efficacy
 of a matching method is evaluated by measuring {\em degree of
   imbalance} i.e., the differences between the distribution of
 covariates in two groups in the matched subset. Since there is no
 generic metric to compare two distributions, measures such as mean,
 skewness, quantile and multivariate histogram are used for this
-purpose.  A rule of thumb is to
+purpose.  \ignore{A rule of thumb is to
 evaluate different distance metrics and matching methods until a
-well-balance matched subset with a reasonable size obtained.
+well-balance matched subset with a reasonable size obtained.}
 
 
 
@@ -160,23 +174,16 @@ well-balance matched subset with a reasonable size obtained.
 {\bf Nearest Neighbor Matching}
 \label{sec:nnm}
 The most common matching method is that of $k:1$ nearest neighbor
-matching (NNM) wrt. propensity score \cite{Rubin1983b,ho2005,Stuart10},  where $E(x) = \textrm{Pr}(T = 1 | X=x)$ This method selects
-the $k$ nearest \ignore{(wrt. one of the distance metrics discussed in
-  Section \ref{sec:matching})} control matches for each treated
+matching (NNM) one of a distance metrics control matches for each treated
 unit and can be done with or without replacement; we denote
-them respectively by NNMWR and NNMNR.  In the former case, a control
-unit can be used more than once as a match, while in the latter case
-it is considered only once. Matching with replacement can often
-decrease bias because controls that look similar to the treated units
-can be used multiple times.  \ignore{This method is helpful in settings where
-there are few control units available.} However, since control units
-are no longer independent, complex inference is required to estimate
-the causal effect \cite{dehejia99}. In practice, matching is usually
+them respectively by NNMWR and NNMNR. In practice, matching is usually
 performed without replacement.  Notice that NNM faces the risk of bad
 matches if the closest neighbor is far away. This issue can be
 resolved by imposing a tolerance level on the maximum distance, known
 as the {\em caliper} (see e.g., \cite{lunt2014selecting}). \ignore{There are some rules of thumb for choosing the
-calipers (see e.g., \cite{lunt2014selecting}).}
+calipers (see e.g., \cite{lunt2014selecting}).} The basic SQL statement to perform NNM is depicted in Figure \ref{fig:nnmnr}. \GSQL\  supports more sofisticated techniques for performing NNM leverage 
+from recent developments in the context of spatial-databases (see, e.g.,
+\cite{obe2015postgis}. We should mention that \GSQL\ uses the Madlib library develop for PostgresSQL to estimate propensity score. \babak{refrence})
 
 \begin{figure}
   \centering
