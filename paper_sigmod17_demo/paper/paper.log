@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (MiKTeX 2.9) (preloaded format=pdflatex 2016.1.8)  11 JAN 2017 17:04
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (MiKTeX 2.9) (preloaded format=pdflatex 2016.1.8)  11 JAN 2017 17:31
 entering extended mode
 **Z:/ZaliSQL/paper_sigmod17_demo/paper/paper.tex
 (Z:/ZaliSQL/paper_sigmod17_demo/paper/paper.tex
@@ -1260,9 +1260,13 @@ LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/b/n' will be
 (Font)              scaled to size 8.0pt on input line 15.
 LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/it' will be
 (Font)              scaled to size 8.0pt on input line 15.
+
+
+LaTeX Warning: Reference `TotPages' on page 1 undefined on input line 15.
+
 LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/n' will be
 (Font)              scaled to size 6.2pt on input line 15.
- (intro.tex
+(intro.tex
 LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/it' will be
 (Font)              scaled to size 9.0pt on input line 27.
 
@@ -1338,17 +1342,18 @@ Package microtype Info: Loading generic settings for font family
 
 LaTeX Warning: Reference `' on page 2 undefined on input line 271.
 
-
-LaTeX Warning: Reference `' on page 2 undefined on input line 271.
-
 ) (details.tex
-Overfull \hbox (3.43492pt too wide) in paragraph at lines 9--11
-[]\OT1/LinuxLibertineT-TLF/m/n/9 (-20) Show some plots with Viska where some fe
-a-tures $\OML/nxlmi/m/it/9 F[]$ \OT1/LinuxLibertineT-TLF/m/n/9 (-20) through
+
+LaTeX Warning: Reference `' on page 2 undefined on input line 7.
+
+
+Overfull \hbox (1.37987pt too wide) in paragraph at lines 6--8
+\OT1/LinuxLibertineT-TLF/m/n/9 (-20) hy-poth-e-sis to test by spec-i-fy-ing a t
+reat-ment(potential cause)
  []
 
 
-Overfull \hbox (1.86542pt too wide) in paragraph at lines 15--18
+Overfull \hbox (1.86542pt too wide) in paragraph at lines 12--15
 \OT1/LinuxLibertineT-TLF/m/n/9 (-20) Viska sys-tem: e.g. dif-fer-ent pa-ram-e-t
 ers to graph-generation
  []
@@ -1356,13 +1361,9 @@ ers to graph-generation
 ) (system.tex
 LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/n' will be
 (Font)              scaled to size 10.95pt on input line 2.
-
-Underfull \vbox (badness 2653) has occurred while \output is active []
-
 LaTeX Font Info:    Font shape `OT1/LinuxBiolinumT-TLF/m/n' will be
-(Font)              scaled to size 9.0pt on input line 51.
- [2.2])
-(concl.tex) (paper.bbl)
+(Font)              scaled to size 9.0pt on input line 52.
+ [2.2]) (concl.tex) (interf.tex) (paper.bbl)
 
 Package natbib Warning: There were undefined citations.
 
@@ -1373,25 +1374,34 @@ See the caption package documentation for explanation.
 [3.3
 
 ]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 28.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 28.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 29.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 29.
  (paper.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 28.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 28.
-Package rerunfilecheck Info: File `paper.out' has not changed.
-(rerunfilecheck)             Checksum: CC5CF63782D635F2F9D25F8E8D89EA87;502.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 29.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 29.
 
+
+Package rerunfilecheck Warning: File `paper.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `paper.out':
+(rerunfilecheck)             Before: C7F7715AA36A0063E089020DF63D85C9;453
+(rerunfilecheck)             After:  C050A6A2C32635256882A785AE74FAB6;548.
 
 LaTeX Warning: There were undefined references.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 28.
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 29.
  ) 
 Here is how much of TeX's memory you used:
- 14826 strings out of 493634
- 230936 string characters out of 3134424
- 356751 words of memory out of 3000000
- 17497 multiletter control sequences out of 15000+200000
- 94293 words of font info for 285 fonts, out of 3000000 for 9000
+ 14823 strings out of 493634
+ 230891 string characters out of 3134424
+ 356731 words of memory out of 3000000
+ 17496 multiletter control sequences out of 15000+200000
+ 93149 words of font info for 279 fonts, out of 3000000 for 9000
  1186 hyphenation exceptions out of 8191
  60i,12n,94p,502b,651s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Users/bsalimi/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/dvips/inconsola
@@ -1411,16 +1421,15 @@ inBiolinumTB.pfb><C:/Users/bsalimi/AppData/Local/Programs/MiKTeX 2.9/fonts/type
 1/public/libertine/LinLibertineT.pfb><C:/Users/bsalimi/AppData/Local/Programs/M
 iKTeX 2.9/fonts/type1/public/libertine/LinLibertineTB.pfb><C:/Users/bsalimi/App
 Data/Local/Programs/MiKTeX 2.9/fonts/type1/public/libertine/LinLibertineTI.pfb>
-<C:/Users/bsalimi/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/newtx/fx
-lri-7letters.pfb><C:/Users/bsalimi/AppData/Local/Programs/MiKTeX 2.9/fonts/type
-1/public/txfonts/rtxmi.pfb><C:/Users/bsalimi/AppData/Local/Programs/MiKTeX 2.9/
-fonts/type1/public/txfonts/rtxr.pfb><C:/Users/bsalimi/AppData/Local/Programs/Mi
-KTeX 2.9/fonts/type1/public/txfonts/txsyb.pfb><C:/Users/bsalimi/AppData/Local/P
-rograms/MiKTeX 2.9/fonts/type1/public/newtx/txsys.pfb><C:/Users/bsalimi/AppData
-/Local/Programs/MiKTeX 2.9/fonts/type1/public/newtx/zxlri.pfb>
-Output written on paper.pdf (3 pages, 495292 bytes).
+<C:/Users/bsalimi/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/txfonts/
+rtxmi.pfb><C:/Users/bsalimi/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/publi
+c/txfonts/rtxr.pfb><C:/Users/bsalimi/AppData/Local/Programs/MiKTeX 2.9/fonts/ty
+pe1/public/txfonts/txsyb.pfb><C:/Users/bsalimi/AppData/Local/Programs/MiKTeX 2.
+9/fonts/type1/public/newtx/txsys.pfb><C:/Users/bsalimi/AppData/Local/Programs/M
+iKTeX 2.9/fonts/type1/public/newtx/zxlri.pfb>
+Output written on paper.pdf (3 pages, 419533 bytes).
 PDF statistics:
- 131 PDF objects out of 1000 (max. 8388607)
- 22 named destinations out of 1000 (max. 500000)
- 45633 words of extra memory for PDF output out of 51595 (max. 10000000)
+ 125 PDF objects out of 1000 (max. 8388607)
+ 23 named destinations out of 1000 (max. 500000)
+ 45625 words of extra memory for PDF output out of 51595 (max. 10000000)
 

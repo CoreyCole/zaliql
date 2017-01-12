@@ -1,15 +1,12 @@
 \section{Demonstration Details}
 
-Task is to investigate performance of new version of PostgreSQL compared to
-old. We use a workload based on SSB data. We are interested in read performance
-so we generate simple select/project queries from a large fact table. We vary
-selected columns, size of table, filtering predicates.
+The demonstration starts with weather and flight data.   
 
 \begin{enumerate}
-\item Show some plots with Viska where some features $F_1$ through $F_k$ seem to
-influence runtime.
-\item Use Viska to show that a subset of these features are causes while others
-are not causes.
+\item {\it Selecting a causal hypothesis:} the attendee selects a causal hypothesis to test by 
+specifying a treatment(potential cause) and an outcome (potential effect) (cf, Example \ref{}).  
+
+\item {\it Matching method:} The user select a matching method to 
 \item Enable attendees to drill into the details of how we generate these
 results (i.e.\, the different steps of the pipeline).
 \item Show what happens for different configurations of the Viska system:
