@@ -25,7 +25,7 @@ background characteristics (e.g., sex, race, age, \ldots) of each unit
 called {\em covariates}, unaffected by treatment; and the two
 attributes $Y(0), Y(1)$ represent {\em potential outcomes}: $Y(1)$ is
 the outcome of the unit if it is exposed to the treatment and $Y(0)$
-is the outcome when it is exposed to the control.  
+is the outcome when it is exposed to the control.
 
 %For any attribute $T$, we write $T_i$ for the value of the $i$'s unit.
 The {\em
@@ -56,6 +56,7 @@ for each unit we only know either $Y(1)$ or $Y(0)$ but not both. Thus, further a
 \cite{Holland1986}, and causal inference is reduced to a missing data
 problem \cite{RosenbaumRubin1983}. }
 
+
 The strongest is the {\em independence assumption}, which states that
 the treatment mechanism is independent of the potential outcomes,
 i.e., $(Y(1), Y(0)) \bigCI T$. Then, it holds that
@@ -72,11 +73,11 @@ winter, and similarly for $T,Y(1)$.  \ignore{The vast majority of datasets
 available to analysts today are observational data, and this motivates
 our interest in this case.}  Here, the statistics literature makes the
 following weaker assumption~\cite{Rubin1983b} called {\em Strong Ignorability}: Forall $x$ the following hold:   (1) Unconfoundedness $({Y(0), Y(1) \bigCI T} | X=x)$ and
-  (2) Overlap $0 < \textrm{Pr}(T = 1 | X=x) < 1$
+  (2) Overlap $0 < \textrm{Pr}(T = 1 | X=x) < 1$.
 
 
 
-
+\ignore{
 The first part, {\em unconfoundedness}, means that, if we partition
 the data by the values of the covariate attributes $X=x$, then, within
 each group, the treatment assignment and the potential outcomes are independent; then we can
@@ -89,8 +90,7 @@ defined.  However, once we include sufficiently many covariate attributes $X$
 either empty or have a very small number of items.  For example if a
 group has only treated units, then the overlap condition fails, in
 other words the conditional expectation $\E[Y(0)|X=x,T=0]$ is
-undefined. If strong ignorability holds one can estimate ATE by taking the aggregating the average difference for each group i.e., $E_x[E[Y(1)-Y(0)| X=x]]$.
- 
+undefined.}
 
 \ignore{
 \begin{eqnarray}
@@ -103,7 +103,7 @@ undefined. If strong ignorability holds one can estimate ATE by taking the aggre
 ATE ~~=~~ E_x[E[Y(1)-Y(0)| X=x]] ~~ =~~ E_x[E[Y(1)|T=1,X=x]]  -E_x[E[Y(0)|T=0, X=x]]\label{eq:oatt}
 \end{equation}
  }
- 
+
  \ignore{
  Causal inference in the lack of randomization is called observational studies. By contrary  to the popular
 belief that it is nearly impossible to infer causality from data, such inference is possible under some strict
@@ -123,6 +123,8 @@ Mahalanobis Distance (MD) & $(x_i-x_j)'\Sigma^{-1} (x_i-x_j)$ & where $\Sigma=$ 
   \label{fig:metrics}
 \end{figure*}
 
+ If strong ignorability holds one can estimate ATE by
+ taking the aggregating the average difference for each group i.e., $E_x[E[Y(1)-Y(0)| X=x]]$.
 In practice, however, a direct application of this method is
 impossible, because the data is typically very sparse: for any value
 $X=x$ we either have no data values at all, or very few such values,
@@ -147,9 +149,9 @@ well-balance matched subset with a reasonable size obtained.}}
 
 \subsection{Subclassification and matching algorithms}
 \label{sec:algo}
- In the demonstration walk through the state-of-the-art matching and subclassification methods.
- For each method we show how to capture it in SQL. In addition we outline the set of techniques
- that ousted by \GSQL\ to perform them effetely. In particular we demonstrate the following methods:
+This demonstration walk through the state-of-the-art matching and subclassification methods in statistics.
+We also present the basic SQL statement that captures these methods. In addition, we outline the techniques
+employed by \GSQL\ to perform them effietnly. In particular we demonstrate the following methods:
 
 {\bf Nearest Neighbor Matching}
 \label{sec:nnm}
@@ -162,7 +164,7 @@ matches if the closest neighbor is far away. This issue can be
 resolved by imposing a tolerance level on the maximum distance, known
 as the {\em caliper} (see e.g., \cite{lunt2014selecting}). \ignore{There are some rules of thumb for choosing the
 calipers (see e.g., \cite{lunt2014selecting}).} The basic SQL statement to perform NNM is depicted in Figure \ref{fig:nnmnr}. However, \GSQL\  uses more efficient query for this task, leverage from recent developments in the context of spatial-databases (see, e.g.,
-\cite{obe2015postgis}). 
+\cite{obe2015postgis}).
 
 \begin{figure}
   \centering
@@ -385,16 +387,23 @@ on univariate continues covariates or propensity score removes over
 $90\%$ of covariates imbalance \cite{cochran1968effectiveness,
   rosenbaum1984reducing}.}
 
-{\it Subclassification based on the propensity score} We describe the
+{\it Subclassification based on the propensity score} 
+in this approach data is is typically partitioned into five subclasses  based on the
+$n$ quintiles of propensity score. Figure \ref{fig:subpr}, shows the SQL implemention of
+this method using window function {\verb|ntile|}. 
+\ignore{
+Figure \ref{fig:subpr} shows the
 SQL implementation of subclassification based on $n$ quintiles of the
-propensity score in Figure \ref{fig:subpr}. \GSQL learn the $ps$ the propensity score of each unit by calling logistic
+propensity score in Figure \ref{fig:subpr}. \GSQL learn
+ the $ps$ the propensity score of each unit by calling logistic
 regression from the Madlib library develop for PostgresSQL. \ignore{The SQL query seeks to partition
 the units into five subclasses with propensity scores as equal as
-possible using the window function {\verb|ntile|} and ensure the overlap within each subclass. \ignore{. Finally,
+possible using the window function {\verb|ntile|} and ensure 
+the overlap within each subclass. \ignore{. Finally,
 subclasses for which the maximum and minimum of the treatment are not
 equal retained (the discarded subclasses do not enjoy the overlap
 assumption).} This solution has the order of $nlog(n)$ if the window
-function computed using a sort algorithm.}
+function computed using a sort algorithm.}}
 
 
 %%%%  we haven't defined univariates; i don't know what they are
@@ -418,7 +427,7 @@ WITH subclasses AS
    Having minT!=maxT)
 SELECT ID, T, \(\ccv\), Y, subclass
 FROM subclasses,\(\crele\)
-WHERE subclasses.\(\ccv\)=\(\crele\).\(\ccv\)  
+WHERE subclasses.\(\ccv\)=\(\crele\).\(\ccv\)
 
 \end{alltt}
 \vspace{-.3cm}
@@ -432,9 +441,16 @@ WHERE subclasses.\(\ccv\)=\(\crele\).\(\ccv\)
 {\it Coarsening Exact Matching (CEM)} This method as proposed
 recently in \cite{IacKinPor09},  is a particular form of subclassification in which the vector of covariates $\cv$ is
 coarsened into according to a set of user-defined cutpoints or any
-automatic discretization algorithm. Then all units with similar coarsened covariates values are placed in unique subclasses. All
+automatic discretization algorithm. Then all units with similar coarsened 
+covariates values are placed in unique subclasses. All
 subclasses with at least one treated and one control unit are retained
-and the rest of units are discarded.  Let $\ccv$ be the coarsened version of $\cv$ and $R^c$ is be a discretize version of R. As depicted in Figure \ref{fig:cem}, CEM is essentially a GROUP-BY-HAVING query which is relatively expensive for example it takes more than hours to perform CEM on flight data. \GSQL\ leverage techniques from data management including pushing aggregate down to the base relation, data cube-aggregation, preprocessing wrt. multiple queries and bitmap indices.  
+and the rest of units are discarded.  Let $\ccv$ be the 
+coarsened version of $\cv$ and $R^c$ is be a discretize 
+version of R. As depicted in Figure \ref{fig:cem}, 
+CEM is essentially a GROUP-BY-HAVING query which is relatively expensive.
+To perform CEM efficiently \GSQL\ leverage techniques from data management
+ including pushing aggregate down to the base relation,
+  data cube-aggregation, pre-matching wrt. multiple treatments and bitmap indices.
 
  \ignore{Subclassification based
   on univariate continues covariate (cf Section \ref{sec:sub}) can bee
