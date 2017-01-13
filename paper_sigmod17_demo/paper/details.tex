@@ -1,4 +1,4 @@
-\section{Demonstration Details}
+\section{Demonstration Proposal}
 \label{sec:dd}
 
 The demonstration starts with weather and flight data.
@@ -18,18 +18,18 @@ strategies, etc.
 }
 
 \begin{enumerate}
-  \item {\it Form causal hypotheses:} the attendee forms a set of causal hypotheses, e.g., 
+  \item {\it Form causal hypotheses:} the attendee forms a set of causal hypotheses, e.g.,
    e.g. weather low-visibility causes fight delays at John F. Kennedy International Airport(JFK), by
     \begin{enumerate}
       \item specifying a set of binary treatments, e.g., low-visibility, Snow, ... (potential causes)
       \item specifying an outcome of interest (potential effect) e.g., departure delay, cancelation, ..
       \item specifying a subset of data that relevant to the analysis with e.g., flights at JFK airport
     \end{enumerate}
- 
+
   \item {\it Setup inference parameters:} The user select and tune the matching algorithms as follows:
      \begin{enumerate}
-      \item For each treatment the user the user specifics a set of variables that judged to confound it with the associated outcome.  
-          \item The user specifies a matching methods supported by \GSQL\ and adjust its tuning parameters 
+      \item For each treatment the user the user specifics a set of variables that judged to confound it with the associated outcome.
+          \item The user specifies a matching methods supported by \GSQL\ and adjust its tuning parameters
 \end{enumerate}
 
   \item {\it View matching assessment:} (cf, Example \ref{sfig:testbb})
@@ -39,11 +39,14 @@ strategies, etc.
       if the matched data associated to  particular treatment is still imbalance, the user can re-run the procedure, for the treatment,
         using a different matching method or by tuning the relevant parameters (i.e. Thunder in \ref{sfig:testbb})
     \end{enumerate}
-  \item {\it Hypothesis testing:} 
+  \item {\it Hypothesis testing:}
     \begin{enumerate}
-      \item The user can select and perform a proffered statistical methods for hypothesis e.g., Chi-square test on the matched data.
+      \item The user can select and perform a preferred statistical methods for hypothesis testing, e.g., Chi-square, test on the matched data.
+    \item {\it Analysis of performance: We compare the performance of \GSQL\ with other statistical software such as R.}
+   
     \end{enumerate}
 \end{enumerate}
+
 
 
 \ignore{

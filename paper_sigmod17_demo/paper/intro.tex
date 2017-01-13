@@ -41,7 +41,7 @@ In many cases, researchers who want to discover causality from data analysis set
 Causal inference has been studied extensively in statistics and
 computer science \cite{Fisher1935design,Rubin2005,holland1986statistics,PearlBook2000\ignore{,Spirtes:book01}}.
 Many tools perform causal inference
- using statistical software such as SAS, SPSS, or R project. However, these toolkits do not scale to large datasets.  Furthermore, in many of the most interesting Big Data settings, the data
+ using statistical software such as R project. However, in this demonstration we show that, these toolkits do not scale to large datasets.  Furthermore, in many of the most interesting Big Data settings, the data
 is highly relational (e.g, social networks, biological networks, sensor networks and more) and likely to pour into SQL systems. There is a rich ecosystem of tools and organizational requirements that encourage this. Transferring
 data from DBMS to statistical softwares or connecting these
 softwares to DBMS can be error prone, difficult, time consuming and inefficient. For these
@@ -123,7 +123,7 @@ scale to billions of records. In this demonstration we use \GSQL\ to perform cau
 \end{figure}
 \begin{figure}
   \includegraphics[scale=0.3]{Figures/Matching-Flowchart.png}
-\caption{Matching observational data for Causal inference \babak{causal hypothesis, Data-> Pruning data by matching-> Checking Balance-> Conduct Analysis please lable the arrow from balance checking to analysis with "Balanced mated data" and the arrow from balance to matching as "imbalanced matched data" non need for the "bad match" node }}
+\caption{Matching observational data for Causal inference}
 \label{fig:flowchart}
 \vspace{-0.3cm}
 \end{figure}
@@ -132,15 +132,13 @@ scale to billions of records. In this demonstration we use \GSQL\ to perform cau
 \begin{example} \em \delay \ \em
 Flight delays pose a serious and widespread problem in the United States and
  significantly strain on the national air travel system, costing society many billions of dollars each year \cite{ball2010total}.
-According to FAA statistics,\footnote{National Aviation Statistic \url{http://www.faa.gov/}}
-  weather causes approximately 70\% of the delays in the US National Airspace System (NAS).
 The upsetting impact of weather conditions on aviation is well known, however quantifying
   the causal impact of different weather types on flight delays at different airports is essential for evaluating
   approaches to reduce these delays.
 Even though predictive analysis, in this context, might help make certain policies, this problem is causal.
-We conduct this causal analysis as a running example through this paper.
+We conduct this causal analysis as a running example through this demonstration.
 To this end, we acquired flight departure details for all commercial flights within the US from 2000 to 2015
-  (105M entries) and integrated it with the relevant historical weather data (35M entries) (see Section \ref{sec:setup}).
+  (105M entries) and integrated it with the relevant historical weather data (35M entries).
 These are relatively large data sets for causal inference that can not be handseled by the existing tools.
 \end{example}
 \ignore{
@@ -225,19 +223,21 @@ In causal analysis, the difficulty arises from the fact that here the objective 
 \end{figure*}
 
 
-It is known that causal inference is possible under careful random \emph{randomized} or \emph{controlled} experiment, in which a treatment (the potential cause) is assigned randomly to subjects. However, most of the big data available today are observational meaning that unlike collected opportunistically. The major problem in causal inference from observational data is the existence of the so-called {\em confounding variables} between a treatment and a outcome which makes the direct comparison between the group that received treatment and the grout that subject to control infeasible. The following example explains this issue.
+It is known that causal inference is possible under careful random \emph{randomized} or \emph{controlled} experiment, in which a treatment (the potential cause) is assigned randomly to subjects. However, most of the big data available today are observational, meaning that unlike collected opportunistically. The major problem in causal inference from observational data is the existence of the so-called {\em confounding variables} which makes the direct comparison between the group that received treatment and the group that are subject to control impossible. The following example explains this issue.
 
 
 
-\begin{example} \em \delay (cont.) \ \em   Suppose we want to explore the effect of the low-pressure(treatment) on flight departure delays (outcome).  The direct comparison of 
+\begin{example} \em \delay (cont.) \ \em   Suppose we want to explore the effect of the low-pressure (treatment) on flight departure delays (outcome).  The direct comparison of
 flight delay between the those flight that happen during low-pressure (treated groups) and the opposite group is misleading.  It is known that high pressure is generally associated with clear weather,    while low-pressure is associated with unsettled weather, e.g.,
     cloudy, rainy, or snowy weather\ignore{\cite{weba2,barometricpressureheadache:article}}. Thus, as shown in Figure \ref{fig:cv}, factors such as thunder, snow, visibility confound pressure and delay. Therefore, conducting any sort of predictive analysis identifies
-    low-pressure as a predictor for flight delays.
+    low-pressure as a predictor for flight delays. 
   However, low-pressure does not have any causal impact on departure delay
-    (low-pressure only requires longer takeoff distance) \cite{FAA08}. That is, low-pressure is most highly a correlated attribute with flight delays. By performing a careful casual analysis
+    (low-pressure only requires longer takeoff distance) \cite{FAA08}. In this demonstration, by conducting a careful causal analysis using \GSQL\, we show that low-pressure is only a correlated attribute with flight delays and has no significant causal impact on flight delay.
+    
+    \ignore{By performing a careful casual analysis
     \GSQL\ found that other attributes such as thunder, low-visibility, high-wind-speed and
     snow have the largest causal effect on flight delays (see Sec. \ref{sec:endtoend});
-  this is confirmed by the results reported by the FAA.
+  this is confirmed by the results reported by the FAA.}
 \end{example}
 
 
@@ -270,21 +270,23 @@ experimentally, using real data from the U.S. DOT and Weather
 Underground \cite{flightdata,Weatherdata}
 }
 
-\vspace{-2mm}
-Roughly speaking, in order to draw valid causal conclusion one need to control for the
-confounding influence of that affect both treatment and outcome. A papular method for 
-performing this task is statistic and social science is that of {\em matching} \cite{IacKinPor09}.
-The key goal of matching is to prune observations from the data so that
-the remaining data have better balance between the treated and control groups meaning that the empirical
-distributions of the confounding variables (a.k.a covariates) in the groups are more similar. A typical workfellow of causal inference via matching is shown in Figure \ref{fig:flowchart}. As depicted causal inference from observational data includes an iterative process of matching and balance checking until a satisfactory matched subset is obtained (See \ref{IacKinPor09}) for more detailed discussion). Thus developing efficient methods for performing various matching methods
-is crucial to scale causal inference to large observational data.
 
-The demonstration will enable the attendees to experiment with various matching method for causal inference and experience their benefits and limitations.
+Roughly speaking, in order to draw a valid causal conclusion one need to control for the
+confounding influences that affect both treatment and outcome. Papular methods for 
+performing this task in statistic and social science are {\em subclassification and matching} \cite{Rubin1983b,IacKinPor09,rosenbaum1984reducing}.
+The key goal of matching is to prune  data so that
+the remaining data have better balance between the treated and control groups meaning that the empirical distributions of the confounding variables (a.k.a, covariates) in the groups are more similar.  Since there is no generic metric to compare
+two distributions, measures such as mean, skewness, quantile and multivariate histogram are used for this purpose. A rule of thumb is to evaluate different distance metrics and
+matching methods until a well-balance matched subset with
+a reasonable size obtained \cite{IacKinPor09}. Figure \ref{fig:flowchart} summarized the tasks involved with causal inference from observational data.
+
+
+This demonstration will enable the attendees to experiment with various methods for causal inference and experience their benefits and limitations.
 The attendees will select a causal question by specifying a treatment,
   an outcome and particular method to perform causal inference.
-The attendee will also able to adjust the tunable parameters for these algorithms.
-The demonstration will run a remotely served web application that interfaces with our demo flight and weather database.
+The attendee will also able to adjust the tunable parameters for these algorithms. The demonstration will run a remotely served web application that interfaces with our demo flight and weather database.
 
 The demonstration will make two contributions. It will
+  (1) explain why machine leaning methods fail to distinguish causation and correlation 
   (1) explain and demonstrate the pipeline of drawing valid causal conclusions from data and
   (2) enable the attendees to experience different methods for causal inference and investigate their proc and cons.
