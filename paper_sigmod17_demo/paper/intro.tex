@@ -24,7 +24,7 @@
 % lg1 - original commentout below at end; take care as this can lead to confusion
 
 Much of the success of Big data today comes from
-  \emph{predictive or descriptive analytics}: statistical models or data mining algorithms applied to data
+  \emph{descriptive analytics}: statistical models or data mining algorithms applied to data
   to predict new or future observations, e.g., we observe how users click on ads, then build a model and predict how future
   users will click.
 Predictive analysis/modeling is central to many scientific fields, such as bioinformatics and natural language processing,
@@ -41,8 +41,9 @@ In many cases, researchers who want to discover causality from data analysis set
 Causal inference has been studied extensively in statistics and
 computer science \cite{Fisher1935design,Rubin2005,holland1986statistics,PearlBook2000\ignore{,Spirtes:book01}}.
 Many tools perform causal inference
- using statistical software such as R project. However, in this demonstration we show that, these toolkits do not scale to large datasets.  Furthermore, in many of the most interesting Big Data settings, the data
-is highly relational (e.g, social networks, biological networks, sensor networks and more) and likely to pour into SQL systems. There is a rich ecosystem of tools and organizational requirements that encourage this. Transferring
+ using statistical software such as R project. However, in this demonstration we show that these toolkits do not scale to large datasets.  
+ Additionally, in many of the most interesting Big Data settings, the data
+is highly relational (e.g, social networks, biological networks, sensor networks and more). Thus, the data is likely to pour into SQL systems. A rich ecosystem of tools and organizational requirements further encourage SQL database storage. Transferring
 data from DBMS to statistical softwares or connecting these
 softwares to DBMS can be error prone, difficult, time consuming and inefficient. For these
 cases, it would be helpful to push statistical methods for causal inference into the DBMS.
@@ -55,8 +56,8 @@ In this demonstration we propose \GSQL,\footnote{ The prefix Zali refers to
   was heavily influenced by al-Ghzali's conception of causality
   \cite{shalizi2013advanced}.}
   a SQL-based framework for drawing causal inference that circumvents the scalability issue with the existing tools. ZaliQL supports state-of-the-art methods for causal
-inference and runs at scale within a database engine.   \GSQL\ is designed and implemented as an extender for PostgreSQL object-relational database
-system and includes a series of optimization techniques allowing our system to
+inference and runs at scale within a database engine.   \GSQL\ is designed and implemented as an extension for PostgreSQL object-relational database
+systems. \GSQL\ includes a series of optimization techniques that allow it to
 scale to billions of records. In this demonstration we use \GSQL\ to perform causal inference in the following scenario:
 
 \ignore{
@@ -128,7 +129,6 @@ scale to billions of records. In this demonstration we use \GSQL\ to perform cau
 \vspace{-0.3cm}
 \end{figure}
 
-
 \begin{example} \em \delay \ \em
 Flight delays pose a serious and widespread problem in the United States and
  significantly strain on the national air travel system, costing society many billions of dollars each year \cite{ball2010total}.
@@ -139,7 +139,7 @@ Even though predictive analysis, in this context, might help make certain polici
 We conduct this causal analysis as a running example through this demonstration.
 To this end, we acquired flight departure details for all commercial flights within the US from 2000 to 2015
   (105M entries) and integrated it with the relevant historical weather data (35M entries).
-These are relatively large data sets for causal inference that can not be handseled by the existing tools.
+These are relatively large data sets for causal inference that can not be handled by existing tools.
 \end{example}
 \ignore{
 Table \ref{tab:attlist} presents the list of attributes from each data set that is relevant to our analysis.
@@ -183,14 +183,15 @@ at what goes along with that. In fact, by applying this
 naive predictive analysis, we obtain that
 $E(Y | X = 1)-E(Y | X = 0)\backsimeq 4$, which suggests that
 barometric pressure affected the flight departure delay at
-JFK in 2015 and might be a good predictor for that.}
+JFK in 2015 and might be a good predictor for that.
+}
 
-When we make predictive analysis, whether we predict $\E[Y | X = x]$ or $\textrm{Pr}(Y | X = x)$ or
+When we make predictive analyses, whether we predict $\E[Y | X = x]$ or $\textrm{Pr}(Y | X = x)$ or
   something more complicated, we want to know the conditional distribution of $Y$ given $X$.
 On the other hand, when we make a causal analysis, we want to understand the distribution of $Y$, if the
   usual mechanisms controlling $X$ were intervened and set to $x$.
-In other words, in causal analysis we are interested in {\em  interventional} conditional distribution,
-  e.g., the distribution obtained by (hypothetically) enforcing $X = x$ uniformly over the population.
+In other words, in causal analysis we are interested in an {\em  interventional} conditional distribution,
+  i.e., the distribution obtained by (hypothetically) enforcing $X = x$ uniformly over the population.
 In causal analysis, the difficulty arises from the fact that here the objective is to estimate (unobserved)
   {\em counterfactuals} from the (observed) {\em factual} premises.
 
@@ -217,16 +218,14 @@ In causal analysis, the difficulty arises from the fact that here the objective 
 \end{figure*}
 
 
-It is known that causal inference is possible under careful random \emph{randomized} or \emph{controlled} experiment, in which a treatment (the potential cause) is assigned randomly to subjects. However, most of the big data available today are observational, meaning that unlike collected opportunistically. The major problem in causal inference from observational data is the existence of the so-called {\em confounding variables} which makes the direct comparison between the group that received treatment and the group that are subject to control impossible. The following example explains this issue.
-
-
+It is known that causal inference is possible under careful \emph{randomized} and \emph{controlled} experiments, in which a treatment (the potential cause) is assigned randomly to subjects. However, most of the big data available today are observational, meaning they are collected opportunistically. The major problem in causal inference from observational data is the existence of the so-called {\em confounding variables} which makes the direct comparison between the group that received treatment and the group that are subject to control impossible. The following example explains this issue.
 
 \begin{example} \em \delay (cont.) \ \em   Suppose we want to explore the effect of the low-pressure (treatment) on flight departure delays (outcome).  The direct comparison of
-flight delay between the those flight that happen during low-pressure (treated groups) and the opposite group is misleading.  It is known that high pressure is generally associated with clear weather,    while low-pressure is associated with unsettled weather, e.g.,
+delay between flights that happen during low-pressure (treated groups) and opposite (control group) is misleading.  It is known that high pressure is generally associated with clear weather,    while low-pressure is associated with unsettled weather, e.g.,
     cloudy, rainy, or snowy weather\ignore{\cite{weba2,barometricpressureheadache:article}}. Thus, as shown in Figure \ref{fig:cv}, factors such as thunder, snow, visibility confound pressure and delay. Therefore, conducting any sort of predictive analysis identifies
     low-pressure as a predictor for flight delays.
   However, low-pressure does not have any causal impact on departure delay
-    (low-pressure only requires longer takeoff distance) \cite{FAA08}. In this demonstration, by conducting a careful causal analysis using \GSQL\, we show that low-pressure is only a correlated attribute with flight delays and has no significant causal impact on flight delay.
+    (low-pressure only requires longer takeoff distance) \cite{FAA08}. In this demonstration, by conducting a careful causal analysis using \GSQL, we show that low-pressure is only a correlated attribute with flight delays and has no significant causal impact on flight delay.
 
     \ignore{By performing a careful casual analysis
     \GSQL\ found that other attributes such as thunder, low-visibility, high-wind-speed and
@@ -265,10 +264,10 @@ Underground \cite{flightdata,Weatherdata}
 }
 
 
-Roughly speaking, in order to draw a valid causal conclusion one need to control for the
-confounding influences that affect both treatment and outcome. Papular methods for
-performing this task in statistic and social science are {\em subclassification and matching} \cite{Rubin1983b,IacKinPor09,rosenbaum1984reducing}.
-The key goal of matching is to prune  data so that
+Roughly speaking, in order to draw a valid causal conclusion one needs to control for the
+confounding influences that affect both the treatment and outcome. Popular methods for
+performing this task in statistics and social science are {\em subclassification and matching} \cite{Rubin1983b,IacKinPor09,rosenbaum1984reducing}.
+The key goal of matching is to prune data so that
 the remaining data have better balance between the treated and control groups meaning that the empirical distributions of the confounding variables (a.k.a, covariates) in the groups are more similar.  Since there is no generic metric to compare
 two distributions a rule of thumb is to evaluate different matching methods and balance measures  until a well-balance matched subset with
 a reasonable size obtained \cite{IacKinPor09} (See Figure \ref{fig:flowchart}).
@@ -276,10 +275,10 @@ a reasonable size obtained \cite{IacKinPor09} (See Figure \ref{fig:flowchart}).
 
 This demonstration will enable the attendees to experiment with various methods for causal inference and experience their benefits and limitations.
 The attendees will select a causal question by specifying a treatment,
-  an outcome and particular method to perform causal inference.
-The attendee will also able to adjust the tunable parameters for these algorithms. The demonstration will run a remotely served web application that interfaces with our demo flight and weather database.
+  an outcome and particular methods to perform causal inference.
+The attendee will also be able to adjust the tunable parameters for these algorithms. The demonstration will show our web application interfacing with our demo flight and weather database.
 
 The demonstration will make three contributions. It will
-  (1) explain why machine leaning methods fail to distinguish causation and correlation
-  (1) explain and demonstrate the pipeline of drawing valid causal conclusions from data and
-  (2) enable the attendees to experience different methods for causal inference and investigate their proc and cons.
+  (1) explain why machine leaning methods fail to distinguish causation and correlation,
+  (2) explain and demonstrate the pipeline of drawing valid causal conclusions from data, and
+  (3) enable the attendees to experience different methods for causal inference and investigate their pros and cons.

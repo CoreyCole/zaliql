@@ -13,36 +13,38 @@ The demonstration starts with weather and flight data.
 results (i.e.\, the different steps of the pipeline).
 \item Show what happens for different configurations of the Viska system:
 e.g.\, different parameters to graph-generation algorithms, different bucketing
-strategies, etc.
+strategies, \ldots
 \end{enumerate}
 }
 
 \begin{enumerate}
   \item {\it Form causal hypotheses:} the attendee forms a set of causal hypotheses, e.g.,
-   e.g. weather low-visibility causes fight delays at John F. Kennedy International Airport(JFK), by
+   weather low-visibility causes fight delays at John F. Kennedy International Airport(JFK), by
     \begin{enumerate}
-      \item specifying a set of binary treatments, e.g., low-visibility, Snow, ... (potential causes)
-      \item specifying an outcome of interest (potential effect) e.g., departure delay, cancelation, ..
-      \item specifying a subset of data that relevant to the analysis with e.g., flights at JFK airport
+      \item specifying a set of binary treatments, e.g., low-visibility, Snow, \ldots (potential causes)
+      \item specifying an outcome of interest (potential effect) e.g., departure delay, cancelation, \ldots
+      \item specifying a subset of data that is relevant to the analysis with e.g., flights at JFK airport
     \end{enumerate}
 
-  \item {\it Setup inference parameters:} The user select and tune the matching algorithms as follows:
+  \item {\it Setup inference parameters:} The user selects and tune the matching algorithms as follows:
      \begin{enumerate}
-      \item For each treatment the user the user specifics a set of variables that judged to confound it with the associated outcome.
-          \item The user specifies a matching methods supported by \GSQL\ and adjust its tuning parameters
+      \item For each treatment, the user specifics a set of variables deemed to confound with the associated outcome
+      \item The user specifies a matching methods supported by \GSQL\ and adjust its tuning parameters
 \end{enumerate}
 
-  \item {\it View matching assessment:} (cf, Example \ref{sfig:testbb})
+  \item {\it View matching assessment:}
     \begin{enumerate}
-      \item The user asses how the matching methods was successful by checking the numerical summaries and plots provided by \GSQL \ignore{  balance of covariates after matching, including numerical summaries such as the mean Diff. (difference in means), and summaries based on quantile quantile plots and multivariate histograms that compare the empirical distributions of each covariate} as shown in Figure \ref{fig:inteface}(c).
+      \item The user asses how the matching methods was successful by checking the numerical summaries and plots provided by \GSQL
+    \ignore{  balance of covariates after matching, including numerical summaries such as the mean Diff. (difference in means), and summaries based on quantile quantile plots and multivariate histograms that compare the empirical distributions of each covariate
+    } 
       \item
-      if the matched data associated to  particular treatment is still imbalance, the user can re-run the procedure, for the treatment,
-        using a different matching method or by tuning the relevant parameters (i.e. Thunder in \ref{sfig:testbb})
+      if the matched data associated to  particular treatment is still imbalanced, the user can re-run the procedure, for that treatment,
+        using a different matching method or by tuning the relevant parameters
     \end{enumerate}
   \item {\it Hypothesis testing:}
     \begin{enumerate}
       \item The user can select and perform a preferred statistical methods for hypothesis testing, e.g., Chi-square, test on the matched data.
-    \item {\it Analysis of performance: We compare the performance of \GSQL\ with other statistical software such as R.}
+    \item {\it Analysis of performance: We compare the performance of \GSQL\ with other statistical softwares such as R.}
    
     \end{enumerate}
 \end{enumerate}
