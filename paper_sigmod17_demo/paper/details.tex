@@ -1,7 +1,218 @@
 \section{Demonstration Proposal}
 \label{sec:dd}
+ In this demonstration, we will use \GSQL\ to quantify the causal effect of 
+ different weather conditions on flight departure delay. We conduct the analysis on the following datasets. a)  The {\em flight dataset} collected by the US
+Department of Transportation (U.S. DOT) \ignore{\cite{flightdata}}. It contains
+records of more than 90\% of US domestic flights of major airlines
+from 1988 to the present. We restrict our analysis to about 105M data entry
+collected between 2000 and 2015. b) The {\em weather dataset} was gathered using the weather underground API \ignore{\cite{Weatherdata}}.  Table \ref{tab:attlist} lists attributes from these datasets  will be used in this demonstration.
+ 
+ 
+ \begin{table*}[!htb] \scriptsize
+    \begin{subtable}{.5\linewidth}
+      \centering
 
-The demonstration starts with weather and flight data.
+       \begin{tabular}[t]{|l|l|}
+  \hline
+  % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+  \bf{Attribute}   & \bf{Description}  \\  \hline
+  FlightDate & Flight date   \\ \hline
+  UniqueCarrier	& Unique carrier code   \\ \hline
+  OriginAirportID & 	Origin airport ID  \\ \hline
+  CRSDepTime & Scheduled departure time  \\ \hline
+  DepTime & Actual departure time \\ \hline
+    & difference in minutes between   \\
+  DepDelayMinutes & scheduled and actual departure \\
+   & time. Early departures set to 0  \\ \hline
+  LateAircraftDelay & Late aircraft delay, in minutes  \\ \hline
+  SecurityDelay & Ssecurity delay, in minutes \\ \hline
+  CarrierDelay & Carrier delay, in minutes  \\ \hline
+  Cancelled & Binary indicator  \\
+  \hline
+\end{tabular}
+     \caption{Flight dataset}
+    \end{subtable}%
+    \begin{subtable}{.5\linewidth}
+      \centering
+
+
+       \begin{tabular}[t]{|l|l|}
+  \hline
+  % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+  \bf{Attribute}   & \bf{Description}  \\  \hline
+  Code  & Airport ID    \\ \hline
+  Date	& Date of a repost   \\ \hline
+  Time        & Time of a report  \\ \hline
+  Visim        & Visibility in km  \\ \hline
+  Tempm & Temperature in C$^{\circ}$ \\ \hline
+  Wspdm         & Wind speed kph \\ \hline
+  \ignore{Precipm         & Humidity \% \\ \hline}
+  Pressurem         & Pressure in mBar  \\ \hline
+  Precipm         & Precipitation in mm  \\ \hline
+  \ignore{Rain & Binary indictor    \\ \hline
+  Snow & Binary indictor \\ \hline}
+  Tornado & Binary indictor \\ \hline
+  Thunder & Binary indictor \\ \hline
+  Hum & Humidity \% \\ \hline
+  Dewpoint & De point in  C$^{\circ}$ \\ \hline
+\end{tabular}
+        \caption{Weather dataset}
+    \end{subtable}
+ \vspace{-0.1cm}   \caption{\bf{List of attributes from the flight(a) and weather(b)  datasets that are relevant to our analysis.}}
+\label{tab:attlist}
+\end{table*}
+ 
+ \ignore{
+ The analysis will be conducted on 
+ {\em flight data (105M eateries)}-collected by the US Department of Transportation (U.S. DOT)- and  {\em weather dataset} (10M eateries)-gathered using the weather underground
+API. }
+ 
+ \ignore{ 
+ The {\em flight dataset} we use was collected by the US Department of Transportation (U.S. DOT) \cite{flightdata}. It contains
+records of more than 90\% of US domestic flights of major airlines
+from 1988 to the present. The {\em weather dataset} was gathered using the weather underground
+API \cite{Weatherdata}.  \ignore{Its attributes are also presented in Table
+\ref{tab:attlist}. In addition, we pre-computed two other attributes
+AiportTraffic and CarrierTraffic. The former is the total number of
+flights occur in the origin airport of a flight one hour prior to the
+flight departure time, the latter is the same quantity restricted to
+the flights from the same carrier.  We managed to acquire and clean
+35M weather observations between 2000 and 2015.} These datasets are
+integrated by a spatio-temporal join.}
+
+ 
+
+\ignore{
+\begin{table*}[!htb] \scriptsize
+    \begin{subtable}{.5\linewidth}
+      \centering
+
+       \begin{tabular}[t]{|l|l|}
+  \hline
+  % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+  \bf{Attribute}   & \bf{Description}  \\  \hline
+  FlightDate & Flight date   \\ \hline
+  UniqueCarrier	& Unique carrier code   \\ \hline
+  OriginAirportID & 	Origin airport ID  \\ \hline
+  CRSDepTime & Scheduled departure time  \\ \hline
+  DepTime & Actual departure time \\ \hline
+    & difference in minutes between   \\
+  DepDelayMinutes & scheduled and actual departure \\
+   & time. Early departures set to 0  \\ \hline
+  LateAircraftDelay & Late aircraft delay, in minutes  \\ \hline
+  SecurityDelay & Ssecurity delay, in minutes \\ \hline
+  CarrierDelay & Carrier delay, in minutes  \\ \hline
+  Cancelled & Binary indicator  \\
+  \hline
+\end{tabular}
+     \caption{Flight dataset}
+    \end{subtable}%
+    \begin{subtable}{.5\linewidth}
+      \centering
+
+
+       \begin{tabular}[t]{|l|l|}
+  \hline
+  % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+  \bf{Attribute}   & \bf{Description}  \\  \hline
+  Code  & Airport ID    \\ \hline
+  Date	& Date of a repost   \\ \hline
+  Time        & Time of a report  \\ \hline
+  Visim        & Visibility in km  \\ \hline
+  Tempm & Temperature in C$^{\circ}$ \\ \hline
+  Wspdm         & Wind speed kph \\ \hline
+  \ignore{Precipm         & Humidity \% \\ \hline}
+  Pressurem         & Pressure in mBar  \\ \hline
+  Precipm         & Precipitation in mm  \\ \hline
+  \ignore{Rain & Binary indictor    \\ \hline
+  Snow & Binary indictor \\ \hline}
+  Tornado & Binary indictor \\ \hline
+  Thunder & Binary indictor \\ \hline
+  Hum & Humidity \% \\ \hline
+  Dewpoint & De point in  C$^{\circ}$ \\ \hline
+\end{tabular}
+        \caption{Weather dataset}
+    \end{subtable}
+ \vspace{-0.1cm}   \caption{\bf{List of attributes from the flight(a) and weather(b)  datasets that are relevant to our analysis.}}
+\label{tab:attlist}
+\end{table*}
+}
+\begin{figure}
+\hspace*{.3cm}\includegraphics[scale=0.25]{figures/Scenario-Graph.png}
+\caption{A typical scenario for causal hypothesis testing}
+
+\label{fig:cv}
+\vspace{-0.3cm}
+\end{figure}
+\begin{figure}
+  \includegraphics[scale=0.3]{Figures/Matching-Flowchart.png}
+\caption{Matching observational data for Causal inference}
+\label{fig:flowchart}
+\vspace{-0.3cm}
+\end{figure}
+
+
+
+
+
+
+
+
+\ignore{
+\begin{example} \em \delay (cont.) \ \em   Suppose we want to explore the effect of the low-pressure (treatment) on flight departure delays (outcome).  The direct comparison of
+delay between flights that happen during low-pressure (treated groups) and opposite (control group) is misleading.  It is known that high pressure is generally associated with clear weather,    while low-pressure is associated with unsettled weather, e.g.,
+    cloudy, rainy, or snowy weather\ignore{\cite{weba2,barometricpressureheadache:article}}. Thus, as shown in Figure \ref{fig:cv}, factors such as thunder, snow, visibility confound pressure and delay. Therefore, conducting any sort of predictive analysis identifies
+    low-pressure as a predictor for flight delays.
+  However, low-pressure does not have any causal impact on departure delay
+    (low-pressure only requires longer takeoff distance) \cite{FAA08}. In this demonstration, by conducting a careful causal analysis using \GSQL, we show that low-pressure is only a correlated attribute with flight delays and has no significant causal impact on flight delay.
+
+    \ignore{By performing a careful casual analysis
+    \GSQL\ found that other attributes such as thunder, low-visibility, high-wind-speed and
+    snow have the largest causal effect on flight delays (see Sec. \ref{sec:endtoend});
+  this is confirmed by the results reported by the FAA.}
+\end{example}
+}
+
+% They defined a very simple model, where we
+% want to conclude \dan{Lise: what's your comment here?}  if one
+% variable, called ``treatment'' causes one particular output variable,
+% called ``effect'', and have developed a rich set of techniques for
+% that purpose.  The end goal of their analysis is to establish the
+% average causal-treatment effect.  More recently, in the AI literature
+% Pearl~\cite{pearl2010introduction,PearlBook2000} has extended this
+% simple model by introducing {\em causal networks}, and developing a
+% logical framework for reasoning about causality.  Their aim is to
+% enable complex inference in a network of causal associations.  While
+% the ultimate goal is the same, to check whether a particular input
+% causes a particular outcome, the methods deployed are different from
+% those in statistics.
+
+\vspace{-0.1cm}
+
+\ignore{
+This paper makes the following specific contributions: we describe a
+suite of techniques for expressing the existing advanced methods for
+causal inference from observational data in SQL that run at scale
+within a database engine (Section \ref{sec:BasicTechniques}). Note
+that we do not claim any contribution the existing methods; we
+introduce several optimization techniques that significantly speedup
+causal inference, both in the online and offline setting (Section
+\ref{sec:OptimizationTechniques}); we validate our system
+experimentally, using real data from the U.S. DOT and Weather
+Underground \cite{flightdata,Weatherdata}
+}
+
+\ignore{
+Roughly speaking, in order to draw a valid causal conclusion one needs to control for the
+confounding influences that affect both the treatment and outcome. Popular methods for
+performing this task in statistics and social science are {\em subclassification and matching} \cite{Rubin1983b,IacKinPor09,rosenbaum1984reducing}.
+The key goal of matching is to prune data so that
+the remaining data have better balance between the treated and control groups meaning that the empirical distributions of the confounding variables (a.k.a, covariates) in the groups are more similar.  Since there is no generic metric to compare
+two distributions a rule of thumb is to evaluate different matching methods and balance measures  until a well-balance matched subset with
+a reasonable size obtained \cite{IacKinPor09} (See Figure \ref{fig:flowchart}).
+}
+
+
 
 \ignore{
 \begin{enumerate}
@@ -18,15 +229,29 @@ strategies, \ldots
 }
 
 \begin{enumerate}
-  \item {\it Form causal hypotheses:} the attendee forms a set of causal hypotheses, e.g.,
-   weather low-visibility causes fight delays at John F. Kennedy International Airport(JFK), by
+
+  \item {\it Form causal hypotheses:} demonstration starts by creating a set of causal hypotheses by
     \begin{enumerate}
       \item specifying a set of binary treatments, e.g., low-visibility, Snow, \ldots (potential causes)
       \item specifying an outcome of interest (potential effect) e.g., departure delay, cancelation, \ldots
       \item specifying a subset of data that is relevant to the analysis with e.g., flights at JFK airport
-    \end{enumerate}
+      We define
+\end{enumerate}
 
-  \item {\it Setup inference parameters:} The user selects and tune the matching algorithms as follows:
+ As shown in Figure, we use \GSQL\ to define the following treatments:
+ LowVisibility (1 if Visim$<1$; 0 if Visim$>5$); \
+Snow (1 iff Precipm$>0.3$ and Tempm$<0$); \ WindSpeed (1 if
+Wspdm$>40$; 0 if Wspdm$<20$); \  Thunder \ Low-Pressure (1 if Pressurem$<009.14$; 0 if Pressurem$>1022.69$). We quantify the effect of each of these treatments the following airports: San Francisco (SFO) , John F. Kennedy (JFK), Newark Liberty (EWR), George Bush (IAH), and LaGuardia Airport (LGA).
+
+ \item {\it Computing Average Treatment Effect(ATE): For each treatments say Low-Pressure, we show {\em average treatment effect (ATE)}:  ATE=E[delay|Low-Pressure=1] - E[Y(0)|Low-Pressure=0]} by computing the difference between the average of of flight delay where Low-Pressure is 1 and 0. We show that these naive ATEs could be highly misleading. For instance we show that ATE for Low-Pressure is positive which suggests Low-Pressure has a strong effect on delay. However,
+  low-pressure does not have any causal impact on departure delay
+     (low-pressure only requires longer takeoff distance)
+     \cite{FAA08}. 
+
+  \item {\it Confounding variables:} We demonstrate the issues with the naive computation of 
+  ATE or more sophisticate predictive models. For instance, we show that Low-Pressure is only correlated with delay and the discovered positive effect is the result of confounding influence of
+
+  \item {\it Adjusting for confounding variables:} The user selects and tune the matching algorithms as follows:
      \begin{enumerate}
       \item For each treatment, the user specifics a set of variables deemed to confound with the associated outcome
       \item The user specifies a matching methods supported by \GSQL\ and adjust its tuning parameters
@@ -36,7 +261,7 @@ strategies, \ldots
     \begin{enumerate}
       \item The user asses how the matching methods was successful by checking the numerical summaries and plots provided by \GSQL
     \ignore{  balance of covariates after matching, including numerical summaries such as the mean Diff. (difference in means), and summaries based on quantile quantile plots and multivariate histograms that compare the empirical distributions of each covariate
-    } 
+    }
       \item
       if the matched data associated to  particular treatment is still imbalanced, the user can re-run the procedure, for that treatment,
         using a different matching method or by tuning the relevant parameters
@@ -45,26 +270,9 @@ strategies, \ldots
     \begin{enumerate}
       \item The user can select and perform a preferred statistical methods for hypothesis testing, e.g., Chi-square, test on the matched data.
     \item {\it Analysis of performance: We compare the performance of \GSQL\ with other statistical softwares such as R.}
-   
+
     \end{enumerate}
 \end{enumerate}
 
 
 
-\ignore{
-\paragraph{Performance Data.}
-
-Viska generates and analyzes performance data obtained by benchmarking
-systems. This performance data consists of a set of records
-each representing a single execution of an experiment. This record has
-a set of ``input'' variables that we vary between experiments, such as
-type of queries run, data set used, or configuration parameters. Viska
-records these along with a set of ``observed'' variables: properties
-of the execution (e.g., number of rows processed), system-level
-metrics (e.g., CPU and disk utilization), and outcome variables (e.g.,
-query execution time).
-
-The Viska toolkit includes tools to generate and analyze this
-performance data. We do not describe the tools for workload
-generation, system deployment, and metric gathering here.
-}
