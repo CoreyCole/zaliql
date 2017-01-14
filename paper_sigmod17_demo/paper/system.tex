@@ -1,15 +1,26 @@
 
 \begin{figure}
- \includegraphics[scale=0.2]{Figures/dummy.png}
+ \includegraphics[scale=0.25]{Figures/System-Overview.png}
  \caption{\GSQLB\'s Architecture}
   \label{fig:arch}
   \vspace{-3mm}
 \end{figure}
 
+\begin{figure}
+\hspace*{.3cm}\includegraphics[scale=0.2]{figures/Scenario-Graph.png}
+\caption{Confounding Influence}
+
+\label{fig:cv}
+\vspace{-0.3cm}
+\end{figure} 
+
 \section{System's Architecture}
-The overall architecture of \GSQL\ is shown in Figure \ref{fig:arch}. The API will consist of stored procedures that are accessible after installing the \GSQL\ extension.
-These are written in PL/pgSQL and are optimized for Postgres DBMS.
-The functionality of the API is modeled after the MatchIt R library \cite{ho2005}.The web GUI (see Figure \ref{fig:inteface}) is configured with the user's databases URL after they have installed the \GSQL\ Postgres extension.
+
+The overall architecture of \GSQL\ is shown in Figure \ref{fig:arch}. 
+The API consists of a set stored procedures support a wide range of method for performing causal inference.  There are written in PL/pgSQL and are optimized for PostgreSQL. \GSQL\
+The API is packed as a an extension of PostgreSQL.
+The functionality of the API is modeled after the MatchIt and CEM R libraries \cite{ho2005,iacus2009cem}.
+The web GUI (see Figure \ref{fig:inteface}) is configured with the user's databases URL after they have installed the \GSQL\ Postgres extension.
 It can be hosted remotely on a server or locally on your machine. \ignore{
 The interface consists of three tabs : Setup, Matching Summary, and Analysis.
 The {\em Setup} tab allows the user to specify their Treatments, Covariates for each treatment, and Outcomes.
