@@ -8,6 +8,29 @@ from 1988 to the present. We restrict our analysis to about 105M data entry
 collected between 2000 and 2015. b) The {\em weather dataset} was gathered using the weather underground API \ignore{\cite{Weatherdata}}.  Table \ref{tab:attlist} lists attributes from these datasets  will be used in this demonstration.
  
  
+ 
+\begin{figure*}
+\begin{subfigure}{0.50\linewidth}
+\centering
+\includegraphics[scale=0.13]{Figures/Setup.png}
+\label{sfig:testc}
+\end{subfigure}\hfill
+\begin{subfigure}{0.47\linewidth}
+\centering
+\includegraphics[scale=0.13]{Figures/Matching-Summary.png}
+\label{sfig:testd}
+\end{subfigure}\hfill
+\caption{Demonstration Screenshot described in Section \ref{sec:dd}}
+\label{fig:eteresult}
+\end{figure*}
+
+
+
+
+ 
+ 
+ \ignore{
+ 
  \begin{table*}[!htb] \scriptsize
     \begin{subtable}{.5\linewidth}
       \centering
@@ -61,7 +84,7 @@ collected between 2000 and 2015. b) The {\em weather dataset} was gathered using
  \vspace{-0.1cm}   \caption{\bf{List of attributes from the flight(a) and weather(b)  datasets that are relevant to our analysis.}}
 \label{tab:attlist}
 \end{table*}
- 
+ }
  \ignore{
  The analysis will be conducted on 
  {\em flight data (105M eateries)}-collected by the US Department of Transportation (U.S. DOT)- and  {\em weather dataset} (10M eateries)-gathered using the weather underground
@@ -83,69 +106,22 @@ integrated by a spatio-temporal join.}
  
 
 \ignore{
-\begin{table*}[!htb] \scriptsize
-    \begin{subtable}{.5\linewidth}
-      \centering
 
-       \begin{tabular}[t]{|l|l|}
-  \hline
-  % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
-  \bf{Attribute}   & \bf{Description}  \\  \hline
-  FlightDate & Flight date   \\ \hline
-  UniqueCarrier	& Unique carrier code   \\ \hline
-  OriginAirportID & 	Origin airport ID  \\ \hline
-  CRSDepTime & Scheduled departure time  \\ \hline
-  DepTime & Actual departure time \\ \hline
-    & difference in minutes between   \\
-  DepDelayMinutes & scheduled and actual departure \\
-   & time. Early departures set to 0  \\ \hline
-  LateAircraftDelay & Late aircraft delay, in minutes  \\ \hline
-  SecurityDelay & Ssecurity delay, in minutes \\ \hline
-  CarrierDelay & Carrier delay, in minutes  \\ \hline
-  Cancelled & Binary indicator  \\
-  \hline
-\end{tabular}
-     \caption{Flight dataset}
-    \end{subtable}%
-    \begin{subtable}{.5\linewidth}
-      \centering
-
-
-       \begin{tabular}[t]{|l|l|}
-  \hline
-  % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
-  \bf{Attribute}   & \bf{Description}  \\  \hline
-  Code  & Airport ID    \\ \hline
-  Date	& Date of a repost   \\ \hline
-  Time        & Time of a report  \\ \hline
-  Visim        & Visibility in km  \\ \hline
-  Tempm & Temperature in C$^{\circ}$ \\ \hline
-  Wspdm         & Wind speed kph \\ \hline
-  \ignore{Precipm         & Humidity \% \\ \hline}
-  Pressurem         & Pressure in mBar  \\ \hline
-  Precipm         & Precipitation in mm  \\ \hline
-  \ignore{Rain & Binary indictor    \\ \hline
-  Snow & Binary indictor \\ \hline}
-  Tornado & Binary indictor \\ \hline
-  Thunder & Binary indictor \\ \hline
-  Hum & Humidity \% \\ \hline
-  Dewpoint & De point in  C$^{\circ}$ \\ \hline
-\end{tabular}
         \caption{Weather dataset}
     \end{subtable}
  \vspace{-0.1cm}   \caption{\bf{List of attributes from the flight(a) and weather(b)  datasets that are relevant to our analysis.}}
 \label{tab:attlist}
-\end{table*}
+\end{table}
 }
 \begin{figure}
-\hspace*{.3cm}\includegraphics[scale=0.25]{figures/Scenario-Graph.png}
-\caption{A typical scenario for causal hypothesis testing}
+\hspace*{.3cm}\includegraphics[scale=0.2]{figures/Scenario-Graph.png}
+\caption{Confounding Influence}
 
 \label{fig:cv}
 \vspace{-0.3cm}
 \end{figure}
 \begin{figure}
-  \includegraphics[scale=0.3]{Figures/Matching-Flowchart.png}
+  \includegraphics[scale=0.2]{Figures/Matching-Flowchart.png}
 \caption{Matching observational data for Causal inference}
 \label{fig:flowchart}
 \vspace{-0.3cm}
@@ -230,7 +206,7 @@ strategies, \ldots
 
 \begin{enumerate}
 
-  \item {\it Form causal hypotheses:} demonstration starts by creating a set of causal hypotheses by
+  \item {\it Form causal hypotheses:} demonstration starts by creating a set of causal question regarding the effect of different weather features on flight delay by
     \begin{enumerate}
       \item specifying a set of binary treatments, e.g., low-visibility, Snow, \ldots (potential causes)
       \item specifying an outcome of interest (potential effect) e.g., departure delay, cancelation, \ldots
@@ -243,15 +219,29 @@ strategies, \ldots
 Snow (1 iff Precipm$>0.3$ and Tempm$<0$); \ WindSpeed (1 if
 Wspdm$>40$; 0 if Wspdm$<20$); \  Thunder \ Low-Pressure (1 if Pressurem$<009.14$; 0 if Pressurem$>1022.69$). We quantify the effect of each of these treatments the following airports: San Francisco (SFO) , John F. Kennedy (JFK), Newark Liberty (EWR), George Bush (IAH), and LaGuardia Airport (LGA).
 
- \item {\it Computing Average Treatment Effect(ATE): For each treatments say Low-Pressure, we show {\em average treatment effect (ATE)}:  ATE=E[delay|Low-Pressure=1] - E[Y(0)|Low-Pressure=0]} by computing the difference between the average of of flight delay where Low-Pressure is 1 and 0. We show that these naive ATEs could be highly misleading. For instance we show that ATE for Low-Pressure is positive which suggests Low-Pressure has a strong effect on delay. However,
+ \item {\it Computing Average Treatment Effect(ATE): For each treatments say Low-Pressure, we show {\em average treatment effect (ATE)}:  ATE=E[delay|Low-Pressure=1] - E[Y(0)|Low-Pressure=0]} by computing the difference between the average of of flight delay where Low-Pressure is 1 and 0. We show ATEs could be highly misleading. For instance we show that ATE for Low-Pressure is positive which suggests that Low-Pressure has an effect on flight delay. However, it is known that
   low-pressure does not have any causal impact on departure delay
      (low-pressure only requires longer takeoff distance)
      \cite{FAA08}. 
 
-  \item {\it Confounding variables:} We demonstrate the issues with the naive computation of 
-  ATE or more sophisticate predictive models. For instance, we show that Low-Pressure is only correlated with delay and the discovered positive effect is the result of confounding influence of
+  \item {\it Confounding variables:} We demonstrate the issues with this naive computation of 
+  ATE as explained in the previews item. In particular, we show that the observed  effect of Low-Pressure on flight delay  is  the result of presence of the so-called {\em  confounding influence} of
+  variables such as visibility, snow and Thunder as shown in Figure \ref{fig:cv}.  Intuitively, confounding variables are correlated with both treatment and outcome. For instance, 
+  Low-pressure is generally associated with unsettled weather conditions that are actually affect flight delay. For instance the average visibility where Low-pressure is 1 is much less than 
+  the average visibility where Low-pressure is 0. In fact,the observed distribution of confounding variables (a.k.a covarites) are different between those flights for
+   Low-pressure and the opposite group w
+  
 
-  \item {\it Adjusting for confounding variables:} The user selects and tune the matching algorithms as follows:
+  \item {\it Adjusting for confounding variables:} 
+  
+in order to draw a valid causal conclusion one needs to control for the
+confounding influences that affect both the treatment and outcome. Popular methods for
+performing this task in statistics and social science are {\em subclassification and matching} \cite{Rubin1983b,IacKinPor09,rosenbaum1984reducing}.
+The key goal of matching is to prune data so that
+the remaining data have better balance between the treated and control groups meaning that the empirical distributions of the confounding variables (a.k.a, covariates) in the groups are more similar.  Since there is no generic metric to compare
+two distributions a rule of thumb is to evaluate different matching methods and balance measures  until a well-balance matched subset with
+a reasonable size obtained \cite{IacKinPor09} (See Figure \ref{fig:flowchart}).  
+  The user selects and tune the matching algorithms as follows:
      \begin{enumerate}
       \item For each treatment, the user specifics a set of variables deemed to confound with the associated outcome
       \item The user specifies a matching methods supported by \GSQL\ and adjust its tuning parameters
