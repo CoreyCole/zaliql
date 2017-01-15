@@ -1,6 +1,9 @@
 \section{Internals}
-\subsection{Problem Set up and Formulation}
 
+This section overviews the causal model and matching algorithms underling the
+in \GSQL. 
+
+\subsection{Problem Set up and Formulation}
 The basic causal model in statistics is called the
 \ignore{Neyman-Rubin Causal Model (NRCM) (also referred to as}
 {\em potential outcome framework (POF)}.
@@ -136,9 +139,7 @@ well-balance matched subset with a reasonable size obtained.}}
 
 \subsection{Subclassification and matching algorithms}
 \label{sec:algo}
-This demonstration walks through the state-of-the-art matching and subclassification methods in statistics.
-We also present the basic SQL statement that captures these methods. In addition, we outline the techniques
-employed by \GSQL\ to perform them efficiently. In particular we demonstrate the following methods:
+The following algorithem  we demonstrate the following methods:
 
 {\bf Nearest Neighbor Matching}
 \label{sec:nnm}

@@ -240,30 +240,23 @@ the remaining data ({\em matched data}) have better balance between the treated 
       \item comparing the distribution for each covariate between the treated and control groyp after matching. In particular, usees numerical summaries such as the mean Diff. (difference in means), and summaries based on quantile quantile plots and multivariate histograms to compare the empirical distributions of each covariate between the treated and control group in the matched data.
 
       \item We perform different matching methods with difference turning parameter to show how these techniques trade of balance and size of matched subset as exemplified in Figure \ref{fig:eteresult}(b).
+       \end{enumerate}
       This goal of this step of the demonstration meant to illustrate the typical worlkflow of causal inference from observational data as depicted in picture \ref{fig:flowchart}.
 
-    \end{enumerate}
      \paragraph{\bf Answer causal question:} In this step of the demonstration we answer the causal question created at the very fist step of the demonstration.
 
        \begin{enumerate}
        \item For each treatment we compute ATE on an associated matched subset of data.
       \item We evaluate the statistical significance of the obtained result by performing an statistical test, e.g., Chi-square, test on the matched data.
-    \item We perform the above steps for each airport to find out the major weather related causes of delay.  We show that the results are those of
+    \item We perform the above steps for each airport to find out the major weather related causes of delay.  
+    \end{enumerate}
+
+Finally, we show that the results are those of
 FAA, which reported the following major weather-related
 causes of flight delay at the airports under the study:
 snowstorms,thunderstorm and wind at EWR; thunderstorm and fog at IAH;
 snowstorms and visibility at JFK; snowstorms at LGA; fog and low
 clouds at SFO;
-
-    \end{enumerate}
-
-    \ignore{
- \paragraph{\bf Evaluating the answers:}
-    \begin{enumerate}
-      \item The user can select and perform a preferred statistical methods for hypothesis testing, e.g., Chi-square, test on the matched data.
-    \item {\it Analysis of performance: We compare the performance of \GSQL\ with other statistical softwares such as R.}}
-
-    \end{enumerate}
 
 
 
