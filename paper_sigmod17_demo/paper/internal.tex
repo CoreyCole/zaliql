@@ -1,12 +1,11 @@
 \section{Internals}
 
-This section overviews the causal model and matching algorithms underling the
-in \GSQL. 
+This section overviews the underling theory behind \GSQL. 
 
 \subsection{Problem Set up and Formulation}
 The basic causal model in statistics is called the
 \ignore{Neyman-Rubin Causal Model (NRCM) (also referred to as}
-{\em potential outcome framework (POF)}.
+{\em potential outcome framework (POF)} \cite{Rubin2005,holland1986statistics}.
 In this model, we are given a table with $N$ rows called {\em units} indexed by $i=1 \ldots N$ (see
 Table~ \ref{fig:causal:inference}).  The binary attribute $T$ denotes {\em treatment assignment}.
 %sr: already in first para. ($T=1$ means the unit was treated; $T=0$ means the unit was subjected to control);
@@ -119,7 +118,7 @@ In practice, however, a direct application of this method is
 impossible, because the data is typically very sparse: for any value
 $X=x$ we either have no data values at all, or very few such values,
 which means that estimating $E[Y(T)|T=1\mbox{ or }0,X=x]$ as an
-average from the database leads to large sampling error. A solution adopted in statistics is {\em matching and subclassification}~\cite{Rubin1983b}.  The idea is to match each treated unit with one or multiple control
+average from the database leads to large sampling error. A solution adopted in statistics is {\em matching} and {\em  subclassification}~\cite{Rubin1983b}.  The idea is to match each treated unit with one or multiple control
 units with ``close'' values of the covariate attributes $X$, where
 closeness is defined using some distance function between the covariate values of two units.  The most
 commonly used distance functions are presented  in Table \ref{fig:metrics}. \ignore{The efficacy
@@ -136,10 +135,10 @@ well-balance matched subset with a reasonable size obtained.}}
 
 
 
-
-\subsection{Subclassification and matching algorithms}
+\vspace{-0.5cm}
+\subsection{Methods}
 \label{sec:algo}
-The following algorithem  we demonstrate the following methods:
+The following methods are supported by \GSQL.
 
 {\bf Nearest Neighbor Matching}
 \label{sec:nnm}
