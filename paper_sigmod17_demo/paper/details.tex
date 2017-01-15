@@ -160,7 +160,12 @@ strategies, \ldots
   \paragraph{\bf Causal Questions:} demonstration starts by creating a set of causal questions regarding the effect of different weather attributes on flight delay by
     \begin{enumerate}
       \item specifying DepDelay as our outcome of interest (potential effect) As shown in Figure \ref{fig:eteresult}(a).
-      \item specifying a set of binary treatments (potential causes) that might affect DepDelay. We select LowVisibility (1 if Visim$<1$; 0 if Visim$>5$); \ Snow (1 iff Precipm$>0.3$ and Tempm$<0$); \ WindSpeed (1 if Wspdm$>40$; 0 if Wspdm$<20$); \  Thunder \ LowPressure (1 if Pressurem$<009.14$; 0 if Pressurem$>1022.69$) as shown in Figure \ref{fig:eteresult}(b).
+      \item specifying a set of binary treatments (potential causes) that might affect DepDelay. We select LowVisibility (1 if Visim$<1$; 0 if Visim$>5$); \ Snow (1 iff Precipm$>0.3$ and Tempm$<0$); \ WindSpeed (1 if Wspdm$>40$; 0 if Wspdm$<20$); \  Thunder \ LowPressure (1 if Pressurem$<009.14$; 0 if Pressurem$>1022.69$).
+      \ignore{
+      As shown in Figure \ref{fig:eteresult}(b) Clicking on the {\it ADD TREATMENT}, {\it ADD COVARIATE}, and {\it ADD OUTCOME} buttons will trigger a dialog allowing
+  further customization on the discretization and matching methods.
+These dialogs will also allow the user to incorporate other columns (e.g. snow is defined as $iff Precipm> 0.3 and
+Tempm< 0$) and input SQL for custom discretization methods.}
       
       \item specifying a subset of data that is relevant to the analysis.  We select five US airports with high rate of weather-related delay namely,
  following airports: San Francisco (SFO) , John F. Kennedy (JFK), Newark Liberty (EWR), George Bush (IAH), and LaGuardia Airport (LGA). 
@@ -194,7 +199,7 @@ the remaining data ({\em matched data}) have better balance between the treated 
        \end{enumerate}
       This main objective of this step is to demonstrate the typical worlkflow of causal inference from observational data as depicted in picture \ref{fig:flowchart}.
 
-     \paragraph{\bf Answer causal question:} In this step of the demonstration we answer the causal question created at the very fist step of the demonstration.
+     \paragraph{\bf Answer to the causal questions:} In this step of the demonstration we answer the causal question created at the very fist step of the demonstration.
 
        \begin{enumerate}
        \item For each treatment we compute ATE on an associated matched subset of data.

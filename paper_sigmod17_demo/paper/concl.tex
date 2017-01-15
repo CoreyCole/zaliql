@@ -1,7 +1,6 @@
 
 \section{Conclusions}
-IN this demonstration we introduce \GSQL, which is aimed at
+In this demonstration we introduce \GSQL, which is aimed at
 performing causal inference
-on Big relational data in DBMS. The primary contribution of \GSQL\ is to represent the main tasks involved with causal inference in SQL, in order to integrate causal analysis with other data analytic operations supported by DBMS.
-In addition, \GSQL\ leverages existing techniques
-in data management to efficiently assess several causal hypotheses (see Section \ref{sec:algo}). \GSQL\ is developed and released as a PostgreSQL extension. In addition, we designed a visual interface to wrap around the framework.
+on Big relational data within DBMS at scale. \GSQL\ made a first step towards truly scalable causal inference by modeling it as a data management problem. It leverages existing techniques
+in data management to efficiently evaluate several causal hypotheses from Big relational data. \GSQL\ is written in PL/pgSQL and optimized for PostgreSQL. It also includes a visual interface to wrap around the framework.
