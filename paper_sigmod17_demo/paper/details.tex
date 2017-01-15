@@ -2,7 +2,7 @@
 \label{sec:dd}
  In this demonstration, we will use \GSQL\ to quantify the causal effect of
  different weather conditions on flight departure delay. 
-    \paragraph{\bf Data:} The analysis we be conducted on a spatio-temporal join of the following datasets:
+    \paragraph{\bf Data:} The analysis will be conducted on a spatio-temporal join of the following datasets:
  \begin{itemize}
    \item {\it Flight dataset (105M entries)}: collected by the US
 Department of Transportation (U.S. DOT).\footnote{\url{http://www.transtats.bts.gov/}} It contains
@@ -167,41 +167,41 @@ strategies, \ldots
 These dialogs will also allow the user to incorporate other columns (e.g. snow is defined as $iff Precipm> 0.3 and
 Tempm< 0$) and input SQL for custom discretization methods.}
       
-      \item specifying a subset of data that is relevant to the analysis.  We select five US airports  with hight rate of weather-related delay namely, San Francisco (SFO) , John F. Kennedy (JFK), Newark Liberty (EWR), George Bush (IAH), and LaGuardia Airport (LGA).
+      \item specifying a subset of data that is relevant to the analysis.  We select five US airports  with high rate of weather-related delay, namely, San Francisco (SFO) , John F. Kennedy (JFK), Newark Liberty (EWR), George Bush (IAH), and LaGuardia Airport (LGA).
 \end{enumerate}
 
 
  \paragraph{ \bf Computing ATE}: For each treatment, say LowPressure, \GSQL\ computes {\em average treatment effect (ATE)} as $$E[\text{Depdelay}|\text{LowPressure}=1] - E[\text{Depdelay}|\text{LowPressure}=0]$$
-  where, E[\text{Depdelay}|\text{LowPressure}=$x$], $x=(0,1)$ is computed by taking the emetical average of  Depdelay where LowPressure is  $x$. ATE is a  common measures to compare an 
+  where, E[\text{Depdelay}|\text{LowPressure}=$x$], $x=(0,1)$ is computed by taking the emetical average of  Depdelay where LowPressure is  $x$. It is a  common measure to compare an 
   outcome (DepDelay) in the {\em treated group},  those subjects (flights) that receive a treatment (LowPressure=1), with the {\em control group}, the opposites. 
 We show that for LowPressure, ATE is large, which  suggests  it affects DepDelay. However, it is known that
-  LowPressure does not have any causal impact on departure delay (it only requires longer takeoff distance) \cite{FAA08}. This observation raises the question that  where is this difference coming from?
+  LowPressure does not have any causal impact on departure delay (it only requires longer takeoff distance) \cite{FAA08}. This observation raises the question that  where does this difference coming from?
 
- \paragraph{\bf Confounding variables:} We address the question, by demonstrating that the comparison of DepDelay between the treated and control groups is misleading due to the existence of the so-called {\em  confounding influence} of other variables such as visibility, snow and Thunder.  In fact we show that, LowPressure is highly associated with unsettled weather conditions such as LowVisbility. For instance the average of LowVisbility in the treated group is much less than
-  the opposite group. Thus, its is unclear that the observed DepDelay difference between the groups is causes by LowPressure or LowVisbility. This scenario, as shown graphically in Figure \ref{fig:cv}, demonstrates that in the presence of {\em confounding variable} (a.k.a, {\em covariates}) the treated and control groups are very different and comparing them without accounting for the confounding variables could be misleading.
+ \paragraph{\bf Confounding variables:} We address this question, by demonstrating that the comparison of DepDelay between the treated and control groups is misleading due to the existence of the so-called {\em  confounding influence} of other variables such as visibility, snow and Thunder.  In fact we show that, LowPressure is highly associated with unsettled weather conditions such as LowVisbility. For instance the average of LowVisbility in the treated group is much less than
+  the opposite group. Thus, it is unclear that the observed DepDelay difference between the groups is causes by LowPressure or LowVisbility. This scenario, as shown graphically in Figure \ref{fig:cv}, demonstrates that in the presence of {\em confounding variable} (a.k.a, {\em covariates}) the treated and control groups are very different and comparing them without accounting for the confounding variables could be misleading.
 
 
  \paragraph{\bf Adjusting confounding variables:}
 In this step we use \GSQL\ to apply state-of-the art methods for controlling confounding influences (usually referred to as {\em covariate adjustment}).
-In particular, we us {\em subclassification} and {\it propensity score matching} \cite{Rubin1983b,IacKinPor09,rosenbaum1984reducing}.
+In particular, we use {\em subclassification} and {\it propensity score matching} \cite{Rubin1983b,IacKinPor09,rosenbaum1984reducing}.
 These are popular methods for  covariate adjustment that developed in social science and statistics. Throughout the demonstration we will refer to them as matching methods.
 The key goal of matching is to prune data so that
-the remaining data ({\em matched data}) have better balance between the treated and control groups meaning that the empirical distributions of the confounding variables in the groups  similar. 
-Once the two groups become similar, any observed different of outcome between the two group can attributed to the treatment. Now,
+the remaining data ({\em matched data}) have better balance between the treated and control groups, meaning that the empirical distributions of the confounding variables in the groups  similar. 
+Once the two groups become similar, any observed difference of the outcome between the two groups can be attributed to the treatment. Now,
      \begin{enumerate}
       \item for each treatment, we select a set of covariates deemed to confound the treatment and DepDelay (Figure \ref{fig:eteresult}(d)).
       \item we select a matching method and adjust its tuning parameters (Figure \ref{fig:eteresult}(e)).
 \end{enumerate}
 
-\paragraph{\bf Checking Balance:}  In this step we check weather the matching process was successfully improved covariates balance. In particular,
+\paragraph{\bf Checking Balance:}  In this step we check weather the matching process  successfully improved covariates balance. In particular,
     \begin{enumerate}
       \item  we compare the distribution for each covariate between the treated and control group on matched data (this will be done for all treatments). For this task, \GSQL\  provides numerical summaries such as the mean difference, and summaries based on quantile quantile plots and multivariate histograms \ref{fig:eteresult}(d).
 
-      \item  we perform different matching methods with difference turning parameter to show these methods trade of balance and size of matched data to demonstrate the advantage and disadvantage of different methods.
+      \item  we perform different matching methods with difference turning parameter to show these methods trade of balance and size of matched data to demonstrate the advantages and disadvantage of different methods.
        \end{enumerate}
-      The main objective of this step is to demonstrate the typical worlkflow of causal inference from observational data. As shown in Figure \ref{fig:flowchart} it consists of the iterative process of matching and balance checking. This highlights the demand for tools such as \GSQL\, which perform matching at scale.
+      The main objective of this step is to demonstrate the typical workflow of causal inference from observational data. As shown in Figure \ref{fig:flowchart}, it consists of the iterative process of matching and balance checking. This highlights the demand for tools such as \GSQL\, which perform matching at scale.
 
-     \paragraph{\bf Answer to the causal questions:} In this step  we answer the causal question created at the very fist step of the demonstration. 
+     \paragraph{\bf Answer to the causal questions:} In this step  we answer the causal question created at the very first step of the demonstration. 
        \begin{enumerate}
        \item for each treatment we compute ATE on the associated balanced matched data
       \item we evaluate the statistical significance of the obtained result by performing statistical tests, such as Chi-square test.
