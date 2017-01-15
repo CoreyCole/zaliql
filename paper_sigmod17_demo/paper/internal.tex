@@ -430,8 +430,8 @@ WHERE subclasses.\(\ccv\)=\(\crele\).\(\ccv\)
 
 {\it Coarsening Exact Matching (CEM)} This is a particular form of subclassification in which the vector of covariates $\cv$ is
 coarsened into according to a set of user-defined cutpoints or any
-automatic discretization algorithm.
-CEM has officially been "Qualified for Scientific Use" by the U.S. Food and Drug Administration\cite{IacKinPor09}.
+automatic discretization algorithm. 
+\ignore{CEM has officially been "Qualified for Scientific Use" by the U.S. Food and Drug Administration\cite{IacKinPor09}.}
 All units with similar coarsened
 covariates values are placed in unique subclasses. All
 subclasses with at least one treated and one control unit are retained
@@ -441,7 +441,7 @@ version of R. As depicted in Figure \ref{fig:cem},
 CEM is essentially a GROUP-BY-HAVING query, which is relatively expensive.
 To perform CEM efficiently, \GSQL\ leverages techniques from data management
  including pushing aggregate down to the base relation,
-  data cube-aggregation, pre-matching wrt. multiple treatments and bitmap indices.
+  data cube-aggregation, pre-matching wrt. multiple treatments and bitmap indices. It also support several methods discretization methods for coarsening.\GSQL\ include several discretization methods for coarsening.
 
  \ignore{Subclassification based
   on univariate continues covariate (cf Section \ref{sec:sub}) can bee
