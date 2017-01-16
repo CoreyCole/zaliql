@@ -1,6 +1,14 @@
+\begin{figure*}
+\centering
+\includegraphics[scale=0.13]{Figures/Demo-Tutorial-2.png}
+\caption{Demonstration Screenshot described in Section  \ref{sec:dd}}
+\label{sfig:demo-tutorial}
+\end{figure*}
+
+
 \section{Demonstration Details}
 \label{sec:dd}
-Modern causal analysis is an iterative process, as we illustrate in Fig 4.
+Modern causal analysis is an iterative process, as we illustrate in Fig \ref{fig:flowchart}.
 Users generate a hypothesis, need to perform a technical task called matching (explained below),
   then conduct the causal analysis; most often this needs to be repeated with a new hypothesis,
   sometimes by adding new datasets.
@@ -44,12 +52,6 @@ Date, Time,  Visim (visibility in km),
 \end{figure*}
 }
 
-\begin{figure*}
-\centering
-\includegraphics[scale=0.13]{Figures/Demo-Tutorial-2.png}
-\label{sfig:demo-tutorial}
-\end{figure*}
-
 
 
 
@@ -89,13 +91,6 @@ integrated by a spatio-temporal join.}
 
 
 
-\begin{figure}
-\hspace*{.3cm}\includegraphics[scale=0.2]{figures/Scenario-Graph.png}
-\caption{Confounding Influence \dans{move this figure later.}}
-
-\label{fig:cv}
-\vspace{-0.3cm}
-\end{figure}
 
 
 
@@ -221,6 +216,13 @@ Tempm< 0$) and input SQL for custom discretization methods.}
 \ignore{
   This scenario, as shown graphically in Figure \ref{fig:cv}, demonstrates that in the presence of {\em confounding variable} (a.k.a, {\em covariates}) the treated and control groups are very different and comparing them without accounting for the confounding variables could be misleading.
 }
+\begin{figure}
+\hspace*{.3cm}\includegraphics[scale=0.2]{figures/Scenario-Graph.png}
+\caption{Confounding Influence \dans{move this figure later.}}
+
+\label{fig:cv}
+\vspace{-0.3cm}
+\end{figure}
 
  \paragraph{\bf Adjusting confounding variables:}
 
