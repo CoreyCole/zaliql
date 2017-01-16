@@ -1,9 +1,9 @@
 \section{Internals}
 
-This section overviews the underlying theory behind \GSQL. 
+This section overviews the underlying theory behind \GSQL.
 
-\subsection{Problem Set up and Formulation}
-\dans{Let's call this section Basic Formalism.}
+\subsection{Basic Formalism}
+
 The basic causal model in statistics is called the
 \ignore{Neyman-Rubin Causal Model (NRCM) (also referred to as}
 {\em potential outcome framework (POF)} \cite{Rubin2005,holland1986statistics}.
@@ -139,6 +139,15 @@ well-balance matched subset with a reasonable size obtained.}}
 \vspace{-0.3cm}
 \subsection{Methods}
 \label{sec:algo}
+As discussed the objective is compute ATE, conditioned on a bunch of covariates.
+  Define the table $R(T, X_1, X_2, \ldots, Y)$ above, then write the SQL
+  queries that needs to be computed: select avg(Y) from R where $\bar
+  X = \bar x \wedge T=1$ $-$ select avg(Y) from R where $\bar
+  X = \bar x \wedge T=0$, and this has to be done for every value
+  $\bar x$.  However, this is impossible, as explained above.
+  Instead, we apply two techniques used in statistics, then optimize
+  the resulting queries before senging them to postgres
+
 \dans{We shoudl describe better what goes on here.  The problem is
   that we want to compute ATE, conditioned on a bunch of covariates.
   Define the table $R(T, X_1, X_2, \ldots, Y)$ above, then write the SQL
@@ -370,7 +379,7 @@ FROM tmp0  window w AS (PARTITION BY BY subclass)
 WHERE maxT!=minT)
 \end{alltt}
 \vspace{-0.3cm}
-  \caption{\bf{SQL implementation of subclassification based on 
+  \caption{\bf{SQL implementation of subclassification based on
       propensity score.}}\label{fig:subpr}
 \end{figure}
 
@@ -443,7 +452,7 @@ WHERE subclasses.\(\ccv\)=\(\crele\).\(\ccv\)
 
 {\it Coarsening Exact Matching (CEM)} This is a particular form of subclassification in which the vector of covariates $\cv$ is
 coarsened into according to a set of user-defined cutpoints or any
-automatic discretization algorithm. 
+automatic discretization algorithm.
 \ignore{CEM has officially been "Qualified for Scientific Use" by the U.S. Food and Drug Administration\cite{IacKinPor09}.}
 All units with similar coarsened
 covariates values are placed in unique subclasses. All
