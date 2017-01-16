@@ -41,11 +41,17 @@ The goal of causal analysis is to compute the {\em average treatment
 \end{figure}
 \noindent
 The so-called {\em fundamental problem of causal inference (FPCI)} is that
-for each unit we only know either $Y(1)$ or $Y(0)$ but not both. Thus, further assumption is needed for estimating ATE. \ignore{
+for each unit we only know either $Y(1)$ or $Y(0)$ but not both.
+\danp{Can we add an example to make this more intuitive, since it's important e.g.: each individual flight has either
+  LowPressure=1 or =0, not both}
+Thus, further assumption is needed for estimating ATE. \ignore{
 \cite{Holland1986}, and causal inference is reduced to a missing data
 problem \cite{RosenbaumRubin1983}. }
 
 
+\danp{Explain why we are mentioning independence at all since we don't
+  assume it. In a perfectly randomized trial, independence holds, but
+  we are interested in observational data where it doesn't.}
 The strongest is the {\em independence assumption}, which states that
 the treatment mechanism is independent of the potential outcomes,
 i.e., $(Y(1), Y(0)) \bigCI T$. Then, it holds that
@@ -114,7 +120,8 @@ Mahalanobis Distance (MD) & $(x_i-x_j)'\Sigma^{-1} (x_i-x_j)$ & where $\Sigma=$ 
 \end{figure*}
 
  If strong ignorability holds, one can estimate ATE by
- taking the  average difference for each group i.e., $E_x[E[Y(1)-Y(0)| X=x]]$.
+ taking the  average difference for each group \danp{Need to define
+   what a group is here} i.e., $E_x[E[Y(1)-Y(0)| X=x]]$.
 In practice, however, a direct application of this method is
 impossible, because the data is typically very sparse: for any value
 $X=x$ we either have no data values at all, or very few such values,
