@@ -147,6 +147,7 @@ well-balance matched subset with a reasonable size obtained.}}
 \subsection{Methods}
 \label{sec:algo}
 As discussed the objective is compute ATE, conditioned on a bunch of covariates.
+\danp{reiterate that we want to compute ATE by calculating the difference over a set of balanced groups}
   Define the table $R(T, X_1, X_2, \ldots, Y)$ above, then write the SQL
   queries that needs to be computed: select avg(Y) from R where $\bar
   X = \bar x \wedge T=1$ $-$ select avg(Y) from R where $\bar
