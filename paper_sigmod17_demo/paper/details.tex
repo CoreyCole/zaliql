@@ -189,14 +189,15 @@ Tempm< 0$) and input SQL for custom discretization methods.} and (3) specifying 
  {\bf Confounding variables:} The main issue with causal inference from observational data
  is the exitance of {\em confounding variables} that  make it difficult to establish a clear causal link between treatment and outcome.   We show that the observed positive effect of LowPressure
  was the result of the confounding influence of other variables such as visibility, snow and Thunder
-    Specifically, we show that, LowPressure is highly associated with unsettled weather conditions such as LowVisbility. For instance the average of LowVisbility in the treated group is much less than
+    Specifically, we show that, LowPressure is highly associated with unsettled weather conditions 
+    such as LowVisbility (Figure \ref{fig:cv}). For instance the average of LowVisbility in the treated group is much less than
   the opposite group. Thus, it is unclear that the observed DepDelay difference between the groups is causes by LowPressure or LowVisbility.
 
 
 \ignore{
   This scenario, as shown graphically in Figure \ref{fig:cv}, demonstrates that in the presence of {\em confounding variable} (a.k.a, {\em covariates}) the treated and control groups are very different and comparing them without accounting for the confounding variables could be misleading.
 }
-\ignore{
+{
 \begin{figure}
 \hspace*{.3cm}\includegraphics[scale=0.2]{figures/Scenario-Graph.png}
 \caption{Confounding influence}
@@ -204,7 +205,7 @@ Tempm< 0$) and input SQL for custom discretization methods.} and (3) specifying 
 \label{fig:cv}
 \vspace{-0.3cm}
 \end{figure}}
- {\bf Adjusting for confounding variables:} \ignore{
+ {\bf Adjusting for confounding variables:} {
 Causal inference provides a framework for adjusting for the effects of
 confounding variables.
  With only one categorical confounding variable, adjustment can be
