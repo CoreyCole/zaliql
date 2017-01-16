@@ -169,11 +169,11 @@ strategies, \ldots
 
 
   \paragraph{\bf Causal Questions:} 
-\dans{We need to formulate these questions using language that can be understood by someone who does not know statistical causal analysis.  For example: Q1: is the low air pressure causing departure delays?  Q2: which weather features have the main causal effect on departure delays?  Q3: Do the findings to the previous question differ between major aiports?(maybe mention the concrete airports here)}
-demonstration starts by creating a set of causal questions regarding the effect of different weather attributes on flight delay by
+\dans{corey addressed - We need to formulate these questions using language that can be understood by someone who does not know statistical causal analysis.  For example: Q1: is the low air pressure causing departure delays?  Q2: which weather features have the main causal effect on departure delays?  Q3: Do the findings to the previous question differ between major aiports?(maybe mention the concrete airports here)}
+Our demonstration starts by creating a set of causal questions regarding the effect of different weather attributes on flight delay by
     \begin{enumerate}
       \item specifying DepDelay as our outcome of interest (potential effect) as shown in Figure \ref{fig:eteresult}(a).
-      \item specifying a set of binary treatments (potential causes) that might affect DepDelay. In particular the following binary treatments will be created: LowVisibility (1 if Visim$<1$; 0 if Visim$>5$); \ HeavySnow (1 iff Precipm$>0.3$ and Snow$=1$); \ WindSpeed (1 if Wspdm$>40$; 0 if Wspdm$<20$); \  Thunder; \ LowPressure (1 if Pressurem$<009.14$; 0 if Pressurem$>1022.69$).
+      \item specifying a set of binary treatments (potential causes) that might affect DepDelay. In particular the following binary treatments will be created: LowVisibility (1 if Visim$<1$; 0 if Visim$>5$); \ HeavySnow (1 iff Precipm$>0.3$ and Snow$=1$); \ WindSpeed (1 if Wspdm$>40$; 0 if Wspdm$<20$); \  Thunder; \ LowPressure (1 if Pressurem$<1009.14$; 0 if Pressurem$>1022.69$).
       \ignore{
       As shown in Figure \ref{fig:eteresult}(b) Clicking on the {\it ADD TREATMENT}, {\it ADD COVARIATE}, and {\it ADD OUTCOME} buttons will trigger a dialog allowing
   further customization on the discretization and matching methods.
