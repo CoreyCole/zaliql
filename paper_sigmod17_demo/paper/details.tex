@@ -173,7 +173,7 @@ strategies, \ldots
 
 
 
-  \paragraph{\bf Causal Questions:} 
+  \paragraph{\bf Causal Questions:}
 \dans{corey addressed - We need to formulate these questions using language that can be understood by someone who does not know statistical causal analysis.  For example: Q1: is the low air pressure causing departure delays?  Q2: which weather features have the main causal effect on departure delays?  Q3: Do the findings to the previous question differ between major aiports?(maybe mention the concrete airports here)}
 Our demonstration starts by creating a set of {\em causal questions} regarding the effect of different weather attributes on flight delay e.g.
 \begin{enumerate}
@@ -196,14 +196,14 @@ Tempm< 0$) and input SQL for custom discretization methods.}
 
 
  \paragraph{ \bf Computing ATE}: In causal inference, the objective is to quantify
- the causal effect of a binary attribute called treatment, on an attribute called outcome. 
+ the causal effect of a binary attribute called treatment, on an attribute called outcome.
  A common measure to to compute causal effect is {\em average treatment effect (ATE)}, which is defined as the difference in expected values of the treated and untreated units. \footnote{In causality literature subjects of a study,
   e.g., patients in a clinical trial, are called units. In our case each flight is considered a unit.}
- 
+
  \dans{this part is good.  But I would make it a bit more tutorial-style.  Start by saying that in causal analysis we want to study the causal effect of a binary attribute called treatment, on an attribute called outcome.  The ATE is defined as the difference in expected values of the treated and untreated units.  (Add a footnote saying that records are called units in causal analysis).  Then continue with what you have here, by referring to Q1 above:}  For example for Q1, \GSQL\ computes ATE as $$E[\text{Depdelay}|\text{LowPressure}=1] - E[\text{Depdelay}|\text{LowPressure}=0]$$
   where, E[\text{Depdelay}|\text{LowPressure}=$x$], $x=(0,1)$ is computed by taking the emetical average of  Depdelay where LowPressure is  $x$. It is a  common measure to compare an
   outcome (DepDelay) in the {\em treated group},  those subjects (flights) that receive a treatment (LowPressure=1), with the {\em control group}, the opposites.
-\dans{For the next sentence, can you refer to Fig. 3.  There the user has selected the treatment visibility (Visim) and the outcome is DepDelayMinutes.  (Acually, can you update the figure so that the treatment is LowPressure).  If we compute the ATE for LowPressure on DepDelay, the result is XXX (give concrete number).}  We show that for LowPressure, ATE is large, which  suggests  it affects DepDelay. However, it is known that
+\dans{For the next sentence, can you refer to Fig. 3.  There the user has selected the treatment visibility (Visim) and the outcome is DepDelayMinutes.  (Acually, can you update the figure so that the treatment is LowPressure).  If we compute the ATE for LowPressure on DepDelay, the result is  (give concrete number).}  We show that for LowPressure, ATE is 3.7min, which is a relatively large that suggests pressure it affects DepDelay. However, it is known that
   LowPressure does not have any causal impact on departure delay (it only requires longer takeoff distance) \cite{FAA08}. This observation raises the question that  where does this difference coming from?
 
 
@@ -216,15 +216,15 @@ Tempm< 0$) and input SQL for custom discretization methods.}
  is the exitance of {\em confounding variables} that  make it difficult to establish a clear causal link between treatment and outcome unless appropriate methods used to adjust for the effect of the confounders (more on this below).   We show that the observed positive effect of LowPressure
  was the result of the confounding influence of other variables such as visibility, snow and Thunder
     Specifically, we show that, LowPressure is highly associated with unsettled weather conditions such as LowVisbility. For instance the average of LowVisbility in the treated group is much less than
-  the opposite group. Thus, it is unclear that the observed DepDelay difference between the groups is causes by LowPressure or LowVisbility. 
+  the opposite group. Thus, it is unclear that the observed DepDelay difference between the groups is causes by LowPressure or LowVisbility.
 
-\ignore{  
+\ignore{
   This scenario, as shown graphically in Figure \ref{fig:cv}, demonstrates that in the presence of {\em confounding variable} (a.k.a, {\em covariates}) the treated and control groups are very different and comparing them without accounting for the confounding variables could be misleading.
 }
 
- \paragraph{\bf Adjusting confounding variables:} 
- 
- Adjusting for one categorical confounding variable can be simply done by partitioning data into 
+ \paragraph{\bf Adjusting confounding variables:}
+
+ Adjusting for one categorical confounding variable can be simply done by partitioning data into
  groups with similar values of the confounding variable. Then ATE can be compute by taking the weighted average of the average treatment effects of each groups. However, real-world causal analysis requires a dozen or more continues confounding variables, and in this case there is not enough data in each group to enable a meaningful estimation of the ATE. For example, as exemplified in figure \ref{fig:cv}, LowPressure has more than ten confounding variables.  Most of the complexity in causal analysis tools, as well as in \GSQL, consists of implementing sophisticated methods for enlarging the groups while still performing a meaningful inference of the ATE.
  \ignore{\dans{I would start this paragraph by saying that, using a single confounding variable is easy, since we essentially partition the data into two groups.  But real-world causal analysis requires a dozen or more confounding variables, and in this case there is not enough data in each group to enable a meaningful estimation of the ATE. For example, refer to Fig 2 to show a more complex set of confounding variables.  Most of the complexity in causal analysis tools, as well as in \GSQL, consists of implementing sophisticated methods for enlarging the groups while still performing a meaningful inference of the ATE.  Then continue with:}}
 In this step we use \GSQL\ to apply state-of-the art methods for controlling confounding influences (usually referred to as {\em covariate adjustment}).
