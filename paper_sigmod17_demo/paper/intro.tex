@@ -26,7 +26,7 @@ Most data driven decisions today are based on purely predictive
 analytics, which only finds associational dependencies and
 correlations.  The danger is that naive data enthusiasts will
 incorrectly interpret these predictive models as causal. While the distinction between causal and predictive analysis has
- been recognized, the conflation between the two is common and results in false discovery claims.
+ been recognized, the conflation between the two is common which results in false discovery claims.
 \ignore{
 Much of the success of Big data today comes from
   \emph{descriptive analytics}: statistical models or data mining algorithms applied to data
@@ -45,7 +45,7 @@ In many cases, researchers who want to discover causality from data analysis set
 }
 Causal inference has been studied extensively in statistics and
 computer science \cite{Fisher1935design,Rubin2005,holland1986statistics,PearlBook2000\ignore{,Spirtes:book01}}.
-Many toolkits have been developed for performing causal inference that relies on statistical software such as R, e.g., MatchIt and CEM \cite{ho2005,iacus2009cem}. \dans{give examples and citations here.  We need to make a strong case that today's causal analysis tools do not scale} However, these toolkits do not scale to large datasets. For example, performing causal inference  on a dataset with 10M entries \dans{eateries or entries?} takes several hours using MatchIt or CEM.
+Many toolkits have been developed for performing causal inference that rely on statistical software such as R, e.g., MatchIt and CEM \cite{ho2005,iacus2009cem}. \dans{give examples and citations here.  We need to make a strong case that today's causal analysis tools do not scale} However, these toolkits do not scale to large datasets. For example, performing causal inference  on a dataset with 10M entries \dans{eateries or entries?} takes several hours using MatchIt or CEM.
  Additionally, causal analysis is part of a larger pipeline that includes data acquisition, data cleaning, and data integration; for large datasets, these tasks are best handled by a relational database engine, which provides most of the functionality needed for these tasks, and also scales up to large datasets. \dans{the previous sentence is cumbersome.  what we want to say is that causal analysis is part of a larger pipeline that includes data acquisition, data cleaning, and data integration; for large datasets, these tasks are best handled by a relational database engine, which provides most of the functionality needed for these tasks, and also scales up to large datasets.}
 \ignore{A rich ecosystem of tools and organizational requirements further encourage SQL database storage. Transferring
 data from DBMS to statistical softwares or connecting these
@@ -60,7 +60,7 @@ In this demonstration we propose \GSQL,\footnote{ The prefix Zali refers to
   was heavily influenced by al-Ghzali's conception of causality
   \cite{shalizi2013advanced}.}
   a SQL-based framework for drawing causal inference within DBMS. \GSQL\ made a first step towards truly scalable causal inference by modeling it as a data management problem. We demonstrate that
-   approaching causal inference from this fresh perspective, is key to scalability and robustness.  \GSQL\ supports state-of-the-art methods for causal inference and runs at scale within a database engine.   The framework \ignore{is designed and implemented as an extension for PostgreSQL object-relational database
+   approaching causal inference from this fresh perspective is key to scalability and robustness.  \GSQL\ supports state-of-the-art methods for causal inference and runs at scale within a database engine.   The framework \ignore{is designed and implemented as an extension for PostgreSQL object-relational database
 systems and} includes a series of optimization techniques that allow it to
 scale to billions of records.
 

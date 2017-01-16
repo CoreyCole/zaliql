@@ -1,9 +1,9 @@
 \section{Demonstration Details}
 \label{sec:dd}
 Modern causal analysis is an iterative process, as we illustrate in Fig 4.
-Users generate a hypothesis, need to perform a technical task called matching (explained below),
-  then conduct the causal analysis; most often this needs to be repeated with a new hypothesis,
-  sometimes by adding new datasets.
+Users generate a hypothesis, perform a technical task called matching (explained below),
+  and then conduct causal analysis; most often this needs to be repeated with a new hypothesis,
+  sometimes with new datasets.
 We demonstrate \GSQL\ by showing several real causal analysis performed on two,
   large datasets that we downloaded from the Web and integrated in Postgres.
 
@@ -177,8 +177,8 @@ strategies, \ldots
 \dans{corey addressed - We need to formulate these questions using language that can be understood by someone who does not know statistical causal analysis.  For example: Q1: is the low air pressure causing departure delays?  Q2: which weather features have the main causal effect on departure delays?  Q3: Do the findings to the previous question differ between major aiports?(maybe mention the concrete airports here)}
 Our demonstration starts by creating a set of {\em causal questions} regarding the effect of different weather attributes on flight delay e.g.
 \begin{enumerate}
-  \item Is low air pressure causing departure delays?
-  \item Which weather features have the main causal effect on departure delays?
+  \item Does low air pressure cause flight departure delays?
+  \item Which weather features have the main causal effect on these delays?
   \item Do the findings to the previous question differ between major aiports?
 \end{enumerate}
 We answer these questions using \GSQL\ by
@@ -263,13 +263,12 @@ snows and visibility at JFK; snows at LGA; visibility at SFO;
 
 
 \paragraph{\bf Scalability:}
-we demonstrate system
-  scalability by letting users interactively run queries on this large
-  dataset -- which would take R hours. We also
-In the final step we compare the scalability of different matching 
-methods in \GSQL \ and R by comparing the running
+\corey{add optimization techniques by computing for multiple treatments at once}
+In the final step we compare the scalability of different matching methods in \GSQL \ and R by comparing the running
 time of performing different matching methods on random samples with, 500k,1M, ... 4M, entires. As shown
  in Figure \ref{fig:perfresults} \GSQL \ significantly outperforms R.
+
+Finally, we will demonstrate the performance improvements relative to R. As seen in Figure \ref{fig:demo-tutorial}(g), with only 4M rows, R takes 20 minutes compared to \GSQL\'s performance of less than 1 minute. 
 
 
 
@@ -279,4 +278,8 @@ time of performing different matching methods on random samples with, 500k,1M, .
 
 \dans{I like mentioning scalability, but we need to say something more concrete what we will demonstrate.  Possibilities: show side-by-side how \GSQL\  and (some R tool) work on a subset of the dataset (I assume R fails to scale to the entire dataset); or show \GSQL\  on datasets of sizes 1M, 10M, 100M records.}
 
+
+\danp{Probably enough to just say that we demonstrate system
+  scalability by letting users interactively run queries on this large
+  dataset -- which would take R hours.}
 
