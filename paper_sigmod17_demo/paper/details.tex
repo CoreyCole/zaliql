@@ -12,7 +12,7 @@ Modern causal analysis is an iterative process, as we illustrate in Fig \ref{fig
 One generates a hypothesis, pre-processes  relevant data with matching (explained below),
   then conducts the causal analysis; most often this needs to be repeated with a new matching
   method, a new hypothesis or  new datasets.
-We demonstrate \GSQL\ by showing causal analysis of two
+We demonstrate \GSQL\ by showing several real causal analysis performed on two,
   large datasets that we downloaded from the Web and integrated in Postgres.
 
 \ignore{
@@ -171,9 +171,8 @@ strategies, \ldots
 \vspace{0.2mm}
   {\bf Causal Questions:} \ignore{
 \dans{corey addressed - We need to formulate these questions using language that can be understood by someone who does not know statistical causal analysis.  For example: Q1: is the low air pressure causing departure delays?  Q2: which weather features have the main causal effect on departure delays?  Q3: Do the findings to the previous question differ between major aiports?(maybe mention the concrete airports here)}}
-
 Our demonstration starts by creating a set of {\em causal questions} regarding the effect of different weather attributes on flight delays, e.g.,
-Q1: Does low air pressure cause flight departure delays? 
+Q1: Does low air pressure causes flight departure delays? 
 Q2: Which weather features have the main causal effect on departure delays?
 Q3: Do the findings to the previous question differ between major aiports?
 
