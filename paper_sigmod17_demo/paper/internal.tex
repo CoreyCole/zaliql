@@ -139,14 +139,22 @@ well-balance matched subset with a reasonable size obtained.}}
 \vspace{-0.3cm}
 \subsection{Methods}
 \label{sec:algo}
-As discussed the objective is compute ATE, conditioned on a bunch of covariates.
-  Define the table $R(T, X_1, X_2, \ldots, Y)$ above, then write the SQL
-  queries that needs to be computed: select avg(Y) from R where $\bar
-  X = \bar x \wedge T=1$ $-$ select avg(Y) from R where $\bar
-  X = \bar x \wedge T=0$, and this has to be done for every value
-  $\bar x$.  However, this is impossible, as explained above.
-  Instead, we apply two techniques used in statistics, then optimize
-  the resulting queries before senging them to postgres
+Define the table $R(T, X_1, X_2, \ldots, Y)$, the goal is to compute
+ATE, conditioned on a set of covariates $X$. ATE within each group $X = \bar{x}$ 
+cane be computed with the simple SQL statement:
+\vspace{-0.2cm}
+\begin{alltt} \scriptsize
+  Select From 
+    (SLECT avg(Y) FROM \(R\)
+         WHERE X = \(\bar{x}\) AND T=1)-
+    (SLECT avg(Y) FROM \(R\)
+         WHERE X = \(\bar{x}\) AND T=0)
+\end{alltt}
+  
+However, this is impossible, as explained above.
+Instead, we apply two techniques used in statistics, then optimize
+the resulting queries before sending them to PostgresSQL The following methods are supported by \GSQL.
+
 
 \dans{We shoudl describe better what goes on here.  The problem is
   that we want to compute ATE, conditioned on a bunch of covariates.
@@ -157,7 +165,6 @@ As discussed the objective is compute ATE, conditioned on a bunch of covariates.
   $\bar x$.  However, this is impossible, as explained above.
   Instead, we apply two techniques used in statistics, then optimize
   the resulting queries before senging them to postgres}
-The following methods are supported by \GSQL.
 
 {\bf Nearest Neighbor Matching}
 \label{sec:nnm}
