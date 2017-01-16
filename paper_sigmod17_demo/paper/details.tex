@@ -1,8 +1,17 @@
 \section{Demonstration Details}
 \label{sec:dd}
+Modern causal analysis is an iterative process, as we illustrate in Fig 4.
+Users generate a hypothesis, need to perform a technical task called matching (explained below),
+  then conduct the causal analysis; most often this needs to be repeated with a new hypothesis,
+  sometimes by adding new datasets.
+We demonstrate \GSQL\ by showing several real causal analysis performed on two,
+  large datasets that we downloaded from the Web and integrated in Postgres.
+
+\ignore{
  In this demonstration, we will use \GSQL\ to quantify the causal effect of
- different weather conditions on flight departure delay. 
-\dans{I suggest starting this seciton as follows.  Modern causal analysis is an iterative process, as we illustrate in Fig 4.  Users generate a hypothesis, need to perform a technical task called matching (explained below), then conduct the causal analysis; most often this needs to be repeated with a new hypothesis, sometimes by adding new datasets (add a loop back from the ``Conduct analyss'' to ``generate hypthesis'').
+ different weather conditions on flight departure delay. }
+
+\dans{corey addressed - I suggest starting this seciton as follows.  Modern causal analysis is an iterative process, as we illustrate in Fig 4.  Users generate a hypothesis, need to perform a technical task called matching (explained below), then conduct the causal analysis; most often this needs to be repeated with a new hypothesis, sometimes by adding new datasets (add a loop back from the ``Conduct analyss'' to ``generate hypthesis'').
 We demonstrate \GSQL\ by showing several real causal analysis performed on two, large datasets that we downloaded from the Web and integrated in Postgres.}
     \paragraph{\bf Data:} The analysis will be conducted on a spatio-temporal join of the following datasets:
  \begin{itemize}
@@ -200,7 +209,7 @@ Once the two groups become similar, any observed difference of the outcome betwe
 
 \paragraph{\bf Checking Balance:}  In this step we check weather the matching process  successfully improved covariates balance. In particular,
     \begin{enumerate}
-      \item  we compare the distribution for each covariate between the treated and control group on matched data (this will be done for all treatments). For this task, \GSQL\  provides numerical summaries such as the mean difference, and summaries based on quantile quantile plots and multivariate histograms \ref{fig:eteresult}(d).
+      \item  we compare the distribution for each covariate between the treated and control group on matched data (this will be done for all treatments). For this task, \GSQL\  provides numerical summaries such as the mean difference and visual summaries such as quantile quantile plots \ref{fig:eteresult}(d).
 
       \item  we perform different matching methods with difference turning parameter to show these methods trade of balance and size of matched data to demonstrate the advantages and disadvantage of different methods.
        \end{enumerate}
@@ -222,7 +231,9 @@ snows and visibility at JFK; snows at LGA; visibility at SFO;
 
 
 
-\paragraph{\bf Scalability:} In the final step of the demonstration we compare the scalability
+\paragraph{\bf Scalability:} 
+\corey{add optimization techniques by computing for multiple treatments at once}
+In the final step of the demonstration we compare the scalability
 of \GSQL\ with the other statistical softwares.  \dans{I like mentioning scalability, but we need to say something more concrete what we will demonstrate.  Possibilities: show side-by-side how \GSQL\  and (some R tool) work on a subset of the dataset (I assume R fails to scale to the entire dataset); or show \GSQL\  on datasets of sizes 1M, 10M, 100M records.}
 
 
