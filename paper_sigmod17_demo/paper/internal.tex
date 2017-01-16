@@ -1,3 +1,4 @@
+\vspace{-.2cm}
 \section{Internals}
 \subsection{Basic Formalism}
 
@@ -173,7 +174,7 @@ the resulting queries before sending them to PostgresSQL The following methods a
   Instead, we apply two techniques used in statistics, then optimize
   the resulting queries before senging them to postgres}}
 
-{\bf Nearest Neighbor Matching}
+{\bf Nearest neighbor matching}
 \label{sec:nnm}
 The most common method is that of $k:1$ nearest neighbor
 matching (NNM). NNM controls matches for each treated
@@ -191,7 +192,8 @@ joining the treated with the control units that are closer than
 the caliper. Then, this set is sorted into ascending order of
 distances.  In addition, the order of each row in the sorted set is identified
 using the window function {\verb|ROW_NUMBER|}. Finally, all units with the order of less than or equal to $k$ are selected as the matched units.
-However, \GSQL\  uses a more efficient query for this task by leveraging recent developments in the context of spatial-databases
+However, \GSQL\  does NNM effiently by 
+leveraging recent developments in the context of spatial-databases
 (see \cite{obe2015postgis}).
 
 \ignore{\dans{can you give more details here.  What is the schema of
@@ -402,7 +404,7 @@ FROM tmp0  window w AS (PARTITION BY BY subclass)
 WHERE maxT!=minT)
 \end{alltt}
 \vspace{-0.3cm}
-  \caption{\bf{Subclassification based on  propensity score.}}\label{fig:subpr}
+  \caption{\bf{Subclassification based on  propensity score}}\label{fig:subpr}
 \end{figure}
 
 
@@ -465,7 +467,7 @@ WHERE subclasses.\(\ccv\)=\(\crele\).\(\ccv\)
 
 \end{alltt}
 \vspace{-.4cm}
-  \caption{\bf CEM.}\label{fig:cem}
+  \caption{\bf CEM}\label{fig:cem}
 \end{figure}
 
 
