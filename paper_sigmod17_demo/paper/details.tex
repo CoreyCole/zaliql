@@ -19,7 +19,7 @@ We demonstrate \GSQL\ by showing several real causal analysis performed on two,
  In this demonstration, we will use \GSQL\ to quantify the causal effect of
  different weather conditions on flight departure delay. }
 
-    \paragraph{\bf Data:} The analysis will be conducted on a spatio-temporal join of the following datasets:
+    {\bf Data:} The analysis will be conducted on a spatio-temporal join of the following datasets:
 (a) {\it Flight dataset (105M entries)}: collected by the US
 Department of Transportation.\footnote{\url{http://www.transtats.bts.gov/}} It contains
 records of more than 90\% of US domestic flights of major airlines
@@ -168,8 +168,8 @@ strategies, \ldots
 }
 
 
-
-  \paragraph{\bf Causal Questions:} \ignore{
+\vspace{0.2mm}
+  {\bf Causal Questions:} \ignore{
 \dans{corey addressed - We need to formulate these questions using language that can be understood by someone who does not know statistical causal analysis.  For example: Q1: is the low air pressure causing departure delays?  Q2: which weather features have the main causal effect on departure delays?  Q3: Do the findings to the previous question differ between major aiports?(maybe mention the concrete airports here)}}
 Our demonstration starts by creating a set of {\em causal questions} regarding the effect of different weather attributes on flight delays, e.g.,
 Q1: Does low air pressure causes flight departure delays? 
@@ -181,9 +181,11 @@ We answer these questions using \GSQL\ by
 as shown in Figure \ref{sfig:demo-tutorial}(a),
 (2) specifying a set of binary treatments (potential causes) that might affect DepDelay,
  as shown in Figure \ref{sfig:demo-tutorial}(b),
-In particular the following binary treatments will be created: LowVisibility (1 if Visim$<1$; 0 if Visim$>5$); \ HeavySnow (1 iff Precipm$>0.3$ and Snow$=1$); \ WindSpeed (1 if Wspdm$>40$; 0 if Wspdm$<20$); \  Thunder; \ LowPressure (1 if Pressurem$<1009.14$; 0 if Pressurem$>1022.69$).
-
-      \ignore{
+In particular the following binary treatments will be created:
+ LowVisibility (1 if Visim$<1$; 0 if Visim$>5$); \
+  HeavySnow (1 iff Precipm$>0.3$ and Snow$=1$); \ 
+  WindSpeed (1 if Wspdm$>40$; 0 if Wspdm$<20$); \  
+  Thunder; \ LowPressure (1 if Pressurem$<1009.14$; 0 if Pressurem$>1022.69$)     \ignore{
       As shown in Figure \ref{sfig:demo-tutorial}(b) Clicking on the {\it ADD TREATMENT}, {\it ADD COVARIATE}, and {\it ADD OUTCOME} buttons will trigger a dialog allowing
   further customization on the discretization and matching methods.
 These dialogs will also allow the user to incorporate other columns (e.g. snow is defined as $iff Precipm> 0.3 and
@@ -191,10 +193,18 @@ Tempm< 0$) and input SQL for custom discretization methods.} and (3) specifying 
 
 
 
- \paragraph{ \bf Computing ATE}: In causal inference, the objective is to quantify
+ { \bf Computing ATE}: In causal inference, the objective is to quantify
  the causal effect of a binary attribute called treatment, on an attribute called outcome.
  A common measure to to compute causal effect is {\em average treatment effect (ATE)}, which is defined as the difference in expected values of the treated and untreated units.\footnote{In causality literature subjects of a study,
-  e.g., patients in a clinical trial, are called units. In our case each flight is considered a unit.}\ignore{\dans{this part is good.  But I would make it a bit more tutorial-style.  Start by saying that in causal analysis we want to study the causal effect of a binary attribute called treatment, on an attribute called outcome.  The ATE is defined as the difference in expected values of the treated and untreated units.  (Add a footnote saying that records are called units in causal analysis).  Then continue with what you have here, by referring to Q1 above:} } For example for Q1, \GSQL\ computes ATE as $$E[\text{Depdelay}|\text{LowPressure}=1] - E[\text{Depdelay}|\text{LowPressure}=0]$$
+  e.g., patients in a clinical trial, are called units. In our case each flight
+   is considered a unit.}\ignore{\dans{this part is good. 
+    But I would make it a bit more tutorial-style.  Start by 
+    saying that in causal analysis we want to study 
+    the causal effect of a binary attribute called treatment, on an attribute 
+    alled outcome.  The ATE is defined as the difference in expected 
+    values of the treated and untreated units.  
+    (Add a footnote saying that records are called units in causal analysis). 
+     Then continue with what you have here, by referring to Q1 above:} } For example for Q1, \GSQL\ computes ATE as $$E[\text{Depdelay}|\text{LowPressure}=1] - E[\text{Depdelay}|\text{LowPressure}=0]$$
   where, E[\text{Depdelay}|\text{LowPressure}=$x$], $x=(0,1)$ is 
   computed by taking the emetical average of  Depdelay where LowPressure is  $x$. 
   It is a  common measure to compare an
@@ -214,7 +224,7 @@ Tempm< 0$) and input SQL for custom discretization methods.} and (3) specifying 
 
 \ignore{ \dans{Use this as an excuse to continue the mini-tutorial.  The first 1-2 setnences should be general, saying that  causal analysis conditions on confounding variables. Then you immediately make it concrete and say that, if the confounding variable
   is LowVisibility, then the ATE for LowPressure on DepDelay decreases significantly.}}
- \paragraph{\bf Confounding variables:} The main issue with causal inference from observational data
+ {\bf Confounding variables:} The main issue with causal inference from observational data
  is the exitance of {\em confounding variables} that  make it difficult to establish a clear causal link between treatment and outcome unless appropriate methods used to adjust for the effect of the confounders (more on this below).   We show that the observed positive effect of LowPressure
  was the result of the confounding influence of other variables such as visibility, snow and Thunder
     Specifically, we show that, LowPressure is highly associated with unsettled weather conditions such as LowVisbility. For instance the average of LowVisbility in the treated group is much less than
@@ -231,7 +241,7 @@ Tempm< 0$) and input SQL for custom discretization methods.} and (3) specifying 
 \label{fig:cv}
 \vspace{-0.3cm}
 \end{figure}
- \paragraph{\bf Adjusting for confounding variables:}
+ {\bf Adjusting for confounding variables:} \ignore{
 Causal inference provides a framework for adjusting for the effects of
 confounding variables.
  With only one categorical confounding variable, adjustment can be
@@ -239,7 +249,7 @@ confounding variables.
  groups with similar values of the confounding variable, then
  computing the ATE as  weighted average of average treatment effects in each groups. However, real-world causal analysis requires a dozen or more continues confounding variables, and in this case there is not enough data in each group to enable a meaningful estimation of the ATE. For example, as exemplified in figure \ref{fig:cv}, LowPressure has more than ten confounding variables.  Most of the complexity in causal analysis tools, as well as in \GSQL, consists of implementing sophisticated methods for enlarging the groups while still performing a meaningful inference of the ATE.
  \ignore{\dans{I would start this paragraph by saying that, using a single confounding variable is easy, since we essentially partition the data into two groups.  But real-world causal analysis requires a dozen or more confounding variables, and in this case there is not enough data in each group to enable a meaningful estimation of the ATE. For example, refer to Fig 2 to show a more complex set of confounding variables.  Most of the complexity in causal analysis tools, as well as in \GSQL, consists of implementing sophisticated methods for enlarging the groups while still performing a meaningful inference of the ATE.  Then continue with:}}
-
+}
 \GSQL\ controls for confounding influences (a task usually referred to
 as {\em covariate adjustment}) using {\em subclassification} and {\it propensity score matching} \cite{Rubin1983b,IacKinPor09,rosenbaum1984reducing}.
 These are popular methods for covariate adjustment developed in social
@@ -254,7 +264,7 @@ outcome between the two groups can be attributed to the treatment. In
 our demo, (1) for each treatment, we select a set of covariates deemed to confound the treatment and DepDelay (Figure \ref{sfig:demo-tutorial}(d)).
 (2) we select a matching method and adjust its tuning parameters (Figure \ref{sfig:demo-tutorial}(e)).
 
-\paragraph{\bf Checking Balance:}  In this step, we check whether the
+{\bf Checking Balance:}  In this step, we check whether the
 matching process  successfully improved the covariates' balance. In particular,
 (1)  we compare the distribution for each covariate between the treated and control group on matched data (this will be done for all treatments). For this task, \GSQL\  provides numerical summaries such as the mean difference and visual summaries such as quantile quantile plots \ref{sfig:demo-tutorial}(d).
 (2)  we can perform different matching methods using different
@@ -265,18 +275,16 @@ matching process  successfully improved the covariates' balance. In particular,
         As shown in Figure \ref{fig:flowchart}, it 
         consists of the iterative process of matching and balance checking. This highlights the demand for tools such as \GSQL\, which perform matching at scale.
 
-     \paragraph{\bf Answer to the causal questions:} %\dans{We should give here concrete answers to the queries Q1,Q2,Q3.  Then add a sentence saying that we will perform other causal analysis during the demo}
+     {\bf Answer to the causal questions:} %\dans{We should give here concrete answers to the queries Q1,Q2,Q3.  Then add a sentence saying that we will perform other causal analysis during the demo}
 In this step,  we answer the causal questions created at the very first step of the demonstration using
-\GSQL.
-       \begin{enumerate}
-       \item For Q1, we show that LowPressure has no significant causal effect on DepDelay.
-        \item For Q2, we identify that other treatments have significant causal effect on DepDelay.
+\GSQL. For Q1, we show that LowPressure has no significant causal effect on DepDelay.
+For Q2, we identify that other treatments have significant causal effect on DepDelay.
    \ignore{
        \item for each treatment we compute ATE on the associated balanced matched data
       \item we evaluate the statistical significance of the obtained
         result by performing statistical tests, such as the chi-square test.
           \item For Q3 we report the major causes of flight delay at the airports under study.}
-    \item   For Q3, we report the major causes of flight delay at the airports under study are
+For Q3, we report the major causes of flight delay at the airports under study are
      actually different. We show that the obtained results are in accordance with
 FAA reports. % \footnote{\url{https://www.faa.gov/}}
 For example, the runway configuration at SFO makes the airport
@@ -286,11 +294,11 @@ unusually susceptible to delays in low-visibility conditions~\cite{faa-sfo}.
 % snows, thunders and wind at EWR; thunder and fog at IAH;
 % snows and visibility at JFK; snows at LGA; visibility at SFO;
 
-        \end{enumerate}
 
 
 
-\paragraph{\bf Scalability:}
+
+{\bf Scalability:}
 \ignore{
 we demonstrate system
   scalability by letting users interactively run queries on this large

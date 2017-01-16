@@ -1,7 +1,4 @@
 \section{Internals}
-
-This section overviews the underlying theory behind \GSQL.
-
 \subsection{Basic Formalism}
 
 The basic causal model in statistics is called the
@@ -187,14 +184,14 @@ resolved by imposing a tolerance level on the maximum distance, known
 as the {\em caliper} (see e.g., \cite{lunt2014selecting}). \ignore{There are some rules of thumb for choosing the
 calipers (see e.g., \cite{lunt2014selecting}).}
 
- The basic SQL statement to perform NNM
+\ignore{ The basic SQL statement to perform NNM
 is depicted in Figure \ref{fig:nnmnr}. In this solution, nearest control units are identified by means of an anti-join. \ignore{Note that when $k=1$ the aggregate expression may be replaced by NOT EXISTS.}  In Figure \ref{fig:nnmwr}(b), all potential matches and their distances are identified by
 joining the treated with the control units that are closer than
 the caliper. Then, this set is sorted into ascending order of
 distances.  In addition, the order of each row in the sorted set is identified
 using the window function {\verb|ROW_NUMBER|}. Finally, all units with the order of less than or equal to $k$ are selected as the matched units.
 However, \GSQL\  uses a more efficient query for this task by leveraging recent developments in the context of spatial-databases
-(see \cite{obe2015postgis}).
+(see \cite{obe2015postgis}).}
 
 \ignore{\dans{can you give more details here.  What is the schema of
   ordered\_potential\_matches? who computes this table?  What exactly
