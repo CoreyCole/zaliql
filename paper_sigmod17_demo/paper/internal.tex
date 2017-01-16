@@ -492,8 +492,9 @@ coarsened version of $\cv$ and $R^c$ be a discretized
 version of R. As depicted in Figure \ref{fig:cem},
 CEM is essentially a GROUP-BY-HAVING query, which is relatively expensive.
 To perform CEM efficiently, \GSQL\ leverages techniques from data management
- including pushing aggregate down to the base relation,
-  data cube-aggregation, pre-matching wrt. multiple treatments and bitmap indices. It also support several methods discretization methods for coarsening.\GSQL\ include several discretization methods for coarsening.
+ including pushing aggregates down to the base relation,
+  data cube-aggregation, pre-matching wrt. multiple treatments and
+  bitmap indices. \GSQL\  also include several discretization methods for coarsening.
 
  \ignore{Subclassification based
   on univariate continues covariate (cf Section \ref{sec:sub}) can bee
