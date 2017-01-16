@@ -1,3 +1,4 @@
+\vspace{-.2cm}
 \section{Internals}
 \subsection{Basic Formalism}
 
@@ -191,7 +192,8 @@ joining the treated with the control units that are closer than
 the caliper. Then, this set is sorted into ascending order of
 distances.  In addition, the order of each row in the sorted set is identified
 using the window function {\verb|ROW_NUMBER|}. Finally, all units with the order of less than or equal to $k$ are selected as the matched units.
-However, \GSQL\  uses a more efficient query for this task by leveraging recent developments in the context of spatial-databases
+However, \GSQL\  does NNM effiently by 
+leveraging recent developments in the context of spatial-databases
 (see \cite{obe2015postgis}).
 
 \ignore{\dans{can you give more details here.  What is the schema of
