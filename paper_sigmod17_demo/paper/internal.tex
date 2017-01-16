@@ -172,6 +172,11 @@ the resulting queries before sending them to PostgresSQL The following methods a
   Instead, we apply two techniques used in statistics, then optimize
   the resulting queries before senging them to postgres}
 
+\danp{Can we explain the strengths and weaknesses of each, or at least
+  say that all three are commonly used. As it is, it sounds like
+  subclassification is strictly better than NNM - and if so why did we
+  implement both?}
+  
 {\bf Nearest Neighbor Matching}
 \label{sec:nnm}
 The most common matching method is that of $k:1$ nearest neighbor
