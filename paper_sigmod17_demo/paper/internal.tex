@@ -154,7 +154,8 @@ ATE conditioned on a set of covariates $X$. ATE within each group $X = \bar{x}$
 cane be computed with the simple SQL statement:
 \vspace{-0.2cm}
 \begin{alltt} \scriptsize
-  SELECT FROM (SELECT avg(Y) FROM \(R\) WHERE X = \(\bar{x}\) AND T=1)-
+  SELECT FROM 
+    (SELECT avg(Y) FROM \(R\) WHERE X = \(\bar{x}\) AND T=1) -
     (SELECT avg(Y) FROM \(R\)  WHERE X = \(\bar{x}\) AND T=0)
 \end{alltt}
 
@@ -184,14 +185,14 @@ resolved by imposing a tolerance level on the maximum distance, known
 as the {\em caliper} (see e.g., \cite{lunt2014selecting}). \ignore{There are some rules of thumb for choosing the
 calipers (see e.g., \cite{lunt2014selecting}).}
 
-\ignore{ The basic SQL statement to perform NNM
+The basic SQL statement to perform NNM
 is depicted in Figure \ref{fig:nnmnr}. In this solution, nearest control units are identified by means of an anti-join. \ignore{Note that when $k=1$ the aggregate expression may be replaced by NOT EXISTS.}  In Figure \ref{fig:nnmwr}(b), all potential matches and their distances are identified by
 joining the treated with the control units that are closer than
 the caliper. Then, this set is sorted into ascending order of
 distances.  In addition, the order of each row in the sorted set is identified
 using the window function {\verb|ROW_NUMBER|}. Finally, all units with the order of less than or equal to $k$ are selected as the matched units.
 However, \GSQL\  uses a more efficient query for this task by leveraging recent developments in the context of spatial-databases
-(see \cite{obe2015postgis}).}
+(see \cite{obe2015postgis}).
 
 \ignore{\dans{can you give more details here.  What is the schema of
   ordered\_potential\_matches? who computes this table?  What exactly
@@ -221,7 +222,7 @@ WHERE NOT EXISTS
      FROM ordered_potential_matches AS rp
      WHERE z.order < rp.order AND z.tID=rp.tID)\( \leq k\);
 \end{alltt} \vspace{-.3cm}
-  \caption{\bf SQL implementation of NNMNR}\label{fig:nnmnr}
+  \caption{\bf NNMNR}\label{fig:nnmnr}
 \end{figure}
 
 
@@ -401,8 +402,7 @@ FROM tmp0  window w AS (PARTITION BY BY subclass)
 WHERE maxT!=minT)
 \end{alltt}
 \vspace{-0.3cm}
-  \caption{\bf{SQL implementation of subclassification based on
-      propensity score.}}\label{fig:subpr}
+  \caption{\bf{Subclassification based on  propensity score.}}\label{fig:subpr}
 \end{figure}
 
 
@@ -464,8 +464,8 @@ FROM subclasses,\(\crele\)
 WHERE subclasses.\(\ccv\)=\(\crele\).\(\ccv\)
 
 \end{alltt}
-\vspace{-.3cm}
-  \caption{\bf SQL implementation of CEM.}\label{fig:cem}
+\vspace{-.4cm}
+  \caption{\bf CEM.}\label{fig:cem}
 \end{figure}
 
 
