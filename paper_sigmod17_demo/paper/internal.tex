@@ -117,7 +117,7 @@ Coarsened distance & 0 if $C(x_i)=C(x_j)$ & Where $C(x)$ is a function that coar
                & $\infty$ if $C(x_i) \neq C(x_j)$ & a vector of continues covariate~\cite{IacKinPor09}\\ \hline
 Propensity score  & $|E(x_i) - E(x_j)|$ & where $E(x) = \textrm{Pr}(T = 1 | X=x)$\\
 distance (PS)   &  & is the propensity score~\cite{Rubin1983b} \\ \hline
-Mahalanobis Distance (MD) & $(x_i-x_j)'\Sigma^{-1} (x_i-x_j)$ & where $\Sigma=$ covariance matrix~\cite{Stuart10} \\ \hline
+Mahalanobis Distance (MD) & $(x_i-x_j)'\Sigma^{-1} (x_i-x_j)$ & where $\Sigma=$ covariance matrix \\ \hline
   \end{tabular}
   \caption{Distance Measures used in Matching}
   \label{fig:metrics}
@@ -192,7 +192,7 @@ joining the treated with the control units that are closer than
 the caliper. Then, this set is sorted into ascending order of
 distances.  In addition, the order of each row in the sorted set is identified
 using the window function {\verb|ROW_NUMBER|}. Finally, all units with the order of less than or equal to $k$ are selected as the matched units.
-However, \GSQL\  does NNM effiently by 
+However, \GSQL\  does NNM efficiently by 
 leveraging recent developments in the context of spatial-databases
 (see \cite{obe2015postgis}).
 
