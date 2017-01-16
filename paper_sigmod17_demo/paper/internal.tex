@@ -41,11 +41,17 @@ The goal of causal analysis is to compute the {\em average treatment
 \end{figure}
 \noindent
 The so-called {\em fundamental problem of causal inference (FPCI)} is that
-for each unit we only know either $Y(1)$ or $Y(0)$ but not both. Thus, further assumption is needed for estimating ATE. \ignore{
+for each unit we only know either $Y(1)$ or $Y(0)$ but not both.
+\danp{Can we add an example to make this more intuitive, since it's important e.g.: each individual flight has either
+  LowPressure=1 or =0, not both}
+Thus, further assumption is needed for estimating ATE. \ignore{
 \cite{Holland1986}, and causal inference is reduced to a missing data
 problem \cite{RosenbaumRubin1983}. }
 
 
+\danp{Explain why we are mentioning independence at all since we don't
+  assume it. In a perfectly randomized trial, independence holds, but
+  we are interested in observational data where it doesn't.}
 The strongest is the {\em independence assumption}, which states that
 the treatment mechanism is independent of the potential outcomes,
 i.e., $(Y(1), Y(0)) \bigCI T$. Then, it holds that
@@ -114,7 +120,8 @@ Mahalanobis Distance (MD) & $(x_i-x_j)'\Sigma^{-1} (x_i-x_j)$ & where $\Sigma=$ 
 \end{figure*}
 
  If strong ignorability holds, one can estimate ATE by
- taking the  average difference for each group i.e., $E_x[E[Y(1)-Y(0)| X=x]]$.
+ taking the  average difference for each group with $X=x$ \ignore{\danp{Need to define
+   what a group is here}} i.e., $E_x[E[Y(1)-Y(0)| X=x]]$.
 In practice, however, a direct application of this method is
 impossible, because the data is typically very sparse: for any value
 $X=x$ we either have no data values at all, or very few such values,
@@ -140,21 +147,20 @@ well-balance matched subset with a reasonable size obtained.}}
 \subsection{Methods}
 \label{sec:algo}
 Define the table $R(T, X_1, X_2, \ldots, Y)$, the goal is to compute
-ATE, conditioned on a set of covariates $X$. ATE within each group $X = \bar{x}$ 
+ATE conditioned on a set of covariates $X$. ATE within each group $X = \bar{x}$
 cane be computed with the simple SQL statement:
 \vspace{-0.2cm}
 \begin{alltt} \scriptsize
-  Select From 
+  Select From
     (SLECT avg(Y) FROM \(R\)
          WHERE X = \(\bar{x}\) AND T=1)-
     (SLECT avg(Y) FROM \(R\)
          WHERE X = \(\bar{x}\) AND T=0)
 \end{alltt}
-  
+
 However, this is impossible, as explained above.
 Instead, we apply two techniques used in statistics, then optimize
 the resulting queries before sending them to PostgresSQL The following methods are supported by \GSQL.
-
 
 \dans{We shoudl describe better what goes on here.  The problem is
   that we want to compute ATE, conditioned on a bunch of covariates.
@@ -176,11 +182,20 @@ performed without replacement.  Notice that NNM faces the risk of bad
 matches if the closest neighbor is far away. This issue can be
 resolved by imposing a tolerance level on the maximum distance, known
 as the {\em caliper} (see e.g., \cite{lunt2014selecting}). \ignore{There are some rules of thumb for choosing the
-calipers (see e.g., \cite{lunt2014selecting}).} The basic SQL statement to perform NNM is depicted in Figure \ref{fig:nnmnr}. However, \GSQL\  uses a more efficient query for this task by leveraging recent developments in the context of spatial-databases
-(see \cite{obe2015postgis}).
-\dans{can you give more details here.  What is the schema of
+calipers (see e.g., \cite{lunt2014selecting}).}
+
+ The basic SQL statement to perform NNM 
+is depicted in Figure \ref{fig:nnmnr}. In this solution, nearest control units are identified by means of an anti-join. \ignore{Note that when $k=1$ the aggregate expression may be replaced by NOT EXISTS.}  In Figure \ref{fig:nnmwr}(b), all potential matches and their distances are identified by
+joining the treated with the control units that are closer than
+the caliper. Then, this set is sorted into ascending order of
+distances.  In addition, the order of each row in the sorted set is identified
+using the window function {\verb|ROW_NUMBER|}. Finally, all units with the order of less than or equal to $k$ are selected as the matched units.
+However, \GSQL\  uses a more efficient query for this task by leveraging recent developments in the context of spatial-databases
+(see \cite{obe2015postgis}). 
+
+\ignore{\dans{can you give more details here.  What is the schema of
   ordered\_potential\_matches? who computes this table?  What exactly
-  is the connection to the SQL queries we defined above}
+  is the connection to the SQL queries we defined above}}
 
 
 \begin{figure}
