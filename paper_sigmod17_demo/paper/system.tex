@@ -18,7 +18,7 @@
 
 The overall architecture of \GSQL\ is shown in Figure \ref{fig:arch}.
 \dans{corey addressed - start by saying that data is stored in a Postgres system}
-The API consists of a set of stored procedures which supports a wide range of methods for performing causal inference.  They are written in PL/pgSQL and are optimized for PostgreSQL. \footnote{\url{http://postgresql.org/}}
+The API consists of a set of stored procedures which supports a wide range of methods for performing causal inference on data stored in PostgreSQL DBMS. \footnote{\url{http://postgresql.org/}}
 The API will be packed  as an extension of  PostgreSQL and will be released in 
 PostgreSQL Extension Network.\footnote{\url{http://pgxn.org/}}
 The functionality of the API is modeled after the MatchIt and CEM R libraries \cite{ho2005,iacus2009cem}. The web GUI (see Figure \ref{fig:eteresult}) is designed to wrap around \GSQL. It can be configured with the user's databases URL after they have installed the \GSQL\ Postgres extension. The  GUI be hosted remotely on a server or locally on your machine. \ignore{
