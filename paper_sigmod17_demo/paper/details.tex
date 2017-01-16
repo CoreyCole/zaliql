@@ -231,6 +231,41 @@ our demo,
 \end{enumerate}
 
 
+{\bf Checking Balance:}  In this step, we check whether the
+matching process  successfully improved the covariates' balance. In particular,
+(1)  we compare the distribution for each covariate between the treated and control group on matched data (this will be done for all treatments). For this task, \GSQL\  provides numerical summaries such as the mean difference and visual summaries such as quantile quantile plots \ref{sfig:demo-tutorial}(d,e).
+(2)  we can perform different matching methods using different
+        parameters, showing that different methods trade off balance and size of matched data% to demonstrate the advantages and disadvantage of different methods.
+
+      The main objective of this step is to demonstrate the typical workflow of
+       causal inference from observational data.
+        As shown in Figure \ref{fig:flowchart}, it
+        consists of the iterative process of matching and balance checking. This highlights the demand for tools such as \GSQL\, which perform matching at scale.
+
+     {\bf Answer to the causal questions:} %\dans{We should give here concrete answers to the queries Q1,Q2,Q3.  Then add a sentence saying that we will perform other causal analysis during the demo}
+In this step,  we answer the causal questions created at the very first step of the demonstration using
+\GSQL. For Q1, we show that LowPressure has no significant causal effect on DepDelay.
+For Q2, we identify that other treatments have significant causal effect on DepDelay
+ (Figure \ref{sfig:demo-tutorial}(F)).
+   \ignore{
+       \item for each treatment we compute ATE on the associated balanced matched data
+      \item we evaluate the statistical significance of the obtained
+        result by performing statistical tests, such as the chi-square test.
+          \item For Q3 we report the major causes of flight delay at the airports under study.}
+For Q3, we report the major causes of flight delay at the airports under study are
+     actually different. We show that the obtained results are in accordance with
+FAA reports. % \footnote{\url{https://www.faa.gov/}}
+For example, the runway configuration at SFO makes the airport
+unusually susceptible to delays in low-visibility conditions~\cite{faa-sfo}.
+% which reported the following major weather-related
+% causes:
+% snows, thunders and wind at EWR; thunder and fog at IAH;
+% snows and visibility at JFK; snows at LGA; visibility at SFO;
+
+
+
+
+
 {\bf Scalability:} Finally, we demonstrate system
   scalability by letting users interactively run queries on this large
    dataset--which would take R hours. As seen in Figure \ref{sfig:demo-tutorial}(g),
