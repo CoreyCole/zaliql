@@ -1,7 +1,7 @@
 \begin{figure*}
 \centering
 \includegraphics[scale=0.13]{Figures/Demo-Tutorial-2.png}
-\caption{Demonstration screenshot described in Section \ref{sec:dd}}
+\caption{Demonstration screenshot described in section \ref{sec:dd}}
 \label{sfig:demo-tutorial}
 \end{figure*}
 
@@ -112,7 +112,7 @@ delay between flights that happen during low-pressure (treated groups) and oppos
 \end{example}
 }
 
- {\bf Causal Questions:} Our demonstration starts by creating a set of {\em causal questions} regarding the effect of different weather attributes on flight delays, e.g.,
+ {\bf Causal questions:} Our demonstration starts by creating a set of {\em causal questions} regarding the effect of different weather attributes on flight delays, e.g.,
 Q1: Does low air pressure causes flight departure delays?
 Q2: Which weather features have the main causal effect on departure delays?
 Q3: Do the findings to the previous question differ between major aiports?
@@ -186,15 +186,16 @@ Tempm< 0$) and input SQL for custom discretization methods.} and (3) specifying 
 \label{fig:cv}
 \vspace{-0.3cm}
 \end{figure}
- {\bf Adjusting for confounding variables:} \ignore{
+ {\bf Adjusting for confounding variables:} {
 Causal inference provides a framework for adjusting for the effects of
 confounding variables.
  With only one categorical confounding variable, adjustment can be
  done simply by partitioning data into
  groups with similar values of the confounding variable, then
- computing the ATE as  weighted average of average treatment effects in each groups. However, real-world causal analysis requires a dozen or more continues confounding variables, and in this case there is not enough data in each group to enable a meaningful estimation of the ATE. For example, as exemplified in figure \ref{fig:cv}, LowPressure has more than ten confounding variables.  Most of the complexity in causal analysis tools, as well as in \GSQL, consists of implementing sophisticated methods for enlarging the groups while still performing a meaningful inference of the ATE.
+ computing the ATE as  weighted average of average treatment effects in each groups. However, real-world causal analysis requires a dozen or more continues confounding variables, and in this case there is not enough data in each group to enable a meaningful estimation of the ATE. For example, as exemplified in Figure \ref{fig:cv}, LowPressure has more than ten confounding variables.  Most of the complexity in causal analysis tools, as well as in \GSQL, consists of implementing sophisticated methods for enlarging the groups while still performing a meaningful inference of the ATE.
  \ignore{\dans{I would start this paragraph by saying that, using a single confounding variable is easy, since we essentially partition the data into two groups.  But real-world causal analysis requires a dozen or more confounding variables, and in this case there is not enough data in each group to enable a meaningful estimation of the ATE. For example, refer to Fig 2 to show a more complex set of confounding variables.  Most of the complexity in causal analysis tools, as well as in \GSQL, consists of implementing sophisticated methods for enlarging the groups while still performing a meaningful inference of the ATE.  Then continue with:}}
 }
+
 \GSQL\ controls for confounding influences (a task usually referred to
 as {\em covariate adjustment}) using {\em subclassification} and {\it propensity score matching} \cite{Rubin1983b,IacKinPor09,rosenbaum1984reducing}.
 These are popular methods for covariate adjustment developed in social
