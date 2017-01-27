@@ -27,3 +27,6 @@ abstr.txt
 *.out
 *.synctex.gz
 *.bak
+
+# ignore
+corey-secret

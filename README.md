@@ -88,7 +88,7 @@ bin_equal_width(
   source_table,
   target_column,
   output_table,
-  width
+  num_bins
 )
 ```
 ### Arguments
@@ -98,8 +98,8 @@ bin_equal_width(
   - TEXT. The name of the column containig the continuous data to be binned.
 - output_table
   - TEXT. The name of the materialized source_table subclass where the binned data will be appended or updated.
-- width
-  - NUMERIC. The prescribed width to be assigned to each interval.
+- num_bins
+  - INTEGER. The prescribed number of intervals to partition the data into.
 
 ## Equal Frequency Binning
 Bin equal frequency splits continuous data into intervals that approximately contain the same number of values.

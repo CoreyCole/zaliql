@@ -189,8 +189,8 @@ END;
 - no substitution of PL/pgSQL variables is done on the =command-string=
   - any required variable values must be inserted in the command string as it is constructed
 - the =command-string= can use parameter values, which are reference in the command as $1, $2, etc.
-  - these symbols refer to values supplied in the =USING= valuse
-  - this is preferable to inserting text (runtime overhead + SQL injection)
+  - these symbols refer to values supplied in the =USING= values
+  - this is preferable to inserting text (run time overhead + SQL injection)
 #+begin SQL
 EXECUTE ’SELECT count(*) FROM mytable WHERE inserted_by = $1 AND inserted <= $2’
     INTO c
