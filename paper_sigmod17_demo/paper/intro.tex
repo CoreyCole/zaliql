@@ -1,3 +1,4 @@
+\vspace{-1em}
 \section{Introduction}
 %\dan{7 pages}
 \label{sec:introduction}
@@ -44,10 +45,9 @@ In fact, performing predictive analysis to address questions that are causal in 
 In many cases, researchers who want to discover causality from data analysis settle for predictive analysis either because they think it is causal or lack of available alternatives.
 }
 Causal inference has been studied extensively in statistics and
-computer science \cite{Fisher1935design,Rubin2005,holland1986statistics,PearlBook2000\ignore{,Spirtes:book01}}.
-
-
-Many toolkits have been developed for performing causal inference in statistical software such as R, e.g., MatchIt and CEM \cite{ho2005,iacus2009cem}.  However, these toolkits do not scale to large datasets. For example, performing causal inference  on a dataset with 10M entries takes several hours using MatchIt or CEM.
+computer science
+\cite{Fisher1935design,Rubin2005,holland1986statistics,PearlBook2000\ignore{,Spirtes:book01}}, and
+many toolkits have been developed for performing causal inference in statistical software such as R, e.g., MatchIt and CEM \cite{ho2005,iacus2009cem}.  However, these toolkits do not scale to large datasets. For example, performing causal inference  on a dataset with 10M entries takes several hours using MatchIt or CEM.
  Additionally, causal analysis is part of a larger pipeline that includes data acquisition, data cleaning, and data integration; for large datasets, these tasks are best handled by a relational database engine, which provides most of the functionality needed for these tasks, and also scales up to large datasets. %% \dans{the previous sentence is cumbersome.  what we want to say is that causal analysis is part of a larger pipeline that includes data acquisition, data cleaning, and data integration; for large datasets, these tasks are best handled by a relational database engine, which provides most of the functionality needed for these tasks, and also scales up to large datasets.}
 \ignore{A rich ecosystem of tools and organizational requirements further encourage SQL database storage. Transferring
 data from DBMS to statistical softwares or connecting these

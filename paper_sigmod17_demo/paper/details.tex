@@ -112,7 +112,7 @@ delay between flights that happen during low-pressure (treated groups) and oppos
 \end{example}
 }
 
- {\bf Causal Questions:} Our demonstration starts by creating a set of {\em causal questions} regarding the effect of different weather attributes on flight delays.
+ {\bf Causal questions:} Our demonstration starts by creating a set of {\em causal questions} regarding the effect of different weather attributes on flight delays.
 Q1: Does low air pressure causes flight departure delays?
 Q2: Which weather features have the main causal effect on departure delays?
 Q3: Do the findings to the previous question differ between major aiports? We answer these questions using \GSQL\ by
@@ -189,20 +189,22 @@ Tempm< 0$) and input SQL for custom discretization methods.} and (3) specifying 
  {\bf Confounding variables:} The main issue with causal inference from observational data
  is the exitance of {\em confounding variables} that  make it difficult to establish a clear causal link between treatment and outcome.   We show that the observed positive effect of LowPressure
  was the result of the confounding influence of other variables such as visibility, snow and Thunder
-    Specifically, we show that, LowPressure is highly associated with unsettled weather conditions such as LowVisbility. For instance the average of LowVisbility in the treated group is much less than
+    Specifically, we show that, LowPressure is highly associated with unsettled weather conditions 
+    such as LowVisbility (Figure \ref{fig:cv}). For instance the average of LowVisbility in the treated group is much less than
   the opposite group. Thus, it is unclear that the observed DepDelay difference between the groups is causes by LowPressure or LowVisbility.
 
 
 \ignore{
   This scenario, as shown graphically in Figure \ref{fig:cv}, demonstrates that in the presence of {\em confounding variable} (a.k.a, {\em covariates}) the treated and control groups are very different and comparing them without accounting for the confounding variables could be misleading.
 }
+{
 \begin{figure}
 \hspace*{.3cm}\includegraphics[scale=0.2]{figures/Scenario-Graph.png}
 \caption{Confounding influence}
 
 \label{fig:cv}
 \vspace{-0.3cm}
-\end{figure}
+\end{figure}}
  {\bf Adjusting for confounding variables:} {
 Causal inference provides a framework for adjusting for the effects of
 confounding variables.
@@ -211,9 +213,7 @@ confounding variables.
  groups with similar values of the confounding variable, then
  computing the ATE as  weighted average of average treatment effects in each groups. However, real-world causal analysis requires a dozen or more continues confounding variables, and in this case there is not enough data in each group to enable a meaningful estimation of the ATE. For example, as exemplified in Figure \ref{fig:cv}, LowPressure has more than ten confounding variables.  Most of the complexity in causal analysis tools, as well as in \GSQL, consists of implementing sophisticated methods for enlarging the groups while still performing a meaningful inference of the ATE.
  \ignore{\dans{I would start this paragraph by saying that, using a single confounding variable is easy, since we essentially partition the data into two groups.  But real-world causal analysis requires a dozen or more confounding variables, and in this case there is not enough data in each group to enable a meaningful estimation of the ATE. For example, refer to Fig 2 to show a more complex set of confounding variables.  Most of the complexity in causal analysis tools, as well as in \GSQL, consists of implementing sophisticated methods for enlarging the groups while still performing a meaningful inference of the ATE.  Then continue with:}}
-}
-
-\GSQL\ controls for confounding influences (a task usually referred to
+}\GSQL\ controls for confounding influences (a task usually referred to
 as {\em covariate adjustment}) using {\em subclassification} and {\it propensity score matching} \cite{Rubin1983b,IacKinPor09,rosenbaum1984reducing}.
 These are popular methods for covariate adjustment developed in social
 science and statistics. We refer to these as matching methods.
