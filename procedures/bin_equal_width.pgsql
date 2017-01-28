@@ -14,6 +14,7 @@ DECLARE
   currentBin NUMRANGE;
   mviews RECORD;
   numRows INTEGER;
+  testRecord RECORD;
 BEGIN
   -- Create output_table if it does not exist
   newColumnName := 'ew_binned_' || quote_ident(target_column);
@@ -34,8 +35,8 @@ BEGIN
   -- get the minimum and maximum of the target_column to compute the binWidth
   commandString := 'SELECT min(' || quote_ident(source_table) || '.' || quote_ident(target_column) || '),'
     || 'max(' || quote_ident(source_table) || '.' || quote_ident(target_column) || ')'
-    || ' INTO STRICT (least, maximum)'
-    || ' FROM source_table';
+    || ' INTO testRecord'
+    || ' FROM ' || quote_ident(source_table);
   EXECUTE commandString;
   binWidth := (maximum - minimum) / num_bins;
 
