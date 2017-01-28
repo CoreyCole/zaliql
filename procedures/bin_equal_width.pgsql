@@ -2,13 +2,14 @@ CREATE OR REPLACE FUNCTION bin_equal_width(
   source_table TEXT,  -- input table name
   target_column TEXT, -- input table column name
   output_table TEXT,  -- output table name
-  num_bins INTEGER    -- width of each bin interval
+  num_bins INTEGER    -- 
 ) RETURNS TEXT AS $func$
 DECLARE
   commandString TEXT;
   newColumnName TEXT;
-  min NUMERIC;
-  max NUMERIC;
+  minMaxRecord RECORD;
+  minimum NUMERIC;
+  maximum NUMERIC;
   binWidth NUMERIC;
   currentBin NUMRANGE;
   mviews RECORD;
@@ -30,20 +31,20 @@ BEGIN
     || ' ADD COLUMN ' || newColumnName || ' NUMRANGE';
   EXECUTE commandString;
 
-  -- get the min and max of the target_column to compute the binWidth
+  -- get the minimum and maximum of the target_column to compute the binWidth
   commandString := 'SELECT min(' || quote_ident(source_table) || '.' || quote_ident(target_column) || '),'
     || 'max(' || quote_ident(source_table) || '.' || quote_ident(target_column) || ')'
-    || 'INTO min, max'
-    || 'FROM source_table';
+    || ' INTO STRICT (least, maximum)'
+    || ' FROM source_table';
   EXECUTE commandString;
-  binWidth := (max - min) / num_bins;
+  binWidth := (maximum - minimum) / num_bins;
 
   -- iterate through the rows in source_table to append bin column and insert into output_table
   numRows := 0;
   commandString := 'SELECT * FROM ' || quote_ident(source_table);
   FOR mviews IN EXECUTE commandString LOOP
     numRows := numRows + 1;
-    currentBin := numrange(min, min + bin_width, '[)');
+    currentBin := numrange(min, minimum + bin_width, '[)');
     WHILE mviews.target_column <= lower(currentBin) LOOP
       -- the current bin does not yet capture the current target_column value, increment to next bin
       currentBin := numrange(upper(currentBin), upper(currentBin) + bin_width, '[)');
@@ -57,5 +58,3 @@ BEGIN
   RETURN 'Successfully binned ' || numRows || ' rows into ' || num_bins || ' bins!';
 END;
 $func$ LANGUAGE plpgsql;
-
-SELECT bin_equal_width('flight', 'distance', 'test_flight', 10);
