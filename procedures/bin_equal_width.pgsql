@@ -1,61 +1,51 @@
 CREATE OR REPLACE FUNCTION bin_equal_width(
-  source_table TEXT,  -- input table name
-  target_column TEXT, -- input table column name
-  output_table TEXT,  -- output table name
-  num_bins INTEGER    -- 
+  source_table ANYELEMENT,  -- input table name
+  target_column TEXT,       -- input table column name
+  output_table REGCLASS,    -- output table name
+  num_bins INTEGER          -- prescribed number of bins
 ) RETURNS TEXT AS $func$
 DECLARE
   commandString TEXT;
   newColumnName TEXT;
-  minMaxRecord RECORD;
   minimum NUMERIC;
   maximum NUMERIC;
-  binWidth NUMERIC;
-  currentBin NUMRANGE;
-  mviews RECORD;
+  currentContinuous NUMERIC;
+  currentBin INTEGER;
   numRows INTEGER;
-  testRecord RECORD;
+  minMaxRecord minMax;
 BEGIN
-  -- Create output_table if it does not exist
-  newColumnName := 'ew_binned_' || quote_ident(target_column);
-  commandString := 'CREATE TABLE IF NOT EXISTS ' || quote_ident(output_table)
-    || ' (LIKE ' || quote_ident(source_table) || ' INCLUDING ALL)';
-  EXECUTE commandString;
-
-  -- Drop the binned column if it exists
-  commandString := 'ALTER TABLE ' || quote_ident(output_table)
-    || ' DROP COLUMN IF EXISTS ' || newColumnName;
-  EXECUTE commandString;
-
-  -- Add the binned column to the output_table
-  commandString := 'ALTER TABLE ' || quote_ident(output_table)
-    || ' ADD COLUMN ' || newColumnName || ' NUMRANGE';
-  EXECUTE commandString;
-
   -- get the minimum and maximum of the target_column to compute the binWidth
-  commandString := 'SELECT min(' || quote_ident(source_table) || '.' || quote_ident(target_column) || '),'
-    || 'max(' || quote_ident(source_table) || '.' || quote_ident(target_column) || ')'
-    || ' INTO testRecord'
-    || ' FROM ' || quote_ident(source_table);
-  EXECUTE commandString;
-  binWidth := (maximum - minimum) / num_bins;
+  EXECUTE format('SELECT MIN(%s) as minimum, MAX(%s) as maximum FROM %s', target_column, target_column, pg_typeof(source_table)) INTO minMaxRecord;
 
   -- iterate through the rows in source_table to append bin column and insert into output_table
   numRows := 0;
-  commandString := 'SELECT * FROM ' || quote_ident(source_table);
-  FOR mviews IN EXECUTE commandString LOOP
+  FOR source_table IN EXECUTE
+    format('SELECT * FROM %s', pg_typeof(source_table))
+  LOOP
     numRows := numRows + 1;
-    currentBin := numrange(min, minimum + bin_width, '[)');
-    WHILE mviews.target_column <= lower(currentBin) LOOP
-      -- the current bin does not yet capture the current target_column value, increment to next bin
-      currentBin := numrange(upper(currentBin), upper(currentBin) + bin_width, '[)');
-    END LOOP;
-    
-    commandString := 'INSERT INTO ' || output_table
-      || ' (SELECT * FROM mview'
-      || ' JOIN currentBin)';
-    EXECUTE commandString;
+    EXECUTE 'SELECT $1.' || quote_ident(target_column) USING source_table INTO currentContinuous;
+    SELECT width_bucket(currentContinuous, minMaxRecord.minimum, minMaxRecord.maximum, num_bins) INTO currentBin;
+    -- RAISE NOTICE 'minMaxRecord: % ; distance: % ; currentBin: %', minMaxRecord, currentContinuous, currentBin;
+    EXECUTE format('INSERT INTO %s SELECT $1.*', output_table)
+    USING source_table;
   END LOOP;
   RETURN 'Successfully binned ' || numRows || ' rows into ' || num_bins || ' bins!';
 END;
 $func$ LANGUAGE plpgsql;
+
+-- Create type minMax
+CREATE TYPE minMax AS (minimum NUMERIC, maximum NUMERIC);
+
+-- Create output_table if it does not exist
+CREATE TABLE IF NOT EXISTS test_flight
+(LIKE flight INCLUDING ALL);
+
+-- Drop the binned column if it exists
+ALTER TABLE test_flight
+DROP COLUMN IF EXISTS ew_binned_distance;
+
+-- Add the binned column to the output_table
+ALTER TABLE test_flight
+ADD COLUMN ew_binned_distance NUMRANGE;
+
+SELECT bin_equal_width(NULL::flight, 'distance', 'test_flight', 10);
