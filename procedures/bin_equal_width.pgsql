@@ -15,7 +15,7 @@ DECLARE
   minMaxRecord minMax;
 BEGIN
   -- get the minimum and maximum of the target_column to compute the binWidth
-  EXECUTE format('SELECT MIN(%s) as minimum, MAX(%s) as maximum FROM %s', target_column, target_column, pg_typeof(source_table)) INTO minMaxRecord;
+  EXECUTE format('SELECT MIN(%s::NUMERIC) as minimum, MAX(%s::NUMERIC) as maximum FROM %s', target_column, target_column, pg_typeof(source_table)) INTO minMaxRecord;
 
   -- iterate through the rows in source_table to append bin column and insert into output_table
   numRows := 0;
@@ -23,9 +23,9 @@ BEGIN
     format('SELECT * FROM %s', pg_typeof(source_table))
   LOOP
     numRows := numRows + 1;
-    EXECUTE 'SELECT $1.' || quote_ident(target_column) USING source_table INTO currentContinuous;
+    EXECUTE 'SELECT ($1.' || quote_ident(target_column) || '::NUMERIC)' USING source_table INTO currentContinuous;
     SELECT width_bucket(currentContinuous, minMaxRecord.minimum, minMaxRecord.maximum, num_bins) INTO currentBin;
-    -- RAISE NOTICE 'minMaxRecord: % ; distance: % ; currentBin: %', minMaxRecord, currentContinuous, currentBin;
+    RAISE NOTICE 'minMaxRecord: % ; distance: % ; currentBin: %', minMaxRecord, currentContinuous, currentBin;
     EXECUTE format('INSERT INTO %s SELECT $1.*', output_table)
     USING source_table;
   END LOOP;
@@ -33,8 +33,12 @@ BEGIN
 END;
 $func$ LANGUAGE plpgsql;
 
+SELECT bin_equal_width(NULL::flight, 'distance', 'test_flight', 10);
+
 -- Create type minMax
 CREATE TYPE minMax AS (minimum NUMERIC, maximum NUMERIC);
+
+DROP TABLE test_flight;
 
 -- Create output_table if it does not exist
 CREATE TABLE IF NOT EXISTS test_flight
@@ -47,5 +51,3 @@ DROP COLUMN IF EXISTS ew_binned_distance;
 -- Add the binned column to the output_table
 ALTER TABLE test_flight
 ADD COLUMN ew_binned_distance NUMRANGE;
-
-SELECT bin_equal_width(NULL::flight, 'distance', 'test_flight', 10);
