@@ -1,3 +1,17 @@
+-- 
+/*
+
+SELECT *,
+  max(id) OVER w subclass,
+  max(T) OVER w as treated,
+  min(T) OVER w as untreated
+FROM source_table
+
+CREATE MATERIALIZED VIEW
+
+*/
+
+
 CREATE OR REPLACE FUNCTION matchit(
   source_table ANYELEMENT,  -- input table name
   treatment TEXT,           -- treatment column name

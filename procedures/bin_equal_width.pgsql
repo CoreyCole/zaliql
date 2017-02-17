@@ -1,3 +1,17 @@
+-- do this with a simple query
+-- first create the table (output_table)
+--  -> throw an error if the output_table exists
+-- append the needed columns
+-- query the source_table, compute bins, insert into output_table
+/*
+INSERT INTO output_table
+SELECT *, 
+  width_bucket(distance::NUMERIC,min(distance::NUMERIC),max(distance::NUMERIC))
+FROM source_table
+*/
+
+-- or create a view? test performance
+
 CREATE OR REPLACE FUNCTION bin_equal_width(
   source_table ANYELEMENT,  -- input table name
   target_column TEXT,       -- input table column name
@@ -14,6 +28,9 @@ DECLARE
   numRows INTEGER;
   minMaxRecord minMax;
 BEGIN
+  EXECUTE format('CREATE TABLE IF NOT EXISTS %stest_flight AS
+  SELECT * FROM flight', );
+
   -- get the minimum and maximum of the target_column to compute the binWidth
   EXECUTE format('SELECT MIN(%s::NUMERIC) as minimum, MAX(%s::NUMERIC) as maximum FROM %s', target_column, target_column, pg_typeof(source_table)) INTO minMaxRecord;
 
@@ -41,8 +58,8 @@ CREATE TYPE minMax AS (minimum NUMERIC, maximum NUMERIC);
 DROP TABLE test_flight;
 
 -- Create output_table if it does not exist
-CREATE TABLE IF NOT EXISTS test_flight
-(LIKE flight INCLUDING ALL);
+CREATE TABLE IF NOT EXISTS test_flight AS
+SELECT * FROM flight;
 
 -- Drop the binned column if it exists
 ALTER TABLE test_flight
@@ -51,3 +68,5 @@ DROP COLUMN IF EXISTS ew_binned_distance;
 -- Add the binned column to the output_table
 ALTER TABLE test_flight
 ADD COLUMN ew_binned_distance NUMRANGE;
+
+SELECT COUNT(*) from flight
