@@ -41,9 +41,10 @@ The goal of causal analysis is to compute the {\em average treatment
 The so-called {\em fundamental problem of causal inference (FPCI)} is that
 for each unit we only know either $Y(1)$ or $Y(0)$ but not both.
 \ignore{\danp{Can we add an example to make this more intuitive, since it's important e.g.: each individual flight has either
-  LowPressure=1 or =0, not both}}. For example, for the treatment of LowPressure
-   either Depdelay(1) or Depdelay(0) are available.
-Thus, further assumption is needed for estimating ATE. \ignore{
+    LowPressure=1 or =0, not both}}. For example, each individual
+flight has either LowPressure=1 or LowPressure=0, so only one of Depdelay(1)
+or Depdelay(0) is available for each row.
+Thus, further assumptions are needed for estimating ATE. \ignore{
 \cite{Holland1986}, and causal inference is reduced to a missing data
 problem \cite{RosenbaumRubin1983}. }
 
@@ -68,9 +69,10 @@ are correlated, since they are high in the summer and low in the
 winter, and similarly for $T$ and $Y(1)$.  \ignore{The vast majority of datasets
 available to analysts today are observational data, and this motivates
 our interest in this case.}  Here, statistical literature makes the
-following weaker assumption~\cite{Rubin1983b} called {\em Strong Ignorability}: Forall $x$ the following hold:
-  (1) Unconfoundedness $({Y(0), Y(1) \bigCI T} | X=x)$ and
-  (2) Overlap $0 < \textrm{Pr}(T = 1 | X=x) < 1$.
+following weaker assumption~\cite{Rubin1983b} called {\em Strong
+  Ignorability}: for all $x$ the following hold:
+  (1) Unconfoundedness: $({Y(0), Y(1) \bigCI T} | X=x)$; and
+  (2) Overlap: $0 < \textrm{Pr}(T = 1 | X=x) < 1$.
 
 
 
@@ -153,7 +155,7 @@ cane be computed with the following SQL statement:
     (SELECT avg(Y) FROM \(R\)  WHERE X = \(\bar{x}\) AND T=0)
 \end{alltt}
 
-However, this is impossible, as explained above.
+However, this does not take into account covariate imbalance, as explained above.
 Instead, we apply two techniques used in statistics, then optimize
 the resulting queries before sending them to PostgresSQL. 
 \ignore{
@@ -167,7 +169,11 @@ the resulting queries before sending them to PostgresSQL.
   Instead, we apply two techniques used in statistics, then optimize
   the resulting queries before senging them to postgres}}
 
+<<<<<<< HEAD
 {\bf Propensity score matching:}
+=======
+{\bf Nearest neighbor matching.}
+>>>>>>> 38561b76429d300c96baca7fc4e6897bbffe6626
 \label{sec:nnm}
 The most common method is $k:1$ nearest neighbor
 matching based on propensity score (PSM). This method selects $k$ 
@@ -411,9 +417,15 @@ WHERE maxT!=minT)
 \vspace{-0.3cm}
   \caption{\bf{Subclassification based on  propensity score}}\label{fig:subpr}
 \end{figure}
+<<<<<<< HEAD
 }
 \ignore{
 {\bf Subclassification}
+=======
+
+
+{\bf Subclassification.}
+>>>>>>> 38561b76429d300c96baca7fc4e6897bbffe6626
 \label{sec:sub}
 It is easy to see that NNM does not necessarily use all the data,
 meaning that despite being in the range of a
@@ -427,9 +439,14 @@ cancer and smoking.} \ignore{ It is shown that using just five subclasses based
 on univariate continues covariates or propensity score removes over
 $90\%$ of covariates imbalance \cite{cochran1968effectiveness,
   rosenbaum1984reducing}.}
+<<<<<<< HEAD
 }
 \ignore{
 {\it Subclassification based on the propensity score}
+=======
+
+{\it Subclassification based on the propensity score.}
+>>>>>>> 38561b76429d300c96baca7fc4e6897bbffe6626
 in this approach data is is typically partitioned into five subclasses  based on the
 $n$ quintiles of propensity score. Figure \ref{fig:subpr}, shows the SQL implemention of
 this method using window function {\verb|ntile|}.}
@@ -480,7 +497,11 @@ WHERE subclasses.\(\ccv\)=\(\crele\).\(\ccv\)
 % \subsection{Coarsen Exact Matching (CEM)}
 % \label{sec:cem}
 
+<<<<<<< HEAD
 {\bf Coarsening Exact Matching (CEM):} In this method the vector of covariates $\cv$ is
+=======
+{\it Coarsening Exact Matching (CEM).} This is a particular form of subclassification in which the vector of covariates $\cv$ is
+>>>>>>> 38561b76429d300c96baca7fc4e6897bbffe6626
 coarsened into according to a set of user-defined cutpoints or any
 automatic discretization algorithm.
 \ignore{CEM has officially been "Qualified for Scientific Use" by the U.S. Food and Drug Administration\cite{IacKinPor09}.}
@@ -493,8 +514,9 @@ version of R. As depicted in Figure \ref{fig:cem},
 CEM is essentially a GROUP-BY-HAVING query. 
 
 To perform CEM efficiently, \GSQL\ leverages techniques from data management
- including pushing aggregate down to the base relation,
-  data cube-aggregation, pre-matching wrt. multiple treatments and bitmap indices. It also support several methods discretization methods for coarsening.\GSQL\ include several discretization methods for coarsening.
+ including pushing aggregates down to the base relation,
+  data cube-aggregation, pre-matching wrt. multiple treatments and
+  bitmap indices. \GSQL\  also include several discretization methods for coarsening.
 
  \ignore{Subclassification based
   on univariate continues covariate (cf Section \ref{sec:sub}) can bee

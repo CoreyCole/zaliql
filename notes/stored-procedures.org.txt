@@ -1,0 +1,296 @@
+* 1 - overview
+** 2 supported argument and result data types
+| accept | return | type                                                                                                                                                          |
+| y      | y      | any scalar or array types supported by the server                                                                                                             |
+| y      | y      | composite (row) type, or subset of row (record)                                                                                                               |
+| y      |        | variable number of arguments with =VARIADIC=                                                                                                                  |
+| y      | y      | polymorphic types =anyelement=, =anyarray=, =anynonarray=, and =anyenum=                                                                                      |
+|        | y      | set (table) of anything that can be returned as a single instance =RETURN NEXT= and =RETURN QUERY= where function declared =RETURNS TABLE= or =RETURNS SETOF= |
+* 2 - structure of PL/pgSQL
+** generic structure
+#+begin SQL
+[ <<label>> ]
+[ DECLARE
+    declarations ]
+BEGIN
+    statements
+END [ label ];
+#+end
+** sub blocks
+- used for logical grouping or to localize variables to a small group of statements
+- variables declared in a sub block mask any similarly-named variables of out blocks
+  - you can access the outer variables if you qualify their names with their blocks label (below)
+  - =outerblock.quantit=
+#+being SQL
+CREATE FUNCTION somefunc() RETURNS integer AS $$
+<< outerblock >>
+DECLARE
+    quantity integer := 30;
+BEGIN
+    RAISE NOTICE ’Quantity here is %’, quantity;  -- Prints 30
+    quantity := 50;
+    
+    -- Create a subblock
+    DECLARE
+        quantity integer := 80;
+    BEGIN
+        RAISE NOTICE ’Quantity here is %’, quantity;  -- Prints 80
+        RAISE NOTICE ’Outer quantity here is %’, outerblock.quantity;  -- Prints 50
+    END;
+    RAISE NOTICE ’Quantity here is %’, quantity;  -- Prints 50
+    RETURN quantity;
+END;
+$$ LANGUAGE plpgsql;
+#+end
+* 3 - declarations
+** 0 - general format
+~name [ CONSTANT ] type [ COLLATE collation_name ] [ NOT NULL ] [ { DEFAULT | := } expression~
+*** DEFAULT
+- specifies the initial value assigned to the variable when the block is entered
+- if not given, it is initialized to null
+*** CONSTANT
+- prevents the variable from being assigned after initialization
+*** COLLATE
+- specifies a collation to use for the variable
+*** NOT NULL
+- an assignment of a null value results in a run-time error
+** 1 - declaring function parameters
+- format: =alias type=
+- can also just specify type and then declare an alias in the =DECLARE= block
+#+begin SQL
+CREATE FUNCTION sales_tax(subtotal real) RETURNS real AS $$
+BEGIN
+    RETURN subtotal * 0.06;
+END;
+$$ LANGUAGE plpgsql;
+#+end
+*** output parameters
+- essentially just a variable that starts NULL and should be assigned during the execution of the function
+- useful when returning multiple values
+  - if you are returning multiple values, you must say =RETURNS record= or not include a =RETURNS= clause
+#+begin SQL
+CREATE FUNCTION sales_tax(subtotal real, OUT tax real) AS $$
+BEGIN
+    tax := subtotal * 0.06;
+END;
+$$ LANGUAGE plpgsql;
+#+end
+*** returning TABLE
+- exactly the same as declaring one or more =OUT= parameters and specifying =RETURNS SETOF sometype=
+#+begin SQL
+CREATE FUNCTION extended_sales(p_itemno int)
+RETURNS TABLE(quantity int, total numeric) AS $$
+BEGIN
+    RETURN QUERY SELECT quantity, quantity * price FROM sales
+                 WHERE itemno = p_itemno;
+END;
+$$ LANGUAGE plpgsql;
+#+end
+*** returning polymorphic types
+- when return type is polymorphic, a special parameter =$0= is created
+  - its data type is the actual return type of the function, as deduced from the actual input types
+  - can be used to hold the return value, but not required
+- example below works on any data type that has a + operator
+#+begin SQL
+CREATE FUNCTION add_three_values(v1 anyelement, v2 anyelement, v3 anyelement)
+RETURNS anyelement AS $$
+DECLARE
+    result ALIAS FOR $0;
+BEGIN
+    result := v1 + v2 + v3;
+    RETURN result;
+END;
+$$ LANGUAGE plpgsql;
+#+end
+** 2 - ALIAS
+~newname ALIAS FOR oldname;~
+- you can declare an alias for any variable, not just function parameters
+- main practical use is to assign a different name for variables with predetermined names
+- NOTE: can get confusing, only use if you plan to override predetermined names
+** 3 - copying types
+~variable%TYPE~
+- =%TYPE= provides the data type of a variable or table column
+- for example, say we have a column =user_id= in our =users= table. To declare a variable with the same type:
+  - ~user_id users.user_id%TYPE;~
+** 4 - row types
+~name table_name%ROWTYPE;~
+~name composite_type_name;~
+- a variable of composite type is called a *row-type* variable
+  - can hold a whole row of a SELECT query result
+  - individual fields are accessed with dot notation, e.g. =rowvar.field=
+- every table has an associated composite type of the same name
+  - so don't really need the =%ROWTYPE= part, but makes things more portable
+** 5 - record types
+~name RECORD;~
+- similar to row-type, but have no predefined structure
+- take on the structure they are assigned during a SELECT or FOR command
+  - until a record is first assigned to, it has no substructure (can't access fields within it)
+- not a true datatype, only a placeholder
+- NOTE: when a function says =RETURNS record=, that not quite the same concept as a record variable
+  - returning records, the structure is determined when the calling query is parsed
+  - record variables can change structure on-the-fly
+** 6 - collation of PL/pgSQL variables
+- collation refers to a set of rules that determine how data is sorted and compared
+- can assign different types of collation to variables
+  - "C"
+  - "en_US"
+#+begin SQL
+CREATE FUNCTION less_than_c(a text, b text) RETURNS boolean AS $$
+    BEGIN
+RETURN a < b COLLATE "C"; END;
+    $$ LANGUAGE plpgsql;
+#+end
+* 4 - expressions
+- all expressions are processed using the server's main SQL executor, e.g.
+  - ~IF expression THEN ...~
+  - will be fed as a query ~SELECT expression~ to the main SQL engine
+* 5 - basic statements
+** 1 - assignment
+~variable := expression~
+** 2 - executing a command with no result
+~PERFORM query;~
+- executes =query= and discards the result
+- replace =SELECT= with =PERFORM=
+** 3 - executing a query with a single-row result
+~SELECT expression INTO [STRICT] target FROM ...;~
+- can be assigned to a record variable, row-type variable, or list of scalar variables
+  - also works with =INSERT=, =UPDATE=, and =DELETE=
+- NOTE: this is quite different than PostgreSQL's regular =SELECT INTO= command
+  - this is for a newly created table
+  - if you want to create a table from a SELECT result inside a PL/pgSQL function, use the syntax =CREATE TABLE ... AS SELECT=
+- if the =target= is a row or variable list, length and types should exactly match up to the query
+- if =STRICT= is *not* specified, then target will be set to the first row returned by the query (or nulls if result set empty)
+  - NOTE: the first row is not well defined unless you use =ORDER BY=
+  - You can use the special =FOUND= variable to determine whether a row was returned
+#+begin SQL
+SELECT * INTO myrec FROM emp WHERE empname = myname;
+IF NOT FOUND THEN
+    RAISE EXCEPTION ’employee % not found’, myname;
+END IF;
+#+end
+- if the =STRICT= variable is specified, then the query must return exactly one row
+  - successful execution of a command with =STRICT= always sets =FOUND= to true
+#+begin SQL
+BEGIN
+    SELECT * INTO STRICT myrec FROM emp WHERE empname = myname;
+    EXCEPTION
+        WHEN NO_DATA_FOUND THEN
+            RAISE EXCEPTION ’employee % not found’, myname;
+        WHEN TOO_MANY_ROWS THEN
+            RAISE EXCEPTION ’employee % not unique’, myname;
+END;
+#+end
+** 4 - executing dynamic commands
+- generate dynamic commands that will involved different tables or different data types each time they are executed
+- PL/pgSQL normally tried to cache plans for commands, but will not work in such scenarios
+~EXECUTE command-string [ INTO [STRICT] target ] [ USING expression [, ... ] ];~
+- =command-string= is a TEXT expression to be executed
+- =USING= (optional) to supply values to be inserted into the command
+- no substitution of PL/pgSQL variables is done on the =command-string=
+  - any required variable values must be inserted in the command string as it is constructed
+- the =command-string= can use parameter values, which are reference in the command as $1, $2, etc.
+  - these symbols refer to values supplied in the =USING= values
+  - this is preferable to inserting text (run time overhead + SQL injection)
+#+begin SQL
+EXECUTE ’SELECT count(*) FROM mytable WHERE inserted_by = $1 AND inserted <= $2’
+    INTO c
+    USING checked_user, checked_date;
+#+end
+- NOTE: the =USING= parameter symbols can only be used for data values, if you want to use dynamic table / column names, you must insert textually
+#+begin SQL
+EXECUTE ’SELECT count(*) FROM ’
+     || tabname::regclass
+     || ’ WHERE inserted_by = $1 AND inserted <= $2’
+   INTO c
+   USING checked_user, checked_date;
+#+end
+- NOTE: the =USING= parameters will only work in SELECT, INSERT, UPDATE, and DELETE commands
+  - In other statement types (generically called utility statements), you must insert values textually (even if they are just data values)
+*** quoting values in dynamic queries
+#+begin SQL
+EXECUTE ’UPDATE tbl SET ’
+    || quote_ident(colname)
+    || ’ = ’
+    || quote_literal(newvalue)
+    || ’ WHERE key = ’
+    || quote_literal(keyvalue);
+#+end
+- for expressions with column or table identifiers, use =quote_ident=
+- for expressions that should be literal strings, use =quote_literal=
+- if you are dealing with values that might be null, you should use =quote_nullable= in place of =quote_literal=
+#+being SQL
+EXECUTE ’UPDATE tbl SET ’
+    || quote_ident(colname)
+    || ’ = ’
+    || quote_nullable(newvalue)
+    || ’ WHERE key = ’
+    || quote_nullable(keyvalue);
+#+end
+** 5 - obtaining the result status
+** 6 - doing nothing at all
+* 6 - control structures
+** 1 - returning from a function
+*** 1 - =RETURN=
+*** 2 - =RETURN NEXT= and =RETURN QUERY=
+** 2 - conditionals
+*** 1 - =IF-THEN=
+*** 2 - =IF-THEN-ELSE=
+*** 3 - =IF-THEN-ELSEIF=
+*** 4 - simple =CASE=
+*** 5 - searched =CASE=
+** 3 - simple loops
+*** 1 - =LOOP=
+*** 2 - =EXIT=
+*** 3 - =CONTINUE=
+*** 4 - =WHILE=
+*** 5 - =FOR= (integer variant)
+** 4 - looping through query results
+** 5 - looping through arrays
+** 6 - trapping errors
+* 7 - cursors
+- for loops automatically use a cursor internally to avoid memory problems
+- practically used for returning large row sets from functions
+** 1 - declaring cursor variables
+** 2 - opening cursors
+*** 1 - =OPEN FOR= query
+*** 2 - =OPEN FOR EXECUTE=
+*** 3 - opening a bound cursor
+** 3 - using cursors
+*** 1 - =FETCH=
+*** 2 - =MOVE=
+*** 3 - =UPDATE/DELETE WHERE CURRENT OF=
+*** 4 - =CLOSE=
+*** 5 - returning cursors
+** 4 - looping through a cursor's result
+* 8 - errors and messages
+* 9 - trigger procedures
+* 10 - PL/pgSQL under the hood
+** 1 - variable substitution
+** 2 - plan caching
+* 11 - tips for developing in PL/pgSQL
+- develop in a text editor
+- test your functions in a different window
+~CREATE OR REPLACE FUNCTION testfunc(integer) RETURNS integer as $$~
+- this way you can just reload the file to update the function
+- while running psql, you can load or reload such a function definition file with
+~\i filename.sql~
+- and then immediately issue SQL commands to test the function
+- also use GUI applications that make it easier to recreate and debug functions
+** 1 - handling of quotation marks
+*** surround function definitions in ~$proc$~
+#+begin SQL
+CREATE OR REPLACE FUNCTION testfunc(integer) RETURNS integer AS $PROC$
+    ....
+$PROC$ LANGUAGE plpgsql;
+#+end
+*** see this section for crazy edge cases
+* 12 - porting from Oracle PL/SQL
+** 1 - porting examples
+** 2 - other things to watch for
+*** 1 - implicit rollback after exceptions
+*** 2 - =EXECUTE=
+*** 3 - optimizing PL/pgSQL functions
+** 3 - appendix
+
+
+
