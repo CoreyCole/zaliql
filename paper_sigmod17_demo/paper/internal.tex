@@ -157,7 +157,7 @@ cane be computed with the following SQL statement:
 
 However, this does not take into account covariate imbalance, as explained above.
 Instead, we apply two techniques used in statistics, then optimize
-the resulting queries before sending them to PostgresSQL. 
+the resulting queries before sending them to PostgresSQL.
 \ignore{
 \dans{We shoudl describe better what goes on here.  The problem is
   that we want to compute ATE, conditioned on a bunch of covariates.
@@ -169,20 +169,16 @@ the resulting queries before sending them to PostgresSQL.
   Instead, we apply two techniques used in statistics, then optimize
   the resulting queries before senging them to postgres}}
 
-<<<<<<< HEAD
 {\bf Propensity score matching:}
-=======
-{\bf Nearest neighbor matching.}
->>>>>>> 38561b76429d300c96baca7fc4e6897bbffe6626
 \label{sec:nnm}
 The most common method is $k:1$ nearest neighbor
-matching based on propensity score (PSM). This method selects $k$ 
+matching based on propensity score (PSM). This method selects $k$
 best control matches for each individual
 in the treatment group in a greedy manner. Matching is
 done using a distance measure specified by a {\em caliper}. Note that The propensity score
 (cf., Table \ref{fig:metrics}) is missing and needs to be estimated from data.
 \GSQL\ estimate propensity score by perfroming ,logistic regression with
- UDF (User-Defined Function) inside PostgreSQL. 
+ UDF (User-Defined Function) inside PostgreSQL.
 \ignore{
 NNM controls matches for each treated
 unit and can be done with or without replacement. We denote
@@ -497,11 +493,7 @@ WHERE subclasses.\(\ccv\)=\(\crele\).\(\ccv\)
 % \subsection{Coarsen Exact Matching (CEM)}
 % \label{sec:cem}
 
-<<<<<<< HEAD
 {\bf Coarsening Exact Matching (CEM):} In this method the vector of covariates $\cv$ is
-=======
-{\it Coarsening Exact Matching (CEM).} This is a particular form of subclassification in which the vector of covariates $\cv$ is
->>>>>>> 38561b76429d300c96baca7fc4e6897bbffe6626
 coarsened into according to a set of user-defined cutpoints or any
 automatic discretization algorithm.
 \ignore{CEM has officially been "Qualified for Scientific Use" by the U.S. Food and Drug Administration\cite{IacKinPor09}.}
@@ -511,7 +503,7 @@ groups with at least one treated and one control unit are retained
 and the rest of units are discarded.  Let $\ccv$ be the
 coarsened version of $\cv$ and $R^c$ be a coarsened
 version of R. As depicted in Figure \ref{fig:cem},
-CEM is essentially a GROUP-BY-HAVING query. 
+CEM is essentially a GROUP-BY-HAVING query.
 
 To perform CEM efficiently, \GSQL\ leverages techniques from data management
  including pushing aggregates down to the base relation,
