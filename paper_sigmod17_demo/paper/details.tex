@@ -9,11 +9,11 @@
 \section{Demonstration Details}
 \label{sec:dd}
 Modern causal analysis is an iterative process, as we illustrate in Fig \ref{fig:flowchart}.
-One generates a hypothesis, pre-processes  relevant data with matching (explained below),
+An analyst acquires and integrates data from multiple sources, generates a hypothesis, pre-processes  relevant data with matching (explained below),
   then conducts the causal analysis; most often this needs to be repeated with a new matching
-  method, a new hypothesis or  new datasets.
-We demonstrate \GSQL\ by showing several real causal analysis performed on two,
-  large datasets that we downloaded from the Web and integrated in Postgres.
+  method, a new hypothesis or  new datasets \cite{IacKinPor09}.
+We demonstrate \GSQL\ by showing several real causal analysis performed the following data: \ignore{on two,
+  large datasets that we downloaded from the Web and integrated in PostgreSQL.}
 
 \ignore{
  In this demonstration, we will use \GSQL\ to quantify the causal effect of
@@ -24,7 +24,7 @@ We demonstrate \GSQL\ by showing several real causal analysis performed on two,
 Department of Transportation.\footnote{\url{http://www.transtats.bts.gov/}} It contains
 records of more than 90\% of US domestic flights of major airlines
 from 1988 to the present. It includes attributes such as FlightDate, OriginAirportID,
-CarrierID, CRSDepTime (scheduled departure time), and DepDelayMinutes (departure delay).
+CarrierID, CRSDepTime (scheduled departure time), and DepDelay (departure delay).
 (b) {\it Weather dataset (40M entries):} historical weather data for relevant flight gathered using the Weather Underground API.\footnote{\url{https://www.wunderground.com}} It includes Code (Airport ID),
 Date, Time,  Visim (visibility in km),
   Tempm (Temperature in C$^{\circ}$)
@@ -114,12 +114,12 @@ delay between flights that happen during low-pressure (treated groups) and oppos
 
  {\bf Causal questions:} Our demonstration starts by creating a set of {\em causal questions} regarding the effect of different weather attributes on flight delays.
 Q1: Does low air pressure causes flight departure delays?
-Q2: Which weather features have the main causal effect on departure delays?
-Q3: Do the findings to the previous question differ between major aiports? We answer these questions using \GSQL\ by
+Q2: Which weather features are major causes of departure delays?
+Q3: Do the findings to the previous question differ between major airports in the states? We answer these questions using \GSQL\ by
 
 \begin{enumerate}
   \item specifying DepDelay as our outcome of interest (potential effect)
-as shown in Figure \ref{sfig:demo-tutorial}(a)
+as shown in Figure \ref{sfig:demo-tutorial}(a).
   \item specifying a set of binary treatments (potential causes) that might affect DepDelay,
  as shown in Figure \ref{sfig:demo-tutorial}(b),
 In particular the following binary treatments will be created:
@@ -189,7 +189,7 @@ Tempm< 0$) and input SQL for custom discretization methods.} and (3) specifying 
  {\bf Confounding variables:} The main issue with causal inference from observational data
  is the exitance of {\em confounding variables} that  make it difficult to establish a clear causal link between treatment and outcome.   We show that the observed positive effect of LowPressure
  was the result of the confounding influence of other variables such as visibility, snow and Thunder
-    Specifically, we show that, LowPressure is highly associated with unsettled weather conditions 
+    Specifically, we show that, LowPressure is highly associated with unsettled weather conditions
     such as LowVisbility (Figure \ref{fig:cv}). For instance the average of LowVisbility in the treated group is much less than
   the opposite group. Thus, it is unclear that the observed DepDelay difference between the groups is causes by LowPressure or LowVisbility.
 

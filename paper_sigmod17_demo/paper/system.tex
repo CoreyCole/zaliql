@@ -2,7 +2,7 @@
 \begin{figure}
  \includegraphics[scale=0.25]{Figures/System-Overview.png}
   \vspace{-3.3mm} \caption{\GSQLB architecture}
- 
+
   \label{fig:arch}
   \vspace{-3mm}
 \end{figure}
@@ -22,15 +22,15 @@
 
 The overall architecture of \GSQL\ is shown in Figure \ref{fig:arch}.
 % \dans{corey addressed - start by saying that data is stored in a Postgres system}
-The API is a set of stored procedures that support a wide
+The API is a set of funtions that support a wide
 range of methods for performing causal inference on data stored in the
 PostgreSQL DBMS. %\footnote{\url{http://postgresql.org/}}
 The API will be packaged as a PostgreSQL extension. %and will be released in
 %PostgreSQL Extension Network.\footnote{\url{http://pgxn.org/}}
-The functionality of the API is modeled after the MatchIt and CEM R
-libraries \cite{ho2005,iacus2009cem} and includes methods for drawing causal inference from relational data. \GSQL\ also includes a web GUI
+The functionality of the API is modeled after the MatchIt and CEM toolkits 
+\cite{ho2005,iacus2009cem} and includes methods for drawing causal inference from relational data. \GSQL\ also includes a web GUI
 (see Figure \ref{sfig:demo-tutorial}) that can be hosted either locally or
-remotely . %It can be configured with the user's databases URL after they have installed the \GSQL\ Postgres extension. The  GUI be hosted remotely on a server or locally on your machine. \ignore{
+remotely. %It can be configured with the user's databases URL after they have installed the \GSQL\ Postgres extension. The  GUI be hosted remotely on a server or locally on your machine. \ignore{
 %The interface consists of three tabs : Setup, Matching Summary, and Analysis.
 %}
 

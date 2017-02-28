@@ -60,10 +60,7 @@ have:  ATE = E[Y(1)|T=1]-E[Y(0)|T=0]. \label{eq:indeass}.
   observational data}, where the mechanism used to assign treatments
 to units is not known, and where independence fails in general.
 
-
-
-In observational data, the mechanism used to assign treatments
-to units is not known, thus independence fails in general.  For
+For
 example, thunder occurs mostly in the summer, which is also high
 travel season, and therefore delays may be caused by the high traffic.
 In that case $T$ and $Y(0)$ (the delay when thunder does not occur)
@@ -107,23 +104,19 @@ ATE ~~=~~ E_x[E[Y(1)-Y(0)| X=x]] ~~ =~~ E_x[E[Y(1)|T=1,X=x]]  -E_x[E[Y(0)|T=0, X
  \ignore{
  Causal inference in the lack of randomization is called observational studies. By contrary  to the popular
 belief that it is nearly impossible to infer causality from data, such inference is possible under some strict
-assumptions and following the careful methodology that has been developed within the statistics, economics and social sciences literature. In this direction one of the most popular method developed for causal inference is matching. Next we overview the matching methods supported by \GSQL\ and their implementation.}
-
-\begin{figure} \scriptsize
+assumptions and following the careful methodology that has been developed within the statistics, economics and social sciences literature. In this direction one of the most popular method developed for causal inference is matching. Next we overview the matching methods supported by \GSQL\ and their implementation.}\begin{figure} \scriptsize
   \centering
   \begin{tabular}{|l|l|l|} \hline
     \bf{Name} &  $\delta(x_i,x_j)=$ & \bf{Comments} \\ \hline
 Coarsened distance & 0 if $C(x_i)=C(x_j)$ & Where $C(x)$ is a function that coarsen \\
                & $\infty$ if $C(x_i) \neq C(x_j)$ & a vector of continues covariate~\cite{IacKinPor09}\\ \hline
 Propensity score  & $|E(x_i) - E(x_j)|$ & where $E(x) = \textrm{Pr}(T = 1 | X=x)$\\
-distance (PS)   &  & is the propensity score~\cite{Rubin1983b} \\ \hline
-Mahalanobis Distance (MD) & $(x_i-x_j)'\Sigma^{-1} (x_i-x_j)$ & where $\Sigma=$ covariance matrix \\ \hline
-  \end{tabular}
+distance (PS)   &  & is the propensity score~\cite{Rubin1983b}\ \\ \hline
+\ignore{Mahalanobis Distance (MD) & $(x_i-x_j)'\Sigma^{-1} (x_i-x_j)$ & where $\Sigma=$ covariance matrix \\ \hline
+ } \end{tabular}
   \caption{Distance Measures used in Matching}
   \label{fig:metrics}
-\end{figure}
-
- If strong ignorability holds, one can estimate ATE by
+\end{figure}If strong ignorability holds, one can estimate ATE by
  taking the  average difference for each group with $X=x$ \ignore{\danp{Need to define
    what a group is here}} i.e., $E_x[E[Y(1)-Y(0)| X=x]]$.
 In practice, however, a direct application of this method is
@@ -132,7 +125,7 @@ $X=x$ we either have no data values at all, or very few such values,
 which means that estimating $E[Y(T)|T=1\mbox{ or }0,X=x]$ as an
 average from the database leads to large sampling error. A solution adopted in statistics is {\em matching} and {\em  subclassification}~\cite{Rubin1983b}.  The idea is to match each treated unit with one or multiple control
 units with ``close'' values of the covariate attributes $X$, where
-closeness is defined using some distance function between the covariate values of two units.  The most
+closeness is defined using some distance function between the covariate values of two units.   The most
 commonly used distance functions are presented  in Table \ref{fig:metrics}. \ignore{The efficacy
 of a matching method is evaluated by measuring {\em degree of
   imbalance} i.e., the differences between the distribution of
@@ -152,17 +145,17 @@ well-balance matched subset with a reasonable size obtained.}}
 \label{sec:algo}
 Define the table $R(T, X_1, X_2, \ldots, Y)$, the goal is to compute
 ATE conditioned on a set of covariates $X$. ATE within each group $X = \bar{x}$
-cane be computed with the simple SQL statement:
+cane be computed with the following SQL statement:
 \vspace{-0.2cm}
 \begin{alltt} \scriptsize
-  SELECT FROM 
+  SELECT FROM
     (SELECT avg(Y) FROM \(R\) WHERE X = \(\bar{x}\) AND T=1) -
     (SELECT avg(Y) FROM \(R\)  WHERE X = \(\bar{x}\) AND T=0)
 \end{alltt}
 
 However, this is impossible, as explained above.
 Instead, we apply two techniques used in statistics, then optimize
-the resulting queries before sending them to PostgresSQL The following methods are supported by \GSQL.
+the resulting queries before sending them to PostgresSQL. 
 \ignore{
 \dans{We shoudl describe better what goes on here.  The problem is
   that we want to compute ATE, conditioned on a bunch of covariates.
@@ -174,29 +167,37 @@ the resulting queries before sending them to PostgresSQL The following methods a
   Instead, we apply two techniques used in statistics, then optimize
   the resulting queries before senging them to postgres}}
 
-{\bf Nearest neighbor matching}
+{\bf Propensity score matching:}
 \label{sec:nnm}
-The most common method is that of $k:1$ nearest neighbor
-matching (NNM). NNM controls matches for each treated
+The most common method is $k:1$ nearest neighbor
+matching based on propensity score (PSM). This method selects $k$ 
+best control matches for each individual
+in the treatment group in a greedy manner. Matching is
+done using a distance measure specified by a {\em caliper}. Note that The propensity score
+(cf., Table \ref{fig:metrics}) is missing and needs to be estimated from data.
+\GSQL\ estimate propensity score by perfroming ,logistic regression with
+ UDF (User-Defined Function) inside PostgreSQL. 
+\ignore{
+NNM controls matches for each treated
 unit and can be done with or without replacement. We denote
 them respectively by NNMWR and NNMNR. In practice, matching is usually
 performed without replacement.  Notice that NNM faces the risk of bad
 matches if the closest neighbor is far away. This issue can be
 resolved by imposing a tolerance level on the maximum distance, known
 as the {\em caliper} (see e.g., \cite{lunt2014selecting}). \ignore{There are some rules of thumb for choosing the
-calipers (see e.g., \cite{lunt2014selecting}).}
+calipers (see e.g., \cite{lunt2014selecting}).}}
 
-The basic SQL statement to perform NNMNR
-is depicted in Figure \ref{fig:nnmnr}. 
-In this solution, 
-nearest control units are identified 
+The basic SQL statement to perform PSM
+is depicted in Figure \ref{fig:nnmnr}.
+In this solution,
+nearest control units are identified
 by means of an anti-join. \ignore{Note that when $k=1$ t
 he aggregate expression may be replaced by NOT EXISTS.} Specifically, all potential matches and their distances are identified by
 joining the treated with the control units that are closer than
 the caliper. Then, this set is sorted into ascending order of
 distances.  In addition, the order of each row in the sorted set is identified
 using the window function {\verb|ROW_NUMBER|}. Finally, all units with the order of less than or equal to $k$ are selected as the matched units.
-However, \GSQL\  does NNM efficiently by 
+However, \GSQL\  generate more efficient SQl statements by
 leveraging recent developments in the context of spatial-databases
 (see e.g., \cite{obe2015postgis}).
 
@@ -228,7 +229,7 @@ WHERE NOT EXISTS
      FROM ordered_potential_matches AS rp
      WHERE z.order < rp.order AND z.tID=rp.tID)\( \leq k\);
 \end{alltt} \vspace{-.3cm}
-  \caption{\bf NNMNR}\label{fig:nnmnr}
+  \caption{\bf Propensity score matching}\label{fig:nnmnr}
 \end{figure}
 
 
@@ -395,7 +396,7 @@ distance, this paper focuses on other matching methods.  \dan{which
 
 
 
-
+\ignore{
 \begin{figure}
 \begin{alltt} \scriptsize
 CREATE VIEW \(\sbc\) AS
@@ -410,8 +411,8 @@ WHERE maxT!=minT)
 \vspace{-0.3cm}
   \caption{\bf{Subclassification based on  propensity score}}\label{fig:subpr}
 \end{figure}
-
-
+}
+\ignore{
 {\bf Subclassification}
 \label{sec:sub}
 It is easy to see that NNM does not necessarily use all the data,
@@ -426,11 +427,12 @@ cancer and smoking.} \ignore{ It is shown that using just five subclasses based
 on univariate continues covariates or propensity score removes over
 $90\%$ of covariates imbalance \cite{cochran1968effectiveness,
   rosenbaum1984reducing}.}
-
+}
+\ignore{
 {\it Subclassification based on the propensity score}
 in this approach data is is typically partitioned into five subclasses  based on the
 $n$ quintiles of propensity score. Figure \ref{fig:subpr}, shows the SQL implemention of
-this method using window function {\verb|ntile|}.
+this method using window function {\verb|ntile|}.}
 \ignore{
 Figure \ref{fig:subpr} shows the
 SQL implementation of subclassification based on $n$ quintiles of the
@@ -471,24 +473,25 @@ WHERE subclasses.\(\ccv\)=\(\crele\).\(\ccv\)
 
 \end{alltt}
 \vspace{-.45cm}
-  \caption{\bf CEM}\label{fig:cem}
+  \caption{\bf Coarsen Exact Matching}\label{fig:cem}
 \end{figure}
 
 
 % \subsection{Coarsen Exact Matching (CEM)}
 % \label{sec:cem}
 
-{\it Coarsening Exact Matching (CEM)} This is a particular form of subclassification in which the vector of covariates $\cv$ is
+{\bf Coarsening Exact Matching (CEM):} In this method the vector of covariates $\cv$ is
 coarsened into according to a set of user-defined cutpoints or any
 automatic discretization algorithm.
 \ignore{CEM has officially been "Qualified for Scientific Use" by the U.S. Food and Drug Administration\cite{IacKinPor09}.}
 All units with similar coarsened
-covariates values are placed in unique subclasses. All
-subclasses with at least one treated and one control unit are retained
+covariates values are placed in unique groups. All
+groups with at least one treated and one control unit are retained
 and the rest of units are discarded.  Let $\ccv$ be the
-coarsened version of $\cv$ and $R^c$ be a discretized
+coarsened version of $\cv$ and $R^c$ be a coarsened
 version of R. As depicted in Figure \ref{fig:cem},
-CEM is essentially a GROUP-BY-HAVING query, which is relatively expensive.
+CEM is essentially a GROUP-BY-HAVING query. 
+
 To perform CEM efficiently, \GSQL\ leverages techniques from data management
  including pushing aggregate down to the base relation,
   data cube-aggregation, pre-matching wrt. multiple treatments and bitmap indices. It also support several methods discretization methods for coarsening.\GSQL\ include several discretization methods for coarsening.

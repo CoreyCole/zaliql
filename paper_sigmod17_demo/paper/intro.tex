@@ -28,6 +28,21 @@ analytics, which only finds associational dependencies and
 correlations.  The danger is that naive data enthusiasts will
 incorrectly interpret these predictive models as causal. While the distinction between causal and predictive analysis has
  been recognized, the conflation between the two is common which results in false discovery claims.
+
+
+To this day, {\em randomized experiments (A/B testing)} remain the gold standard for causal inference. However, in many domains controlled experiments are not feasible for ethical, economical or practical reasons \cite{rosenbaum2002observational}. Causal inference in the lack of controlled experiment is called {\em observational studies} \cite{Fisher1935design,Rubin2005,holland1986statistics,PearlBook2000\ignore{,Spirtes:book01}}. While social scientists and economists have been
+using observational data for policy development over a century the business world only recently discovering the emerging potential of Big Data, which is strictly observational in nature.  
+Developing scalable techniques to draw causal conclusions from Big Data is a key toward getting sustainable insights from data in decision support systems.
+
+\ignore{
+The wide availability of new, easy-to-use analytics tools may turn out to be counterproductive, as observational versus causal inference are not explicitly differentiated \cite{conrady2013causal}.
+}
+
+
+
+
+
+
 \ignore{
 Much of the success of Big data today comes from
   \emph{descriptive analytics}: statistical models or data mining algorithms applied to data
@@ -44,10 +59,13 @@ Both predictive and causal analysis are needed to generate and test theories,
 In fact, performing predictive analysis to address questions that are causal in nature could lead to a flood of false discovery claims.
 In many cases, researchers who want to discover causality from data analysis settle for predictive analysis either because they think it is causal or lack of available alternatives.
 }
+
+\ignore{
 Causal inference has been studied extensively in statistics and
 computer science
 \cite{Fisher1935design,Rubin2005,holland1986statistics,PearlBook2000\ignore{,Spirtes:book01}}, and
-many toolkits have been developed for performing causal inference in statistical software such as R, e.g., MatchIt and CEM \cite{ho2005,iacus2009cem}.  However, these toolkits do not scale to large datasets. For example, performing causal inference  on a dataset with 10M entries takes several hours using MatchIt or CEM.
+}
+Many toolkits have been developed for performing causal inference in statistical software such as R, SPSS and SAS e.g., MatchIt and CEM \cite{ho2005,iacus2009cem}.  However, these toolkits  are designed for single table data and do not scale to large datasets. For example, performing causal inference  on a dataset with 10M entries takes several hours using MatchIt or CEM.
  Additionally, causal analysis is part of a larger pipeline that includes data acquisition, data cleaning, and data integration; for large datasets, these tasks are best handled by a relational database engine, which provides most of the functionality needed for these tasks, and also scales up to large datasets. %% \dans{the previous sentence is cumbersome.  what we want to say is that causal analysis is part of a larger pipeline that includes data acquisition, data cleaning, and data integration; for large datasets, these tasks are best handled by a relational database engine, which provides most of the functionality needed for these tasks, and also scales up to large datasets.}
 \ignore{A rich ecosystem of tools and organizational requirements further encourage SQL database storage. Transferring
 data from DBMS to statistical softwares or connecting these
