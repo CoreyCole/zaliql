@@ -20,10 +20,12 @@ The {\em treatment effect}
 caused by the treatment $T_i$ for the $i$th unit  is defined as $Y_i(1)-Y_i(0)$.
 The goal of causal analysis is to compute the {\em average treatment
   effect (ATE)}:   ATE = E[Y(1)-Y(0)] = E[Y(1)] - E[Y(0)].
+
+
 \begin{figure}
   \centering
 {\scriptsize
-  \begin{tabular}{|c|c|c|c|c|c|} \hline
+  \scalebox{0.7}{\begin{tabular}{|c|c|c|c|c|c|} \hline
     Unit & Covariates & Treatment & Treatment & Control & Causal  Effect \\
    & $X$ & assignment $T$ & outcome $Y(1)$ & outcome $Y(0)$ & $Y(1)-Y(0)$ \\
     \hline
@@ -31,17 +33,18 @@ The goal of causal analysis is to compute the {\em average treatment
     2 & $X_2$ & $T_2$ & $Y_2(1)$ & $Y_2(0)$ & $Y_2(1) - Y_2(0)$ \\
     $\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ \\
     N & $X_N$ & $T_N$ & $Y_N(1)$ & $Y_N(0)$ & $Y_N(1) - Y_N(0)$ \\ \hline
-  \end{tabular}
+  \end{tabular}}
 }
-\caption{The Potential Outcome Framework~\cite{Rubin2005}}
+\caption{The Potential Outcome Framework}
   \label{fig:causal:inference}
   \vspace{-3mm}
 \end{figure}
 \noindent
 The so-called {\em fundamental problem of causal inference (FPCI)} is that
 for each unit we only know either $Y(1)$ or $Y(0)$ but not both.
-\ignore{\danp{Can we add an example to make this more intuitive, since it's important e.g.: each individual flight has either
-    LowPressure=1 or =0, not both}}. For example, each individual
+\ignore{\danp{Can we add an example to make this more intuitive,
+ since it's important e.g.: each individual flight has either
+    LowPressure=1 or =0, not both}} For example, each individual
 flight has either LowPressure=1 or LowPressure=0, so only one of Depdelay(1)
 or Depdelay(0) is available for each row.
 Thus, further assumptions are needed for estimating ATE. \ignore{
@@ -56,11 +59,9 @@ The strongest is the {\em independence assumption}, which states that
 the treatment mechanism is independent of the potential outcomes,
 i.e., $(Y(1), Y(0)) \bigCI T$. Then, it holds that
 $\E[Y(1)]=\E[Y(1)|T=1]$ and similarly $\E[Y(0)]=\E[Y(0)|T=0]$ and we
-have:  ATE = E[Y(1)|T=1]-E[Y(0)|T=0]. \label{eq:indeass}.
-\GSQL\  is designed for drawing causal inference from {\em
+have:  ATE = $\E[Y(1)|T=1]-\E[Y(0)|T=0]$. \GSQL\  is designed for drawing causal inference from {\em
   observational data}, where the mechanism used to assign treatments
-to units is not known, and where independence fails in general.
-
+to units is not known, and where independence fails in general. \ignore{
 For
 example, thunder occurs mostly in the summer, which is also high
 travel season, and therefore delays may be caused by the high traffic.
@@ -68,7 +69,7 @@ In that case $T$ and $Y(0)$ (the delay when thunder does not occur)
 are correlated, since they are high in the summer and low in the
 winter, and similarly for $T$ and $Y(1)$.  \ignore{The vast majority of datasets
 available to analysts today are observational data, and this motivates
-our interest in this case.}  Here, statistical literature makes the
+our interest in this case.}}  Here, statistical literature makes the
 following weaker assumption~\cite{Rubin1983b} called {\em Strong
   Ignorability}: for all $x$ the following hold:
   (1) Unconfoundedness: $({Y(0), Y(1) \bigCI T} | X=x)$; and
@@ -108,24 +109,28 @@ ATE ~~=~~ E_x[E[Y(1)-Y(0)| X=x]] ~~ =~~ E_x[E[Y(1)|T=1,X=x]]  -E_x[E[Y(0)|T=0, X
 belief that it is nearly impossible to infer causality from data, such inference is possible under some strict
 assumptions and following the careful methodology that has been developed within the statistics, economics and social sciences literature. In this direction one of the most popular method developed for causal inference is matching. Next we overview the matching methods supported by \GSQL\ and their implementation.}\begin{figure} \scriptsize
   \centering
-  \begin{tabular}{|l|l|l|} \hline
+  \scalebox{0.8}{\begin{tabular}{|l|l|l|} \hline \scriptsize
     \bf{Name} &  $\delta(x_i,x_j)=$ & \bf{Comments} \\ \hline
 Coarsened distance & 0 if $C(x_i)=C(x_j)$ & Where $C(x)$ is a function that coarsen \\
                & $\infty$ if $C(x_i) \neq C(x_j)$ & a vector of continues covariate~\cite{IacKinPor09}\\ \hline
 Propensity score  & $|E(x_i) - E(x_j)|$ & where $E(x) = \textrm{Pr}(T = 1 | X=x)$\\
 distance (PS)   &  & is the propensity score~\cite{Rubin1983b}\ \\ \hline
 \ignore{Mahalanobis Distance (MD) & $(x_i-x_j)'\Sigma^{-1} (x_i-x_j)$ & where $\Sigma=$ covariance matrix \\ \hline
- } \end{tabular}
+ } \end{tabular}}
   \caption{Distance Measures used in Matching}
   \label{fig:metrics}
-\end{figure}If strong ignorability holds, one can estimate ATE by
+\end{figure}
+
+
+If strong ignorability holds, one can estimate ATE by
  taking the  average difference for each group with $X=x$ \ignore{\danp{Need to define
    what a group is here}} i.e., $E_x[E[Y(1)-Y(0)| X=x]]$.
 In practice, however, a direct application of this method is
 impossible, because the data is typically very sparse: for any value
 $X=x$ we either have no data values at all, or very few such values,
 which means that estimating $E[Y(T)|T=1\mbox{ or }0,X=x]$ as an
-average from the database leads to large sampling error. A solution adopted in statistics is {\em matching} and {\em  subclassification}~\cite{Rubin1983b}.  The idea is to match each treated unit with one or multiple control
+average from the database leads to large sampling error. A solution adopted in 
+statistics is {\em approximate matching}~\cite{Rubin1983b}.  The idea is to match each treated unit with one or multiple control
 units with ``close'' values of the covariate attributes $X$, where
 closeness is defined using some distance function between the covariate values of two units.   The most
 commonly used distance functions are presented  in Table \ref{fig:metrics}. \ignore{The efficacy
@@ -143,10 +148,10 @@ well-balance matched subset with a reasonable size obtained.}}
 
 
 \vspace{-0.3cm}
-\subsection{matching Methods}
+\subsection{Matching Methods}
 \label{sec:algo}
 Define the table $R(T, X_1, X_2, \ldots, Y)$, the goal is to compute
-ATE conditioned on some function of the a set of covariates $X$. 
+ATE conditioned on some function of the a set of covariates $X$.
  \GSQL\ implements the following two matching methods:
 
 \ignore{ ATE within each group $X = \bar{x}$
@@ -507,14 +512,14 @@ groups with at least one treated and one control unit are retained
 and the rest of units are discarded.  Let $\ccv$ be the
 coarsened version of $\cv$ and $R^c$ be a coarsened
 version of R. As depicted in Fig. \ref{fig:cem},
-CEM is essentially a GROUP-BY-HAVING query. 
- \GSQL\  also supports several supervised and unsupervised methods for coarsening proposed in \ref{dougherty1995supervised}.
+CEM is essentially a GROUP-BY-HAVING query.
+ \GSQL\  also supports several supervised and unsupervised methods for coarsening in \ref{dougherty1995supervised}.
 
-We observe that CEM is an {\em Iceberg query} provided that, 
+We observe that CEM is an {\em Iceberg query} provided that,
 only a small number of results will satisfy the overlap assumption. These type of aggregate
-queries have been studies extensively in databases and data mining (see e.g., 
-\cite{fang1999computing,findlater2003iceberg,he2012efficient}). 
-\GSQL\ leverages these techniques to prepare 
+queries have been studies extensively in databases and data mining (see e.g.,
+\cite{fang1999computing,findlater2003iceberg,he2012efficient}).
+\GSQL\ leverages these techniques to prepare
 the data in order to efficiently compte CEM for several treatments.
 
 
@@ -522,8 +527,8 @@ the data in order to efficiently compte CEM for several treatments.
   on univariate continues covariate (cf Section \ref{sec:sub}) can bee
   seen as a particular form of CEM.}
 
-{\bf Analysis after matching:} After a balanced matched subset of data is extracted with one of the 
-matching techniques, ATE can computed from the matched data. 
+{\bf Analysis after matching:} After a balanced matched subset of data is extracted with one of the
+matching techniques, ATE can computed from the matched data.
 \GSQL\  supports a wide range of statistical tests such as t-test, Chi-Square test
 to compute the statical significance of the results.
 
