@@ -4,12 +4,12 @@
 
 The basic causal model in statistics is called the
 \ignore{Neyman-Rubin Causal Model (NRCM) (also referred to as}
-{\em potential outcome framework (POF)} \cite{Rubin2005}.
+{\em potential outcome framework} (POF) \cite{Rubin2005}.
 In this model, we are given a table with $N$ rows called {\em units} indexed by $i=1 \ldots N$ (see
 Table~ \ref{fig:causal:inference}).  The binary attribute $T$ denotes {\em treatment assignment}.
 %sr: already in first para. ($T=1$ means the unit was treated; $T=0$ means the unit was subjected to control);
 $X$ is a vector of
-background characteristics, (e.g., sex, race, age, \ldots) of each unit,
+background characteristics, (e.g., airport, airline, weather \ldots) of each unit,
 called {\em covariates}, unaffected by treatment; and the two
 attributes $Y(0), Y(1)$ represent {\em potential outcomes}: $Y(1)$ is
 the outcome of the unit if it is exposed to the treatment and $Y(0)$
@@ -19,7 +19,7 @@ is the outcome when it is exposed to the control.
 The {\em treatment effect}
 caused by the treatment $T_i$ for the $i$th unit  is defined as $Y_i(1)-Y_i(0)$.
 The goal of causal analysis is to compute the {\em average treatment
-  effect (ATE)}:   ATE = E[Y(1)-Y(0)] = E[Y(1)] - E[Y(0)].
+  effect (ATE)}:   $$ATE = \E[Y(1)-Y(0)] = \E[Y(1)] - \E[Y(0)].$$
 
 
 \begin{figure}
@@ -40,13 +40,13 @@ The goal of causal analysis is to compute the {\em average treatment
   \vspace{-3mm}
 \end{figure}
 \noindent
-The so-called {\em fundamental problem of causal inference (FPCI)} is that
+The so-called {\em fundamental problem of causal inference} (FPCI) is that
 for each unit we only know either $Y(1)$ or $Y(0)$ but not both.
 \ignore{\danp{Can we add an example to make this more intuitive,
  since it's important e.g.: each individual flight has either
     LowPressure=1 or =0, not both}} For example, each individual
-flight has either LowPressure=1 or LowPressure=0, so only one of Depdelay(1)
-or Depdelay(0) is available for each row.
+flight has either LowPressure=1 or LowPressure=0, so only one of DepDelay(1)
+or DepDelay(0) is available for each row.
 Thus, further assumptions are needed for estimating ATE. \ignore{
 \cite{Holland1986}, and causal inference is reduced to a missing data
 problem \cite{RosenbaumRubin1983}. }
@@ -59,7 +59,9 @@ The strongest is the {\em independence assumption}, which states that
 the treatment mechanism is independent of the potential outcomes,
 i.e., $(Y(1), Y(0)) \bigCI T$. Then, it holds that
 $\E[Y(1)]=\E[Y(1)|T=1]$ and similarly $\E[Y(0)]=\E[Y(0)|T=0]$ and we
-have:  ATE = $\E[Y(1)|T=1]-\E[Y(0)|T=0]$. \GSQL\  is designed for drawing causal inference from {\em
+have:  $$ATE = \E[Y(1)|T=1]-\E[Y(0)|T=0].$$
+
+\GSQL\  is designed for drawing causal inference from {\em
   observational data}, where the mechanism used to assign treatments
 to units is not known, and where independence fails in general. \ignore{
 For
@@ -70,10 +72,10 @@ are correlated, since they are high in the summer and low in the
 winter, and similarly for $T$ and $Y(1)$.  \ignore{The vast majority of datasets
 available to analysts today are observational data, and this motivates
 our interest in this case.}}  Here, statistical literature makes the
-following weaker assumption~\cite{Rubin1983b} called {\em Strong
+following weaker assumption called {\em Strong
   Ignorability}: for all $x$ the following hold:
   (1) Unconfoundedness: $({Y(0), Y(1) \bigCI T} | X=x)$; and
-  (2) Overlap: $0 < \textrm{Pr}(T = 1 | X=x) < 1$.
+  (2) Overlap: $0 < \textrm{Pr}(T = 1 | X=x) < 1$.~\cite{Rubin1983b}
 
 
 
@@ -113,22 +115,22 @@ assumptions and following the careful methodology that has been developed within
     \bf{Name} &  $\delta(x_i,x_j)=$ & \bf{Comments} \\ \hline
 Coarsened distance & 0 if $C(x_i)=C(x_j)$ & Where $C(x)$ is a function that coarsen \\
                & $\infty$ if $C(x_i) \neq C(x_j)$ & a vector of continues covariate~\cite{IacKinPor09}\\ \hline
-Propensity score  & $|E(x_i) - E(x_j)|$ & where $E(x) = \textrm{Pr}(T = 1 | X=x)$\\
+Propensity score  & $|ps(x_i) - ps(x_j)|$ & where $ps(x) = \textrm{Pr}(T = 1 | X=x)$\\
 distance (PS)   &  & is the propensity score~\cite{Rubin1983b}\ \\ \hline
 \ignore{Mahalanobis Distance (MD) & $(x_i-x_j)'\Sigma^{-1} (x_i-x_j)$ & where $\Sigma=$ covariance matrix \\ \hline
  } \end{tabular}}
-  \caption{Distance Measures used in Matching}
+  \caption{Distance Measures used in Matching -- explain in text, not figure}
   \label{fig:metrics}
 \end{figure}
 
 
 If strong ignorability holds, one can estimate ATE by
  taking the  average difference for each group with $X=x$ \ignore{\danp{Need to define
-   what a group is here}} i.e., $E_x[E[Y(1)-Y(0)| X=x]]$.
+   what a group is here}} i.e., $\E_x[\E[Y(1)-Y(0)| X=x]]$.
 In practice, however, a direct application of this method is
 impossible, because the data is typically very sparse: for any value
 $X=x$ we either have no data values at all, or very few such values,
-which means that estimating $E[Y(T)|T=1\mbox{ or }0,X=x]$ as an
+which means that estimating $\E[Y(T)|T=1\mbox{ or }0,X=x]$ as an
 average from the database leads to large sampling error. A solution adopted in 
 statistics is {\em approximate matching}~\cite{Rubin1983b}.  The idea is to match each treated unit with one or multiple control
 units with ``close'' values of the covariate attributes $X$, where
@@ -180,13 +182,12 @@ the resulting queries before sending them to PostgresSQL.}
 {\bf Propensity score matching:}
 \label{sec:nnm}
 The most common method is $k:1$ nearest neighbor
-matching based on propensity score (PSM). This method selects $k$
+matching based on {\em propensity score matching}(PSM). This method selects $k$
 best control matches for each individual
 in the treatment group in a greedy manner. Matching is
-done using a distance measure specified by a {\em caliper}. Note that The propensity score
-(cf., Table \ref{fig:metrics}) is missing and needs to be estimated from data.
-\GSQL\ estimates propensity score by performing, logistic regression with
- a UDF (User-Defined Function) inside PostgreSQL.
+done using a distance measure specified by a {\em caliper}. Note that the propensity score
+is missing and needs to be estimated from data.
+\GSQL\ estimates propensity score using logistic regression in the database layer.
 \ignore{
 NNM controls matches for each treated
 unit and can be done with or without replacement. We denote
@@ -208,7 +209,7 @@ the caliper. Then, this set is sorted into ascending order of
 distances.  In addition, the order of each row in the sorted set is identified
 using the window function {\verb|ROW_NUMBER|}. Finally, all units with the order of less than or equal to $k$ are selected as the matched units.
 
-Note that, \GSQL\  generates more efficient SQL statements by
+Note: \GSQL\  generates more efficient SQL statements by
 leveraging recent developments in the context of spatial-databases
 (see e.g., \cite{obe2015postgis}).
 
@@ -441,25 +442,24 @@ WHERE subclasses.\(\ccv\)=\(\crele\).\(\ccv\)
 % \subsection{Coarsen Exact Matching (CEM)}
 % \label{sec:cem}
 
-{\bf Coarsening Exact Matching (CEM):} In this method the vector of covariates $\cv$ is
-coarsened into according to a set of user-defined cutpoints or any
+{\bf Coarsening exact matching (CEM):} In this method the vector of covariates $\cv$ is
+coarsened according to a set of user-defined cutpoints or any
 automatic discretization algorithm.
 \ignore{CEM has officially been "Qualified for Scientific Use" by the U.S. Food and Drug Administration\cite{IacKinPor09}.}
 All units with similar coarsened
-covariates values are placed in unique groups. All
+covariate values are placed in unique groups. All
 groups with at least one treated and one control unit are retained
 and the rest of units are discarded.  Let $\ccv$ be the
 coarsened version of $\cv$ and $R^c$ be a coarsened
-version of R. As depicted in Fig. \ref{fig:cem},
+version of R, as depicted in Fig. \ref{fig:cem},
 CEM is essentially a GROUP-BY-HAVING query.
- \GSQL\  also supports several supervised and unsupervised methods for coarsening in \ref{dougherty1995supervised}.
+ \GSQL\  also supports several supervised and unsupervised methods for coarsening in ----this is missing \ref{dougherty1995supervised}.
 
-We observe that CEM is an {\em Iceberg query} provided that,
-only a small number of results will satisfy the overlap assumption. These type of aggregate
-queries have been studies extensively in databases and data mining (see e.g.,
+We observe that CEM is an {\em Iceberg query} -- footnote here -- provided that
+only a small number of results will satisfy the overlap assumption. These types of aggregate
+queries have been studied extensively in databases and data mining (see e.g.,
 \cite{fang1999computing,findlater2003iceberg}).
-\GSQL\ leverages these techniques to prepare
-the data in order to efficiently compte CEM for several treatments.
+\GSQL\ leverages these techniques to efficiently compute CEM for several treatments simultaneously.
 
 
  \ignore{Subclassification based
@@ -467,9 +467,9 @@ the data in order to efficiently compte CEM for several treatments.
   seen as a particular form of CEM.}
 
 {\bf Analysis after matching:} After a balanced matched subset of data is extracted with one of the
-matching techniques, ATE can computed from the matched data.
-\GSQL\  supports a wide range of statistical tests such as t-test, Chi-Square test
-to compute the statical significance of the results.
+matching techniques, ATE can be computed.
+\GSQL\  supports a wide range of statistical tests such as t-test, z-test, and Chi-Square test
+to compute the statical significance of produced results.
 
 
 
