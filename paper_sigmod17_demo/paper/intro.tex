@@ -73,7 +73,10 @@ computer science
 \cite{Fisher1935design,Rubin2005,holland1986statistics,PearlBook2000\ignore{,Spirtes:book01}}, and
 }
 
-Big data is most commonly observational and highly relational (e.g, social networks, biological networks, sensor networks and more). Unfortunately, current software for processing observational data for causal inference does not scale. R, Stata, SAS, and SPSS have packages such as {\em MatchIt} and {\em CEM}\cite{ho2005,iacus2009cem}, but they are designed for single-table data and are cumbersome with large datasets. For example, we found performing CEM on a dataset with 5M entries takes up to an hour using Stata, R or SAS.
+Computational, physical, and social scientists all increasingly want to perform causal inference on big data from observational studies: 
+%Big data is most commonly observational and highly relational (e.g,
+social networks, biological networks, sensor networks and more.
+Unfortunately, current software for processing observational data for causal inference does not scale. R, Stata, SAS, and SPSS have packages such as {\em MatchIt} and {\em CEM}\cite{ho2005,iacus2009cem}, but they are designed for single-table data and are cumbersome with large datasets. For example, we found performing CEM on a dataset with 5M entries takes up to an hour using Stata, R or SAS.
 
  Additionally, causal analysis is part of a larger pipeline that includes data acquisition,  cleaning, and integration. For large datasets, these tasks are better handled by a relational database engine, which provides most of the functionality needed for these tasks, and also scales up to large datasets. %% \dans{the previous sentence is cumbersome.  what we want to say is that causal analysis is part of a larger pipeline that includes data acquisition, data cleaning, and data integration; for large datasets, these tasks are best handled by a relational database engine, which provides most of the functionality needed for these tasks, and also scales up to large datasets.}
 \ignore{A rich ecosystem of tools and organizational requirements further encourage SQL database storage. Transferring
@@ -89,7 +92,7 @@ In this demonstration, we propose \GSQL,\footnote{ The prefix Zali refers to
   first explicit definition of causation in terms of counterfactuals,
   was heavily influenced by al-Ghzali's conception of causality.}
   a SQL-based framework for drawing causal inference within the DBMS. \GSQL\ takes the first step towards truly scalable causal inference by modeling it as a data management problem. We demonstrate that
-   approaching causal inference from this perspective is key to scalability and robustness.  \GSQL\ supports state-of-the-art methods for causal inference and runs at scale within a database engine.  \ignore{ The framework \ignore{is designed and implemented as an extension for PostgreSQL object-relational database
+  causal inference can be approached from this perspective, and that doing so is key to scalability and robustness.  \GSQL\ supports state-of-the-art methods for causal inference and runs at scale within a database engine.  \ignore{ The framework \ignore{is designed and implemented as an extension for PostgreSQL object-relational database
 systems and} includes a series of optimization techniques that allow it to
 scale to billions of records.}
 
