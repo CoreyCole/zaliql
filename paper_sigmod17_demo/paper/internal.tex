@@ -62,8 +62,7 @@ $\E[Y(1)]=\E[Y(1)|T=1]$ and similarly $\E[Y(0)]=\E[Y(0)|T=0]$ and we
 have:  $$ATE = \E[Y(1)|T=1]-\E[Y(0)|T=0].$$
 
 \GSQL\  is designed for drawing causal inference from {\em
-  observational data}, where the mechanism used to assign treatments
-to units is not known, and where independence fails in general. \ignore{
+  observational data}, where independence fails in general. \ignore{
 For
 example, thunder occurs mostly in the summer, which is also high
 travel season, and therefore delays may be caused by the high traffic.
@@ -74,8 +73,8 @@ available to analysts today are observational data, and this motivates
 our interest in this case.}}  Here, statistical literature makes the
 following weaker assumption called {\em Strong
   Ignorability}: for all $x$ the following hold:
-  (1) Unconfoundedness: $({Y(0), Y(1) \bigCI T} | X=x)$; and
-  (2) Overlap: $0 < \textrm{Pr}(T = 1 | X=x) < 1$.~\cite{Rubin1983b}
+  (1) unconfoundedness: $({Y(0), Y(1) \bigCI T} | X=x)$ and
+  (2) overlap: $0 < \textrm{Pr}(T = 1 | X=x) < 1$ ~\cite{Rubin1983b}.
 
 
 
@@ -132,10 +131,8 @@ In practice, however, a direct application of this method is
 impossible, because the data is typically very sparse: for any value
 $X=x$ we either have no data values at all, or very few such values,
 which means that estimating $\E[Y(T)|T=1\mbox{ or }0,X=x]$ as an
-average from the database leads to large sampling error. A solution adopted in 
-statistics is {\em approximate matching}~\cite{Rubin1983b}.  The idea is to match each treated unit with one or multiple control
-units with ``close'' values of the covariate attributes $X$, where
-closeness is defined using some distance function between the covariate values of two units.   \ignore{The most
+average from the database leads to large sampling error. A solution adopted in
+statistics is {\em matching}~\cite{Rubin1983b}.     \ignore{The most
 commonly used distance functions are presented  in Table \ref{fig:metrics}.} \ignore{The efficacy
 of a matching method is evaluated by measuring {\em degree of
   imbalance} i.e., the differences between the distribution of
@@ -150,12 +147,17 @@ well-balance matched subset with a reasonable size obtained.}}
 
 
 
-\vspace{-0.2cm}
+\vspace{-0.1cm}
 \subsection{Matching Methods}
 \label{sec:algo}
-Define the table $R(T, X_1, X_2, \ldots, Y)$, the goal is to compute
-ATE conditioned on some function of the a set of covariates $X$.
- \GSQL\ implements the following two matching methods:
+
+The idea is to match each treated unit to one or multiple control
+units with ``close'' values of the covariate attributes $X$ 
+(closeness is defined using some distance function between the covariate values of two units).
+\ignore{
+Given a table $R(T, X_1, X_2, \ldots, Y)$, the goal is to compute
+ATE conditioned on some function of the a set of covariates $X$.} Given a table $R(T,X_1 \ldots,X_n,Y)$,
+ \GSQL\ offers the following two matching methods:
 
 \ignore{ ATE within each group $X = \bar{x}$
 cane be computed with the following SQL statement:
@@ -183,12 +185,11 @@ the resulting queries before sending them to PostgresSQL.}
 {\bf Propensity score matching:}
 \label{sec:nnm}
 The most common method is $k:1$ nearest neighbor
-matching based on {\em propensity score matching} (PSM) \cite{Rubin1983b}.  A propensity score is the probability of a unit being assigned to a particular 
+matching based on {\em propensity score matching} (PSM) \cite{Rubin1983b}.  A propensity score is the probability of a unit being assigned to a particular
 treatment given a set of  covariates i.e., $P(x)=P(T=1|X=x)$.  This method
- selects the $K$ best control matches for each individual
-in the treatment group, that are closer than a pre-specified caliper, in a greedy manner.   Note that the propensity score
-is missing and needs to be estimated from data.
-\GSQL\ estimates propensity score using logistic regression in the database layer.
+ selects the $k$ best control matches for each individual
+in the treatment group, that are closer than a pre-specified {\em caliper}, in a greedy manner.   
+\GSQL\ estimates propensity score using logistic regression.
 \ignore{
 NNM controls matches for each treated
 unit and can be done with or without replacement. We denote
@@ -204,11 +205,13 @@ is depicted in Fig. \ref{fig:nnmnr}.
 In this solution,
 nearest control units are identified
 by means of an anti-join. \ignore{Note that when $k=1$ t
-he aggregate expression may be replaced by NOT EXISTS.} Specifically, all potential matches and their distances are identified by
+he aggregate expression may be replaced by NOT EXISTS.} 
+Specifically, all potential matches, and their distances, are identified by
 joining the treated with the control units that are closer on propensity score than
 the caliper. Then, this set is sorted into ascending order of
 distances.  In addition, the order of each row in the sorted set is identified
-using the window function {\verb|ROW_NUMBER|}. Finally, all units with the order of less than or equal to $k$ are selected as the matched units.
+using the window function {\verb|ROW_NUMBER|}. 
+Finally, $k$ closest controls are selected as the matched units.
 
 Note: \GSQL\  generates more efficient SQL statements by
 leveraging recent developments in the context of spatial-databases
@@ -219,7 +222,7 @@ leveraging recent developments in the context of spatial-databases
   is the connection to the SQL queries we defined above}}
 
 
-\begin{figure} 
+\begin{figure}
   \centering
 \begin{alltt} \tiny
 CREATE VIEW PSM_Matched
@@ -242,7 +245,7 @@ WHERE NOT EXISTS
      FROM ordered_potential_matches AS opm
      WHERE z.order < opm.order AND z.tID=opm.tID)\( \leq k\);
 \end{alltt} \vspace{-.3cm}
-  \caption{\bf Propensity score matching}\label{fig:nnmnr}
+  \caption{ Propensity score matching}\label{fig:nnmnr}
 \end{figure}
 
 
@@ -436,7 +439,7 @@ WHERE subclasses.\(\ccv\)=\(\crele\).\(\ccv\)
 
 \end{alltt}
 \vspace{-.45cm}
-  \caption{\bf Coarsen Exact Matching}\label{fig:cem}
+  \caption{Coarsen Exact Matching}\label{fig:cem}
 \end{figure}
 
 
@@ -452,12 +455,14 @@ covariate values are placed in unique groups. All
 groups with at least one treated and one control unit are retained
 and the rest of units are discarded.  Let $\ccv$ be the
 coarsened version of $\cv$ and $R^c$ be a coarsened
-version of R, as depicted in Fig. \ref{fig:cem},
+version of R. As depicted in Fig. \ref{fig:cem},
 CEM is essentially a GROUP-BY-HAVING query.
- \GSQL\  also supports several supervised and unsupervised methods for coarsening in proposed in \cite{dougherty1995supervised}.
+ \GSQL\  also supports several supervised and unsupervised methods for coarsening proposed in \cite{dougherty1995supervised}.
 
-We observe that CEM is  a form of {\em Iceberg query}.  These are  GROUP-BY-HAVING queries in which the output size is typically very small (the
-tip of an iceberg). Iceberg queries have been studied extensively in databases and data mining (see e.g.,
+We observed that CEM is an {\em Iceberg query}.  These are  GROUP-BY-HAVING queries 
+in which the output size is typically much smaller than the input (the
+tip of an iceberg). Iceberg queries have been studied 
+extensively in databases and data mining (see e.g.,
 \cite{fang1999computing,findlater2003iceberg}).
 \GSQL\ leverages these techniques to efficiently compute CEM for several treatments simultaneously.
 
@@ -466,10 +471,10 @@ tip of an iceberg). Iceberg queries have been studied extensively in databases a
   on univariate continues covariate (cf Section \ref{sec:sub}) can bee
   seen as a particular form of CEM.}
 
-{\bf Analysis after matching:} After a balanced matched subset of data is extracted with one of the
-matching techniques, ATE can be computed.
-\GSQL\  supports a wide range of statistical tests such as t-test, z-test, and Chi-Square test
-to compute the statical significance of produced results.
+{\bf Analysis after matching:} After a balanced matched subset of data is extracted, 
+ATE can be computed. \GSQL\  supports a wide range of statistical 
+tests such as z-test, t-test, linear regression t-test, and Chi-Square test
+to compute the statistical significance of the treatment effect.
 
 
 

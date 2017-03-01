@@ -30,13 +30,13 @@ incorrectly interpret these predictive models as causal. While the distinction b
  been recognized, the conflation between the two is common which results in false discovery claims.}
 
 
-To this day, {\em randomized experiments} (A/B testing) remain the gold standard for causal inference. 
+To this day, {\em randomized experiments} (A/B testing) remain the gold standard for causal inference.
 However, in many domains, controlled experiments are not feasible for ethical, economical or practical reasons \cite{rosenbaum2002observational}.
 {\em Observational studies} can be used to draw causal inference without controlled experiments  \cite{rosenbaum2002observational,Rubin2005,PearlBook2000\ignore{,Spirtes:book01}}.
 
 \ignore{Social scientists and economists have been using observational data for policy development for over a century.}
 \ignore{The world has rightfully latched onto the promise of ``big data".}
-\ignore{discovered the potential of Big Data, 
+\ignore{discovered the potential of Big Data,
 which is observational in nature.}
 \ignore{
 The wide availability of new, easy-to-use analytics tools may turn out to be counterproductive, as observational versus causal inference are not explicitly differentiated \cite{conrady2013causal}.}
@@ -73,12 +73,9 @@ computer science
 \cite{Fisher1935design,Rubin2005,holland1986statistics,PearlBook2000\ignore{,Spirtes:book01}}, and
 }
 
-``Big data" is strictly observational in most cases.
-CITATION
-Unfortunately, current software for processing observational data for causal inference does not scale.
-R, Stata, SAS, and SPSS have packages such as {\em MatchIt} and {\em CEM}, but they are designed for single-table data and are cumbersome with large datasets \cite{ho2005,iacus2009cem}. 
-For example, we found performing CEM on a dataset with 1M entries takes several hours using Stata 13 MP.
- Additionally, causal analysis is part of a larger pipeline that includes data acquisition, data cleaning, and data integration; for large datasets, these tasks are better handled by a relational database engine, which provides most of the functionality needed for these tasks, and also scales up to large datasets. %% \dans{the previous sentence is cumbersome.  what we want to say is that causal analysis is part of a larger pipeline that includes data acquisition, data cleaning, and data integration; for large datasets, these tasks are best handled by a relational database engine, which provides most of the functionality needed for these tasks, and also scales up to large datasets.}
+Big data is most commonly observational and highly relational (e.g, social networks, biological networks, sensor networks and more). Unfortunately, current software for processing observational data for causal inference does not scale. R, Stata, SAS, and SPSS have packages such as {\em MatchIt} and {\em CEM}\cite{ho2005,iacus2009cem}, but they are designed for single-table data and are cumbersome with large datasets. For example, we found performing CEM on a dataset with 5M entries takes up to an hour using Stata, R or SAS.
+
+ Additionally, causal analysis is part of a larger pipeline that includes data acquisition,  cleaning, and integration. For large datasets, these tasks are better handled by a relational database engine, which provides most of the functionality needed for these tasks, and also scales up to large datasets. %% \dans{the previous sentence is cumbersome.  what we want to say is that causal analysis is part of a larger pipeline that includes data acquisition, data cleaning, and data integration; for large datasets, these tasks are best handled by a relational database engine, which provides most of the functionality needed for these tasks, and also scales up to large datasets.}
 \ignore{A rich ecosystem of tools and organizational requirements further encourage SQL database storage. Transferring
 data from DBMS to statistical softwares or connecting these
 softwares to DBMS can be error prone, difficult, time consuming and inefficient. For these
