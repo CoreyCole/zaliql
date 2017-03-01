@@ -143,10 +143,13 @@ well-balance matched subset with a reasonable size obtained.}}
 
 
 \vspace{-0.3cm}
-\subsection{Methods}
+\subsection{matching Methods}
 \label{sec:algo}
 Define the table $R(T, X_1, X_2, \ldots, Y)$, the goal is to compute
-ATE conditioned on a set of covariates $X$. ATE within each group $X = \bar{x}$
+ATE conditioned on some function of the a set of covariates $X$. 
+ \GSQL\ implements the following two matching methods:
+
+\ignore{ ATE within each group $X = \bar{x}$
 cane be computed with the following SQL statement:
 \vspace{-0.2cm}
 \begin{alltt} \scriptsize
@@ -157,7 +160,7 @@ cane be computed with the following SQL statement:
 
 However, this does not take into account covariate imbalance, as explained above.
 Instead, we apply two techniques used in statistics, then optimize
-the resulting queries before sending them to PostgresSQL.
+the resulting queries before sending them to PostgresSQL.}
 \ignore{
 \dans{We shoudl describe better what goes on here.  The problem is
   that we want to compute ATE, conditioned on a bunch of covariates.
@@ -177,8 +180,8 @@ best control matches for each individual
 in the treatment group in a greedy manner. Matching is
 done using a distance measure specified by a {\em caliper}. Note that The propensity score
 (cf., Table \ref{fig:metrics}) is missing and needs to be estimated from data.
-\GSQL\ estimate propensity score by perfroming ,logistic regression with
- UDF (User-Defined Function) inside PostgreSQL.
+\GSQL\ estimates propensity score by performing, logistic regression with
+ a UDF (User-Defined Function) inside PostgreSQL.
 \ignore{
 NNM controls matches for each treated
 unit and can be done with or without replacement. We denote
@@ -190,16 +193,17 @@ as the {\em caliper} (see e.g., \cite{lunt2014selecting}). \ignore{There are som
 calipers (see e.g., \cite{lunt2014selecting}).}}
 
 The basic SQL statement to perform PSM
-is depicted in Figure \ref{fig:nnmnr}.
+is depicted in Fig. \ref{fig:nnmnr}.
 In this solution,
 nearest control units are identified
 by means of an anti-join. \ignore{Note that when $k=1$ t
 he aggregate expression may be replaced by NOT EXISTS.} Specifically, all potential matches and their distances are identified by
-joining the treated with the control units that are closer than
+joining the treated with the control units that are closer on propensity score than
 the caliper. Then, this set is sorted into ascending order of
 distances.  In addition, the order of each row in the sorted set is identified
 using the window function {\verb|ROW_NUMBER|}. Finally, all units with the order of less than or equal to $k$ are selected as the matched units.
-However, \GSQL\  generate more efficient SQl statements by
+
+Note that, \GSQL\  generates more efficient SQL statements by
 leveraging recent developments in the context of spatial-databases
 (see e.g., \cite{obe2015postgis}).
 
@@ -211,13 +215,13 @@ leveraging recent developments in the context of spatial-databases
 \begin{figure}
   \centering
 \begin{alltt} \scriptsize
-CREATE VIEW \(\nnmnr\)
+CREATE VIEW PSM_Matched
 AS WITH potential_matches AS
   (SELECT treated.ID AS tID, control.ID AS cID,
-          \(\delta(treated.\cv,control.\cv)\)  AS distance
+          abs(Treated.PS-Control.PS)  AS distance
    FROM \(\rel\) AS control, \(\rel\) AS treated
    WHERE control.T=0 AND treated.T=1
-     AND \(\delta(treated.\cv,control.\cv)\) < \(caliper\))),
+     AND abs(Treated.PS-Control.PS) < \(caliper\))),
             ordered_potential_matches AS
   (SELECT *, ROW_NUMBER() over (ORDER BY distance) AS order
    FROM potential_matches)
@@ -226,10 +230,10 @@ FROM ordered_potential_matches AS rp
 WHERE NOT EXISTS
     (SELECT *
      FROM ordered_potential_matches AS z
-     WHERE z.order < rp.order AND z.cID=rp.cID)
+     WHERE z.order < opm.order AND z.cID=opm.cID)
   AND (SELECT count(*)
-     FROM ordered_potential_matches AS rp
-     WHERE z.order < rp.order AND z.tID=rp.tID)\( \leq k\);
+     FROM ordered_potential_matches AS opm
+     WHERE z.order < opm.order AND z.tID=opm.tID)\( \leq k\);
 \end{alltt} \vspace{-.3cm}
   \caption{\bf Propensity score matching}\label{fig:nnmnr}
 \end{figure}
@@ -273,14 +277,14 @@ AS WITH potential_matches AS
   (SELECT *, ROW_NUMBER() over (ORDER BY distance) AS order
    FROM potential_matches)
 SELECT *
-FROM ordered_potential_matches AS rp
+FROM ordered_potential_matches AS opm
 WHERE NOT EXISTS
     (SELECT *
      FROM ordered_potential_matches AS z
-     WHERE z.order < rp.order AND z.cID=rp.cID)
+     WHERE z.order < opm.order AND z.cID=opm.cID)
   AND (SELECT count(*)
-     FROM ordered_potential_matches AS rp
-     WHERE z.order < rp.order AND z.tID=rp.tID)\( \leq k\);
+     FROM ordered_potential_matches AS opm
+     WHERE z.order < opm.order AND z.tID=opm.tID)\( \leq k\);
 \end{alltt} \vspace{-.5cm}
   \caption{\bf SQL implementation of NNMNR}\label{fig:nnmnr}
 \end{figure}
@@ -472,15 +476,15 @@ function computed using a sort algorithm.}}
 
 \begin{figure}
 \begin{alltt} \scriptsize
-CREATE VIEW \(\cem\) AS
+CREATE VIEW CEM_Matched AS
 WITH subclasses AS
   (SELECT *,
-          max(ID) OVER w subclass, max(T) OVER w AS minT,
-          min(T) OVER w AS maxT
+          max(ID) OVER w subclass, max(T) AS min_treatment,
+          min(T)AS max_treatment
    FROM \(\crele\)
    Group by \(\ccv\)
-   Having minT!=maxT)
-SELECT ID, T, \(\ccv\), Y, subclass
+   Having min_treatment!=max_treatment)
+SELECT *
 FROM subclasses,\(\crele\)
 WHERE subclasses.\(\ccv\)=\(\crele\).\(\ccv\)
 
@@ -502,18 +506,26 @@ covariates values are placed in unique groups. All
 groups with at least one treated and one control unit are retained
 and the rest of units are discarded.  Let $\ccv$ be the
 coarsened version of $\cv$ and $R^c$ be a coarsened
-version of R. As depicted in Figure \ref{fig:cem},
-CEM is essentially a GROUP-BY-HAVING query.
+version of R. As depicted in Fig. \ref{fig:cem},
+CEM is essentially a GROUP-BY-HAVING query. 
+ \GSQL\  also supports several supervised and unsupervised methods for coarsening proposed in \ref{dougherty1995supervised}.
 
-To perform CEM efficiently, \GSQL\ leverages techniques from data management
- including pushing aggregates down to the base relation,
-  data cube-aggregation, pre-matching wrt. multiple treatments and
-  bitmap indices. \GSQL\  also include several discretization methods for coarsening.
+We observe that CEM is an {\em Iceberg query} provided that, 
+only a small number of results will satisfy the overlap assumption. These type of aggregate
+queries have been studies extensively in databases and data mining (see e.g., 
+\cite{fang1999computing,findlater2003iceberg,he2012efficient}). 
+\GSQL\ leverages these techniques to prepare 
+the data in order to efficiently compte CEM for several treatments.
+
 
  \ignore{Subclassification based
   on univariate continues covariate (cf Section \ref{sec:sub}) can bee
   seen as a particular form of CEM.}
 
+{\bf Analysis after matching:} After a balanced matched subset of data is extracted with one of the 
+matching techniques, ATE can computed from the matched data. 
+\GSQL\  supports a wide range of statistical tests such as t-test, Chi-Square test
+to compute the statical significance of the results.
 
 
 
