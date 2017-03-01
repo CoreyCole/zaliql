@@ -1,4 +1,4 @@
-\vspace{-.2cm}
+%\vspace{-.2cm}
 \section{Internals}
 \subsection{Basic Formalism}
 
@@ -181,7 +181,7 @@ the resulting queries before sending them to PostgresSQL.}
   $\bar x$.  However, this is impossible, as explained above.
   Instead, we apply two techniques used in statistics, then optimize
   the resulting queries before senging them to postgres}}
-
+\vspace{-0.3cm}
 {\bf Propensity score matching:}
 \label{sec:nnm}
 The most common method is $k:1$ nearest neighbor
@@ -224,7 +224,7 @@ leveraging recent developments in the context of spatial-databases
 
 \begin{figure}
   \centering
-\begin{alltt} \tiny
+\begin{alltt} \scriptsize
 CREATE VIEW PSM_Matched
 AS WITH potential_matches AS
   (SELECT treated.ID AS tID, control.ID AS cID,
@@ -424,7 +424,7 @@ distance, this paper focuses on other matching methods.  \dan{which
 
 
 \begin{figure}
-\begin{alltt} \tiny
+\begin{alltt} \scriptsize
 CREATE VIEW CEM_Matched AS
 WITH subclasses AS
   (SELECT *,
