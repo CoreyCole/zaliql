@@ -1,11 +1,11 @@
 \begin{figure*}
-\centering
-\includegraphics[scale=0.13]{Figures/Demo-Tutorial-2.png}
-\caption{Demonstration screenshot described in section \ref{sec:dd}}
+\hspace{-.3cm}
+\includegraphics[scale=0.145]{Figures/Demo-Tutorial-2.png}
+\caption{Demonstration screenshot described in Section \ref{sec:dd}}
 \label{sfig:demo-tutorial}
 \end{figure*}
 
-
+\vspace{-.3cm}
 \section{Demonstration Details}
 \label{sec:dd}
 Modern causal analysis is an iterative process, as  illustrated in Fig \ref{fig:flowchart}.
@@ -113,15 +113,15 @@ delay between flights that happen during low-pressure (treated groups) and oppos
 }
 
  {\bf Data Exploration:} Our demonstration starts by exploring the effect of different weather features
- on flight departure delay. For example, we show that \%10 flights were delayed
-when pressure is low; but only \%0.4 flight delayed
-when pressure is high. This suggests that pressure strongly affects flight delays.
+ on flight departure delay. For example, we show that \%11 of flights were delayed
+when pressure was low; but only \%0.4 of flights delayed
+when pressure was high. This suggests that pressure strongly affects flight delays.
 However, when examining departure delay, by airports, airline and other weather features, 
 the flight delay rate-upon
-low pressure-declined to less than \%0.001 in all groups. \footnote{This phenomenon
+low pressure-declined to less than \%0.001 in all the groups. \footnote{This phenomenon
 is known as Simpson's paradox and arises frequently in observational studies \cite{pearl2014comment}.
 We demonstrate that the issue could be avoided by conducting a careful causal analysis.
-} So does low pressure affect flight departure delay? 
+} So does low pressure affect flight delays? 
 
 
 
@@ -129,7 +129,7 @@ We demonstrate that the issue could be avoided by conducting a careful causal an
 Q1: Does low air pressure causes flight departure delays?
 Q2: Which weather features are major causes of departure delays?
 Q3: Do the findings to the previous question differ between major airports in the states? We answer these questions using \GSQL\ by
-
+ \vspace{-0.2cm}
 \begin{enumerate}
   \item specifying DepDelay as our outcome of interest (effect)
 as shown in Fig. \ref{sfig:demo-tutorial}(a).
@@ -144,7 +144,8 @@ In particular the following binary treatments will be created:
   further customization on the discretization and matching methods.
 These dialogs will also allow the user to incorporate other columns (e.g. snow is defined as $iff Precipm> 0.3 and
 Tempm< 0$) and input SQL for custom discretization methods.}
-    \vspace{-0.3cm} \item specifying a subset of data that is relevant to the analysis.  We select five US airports  with high rate of weather-related delay, namely, San Francisco (SFO) , John F. Kennedy (JFK), Newark Liberty (EWR), George Bush (IAH), and LaGuardia Airport (LGA).
+    \vspace{-0.3cm} \item specifying a subset of data that is relevant to the analysis.  We select five US airports  with high rate of weather-related delay, namely, 
+    San Francisco (SFO), John F. Kennedy (JFK), Newark Liberty (EWR), George Bush (IAH), and LaGuardia Airport (LGA).
 \end{enumerate}
 
 \ignore{
@@ -186,7 +187,7 @@ Tempm< 0$) and input SQL for custom discretization methods.} and (3) specifying 
    and the outcome is DepDelayMinutes.  (Acually, can you update
     the figure so that the treatment is LowPressure).  If we compute
     the ATE for LowPressure on DepDelay, the result is  (give concrete number).}}  We show that for LowPressure, ATE is 10mins, which is a relatively large that suggests pressure affects DepDelay. However, it is known that
-  LowPressure does not have any causal impact on departure delay (it only requires longer takeoff distance) \cite{FAA08}. This observation raises the question that  where does this difference coming from?
+  LowPressure does not have any causal impact on departure delay. This observation raises the question that  where does this difference coming from?
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% check ba;ance
@@ -210,8 +211,8 @@ Tempm< 0$) and input SQL for custom discretization methods.} and (3) specifying 
   This scenario, as shown graphically in Figure \ref{fig:cv}, demonstrates that in the presence of {\em confounding variable} (a.k.a, {\em covariates}) the treated and control groups are very different and comparing them without accounting for the confounding variables could be misleading.
 }
 {
-\begin{figure}
-\hspace*{.3cm}\includegraphics[scale=0.2]{figures/Scenario-Graph.png}
+\begin{figure} \centering
+\hspace*{.3cm}\includegraphics[scale=0.18]{figures/Scenario-Graph.png}
 \caption{Confounding influence}
 
 \label{fig:cv}
@@ -222,16 +223,14 @@ In other to draw valid causal conclusion we need to adjust for variables the con
  With only one categorical confounding variable, adjustment can be
  done simply by partitioning data into
  groups with similar values of the confounding variable, then
- computing the ATE as the weighted average of the effects in each groups.
-
-
- However, real-world causal analysis requires a dozen or more continues confounding
+ computing the ATE as the weighted average of the effects in each groups.  However, real-world causal analysis requires a dozen or more continues confounding
  variables, and in this case there is not enough data in each group to enable a meaningful estimation of the ATE.
  For example, LowPressure has more than ten confounding variables
  (some of them are shown in Fig. \ref{fig:cv}).
 
  Sophisticated techniques are required to adjust for a large set of confounding variables. \GSQL
- implements two dominant approaches in social science and statistics namely, {\em coarsen exact matching} and {\it propensity score matching} 
+ implements two dominant approaches in social science and statistics namely,
+  {\em coarsen exact matching (CEM)} and {\it propensity score matching(PSM)} 
  \cite{Rubin1983b,IacKinPor09,rosenbaum1984reducing}. 
  The key goal of matching is to prune data so that
 the remaining data ({\em matched data}) have better \emph{balance}
@@ -240,11 +239,9 @@ distributions of the confounding variables in the treated and control
 groups are similar after matching.
 Once the two groups are balanced, any observed difference of the
 outcome between the two groups can be attributed to the treatment. In
-our demo, \vspace{-0.1cm}
-\begin{enumerate}
-  \item for each treatment, we select a set of covariates deemed to confound the treatment and DepDelay (Figure \ref{sfig:demo-tutorial}(d)).
-  \item we select a matching method and adjust its tuning parameters (Fig. \ref{sfig:demo-tutorial}(e)).
-\end{enumerate}
+our demo, (1)\ for each treatment, we select a set of covariates deemed to confound the treatment and DepDelay (Figure \ref{sfig:demo-tutorial}(d)).
+  (2)\ we select a matching method and adjust its tuning parameters (Fig. \ref{sfig:demo-tutorial}(e)).
+
 
 
 {\bf Checking Balance:}  In this step, we check whether the
@@ -278,8 +275,8 @@ For Q3, we report the major causes of flight delay at the airports under the stu
      actually different. We validate the statistical significance of our findings with t-test.
           We show that the obtained results are in accordance with
 FAA reports. % \footnote{\url{https://www.faa.gov/}}
-For example, the runway configuration at SFO makes the airport
-unusually susceptible to delays in low-visibility conditions~\cite{faa-sfo}.
+\ignore{For example, the runway configuration at SFO makes the airport
+unusually susceptible to delays in low-visibility conditions~\cite{faa-sfo}.}
 % which reported the following major weather-related
 % causes:
 % snows, thunders and wind at EWR; thunder and fog at IAH;
@@ -294,5 +291,8 @@ unusually susceptible to delays in low-visibility conditions~\cite{faa-sfo}.
    dataset--which would take the existing toolkits for causal inference hours. As seen in Figure \ref{sfig:demo-tutorial}(g),
 \GSQL\ is able to run through 105M entries in less than a minute, whereas for CEM, in R, SPSS or SAS,
  takes several minutes on 5M entries. \footnote{We note that \GSQL\ is recognised as a scalable SQL-based
- counterpart of coarsen exact matching by its inventors (see, \url{http://gking.harvard.edu/cem}).}
+ counterpart of CEM by its inventors (see, \url{http://gking.harvard.edu/cem}).} Because of the lack of 
+ space we only compare \GSQL\ with R and Stata. However, \GSQL\ 
+ outperforms other statistical softwares too.
+ 
 

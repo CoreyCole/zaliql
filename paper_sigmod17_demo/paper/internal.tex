@@ -147,7 +147,7 @@ well-balance matched subset with a reasonable size obtained.}}
 
 
 
-\vspace{-0.3cm}
+\vspace{-0.2cm}
 \subsection{Matching Methods}
 \label{sec:algo}
 Define the table $R(T, X_1, X_2, \ldots, Y)$, the goal is to compute
@@ -217,9 +217,9 @@ leveraging recent developments in the context of spatial-databases
   is the connection to the SQL queries we defined above}}
 
 
-\begin{figure}
+\begin{figure} 
   \centering
-\begin{alltt} \scriptsize
+\begin{alltt} \tiny
 CREATE VIEW PSM_Matched
 AS WITH potential_matches AS
   (SELECT treated.ID AS tID, control.ID AS cID,
@@ -407,67 +407,6 @@ distance, this paper focuses on other matching methods.  \dan{which
 
 
 
-\ignore{
-\begin{figure}
-\begin{alltt} \scriptsize
-CREATE VIEW \(\sbc\) AS
-(WITH tmp0 AS
-  (SELECT *. ntile(\(n\)) over w subclass,
-   FROM \(\rel\) window w AS (ORDER BY ps))
-SELECT ID, T, \(\ccv\), Y, subclass,
-             max(T) over w maxT, min(T) over w minT
-FROM tmp0  window w AS (PARTITION BY BY subclass)
-WHERE maxT!=minT)
-\end{alltt}
-\vspace{-0.3cm}
-  \caption{\bf{Subclassification based on  propensity score}}\label{fig:subpr}
-\end{figure}
-<<<<<<< HEAD
-}
-\ignore{
-{\bf Subclassification}
-=======
-
-
-{\bf Subclassification.}
->>>>>>> 38561b76429d300c96baca7fc4e6897bbffe6626
-\label{sec:sub}
-It is easy to see that NNM does not necessarily use all the data,
-meaning that despite being in the range of a
-treatment, many control units are discarded.  In subclassification, the aim is to
-form subclasses for which the distribution of covariates for the
-treated and control groups are as similar as possible. \ignore{The use of
-subclassification for matching can be traced back to
-\cite{cochran1968effectiveness}, which examined this method on a
-single covariate (age), investigating the relationship between lung
-cancer and smoking.} \ignore{ It is shown that using just five subclasses based
-on univariate continues covariates or propensity score removes over
-$90\%$ of covariates imbalance \cite{cochran1968effectiveness,
-  rosenbaum1984reducing}.}
-<<<<<<< HEAD
-}
-\ignore{
-{\it Subclassification based on the propensity score}
-=======
-
-{\it Subclassification based on the propensity score.}
->>>>>>> 38561b76429d300c96baca7fc4e6897bbffe6626
-in this approach data is is typically partitioned into five subclasses  based on the
-$n$ quintiles of propensity score. Figure \ref{fig:subpr}, shows the SQL implemention of
-this method using window function {\verb|ntile|}.}
-\ignore{
-Figure \ref{fig:subpr} shows the
-SQL implementation of subclassification based on $n$ quintiles of the
-propensity score in Figure \ref{fig:subpr}. \GSQL learn
- the $ps$ the propensity score of each unit by calling logistic
-regression from the Madlib library develop for PostgresSQL. \ignore{The SQL query seeks to partition
-the units into five subclasses with propensity scores as equal as
-possible using the window function {\verb|ntile|} and ensure
-the overlap within each subclass. \ignore{. Finally,
-subclasses for which the maximum and minimum of the treatment are not
-equal retained (the discarded subclasses do not enjoy the overlap
-assumption).} This solution has the order of $nlog(n)$ if the window
-function computed using a sort algorithm.}}
 
 
 %%%%  we haven't defined univariates; i don't know what they are
@@ -480,7 +419,7 @@ function computed using a sort algorithm.}}
 
 
 \begin{figure}
-\begin{alltt} \scriptsize
+\begin{alltt} \tiny
 CREATE VIEW CEM_Matched AS
 WITH subclasses AS
   (SELECT *,

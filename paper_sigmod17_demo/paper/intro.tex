@@ -30,10 +30,10 @@ incorrectly interpret these predictive models as causal. While the distinction b
  been recognized, the conflation between the two is common which results in false discovery claims.}
 
 
-To this day, {\em randomized experiments (A/B testing)} remain the gold standard for causal inference. However, in many domains controlled experiments are not feasible for ethical, economical or practical reasons \cite{rosenbaum2002observational}. Causal inference in the lack of controlled experiment is called {\em observational studies} \cite{Fisher1935design,Rubin2005,holland1986statistics,PearlBook2000\ignore{,Spirtes:book01}}. While social scientists and economists have been
-using observational data for policy development over a century, the business world only recently discovering the emerging potential of Big Data, which is strictly observational in nature.
-The wide availability of new, easy-to-use analytics tools may turn out to be counterproductive, as observational versus causal inference are not explicitly differentiated \cite{conrady2013causal}.
-Thus, supporting scalable and valid techniques to draw causal conclusions from Big Data is a key toward getting sustainable insights from data. \ignore{ in decision support systems.}
+To this day, {\em randomized experiments (A/B testing)} remain the gold standard for causal inference. However, in many domains controlled experiments are not feasible for ethical, economical or practical reasons \cite{rosenbaum2002observational}. Causal inference in the lack of controlled experiments is called {\em observational studies} \cite{Fisher1935design,Rubin2005,holland1986statistics,PearlBook2000\ignore{,Spirtes:book01}}. While social scientists and economists have been
+using observational data for policy development over a century, the business world only recently discovering the emerging potential of Big Data, which is observational in nature. \ignore{
+The wide availability of new, easy-to-use analytics tools may turn out to be counterproductive, as observational versus causal inference are not explicitly differentiated \cite{conrady2013causal}.}
+Thus, differentiating between causal and predictive analysis and developing scalable techniques to draw causal conclusions from observational data is a key toward getting sustainable insights from Big Data. \ignore{ in decision support systems.}
 
 \ignore{
 
@@ -67,7 +67,7 @@ computer science
 \cite{Fisher1935design,Rubin2005,holland1986statistics,PearlBook2000\ignore{,Spirtes:book01}}, and
 }
 
-Today, observational studies are performed using toolkits that depends on statistical software such as R, SPSS and SAS, e.g., {\em MatchIt} and {\em CEM} \cite{ho2005,iacus2009cem}.  However, these toolkits  are designed for single table data and do not scale to large datasets. For example, performing causal inference  on a dataset with 10M entries takes several hours using  MatchIt or  CEM.
+Today, observational studies are performed using toolkits that depends on statistical software such as R, Stata and SAS, e.g., {\em MatchIt} and {\em CEM} \cite{ho2005,iacus2009cem}.  However, these toolkits  are designed for single table data and do not scale to large datasets. For example, performing causal inference  on a dataset with 10M entries takes several hours using  MatchIt or  CEM.
  Additionally, causal analysis is part of a larger pipeline that includes data acquisition, data cleaning, and data integration; for large datasets, these tasks are best handled by a relational database engine, which provides most of the functionality needed for these tasks, and also scales up to large datasets. %% \dans{the previous sentence is cumbersome.  what we want to say is that causal analysis is part of a larger pipeline that includes data acquisition, data cleaning, and data integration; for large datasets, these tasks are best handled by a relational database engine, which provides most of the functionality needed for these tasks, and also scales up to large datasets.}
 \ignore{A rich ecosystem of tools and organizational requirements further encourage SQL database storage. Transferring
 data from DBMS to statistical softwares or connecting these
@@ -80,10 +80,9 @@ In this demonstration, we propose \GSQL,\footnote{ The prefix Zali refers to
   al-Ghzali (1058-1111), a medieval Persian philosopher. It is known
   that David Hume (1711-1776), a Scottish philosopher, who gave the
   first explicit definition of causation in terms of counterfactuals,
-  was heavily influenced by al-Ghzali's conception of causality
-  \cite{shalizi2013advanced}.}
+  was heavily influenced by al-Ghzali's conception of causality.}
   a SQL-based framework for drawing causal inference within DBMS. \GSQL\ takes the first step towards truly scalable causal inference by modeling it as a data management problem. We demonstrate that
-   approaching causal inference from this fresh perspective is key to scalability and robustness.  \GSQL\ supports state-of-the-art methods for causal inference and runs at scale within a database engine.   The framework \ignore{is designed and implemented as an extension for PostgreSQL object-relational database
+   approaching causal inference from this fresh perspective is key to scalability and robustness.  \GSQL\ supports state-of-the-art methods for causal inference and runs at scale within a database engine.  \ignore{ The framework \ignore{is designed and implemented as an extension for PostgreSQL object-relational database
 systems and} includes a series of optimization techniques that allow it to
-scale to billions of records.
+scale to billions of records.}
 
