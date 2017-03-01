@@ -231,7 +231,7 @@ In other to draw valid causal conclusion we need to adjust for variables the con
  Sophisticated techniques are required to adjust for a large set of confounding variables. \GSQL
  implements two dominant approaches in social science and statistics namely,
   {\em coarsen exact matching (CEM)} and {\it propensity score matching(PSM)} 
- \cite{Rubin1983b,IacKinPor09,rosenbaum1984reducing}. 
+ \cite{IacKinPor09,Rubin1983b}. 
  The key goal of matching is to prune data so that
 the remaining data ({\em matched data}) have better \emph{balance}
 between the treated and control groups. That is, the empirical
@@ -290,9 +290,9 @@ unusually susceptible to delays in low-visibility conditions~\cite{faa-sfo}.}
   scalability by letting users interactively run queries on this large
    dataset--which would take the existing toolkits for causal inference hours. As seen in Figure \ref{sfig:demo-tutorial}(g),
 \GSQL\ is able to run through 105M entries in less than a minute, whereas for CEM, in R, SPSS or SAS,
- takes several minutes on 5M entries. \footnote{We note that \GSQL\ is recognised as a scalable SQL-based
- counterpart of CEM by its inventors (see, \url{http://gking.harvard.edu/cem}).} Because of the lack of 
- space we only compare \GSQL\ with R and Stata. However, \GSQL\ 
- outperforms other statistical softwares too.
+ takes several minutes on 5M entries. \footnote{We note that \GSQL\ is recognised as a scalable
+ implementation of CEM that outperforms  its counterparts in statistical software,
+  by its inventors (see, \url{http://gking.harvard.edu/cem}). 
+ Here for the benefit of space we restrict the scalability comparison with R and Stata.} 
  
 

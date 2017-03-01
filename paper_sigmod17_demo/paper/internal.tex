@@ -4,7 +4,7 @@
 
 The basic causal model in statistics is called the
 \ignore{Neyman-Rubin Causal Model (NRCM) (also referred to as}
-{\em potential outcome framework (POF)} \cite{Rubin2005,holland1986statistics}.
+{\em potential outcome framework (POF)} \cite{Rubin2005}.
 In this model, we are given a table with $N$ rows called {\em units} indexed by $i=1 \ldots N$ (see
 Table~ \ref{fig:causal:inference}).  The binary attribute $T$ denotes {\em treatment assignment}.
 %sr: already in first para. ($T=1$ means the unit was treated; $T=0$ means the unit was subjected to control);
@@ -457,7 +457,7 @@ CEM is essentially a GROUP-BY-HAVING query.
 We observe that CEM is an {\em Iceberg query} provided that,
 only a small number of results will satisfy the overlap assumption. These type of aggregate
 queries have been studies extensively in databases and data mining (see e.g.,
-\cite{fang1999computing,findlater2003iceberg,he2012efficient}).
+\cite{fang1999computing,findlater2003iceberg}).
 \GSQL\ leverages these techniques to prepare
 the data in order to efficiently compte CEM for several treatments.
 
