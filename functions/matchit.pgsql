@@ -1,4 +1,9 @@
 /*
+
+count(distict treatment)
+  group by covariates
+  having count(distict treatment) = 5
+
 CREATE MATERIALIZED VIEW test_flight AS
 with subclasses as (
 	SELECT
@@ -122,6 +127,8 @@ BEGIN
   RETURN 'Match successful and materialized in ' || output_table || '!';
 END;
 $func$ LANGUAGE plpgsql;
+
+SELECT matchit('demo_test_1000000', 'fid', 'thunder', 'fog hail rain snow tornado', 'test_flight', '', '', '', false);
 
 SELECT matchit('demo_test_1000', 'fid', 'thunder', 'dewpti dewptm fog hail hum precipm pressurei pressurem rain snow tempi tempm tornado visi vism wspdi wspdm', 'test_flight', '', '', '', false);
 
