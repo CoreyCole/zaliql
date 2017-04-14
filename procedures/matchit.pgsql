@@ -1,24 +1,77 @@
--- 
 /*
-
-SELECT *,
-  max(id) OVER w subclass,
-  max(T) OVER w as treated,
-  min(T) OVER w as untreated
-FROM source_table
-
-CREATE MATERIALIZED VIEW
-
+CREATE MATERIALIZED VIEW test_flight AS
+with subclasses as (
+	SELECT
+		max(fid) AS subclass,
+		max(thunder) AS treated,
+		min(thunder) AS untreated,
+		dewpti,
+		dewptm,
+		fog,
+		hail,
+		hum,
+		precipm,
+		pressurei,
+		pressurem,
+		rain,
+		snow,
+		tempi,
+		tempm,
+		tornado,
+		visi,
+		vism,
+		wspdi,
+		wspdm
+	FROM demo_test_100000
+	GROUP BY
+		dewpti,
+		dewptm,
+		fog,
+		hail,
+		hum,
+		precipm,
+		pressurei,
+		pressurem,
+		rain,
+		snow,
+		tempi,
+		tempm,
+		tornado,
+		visi,
+		vism,
+		wspdi,
+		wspdm
+	HAVING max(thunder) !=  min(thunder)
+) SELECT * FROM subclasses, demo_test_100000 dt WHERE
+	subclasses.dewpti = dt.dewpti
+	AND subclasses.dewptm = dt.dewptm
+	AND subclasses.fog = dt.fog
+	AND subclasses.hail = dt.hail
+	AND subclasses.hum = dt.hum
+	AND subclasses.precipm = dt.precipm
+	AND subclasses.pressurei = dt.pressurei
+	AND subclasses.pressurem = dt.pressurem
+	AND subclasses.rain = dt.rain
+	AND subclasses.snow = dt.snow
+	AND subclasses.tempi = dt.tempi
+	AND subclasses.tempm = dt.tempm
+	AND subclasses.tornado = dt.tornado
+	AND subclasses.visi = dt.visi
+	AND subclasses.vism = dt.vism
+	AND subclasses.wspdi = dt.wspdi
+	AND subclasses.wspdm = dt.wspdm
+WITH DATA;
 */
 
 
 CREATE OR REPLACE FUNCTION matchit(
-  source_table ANYELEMENT,  -- input table name
+  source_table TEXT,        -- input table name
+  primary_key TEXT,         -- source table's primary key
   treatment TEXT,           -- treatment column name
-  covariates TEXT,          -- comma-separated covariate column names
+  covariates TEXT,          -- space separated covariate column names
   output_table TEXT,        -- output table name
-  method TEXT,              -- matching method, default "nearest"
-  method_input TEXT,        -- (optional) matching method args
+  method TEXT,              -- matching method, default "cem"
+  method_input TEXT,        -- (optional) matching method args, default ''
   discard TEXT,             -- discard units outside distance measure, default "none"
   reestimate BOOLEAN        -- reestimate distance measure after discarding units
 ) RETURNS TEXT AS $func$
@@ -26,42 +79,82 @@ DECLARE
   commandString TEXT;
   numGroups INTEGER;
   numDiscarded INTEGER;
+  covariatesArr TEXT[];
+  covariate TEXT;
 BEGIN
-  commandString := 'SELECT ' || quote_ident(treatment) || ',' || quote_ident(covariates)
-    || ', COUNT(*) as matched_count'
-    || ' FROM ' || pg_typeof(source_table)
-    || ' GROUP BY ' || quote_ident(covariates) || ',' || quote_ident(treatment);
-  FOR source_table IN EXECUTE commandString LOOP
-    numGroups := numGroups + 1;
-    EXECUTE 'INSERT INTO ' || quote_ident(output_table)
-      || '(' || quote_ident(treatment) || ',' || quote_ident(covariates)
-      || ',matched_count)'
-      || ' SELECT '
-      || '$1.' || quote_ident(treatment) || ', $1.' || quote_ident(covariates)
-      USING source_table;
-      -- || ',$1.matched_count' USING source_table;
+  SELECT regexp_split_to_array(covariates, '\s+') INTO covariatesArr;
+
+  commandString := 'WITH subclasses as (SELECT'
+    || ' max(' || quote_ident(primary_key) || ') AS subclass,'
+    || ' max(' || quote_ident(treatment) || '::NUMERIC) AS treated,'
+    || ' min(' || quote_ident(treatment) || '::NUMERIC) AS untreated';
+  
+  FOREACH covariate IN ARRAY covariatesArr LOOP
+    commandString = commandString || ', ' || quote_ident(covariate) || ' AS ' || quote_ident(covariate) || '_matched';
   END LOOP;
-  RETURN 'Successfully grouped ' || numGroups || ' distinct records'
-    || ' with ' || numDiscarded || ' discarded records';
+
+  commandString = commandString || ' FROM ' || quote_ident(source_table) || ' GROUP BY ';
+
+  FOREACH covariate IN ARRAY covariatesArr LOOP
+    commandString = commandString || quote_ident(covariate) || '_matched, ';
+  END LOOP;
+
+  -- use substring here to chop off last comma
+  commandString = substring( commandString from 0 for (char_length(commandString) - 1) );
+    
+  commandString = commandString || ' HAVING max(' || quote_ident(treatment) || '::NUMERIC) != min(' || quote_ident(treatment) || '::NUMERIC)'
+    || ') SELECT * FROM subclasses, ' || quote_ident(source_table) || ' st WHERE';
+
+  FOREACH covariate IN ARRAY covariatesArr LOOP
+    commandString = commandString || ' subclasses.' || quote_ident(covariate) || '_matched = st.' || quote_ident(covariate) || ' AND';
+  END LOOP;
+
+  -- use substring here to chop off last `AND`
+  commandString = substring( commandString from 0 for (char_length(commandString) - 3) );
+
+  EXECUTE format('DROP MATERIALIZED VIEW IF EXISTS %s', output_table);
+
+  commandString = 'CREATE MATERIALIZED VIEW ' || output_table
+    || ' AS ' || commandString || ' WITH DATA;';
+  RAISE NOTICE '%', commandString;
+  EXECUTE commandString;
+
+  RETURN 'Match successful and materialized in ' || output_table || '!';
 END;
 $func$ LANGUAGE plpgsql;
 
-SELECT matchit(NULL::flight, 'rain', 'icon', 'test_flight', '', '', '', false);
+SELECT matchit('demo_test_1000', 'fid', 'thunder', 'dewpti dewptm fog hail hum precipm pressurei pressurem rain snow tempi tempm tornado visi vism wspdi wspdm', 'test_flight', '', '', '', false);
 
-DROP TABLE test_flight;
+DROP FUNCTION matchit(text,text,text,text,text,text,text,boolean);
 
--- Create output_table if it does not exist
-CREATE TABLE IF NOT EXISTS test_flight
-(LIKE flight INCLUDING ALL);
-
--- Drop the count column if it exists
-ALTER TABLE test_flight
-DROP COLUMN IF EXISTS matched_count;
-
--- Add the count column to the output_table
-ALTER TABLE test_flight
-ADD COLUMN matched_count INTEGER;
-
-SELECT * FROM test_flight;
-
-DROP FUNCTION matchit(anyelement,text,text,text,text,text,text,boolean);
+-- ERROR:  column "dewpti" specified more than once
+/*
+CREATE MATERIALIZED VIEW test_flight AS 
+  WITH subclasses as (
+    SELECT max(fid) AS subclass, max(thunder) AS treated, min(thunder) AS untreated,
+      dewpti, dewptm, fog, hail, hum, precipm, pressurei, pressurem, rain, snow, tempi, tempm, tornado, visi, vism, wspdi, wspdm 
+    FROM demo_test_1000 GROUP BY 
+      dewpti, dewptm, fog, hail, hum, precipm, pressurei, pressurem, rain, snow, tempi, tempm, tornado, visi, vism, wspdi, wspdm,
+    HAVING max(thunder) != min(thunder)
+  ) 
+  SELECT * FROM subclasses, demo_test_1000 st 
+  WHERE 
+  subclasses.dewpti = st.dewpti AND
+  subclasses.dewptm = st.dewptm AND
+  subclasses.fog = st.fog AND
+  subclasses.hail = st.hail AND
+  subclasses.hum = st.hum AND 
+  subclasses.precipm = st.precipm AND 
+  subclasses.pressurei = st.pressurei AND 
+  subclasses.pressurem = st.pressurem AND 
+  subclasses.rain = st.rain AND 
+  subclasses.snow = st.snow AND 
+  subclasses.tempi = st.tempi AND 
+  subclasses.tempm = st.tempm AND 
+  subclasses.tornado = st.tornado AND 
+  subclasses.visi = st.visi AND 
+  subclasses.vism = st.vism AND 
+  subclasses.wspdi = st.wspdi AND 
+  subclasses.wspdm = st.wspdm 
+WITH DATA;
+*/
