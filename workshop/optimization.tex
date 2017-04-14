@@ -1,0 +1,337 @@
+
+
+\babak{replace the optimization techniques with a formal result obtained in the series of meetings we had we Johannes}
+
+\section{Optimization Techniques}
+\label{sec:OptimizationTechniques}
+
+\ignore{
+This section introduces
+  several optimization techniques that significantly speedup  CEM, both in the online and offline setting.
+\ignore{ Throughout this section, we assume a linear cost model for  CEM. That is, we
+ assume that the cost of computing an extension of $\cem$ (cf. Figure \ref{fig:cem}(b)) is proportional to the number of  input rows. Our experimental results (Section \ref{sec:sct})  justify this assumption.}
+}
+
+
+\vspace{-.2cm}
+\subsection{CEM on Base Relations}
+\label{sec:baserel}
+
+All toolkits developed for causal inference
+assume that the input is a single table. However, in the real world, data is normalized, and stored in multiple tables
+connected by key/forgien-keys. Thus, an analyst typically integrates tables
+to construct a single table that contains all intergradients needed to conduct causal analyses. \ignore{For instance, in  the \delay \ example, the treatment and part of the covariates
+are stored in the weather dataset; the outcome and  rest of the covariates are stored in the
+flight dataset.} The fact that  data is scattered across multiple tables raises the question of whether we
+can  push the matching methods to normalized databases. \ignore{If so, we must question  whether we can take advantage of this property
+to optimize the cost of  performing matching.}
+
+
+Integrating tables is inevitable for propensity score matching. For example, suppose we have two tables
+$R(T,x,y,z)$ and $S(x,u,v)$. To estimate the propensity scores of each unit in $R \bowtie S$, we may fit
+a logistic-regression between $T$ and  the covariates $y,z,u,$ and $v$. This may require computing the expression $w_1*y + w_2*z + w_3*u + w_4*v$ and then applying the logit function to it.  While the weights of the expression may be learned without joining the tables, using techniques such as \cite{schleich2016learning}, the integrated table is required to impute the leaned model with the covariate values of each unit to estimate its propensity score. In contrast,  CEM can be pushed
+to the normalized databases. For example, $\cem(R \bowtie S)$ is equivalent to $\cem(\cem(R)\bowtie S)$. To see this, note that all subclasses discarded by performing CEM on $R$ do not satisfy the overlap assumption. It is clear that joining these subclasses with $S$, forms new subclasses that still fail to satisfy the overlap assumption and must be discarded. In the following, we formally state this property.
+
+
+
+
+
+
+
+Let $D$ be a standard relational schema with $k$ relations
+$\rel_1 \ldots \rel_k$, for some constant $k \geq 1$. The relation $\rel_i$
+has the following attributes:  a  primary-key $ID_i $;  a foreign-key $FID_i $;   a vector of observed attributes
+ $A_i$.  Without loss of generality, assume the treatment variable, $T$, is in relation $\rel_1$.  Let
+  $\ccv_{\rel_i} \subseteq {A}_i$ be a vector of coarsened covariates from the relation $\rel_i$ that is associated with $T$.
+    Further, assume relations are joined in the increasing order of indices.
+
+
+\vspace{-.2cm}
+\begin{proposition} \label{pro:push}
+Given an instance of $D$, it holds that: $\cem(\rel_1  \bowtie
+\ldots  \bowtie\rel_{k})= \cem( \ldots \cem(\cem(R_1) \bowtie   R_2) \ldots  \bowtie R_{k}) $.
+\end{proposition}
+
+\vspace{-.2cm}
+Proposition \ref{pro:push} shows that CEM can be pushed to normalized databases.  In the worst case, the cost of pushing CEM can be $k-2$ times higher than performing CEM
+on the integrated table. This happens when relations have a one-to-one  relationship  and
+CEM retains all the input data. However, in practice the relations typically have a  many-to-one
+relationship. Moreover, the size of the matched subset is much smaller than the input database. In the \delay \ example,
+each row in the weather dataset is associated with many rows in the flight dataset. In addition, as we see
+in Section \ref{sec:endtoend}, the size of the matched data is much smaller than the input data. In such settings,
+pushing CEM down to the base relations can significantly reduce its cost.
+\ignore{This significantly reduces the cost of matching if
+tables have many-to-one relationships and CEM prunes considerable portion of data. In Section \ref{sec:opt}, we show the efficacy of applying this techniques on the \delay\ example.
+\ignore{In the \dela \ example, each row in the weather dataset is associated with many rows in the flight dataset. In addition, as we see
+in Section \ref{sec:endtoend}, the size of the matched data is much smaller than the input data.}}
+
+
+\ignore{
+In the worst case, the cost of pushing CEM can be $k-2$ times higher than performing CEM
+on the integrated table. This happens when relations have a one-to-one  relationship  and
+CEM retains all the input data. However, in practice the relations typically have a  many-to-one
+relationship. Moreover, the size of the matched subset is much smaller than the input database. In the \delay \ example,
+each row in the weather dataset is associated with many rows in the flight dataset. In addition, as we see
+in Section \ref{sec:endtoend}, the size of the matched data is much smaller than the input data. In such settings,
+pushing CEM down to the base relations can significantly reduce its cost. \ignore{
+A simple  strategy would be to start with performing on the relation $\rel_1$that contains the treatment and join the result with a relation with the minimum size that can joined with, until all relations are processed.} \ignore{Section  \ref{sec:endtoend}  shows that this strategy significantly
+reduces the cost of matching in the \delay \ example}
+}
+
+
+
+
+
+
+\vspace{-.1cm}
+\subsection{Multiple Treatment Effect}
+
+\label{sec:mte}
+
+Matching methods are typically developed for estimating the causal effect of a single treatment
+on an outcome. However, in practice one needs
+to explore and quantify the causal effect of multiple treatments.
+For instance, in the \delay \ example, the objective is to quantify and compare the causal effect
+of different weather types on flight departure delays.
+
+This section introduces online and offline techniques to speed up the computation of  CEM
+for multiple treatments.  In the sequel, we consider the relational schema consists of a single relation $\rele(ID,\tre,\ccv,Y)$ (extends that of $\crele$ (cf. Section \ref{sec:sub}) to account for multiple treatments), where $\tre=T_1, \ldots, T_k$ is a vector of $k$ binary
+treatments, each of which has a vector of coarsened covariates $\ccv_{T_i}$, with $\ccv= \bigcup_{i=1 \ldots k} \ccv_{T_i}$.
+Now the view $\relei(ID,T_i,\ccv_{T_i},Y)$ over $\rele$ has the same schema
+as $\crele$ (cf. Section \ref{sec:sub}). \ignore{Therefore, the view $\cem$ (cf. Figure \ref{fig:cem}) is well-defined over  $\relei$.}
+
+
+\vspace{-.2cm}
+
+\subsubsection{(online) Covariate Factoring}
+
+A key observation for reducing the overall cost of performing CEM for multiple treatments is that
+many covariates are shared between different treatments. For instance, flights carrier, origin airport, traffic and many weather attributes are shared between the treatments Thunder and LowVisibility. The central idea in {\em covariate factoring}  is to pre-process the input data
+wrt.  the shared covariates between treatments and uses the result to perform CEM
+for each individual treatment. This  significantly reduces the overall cost of CEM for all treatments,
+if covariate factoring prunes a considerable portion of the input data.
+
+
+\begin{figure}
+\begin{alltt} \scriptsize
+CREATE VIEW \(\prp\) AS
+WITH tmp0 AS
+  (SELECT *,
+          max(ID) OVER w AS supersubclass,
+          max(\(T\sb1\)) OVER w AS maxT\(\sb1\),..., maxT(\(T\sb{k'}\)) OVER w AS maxT\(\sb{k'}\),
+          min(\(T\sb1\)) OVER w AS minT\(\sb1\),..., minT(\(T\sb{k'}\)) OVER w AS minT\(\sb{k'}\)
+   FROM \(\rele\)
+   WINDOW w (PARTITION BY \(\ccvin\)))
+SELECT ID, \(\ccvu\), Y , supersubclass
+FROM tmp0
+WHERE max(\(T\sb1\))!=max(\(T\sb{1}\)) or ... or  max(\(T\sb{k'}\))!=max(\(T\sb{k'}\))
+\end{alltt} \vspace{-.2cm} \hspace{2.5cm}
+(a)Covariates factoring.
+\vspace{-.1cm}
+\begin{alltt} \scriptsize
+CREATE VIEW \(\mcem\) AS
+WITH tmp0 AS
+  (SELECT *,
+          max(ID) OVER w    subclass,
+          max(\(T\sb{i}\))  OVER w AS minT,
+          max(\(T\sb{i}\))  OVER w AS maxT
+   FROM \(\prpi\)
+   WINDOW w (PARTITION BY supersubclass, \( \ccv\sb{T\sb{i}} \smallsetminus \ccvin  \)))
+SELECT ID,\(T\sb{i}\),\(\ccv\sb{T\sb{i}}\), Y, subclass
+FROM tmp0
+WHERE minT!=maxT
+\end{alltt}
+\vspace{-.2cm} \hspace{3cm}
+(b) Modified CEM
+\caption{CEM based on covariate factoring.}\label{fig:cf}
+\end{figure}
+
+
+\ignore{
+Let let $\ccvin$ and $\ccvu$ respectively
+ denote the union and intersection of the covariates associated with each
+ $t_i \in \trep$ i.e.,  $\ccvin= \bigcap \ccv_i$ and $\ccvu= \bigcup \ccv_i$. Furthermore,
+ for each treatment $\trep \subseteq \tre$, define the view $\relt(ID,\ccvu,\ccvin,\trep,o)$ on $\rel$.
+ Notice that in a special case where $\trep=\{t_i\}$, $\relei$ has the same schema as the view $\crele$ (cf. Section \ref{sec:cem}).
+
+Lets define the view  $\prp$ on
+ $\relt$ as follows:
+}
+
+
+
+
+Let $\trep \subseteq \tre$ be a subset of treatments
+with $\ccvin= \bigcap_{T_i \in \trep} \ccv_{T_i} \not = \emptyset$. Without loss of generality assume $\trep=\{T_1 \ldots T_{k'}\}$.
+ Consider the view $\prp$ over $\rele$ as shown in Figure \ref{fig:cf}(a). Essentially, $\prp$ describes CEM wrt. the disjunction
+ of treatments in $\trep$ and the shared covariates between them.  \ignore{Intuitively, for any instance of $\rele$, and a
+ subset of treatments $\trep \subseteq \tre$, computing the extension of $\prp$,
+partitions the instance into
+groups with similar covariates that are shared between the treatments in $\trep$ at least one $T_i \in \trep$. Next we show that, CEM wrt. each individual treatment in $\trep$ can be
+obtained from $\prp$.} Figure \ref{fig:cf}(b) defines the view $\mcem$ over $\prp$ that describes a modified version of CEM for $T_i$,
+based on the covariate factoring. \ignore{The following proposition shows CEM can be done by covariate factoring} \ignore{that CEM based on covariate factoring as
+defined by $\mcem$ is equivalent to $\cem$ as described in Section \ref{sec:sub}.}
+
+\vspace{-0.2cm}
+\begin{proposition} \label{pro:prematching}
+Given an  instance of $\rele$ and any subset of treatments $\trep\subseteq \tre$ with
+$\bigcap_{T_i \in \trep} \ccv_{T_i} \not = \emptyset$, and for any $T_i \in \trep$, it holds that $\mcem(\rele)=\cem(\relei)$.
+\end{proposition}
+\vspace{-0.1cm}
+
+\begin{proof}
+  We sketch the proof for $S=\{T_1, T_2\}$. Covariate factoring on $S$, discard subclasses obtained from group-by
+  on $\ccv_{T_1} \cap \ccv_{T_2}$ that have no overlap wrt. both $T_1$ and $T_2$. It is clear that group-by $\ccv_{T_1}$ is more fine-grained  than group-by on $\ccv_{T_1} \cap \ccv_{T_2}$, thus, subclasses with no overlap in the latter, form new subclasses in the former that still fail the overlap wrt. both of $T_1$ and $T_2$.
+\end{proof}
+\ignore{
+Proposition \ref{pro:prematching} shows that CEM for multiple treatments can be performed by covariate factoring.}
+Proposition \ref{pro:prematching} shows that CEM for multiple treatments can be performed by covariate factoring.
+Next we develop a heuristic algorithm that takes advantage of this property to speed up CEM.
+Before we proceed, we  state two observations that lead us to the algorithm.
+
+First,  the total cost of performing  CEM independently for $k$ treatments
+is a function of the size of the input database. However, the cost of performing the same task using covariate factoring
+is a function of the size of the result of covariate factoring. But, the cost of covariates factoring
+depends on the size of the input. Thus,  partitioning the treatments into a few set of groups, which results in pruning a huge
+portion of the input database, reduces the overall cost of CEM.
+
+
+
+
+\ignore{
+First, by assuming a linear cost model for CEM,  the total cost of performing CEM independently for $k$ treatments
+is $f(k*n)$, where $f$ is a linear function and $n$ is the number of rows in the input database. However, the cost
+of computing CEM based on covariate factoring wrt. $m$ group of treatments,
+is $f(k*n')$, where $n'$ is the size of the result of the covariates factoring, plus the cost of covariate factoring itself. Note that, we assumed that
+this pre-processing equally prunes the input data for all groups. Since covariate factoring is sort of CEM we can refer to its cost
+with the same function.  Thus, the cost of covariate factoring for $n$ groups is $f(m*n)$. Consequently, covariates factoring reduces the overall cost of
+CEM if $f(k*n'+m*n)<f(k*n)$. Intuitively,  partitioning the treatments into a few set of groups, which results in pruning a huge portion of the input data, reduces the overall cost of CEM.
+}
+
+Second, we observe  that the correlation between the treatments  plays a crucial role in the  efficacy  of covariate factoring. The
+ correlation between two treatments $T$ and $T'$ can be measured by the {\em phi coefficient} between them, denoted by $\phi$. Consider the following table
+\vspace{-0.15cm}
+\begin{center}
+
+\scriptsize
+\begin{tabular}{|c|c|c|c|}
+\hline
+  % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+   & $T=1$ & $T=0$ & Total  \\ \hline
+  $T'=1$ & $n_{11}$ & $n_{10}$ & $n_{1\bullet}$ \\ \hline
+  $T'=0$ & $n_{01}$ & $n_{00}$ & $n_{0\bullet}$ \\ \hline
+  Total & $n_{\bullet1}$ & $n_{\bullet0}$ & $n$ \\
+  \hline
+\end{tabular}
+
+\end{center}
+
+\noindent  where $n_{11}$, $n_{10}$, $n_{01}$, $n_{00}$, are non-negative counts of number of observations that sum to $n$, the total number of observations.
+ The phi coefficient between $T$ and $T'$ is given by
+  $\phi(T,T') ={\frac  {n_{{11}}n_{{00}}-n_{{10}}n_{{01}}}{{\sqrt  {n_{{1\bullet }}n_{{0\bullet }}n_{{\bullet 0}}n_{{\bullet 1}}}}}}$. A phi coefficient of 0  indicates independence, while 1 and -1 indicates complete dependence between the variables (most observations falls off the diagonal).   Suppose $T_1$ and $T_2$ are highly correlated, i.e.,  $|\phi(T,T')|\simeq 1$ and share the covariates $X$. Further assume CEM wrt. $T$ and $X$, prunes 50\% of the input data.
+Then, covariates factoring for $T_1$ and $T_2$ prunes almost 50\% of the input data. This is because, subclasses discarded by
+CEM on $T$, are very likely to be discarded by CEM wrt. the disjunction of $T$ and $T'$ (because there are highly correlated). \ignore{
+this variable is either 0 or 1, since $T'$ is highly correlated with $T$, it is very likely that most
+of these subclasses are also discards
+by CEM on $T'$. Therefore, covariates factoring should performed on correlated treatments.}
+
+Algorithm \ref{al:cf1}, was developed based on these observations.  Section \ref{sec:opt} shows that covariates factoring based on this algorithm significantly reduces the over all cost of CEM wrt. multiple treatments in the \delay\ example.
+
+\ignore{
+their shared covariates
+(not the entire set of covariate associated with them) similarly  retain $50\%$ of the input database.  The size of the result of
+factorization is almost  $50\%$ of the input size the the correlation between $t_1$ and $t_2$ is almost 1;
+on the other, if $t_1$ and $t_2$ are not correlated then pre-processing does not prune the data.
+
+These observations lead us to the following algorithm based on the phi correlation matrix of the set of treatments.
+}
+\vspace{-0.2cm}\begin{algorithm}
+
+\caption{Covariate Factoring}
+\label{al:cf1} \small
+
+1.\  Let $T_1 \ldots T_k$ be a set of treatments, and  $\ccv_{T_i}$ be a vector of covariates associated to $T_i$.   \newline
+2.\ Construct a correlation matrix, $\mc{M}$, between the treatments such that
+the $[i,j]$ entry in $\mc{M}$ contains $\phi(T_i,T_j)$.   \newline
+3.\ Given a partition of the treatments into $n$ groups, $S_1 \ldots S_n$, such that $|S_k|\geq 2$ and
+  $\bigcap_{T_i \in S_k} \ccv_{T_i} \not = \emptyset$, compute the normalized pairwise correlations in $s_k$
+  as $\mc{C}_{S_k}= \frac{\sum_{(T_i,T_j) \in S_k} |\mc{M}[i,j]|}{|S_k|}$. \newline
+5:\ Perform covariate factoring for groups obtained by the partition that maximises $\sum_{k=1\dots n} \mc{C}_{S_k}$.
+
+\ignore{5:\ Find a partitioning that maximizes $\sum_{k=1\dots n} \mc{C}_{S_k}$ \ignore{, the sum of normalized pairwise correlations in all groups.} \newline
+6:\ Perform the covariate factoring for each group of treatments obtained from this partitioning.}
+\end{algorithm}
+
+\vspace{-0.5cm}
+
+
+\subsubsection{(online)  Data-Cube Aggregation}
+\label{sec:cube}
+
+Given a set of observed attributes $\cv$ and an outcome, all attributes can be subjected to a causal
+analysis. For example, all weather attributes can be dichotomized and form
+a treatment. In addition, one may define other treatments, formed by conjunction of such dichotomized attributes. For instance, the conjunction of ``snow" and ``high-wind-speed" could become the ``snowstorm" treatment. Note that
+causal effect is not subadditive \cite{janzing2013quantifying}. Thus, quantifying the causal effect of the conjunction of $T_1$ and $T_2$
+requires an independent analysis on the treatment $T=T_1 \land T_2$ wrt. the covariates  $X_{T}= X_{T_1} \cup X_{T_2}$.
+
+In principle, one might be interested
+in exploring and quantifying the casual effect of $k=2^{|\cv|}$ treatments. In this setting, to estimate $\ate$ for all possible treatments, a matching method must be performed wrt. all possible subsets of $\cv$, each of which is associated to
+one treatment. We argue that, in such cases, CEM for all treatments can be performed efficiently using the existing DBMS systems that support data-cube operations.
+
+\ignore{
+Recall from  \ref{fig:cem} that CEM is implemented with a group-by followed by a join (cf. Figure \ref{sec:cem}(c)).
+More specifically, the rows (units) are grouped by the identified covariates. For each group three
+aggregates namely $max(ID)$, $min(t)$
+and $max(t)$ are computed. $max(ID)$ is used as a unique identifier for each subclass; the other
+two are used to ensure that each group contains at least one treated and one control units.}
+
+Recall that CEM for an individual treatment is a group-by operation (cf. Figure \ref{fig:cem}(b)). Thus, CEM for all treatments requires computing some aggregates on the data-cube ($\ccv$). \ignore{The idea is to modify the SQL
+implementation of CEM (cf. Figure \ref{fig:cem}(b))  to perform the group-by statement using a relevant data-cube.} Now the established optimization techniques to
+ compute data-cubes efficiently  can be adopted, e.g., for computing a group-by, we pick the
+ smallest of the previously materialized groups from which it is possible to compute the group-by.
+\ignore{For example, consider a four
+covariates cube $(X_1,X_2,X_3,X_4)$.  Group by $X_1X_2$ can be obtained from $X_1X_2X_3X_4$,
+$X_1X_2X_3$ and $X_1X_2X_4$. The idea is to pick the smallest between $X_1X_2X_3$, $X_1X_2X_4$. It is
+apparent that both are smaller than $X_1X_2X_3X_4$.} In Section \ref{sec:opt}, we apply this idea to the \delay \ example and show that
+it significantly reduces the overall cost of CEM for multiple treatments.
+
+
+\vspace{-0.1cm}
+\subsubsection{(offline) Databases Preparation for Causal Inference on Sub-populations}
+\label{sec:dp}
+
+So far, we considered causal inference as an online analysis which seeks to explore the effect of multiple treatments on an outcome, over a
+population. In practice, however, one needs to explore and quantify the causal effect of
+multiple treatments over various
+sub-populations. For instance, \ignore{in the \delay \ example one needs to know:} what is the causal
+ effect of low-visibility on departure delay in San Francisco International Airport (SFO)?  what is the effect of thunder at all airports in the state of Washington since 2010?
+  such queries can be addressed by performing CEM on the entire data and selecting the relevant part of the obtained matched subset to the query.
+
+Thus, the cost of performing CEM wrt. all possible treatments can be amortized over several causal queries. Therefore, we can prepare the database offline and pre-compute the matched subsets wrt. all
+possible treatments to answer online causal queries efficiently. This could be impractical for high dimensional data since the number of possible treatments can be exponential in the number of attributes (cf. Section \ref{sec:cube}). Alternatively, we propose
+Algorithm \ref{al:cf1}, which employs the covariate factoring and data-cube techniques to prepare the database so that CEM based on
+any subset of the database can be obtained efficiently.
+
+
+\ignore{
+. Intuitively, it uses data-cubes to efficiently perform covariate factoring
+for multiple treatments. For each group of treatments the result of covariate factoring is materialized and  proper data-cubes are constructed,
+so that CEM for any individual treatment and over an arbitrary subset of a database can be efficiently obtained.  In Section \ref{sec:opt}, we apply this algorithm on the \delay \ example. We show that this algorithm
+substantially reduces the cost of CEM and has a reasonable cost of preparation.}
+\vspace{-0.2cm}
+\begin{algorithm} \small
+\caption{Database Preparation} \label{alg:dp}
+1:\   Let $T_1 \ldots T_k$ be a set of treatments, and  $\ccv_{T_i}$ be a vector of covariates associated to $T_i$.   \newline
+2:\ Apply  Algorithm \ref{al:cf1} to partition the treatments into $S_1 \ldots S_k$ with $\ccvu_{S_i}= \bigcup_{T_j \in S_i} \ccv_{T_j}$
+and $\mc{X}'_{S_i}= \bigcap_{T_j \in S_i} \ccv_{T_j} $. \newline
+3:\ Partially materialize $\mc{C}$, the cube  on $\ccv_1 \ldots \ccv_k$ to answer group-by queries for each $\mc{X}'_{S_i}$.\newline
+4:\ For each group $S_i$, perform covariate factoring using $\mc{C}$ and materialize $P_{S_i}$. \newline
+5:\ For each $P_{S_i}$, partially materialize $\mc{C}_i$, the cube on $\ccvu_{T_i}$, so that CEM for each $T \in g_i$ can be computed using $\mc{C}_i$.
+\end{algorithm}
+
+
+
+
+
+
+
