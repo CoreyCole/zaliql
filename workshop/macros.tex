@@ -1,0 +1,314 @@
+%\usepackage{anysize}
+%\usepackage{geometry}
+%\geometry{top=1in, left=1in, right=1in, bottom=1in,footskip=.25in}
+%\marginsize{1in}{0.8in}{1in}{1in}%tblr
+%\usepackage[showframe,bottom=0.2in,footskip=.25in]{geometry}
+%\usepackage[left=1in, right=1in, top=1in]{geometry}
+%\newcommand{\cmt}[2]{\textcolor{dkmag}{[#1: #2]}}
+%\newcommand{\personname}[1]{\cmt{Personname}{#1}}
+%\newcommand{\standout}[1]{\textit{\textcolor{dkmag}{#1}}}
+\usepackage{graphicx}
+%\usepackage[draft]{hyperref}
+\usepackage{epstopdf}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{relsize}
+\usepackage{caption}
+\usepackage{alltt}
+\usepackage{multicol}
+\usepackage{lineno}
+\usepackage{subcaption}
+\usepackage{subfloat}
+\usepackage{float}
+\captionsetup[subfigure]{labelformat=brace}
+%\usepackage{classicthesis}
+%\usepackage[a4paper,bindingoffset=0.2in,left=1in,right=1in,top=1in,bottom=1in,footskip=.25in]{geometry}
+%\usepackage[left=1in,right=1in,top=1in,bottom=0.5in,footskip=.25in]{geometry}
+\usepackage{algpseudocode}
+%\usepackage[bottom=0.8in]{geometry}
+\usepackage{lipsum}
+\usepackage{amsmath,amssymb}
+\usepackage{color, MnSymbol} %, hyperref} %wrapfig,
+\usepackage{balance, multirow, framed, caption, subcaption}  % for  \balance command ON LAST PAGE
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{array,multirow,graphicx,tabularx}
+%\usepackage{aliascnt}
+%\usepackage{relsize}
+%\usepackage{titling}
+%\usepackage{fullpage} %,enumitem}
+%\usepackage[T1]{fontenc}
+%\usepackage{enumitem}
+%\usepackage[shortlabels]{enumitem}
+%\setlist{nolistsep}
+%\setlist[enumerate]{nosep}
+
+%
+%\usepackage{fancyhdr}
+%\usepackage{fullpage} %, hyperref}
+%\usepackage{amssymb, amsmath, enumitem, titling, hyperref}
+%\usepackage[standard]{ntheorem}
+%%\usepackage[sort&compress]{natbib}
+%\usepackage[top=0.65in, bottom=1.2in, left=0.95in, right=0.95in]{geometry}
+% %\ifthenelse{\value{page}=1}
+%          %{\setlength\headheight{40pt}}
+%          %{\setlength\headheight{0pt}}
+%					
+%\usepackage[backend=bibtex,sorting=anyt, maxnames=7, firstinits=true]{biblatex} %hyperref=true,
+%\renewcommand*{\bibfont}{\footnotesize}
+%\bibliography{bib_rs}
+%%\renewcommand{\baselinestretch}{0.9}
+\def\sharedaffiliation{%
+\end{tabular}
+\begin{tabular}{c}}
+
+\newcommand{\bigCI}{\mathrel{\text{\scalebox{1.07}{$\perp\mkern-10mu\perp$}}}}
+\newcommand{\nbigCI}{\cancel{\mathrel{\text{\scalebox{1.07}{$\perp\mkern-10mu\perp$}}}}}
+\newcommand{\rred}[1]{\textcolor{red}{#1}}
+\newcommand{\mc}[1]{\mathcal{#1}}
+\newcommand{\ignore}[1]{}
+\newcommand{\comlb}[1]{{\vspace{2mm}\noindent \rred{\bf COMM(Dan):}}~ #1 \hfill {\bf    END.}\\}
+\newcommand{\combabak}[1]{{\vspace{4mm}\noindent \bf  COMM(Babak):}~ {\em \rred{#1}}\hfill {\bf END.}\\}
+
+
+\newcommand{\reva}[1]{{{{#1}}}}
+\newcommand{\revb}[1]{{{{#1}}}}
+\newcommand{\revc}[1]{{{{#1}}}}
+
+
+
+\newcommand{\dan}[1]{{{\color{magenta} Dan: [{#1}]}}}
+\newcommand{\babak}[1]{{\texttt{\color{blue} Babak: [{#1}]}}}
+\newcommand{\red}[1]{{\textbf {{\color{red} [{#1}]}}}}
+\newcommand{\scream}[1]{{\texttt{\color{red}{\textbf{[{#1}]}}}}}
+
+
+\newcommand{\att}{{\tau_{ATT}}}
+\newcommand{\ate}{{\tau_{ATE}}}
+\newcommand{\sch}{{\mathcal{S}}}
+\newcommand{\rel}{{{R}}}
+\newcommand{\sche}{{\mathcal{S}^e}}
+\newcommand{\rele}{{{R}^e}}
+\newcommand{\relei}{{{R}^e_{T_i}}}
+\newcommand{\relt}{{{R}^e_{\trep}}}
+\newcommand{\relti}{{{R}^e_{\trepi}}}
+%\newcommand{\rel}{{{\textbf{R}}}}
+\newcommand{\hm}{{\mathcal{S}}}
+\newcommand{\crele}{{{R}^c}}
+\newcommand{\echm}{{\mathcal{S}^{ce}}}
+\newcommand{\cem}{{\textsc{Cem}}}
+\newcommand{\mcem}{{\textsc{mCem}_{T_i}}}
+\newcommand{\nnmwr}{{\textsc{Nnmwr}}}
+\newcommand{\nnmnr}{{\textsc{Nnmnr}}}
+\newcommand{\sbc}{{\textsc{SubC}}}
+\newcommand{\prp}{{{P}_{\trep}}}
+\newcommand{\prpi}{{{P}_{T_i}}}
+\newcommand{\cv}{{{X}}}
+\newcommand{\ccv}{{{\mc{X}}}}
+\newcommand{\ccvi}{{{{cx}}}}
+\newcommand{\cvi}{{{X_i}}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\GSQL}{{{\textrm{ZaliQL}}}}
+\newcommand{\delay}{\textsc{FlightDelay}}
+\newcommand{\tre}{{{\mc{T}}}}
+\newcommand{\trep}{S}
+\newcommand{\trepi}{{{T}_i}}
+\newcommand{\cvj}{{{X}_j}}
+\newcommand{\cvij}{{{{X}}}}
+\newcommand{\ccvj}{{\mc{X}}}
+\newcommand{\ccvin}{{{\mc{X}'}}}
+\newcommand{\ccvu}{{{\mc{X}}}}
+\newcommand{\sub}{\bar{s}}
+\newcommand{\LOGSPACE}{{\scriptsize $  \mathrm{LOGSPACE}$}}
+\newcommand{\NLOGSPACE}{{\scriptsize $  \mathrm{NLOGSPACE}$}}
+\newcommand{\PTIME}{{\scriptsize $  \mathrm{PTIME}$ }}
+
+\newcommand{\ourproject}{{\textsc{Hume}}}
+\newcommand{\ourlang}{{\textsc{HumeL}}}
+
+\newcommand{\uiuc}{{UIUC}}
+\newcommand{\cmu}{{CMU}}
+\newcommand{\RP}{\emph{Robert Pennington}}
+\newcommand{\TD}{\emph{Thomas Dunning}}
+
+\newcommand{\ea}{\texttt{\bf E$_1$}}
+\newcommand{\eb}{\texttt{\bf E$_2$}}
+\newcommand{\ec}{\texttt{\bf E$_3$}}
+\newcommand{\ed}{\texttt{\bf E$_4$}}
+\newcommand{\ee}{\texttt{\bf E$_5$}}
+\newcommand{\ef}{\texttt{\bf E$_6$}}
+
+\newcommand{\Expl}{\texttt{Expl}}
+
+\newcommand{\explq}{{explanation-query}}
+
+\newcommand{\naivea}{\texttt{Alt-1}}
+\newcommand{\naiveb}{\texttt{Alt-2}}
+\newcommand{\incre}{\texttt{Incremental}}
+\newcommand{\incrediff}{\texttt{Incremental-Diff}}
+
+\newcommand{\tr}{1} %{\mathtt{t}}
+\newcommand{\cn}{0} %{\mathtt{c}}
+
+
+
+
+\newcommand{\A}{\texttt{A}}
+\newcommand{\K}{\texttt{K}}
+\newcommand{\deletelater}[1]{{\textbf {{\color{green} [{#1}]}}}}
+\newcommand{\intervrel}{\texttt{intervened-relation}}
+\newcommand{\attr}{\texttt{attr}}
+\newcommand{\annot}{\texttt{annot}}
+\newcommand{\supp}{\texttt{supp}}
+\newcommand{\dom}{{\mathbb{D}}}
+%\newcommand{\interv}{{\Gamma}}
+\newcommand{\real}{{\mathbb{R}}}
+\newcommand{\nat}{{\mathbb{N}}}
+\newcommand{\vect}[1]{\bar{#1}}
+\newcommand{\tup}[1]{{\vect{#1}}}
+\newcommand{\explattr}{{\{E\}}}
+%\newcommand{\change}{{\Delta}}
+\newcommand{\bool}{{\textit{b}}}
+
+\newcommand{\AP}{\texttt{AP}}
+\newcommand{\highval}{\texttt{high}}
+\newcommand{\midval}{\texttt{mid}}
+\newcommand{\lowval}{\texttt{low}}
+\newcommand{\aplow}{\texttt{poor}}
+\newcommand{\aphigh}{\texttt{good}}
+\newcommand{\dbnull}{\texttt{null}}
+\newcommand{\relset}{\mathcal{R}}
+\newcommand{\reltop}{{\mathcal{R}}_{top}}
+\newcommand{\relbot}{{\mathcal{R}}_{bot}}
+\newcommand{\attrset}{\mathcal{A}}
+\newcommand{\attrtop}[1]{{\mathcal{A}}_{{top}, {#1}}}
+\newcommand{\attrbot}{{\mathcal{A}}_{bot}}
+%\newcommand{\featureset}{\mathcal{B}}
+\newcommand{\db}{{D}}
+\newcommand{\dbdom}{\mathbf{DB}}
+\newcommand{\intervadditive}{{intervention-additive}}
+\newcommand{\val}{{v}}
+\newcommand{\valorig}{{u}}
+%\newcommand{\dbdom}{\mathcal{D}}
+\newcommand{\inputclass}{\mathcal{C}}
+\newcommand{\intervene}{\mathcal{I}}
+\newcommand{\tbaff}{{\tt{T_{Aff}}}}
+\newcommand{\attaff}{{\tt{A_{Aff}}}}
+\newcommand{\univ}{{{U}}}
+\newcommand{\pk}{{\mathtt{pk}}}
+\newcommand{\fk}{{\mathtt{fk}}}
+\newcommand{\expl}{{\phi}}
+%\newcommand{\pk}{{\tt \mathtt{\pk}}}
+\newcommand{\sign}{{\tt \mathtt{sign}}}
+%\newcommand{\expldom}{{\Phi}}
+\newcommand{\select}{\tt {\textsc{Select}}}
+\newcommand{\where}{{\tt \textsc{Where}}}
+\newcommand{\with}{{\tt \textsc{With}}}
+\newcommand{\distinct}{{\tt \textsc{distinct}}}
+\newcommand{\groupby}{{\tt \textsc{Group By}}}
+\newcommand{\from}{{\tt \textsc{From}}}
+\newcommand{\ct}{{\tt \textsc{Count}}}
+\newcommand{\create}{{\tt \textsc{Create}}}
+\newcommand{\explanation}{{\tt \textsc{Explanation}}}
+%\newcommand{\Pr}{{\tt {Pr}}}
+\newcommand{\on}{{\tt \textsc{On}}}
+\newcommand{\sqlwith}{{\tt \textsc{With}}}
+\newcommand{\as}{{\tt \textsc{as}}}
+\newcommand{\cascade}{{\tt \textsc{Cascade}}}
+\newcommand{\sqland}{{\tt \textsc{And}}}
+\newcommand{\sqlin}{{\tt \textsc{In}}}
+\newcommand{\true}{{\tt true}}
+\newcommand{\false}{{\tt false}}
+\newcommand{\inmath}[1]{{\mathtt {#1}}}
+
+\newcommand{\backwd}{\mathcal{B}}
+
+\newcounter{enumQues}
+\newenvironment{question}{
+\begin{enumerate} %[\leftmargin=*]
+\itshape
+   \setlength{\itemsep}{1pt}
+  \setlength{\parskip}{0pt}
+   \setlength{\parsep}{0pt}
+   \setcounter{enumi}{\theenumQues}
+   \renewcommand{\labelenumi}{\textbf{Q\theenumi.}}
+}
+{
+\setcounter{enumQues}{\theenumi}
+\end{enumerate}}
+
+
+\newcommand{\proj}[1]{{\Pi}}
+\newcommand{\sel}[1]{{\sigma}}
+
+\newcommand{\cut}[1]{}
+\newcommand{\eat}[1]{}
+
+%\newcommand{\tup}[1]{{\mathbf #1}}
+\newcommand{\ul}[1]{{\underline{#1}}}
+\newcommand{\commentresolved}[1]{}
+
+\newenvironment{packed_item}{
+\begin{itemize}
+   \setlength{\itemsep}{1pt}
+   \setlength{\parskip}{0pt}
+   \setlength{\parsep}{0pt}
+}
+{\end{itemize}}
+
+\newenvironment{packed_enum}{
+\begin{enumerate}
+   \setlength{\itemsep}{1pt}
+
+  \setlength{\parskip}{0pt}
+   \setlength{\parsep}{0pt}
+}
+{\end{enumerate}}
+
+\newenvironment{packed_grep}{
+\begin{description}
+   \setlength{\itemsep}{1pt}
+   \setlength{\parskip}{0pt}
+   \setlength{\parsep}{0pt}
+}
+{\end{description}}
+
+\newcommand{\ie}{{\em i.e.}} %\xspace}
+\newcommand{\eg}{{\em e.g.}} %\xspace}
+\newcommand{\etal}{{et al.}} %\xspace}
+\newcommand{\aka}{{\em a.k.a.}\xspace}
+
+\newcommand{\smalltt}{\tt \small}
+\newcommand{\tinytt}{\tt \scriptsize}
+
+\newcommand{\introparagraph}[1]{\textbf{#1.}}        % define own new subsection type: noindent, bold (textsc)
+
+\newcommand{\angb}[1]{ {\langle {#1} \rangle}}                    % Set (as in \set{1,2,3}).
+
+\newcommand{\set}[1]{\{#1\}}                    % Set (as in \set{1,2,3}).
+\newcommand{\setof}[2]{\{{#1}\mid{#2}\}}        % Set (as in \setof{x}{x>0}).
+\newcommand{\dtr}[0]{\twoheadrightarrow}        %
+\newcommand{\bQ}[0]{\mathbf{Q}}        %
+\newcommand{\bR}[0]{\mathbf{R}}        %
+\newcommand{\bC}[0]{\mathbf{C}}
+\newcommand{\bV}[0]{\mathbf{V}}
+\newcommand{\mS}[0]{\mathcal{S}}
+\newcommand{\mC}[0]{\mathcal{C}}
+\newcommand{\bID}[0]{\mathbf{ID}}
+\newcommand{\GCHQ}[0]{\textsc{GChQ}}
+\newcommand{\CHQ}[0]{\textsc{ChQ}}
+\newtheorem{example}{Example}
+\newtheorem{pro}{Proposition}
+\newtheorem{definition}{Definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+%\newtheorem{def}{Definition}
+%\usepackage[algoruled, lined]{algorithm2e}
+%\usepackage{aliascnt}  		% ``hyperref’s \autoref command does not work well with theorems that share a counter:
+						% it’ll always think it’s a Lemma even if it’s a Remark that shares the Lemma counter.
+						% Load this package to fix it. No further intervention needed.''
+						% Source: http://absatzen.de/thmtools.html (Jan 2009)
+						% better: http://www.tug.org/applications/hyperref/manual.html (Nov 2009)
+						% needs also: thm-patch.sty, parseargs.sty, aliasctr.sty ???
+						% see section below for usage
+
