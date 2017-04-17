@@ -3,31 +3,31 @@
 \label{subsec:causalitystatistics}
 
 
-\ignore{
-\dan{I'm inclined to remove this paragraph} \babak{I agree, the example is repeated later on} Causal inference aims to
-establish a casual relationship between one variable called the {\em
-  cause} or {\em treatment}, which has two possible values ($0$ and
-$1$) and another variable, called the {\em effect} or {\em outcome}.
-When the treatment value is $1$, we say that the treatment was
-applied; otherwise, we say that the control treatment was applied.  A
-causal experiment is done with respect to a population or collection
-of {\em units}.  A causal relationship implies that if we intervene by
-changing the treatment, then we should expect to see a change in the
-outcome.  For example (referring to Table~\ref{tab:attlist}) a unit is
-a flight, the treatment is Thunder (a binary attribute) and the
-outcome is DepDelayMinutes (the delay in minutes): we are interested
-in whether thunder causes delay, and how much.}
+% \ignore{
+% \dan{I'm inclined to remove this paragraph} \babak{I agree, the example is repeated later on} Causal inference aims to
+% establish a casual relationship between one variable called the {\em
+%   cause} or {\em treatment}, which has two possible values ($0$ and
+% $1$) and another variable, called the {\em effect} or {\em outcome}.
+% When the treatment value is $1$, we say that the treatment was
+% applied; otherwise, we say that the control treatment was applied.  A
+% causal experiment is done with respect to a population or collection
+% of {\em units}.  A causal relationship implies that if we intervene by
+% changing the treatment, then we should expect to see a change in the
+% outcome.  For example (referring to Table~\ref{tab:attlist}) a unit is
+% a flight, the treatment is Thunder (a binary attribute) and the
+% outcome is DepDelayMinutes (the delay in minutes): we are interested
+% in whether thunder causes delay, and how much.}
 
 
 
 % \subsection{The Potential Outcome Framework} \label{sec:NRCM}
-This section describes the Neyman-Rubin Causal
-Model (NRCM), which is the basic causal model in statistics.
-\ignore{
-The basic causal model in statistics is called the Neyman-Rubin Causal
-Model (NRCM). This framework views causal effect as comparisons
-between {\em potential outcomes} defined on the same units. This
-section describes the basic framework.}
+This section describes the Neyman-Rubin Causal Model (NRCM),
+which is the basic causal model in statistics.
+% \ignore{
+% The basic causal model in statistics is called the Neyman-Rubin Causal
+% Model (NRCM). This framework views causal effect as comparisons
+% between {\em potential outcomes} defined on the same units. This
+% section describes the basic framework.}
 
 \begin{table*}[t] \scriptsize
   \centering
@@ -47,20 +47,18 @@ $\ldots$&       &       &  & & \\
 \vspace{-.3cm}
 
 \paragraph*{Average Treatment Effect (ATE)}
-In the NRCM we are given a table $R(T,X,Y(0),Y(1))$ with
-$N$ rows called {\em units}, indexed by $i=1 \ldots N$; see Table~
-\ref{fig:causal:inference}.  The binary attribute $T$ is called {\em
-  treatment assignment} ($T=1$ means the unit was treated; $T=0$ means
-the unit was subjected to control); $X$ is a vector of attributes
-called {\em covariates}, unaffected by treatment; and the two
-attributes $Y(0), Y(1)$ represent {\em potential outcomes}: $Y(1)$ is
-the outcome of the unit if it is exposed to the treatment and $Y(0)$
-is the outcome when it is exposed to the control.  For any attribute
-$Z$ we write $Z_i$ for the value of the $i$'s unit.  The effect caused
-by the treatment for the $i$th unit, simply called the {\em treatment
-  effect} for the $i$th unit, is defined as $Y_i(1)-Y_i(0)$.  The goal
-of causal analysis is to compute the {\em average treatment effect
-  (ATE)}:
+In the NRCM we are given a table $R(T,X,Y(0),Y(1))$ with $N$ rows called {\em units},
+indexed by $i=1 \ldots N$; see Table~ \ref{fig:causal:inference}.
+The binary attribute $T$ is called {\em treatment assignment}
+($T=1$ means the unit was treated; $T=0$ means the unit was subjected to control);
+$X$ is a vector of attributes called {\em covariates}, unaffected by treatment;
+and the two attributes $Y(0), Y(1)$ represent {\em potential outcomes}:
+$Y(1)$ is the outcome of the unit if it is exposed to the treatment and
+$Y(0)$ is the outcome when it is exposed to the control.
+For any attribute $Z$ we write $Z_i$ for the value of the $i$'s unit.
+The effect caused by the treatment for the $i$th unit,
+simply called the {\em treatment effect} for the $i$th unit, is defined as $Y_i(1)-Y_i(0)$.
+The goal of causal analysis is to compute the {\em average treatment effect (ATE)}:
 
 
 \vspace{-.4cm}
