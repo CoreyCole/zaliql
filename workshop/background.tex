@@ -57,6 +57,8 @@ $X$ is a vector of attributes called {\em covariates}, unaffected by treatment;
 and the two attributes $Y(0), Y(1)$ represent {\em potential outcomes}:
 $Y(1)$ is the outcome of the unit if it is exposed to the treatment and
 $Y(0)$ is the outcome when it is exposed to the control.
+\corey{I'm personally confused by the following sentence and it's not included in Table 1 - 
+is $Z$ an attribute or a subject/row/unit?}
 For any attribute $Z$ we write $Z_i$ for the value of the $i$'s unit.
 The effect caused by the treatment for the $i$th unit,
 simply called the {\em treatment effect} for the $i$th unit, is defined as $Y_i(1)-Y_i(0)$.
@@ -81,14 +83,11 @@ estimator increases with the sample size.  \ignore{Thus, a key goal of the
 techniques discussed below is to ensure that expected values are
 computed over sufficiently large subsets of the data.}
 \vspace{-.15cm}
-\begin{example} \em \label{exa1} \delay \ (Cont.). Suppose we want to
-  quantify the causal effect of thunder on flight departure delays. In
-  this case the table is the spatio-temporal join of the flights and
-  weather data in Table \ref{tab:attlist}, the treatment $T$ is the
-  Thunder attribute, the outcome is
-  DepDelayMinutes, while the covariates are all other attributes
-  unaffected by Thunder, e.g. flights carrier, the origin airport,
-  traffic, some other weather attributes such as temperature.
+
+\begin{example} \em \label{exa3} Lalonde (Cont.)
+In the Lalonde dataset, $T$ is true if the subject, $Z$, participated in the
+job training program. We are measuring the difference in income between those subjects
+who participated in the program and those who did not, or $Y_i(1)-Y_i(0)$
 \end{example}
 
 Somewhat surprisingly, the model assumes that {\em both} $Y_i(1)$ and
