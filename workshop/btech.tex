@@ -462,7 +462,9 @@ $\ccv=\{\ccvi_1 \ldots \ccvi_n\}$, where $\ccvi_i$ is the coarsened
 version of $x_i$. Two alternative SQL implementations of CEM are
 represented in Figure \ref{fig:cem}(b) and (c).  The central idea in
 both implementations is to partition the units based on the coarsened
-covariates and discard those partitions that do not enjoy the overlap assumption. \ignore{Then, each partition in which the maximum and minimum of
+covariates and discard those partitions that do not enjoy the overlap assumption. 
+\corey{assumption or condition here?}
+\ignore{Then, each partition in which the maximum and minimum of
 the unit treatments are equal are discarded. This is because they do
 not enjoy the overlap assumption.} Note that the maximum of unit
 $ID$s in each partition is computed and used as its unique
@@ -483,9 +485,8 @@ Mahalanobis distance and propensity score, project a vector from
 multidimensional space into a scalar value. It has been argued that
 methods violating the congruous principle may lead to less robust
 inference with sub-optimal and highly counterintuitive properties
-\cite{IacKinPor09}.} Therefore, the reminder of the paper focuses on
-developing optimization techniques to speed up the computation of
-CEM.
+\cite{IacKinPor09}.} The remainder of this paper focuses on
+optimization techniques to speed up CEM.
 
 
 \vspace{-2mm} 

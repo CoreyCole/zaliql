@@ -28,19 +28,32 @@ This section introduces
 
 
 All toolkits developed for causal inference
-assume that the input is a single table. However, in the real world, data is normalized, and stored in multiple tables
-connected by key/forgien-keys. Thus, an analyst typically integrates tables
-to construct a single table that contains all intergradients needed to conduct causal analyses. \ignore{For instance, in  the \delay \ example, the treatment and part of the covariates
-are stored in the weather dataset; the outcome and  rest of the covariates are stored in the
-flight dataset.} The fact that  data is scattered across multiple tables raises the question of whether we
-can  push the matching methods to normalized databases. \ignore{If so, we must question  whether we can take advantage of this property
+assume that the input is a single table. However, data is often normalized and stored in multiple tables
+connected by primary and foreign keys. Thus, an analyst needs to first merge relevant tables
+into a single relation which contains all necessary columns. 
+\ignore{
+For instance, in  the \delay \ example, the treatment and part of the covariates
+are stored in the weather dataset; the outcome and  rest of the covariates are stored in the flight dataset.
+}
+We propose to combine this merging step with CEM as an optimization. 
+\ignore{Since data is scattered across multiple tables raises the question of whether we
+can  push the matching methods to normalized databases.} 
+\ignore{If so, we must question  whether we can take advantage of this property
 to optimize the cost of  performing matching.}
 
 
 Integrating tables is inevitable for propensity score matching. For example, suppose we have two tables
 $R(T,x,y,z)$ and $S(x,u,v)$. To estimate the propensity scores of each unit in $R \bowtie S$, we may fit
-a logistic-regression between $T$ and  the covariates $y,z,u,$ and $v$. This may require computing the expression $w_1*y + w_2*z + w_3*u + w_4*v$ and then applying the logit function to it.  While the weights of the expression may be learned without joining the tables, using techniques such as \cite{schleich2016learning}, the integrated table is required to impute the leaned model with the covariate values of each unit to estimate its propensity score. In contrast,  CEM can be pushed
-to the normalized databases. For example, $\cem(R \bowtie S)$ is equivalent to $\cem(\cem(R)\bowtie S)$. To see this, note that all subclasses discarded by performing CEM on $R$ do not satisfy the overlap assumption. It is clear that joining these subclasses with $S$, forms new subclasses that still fail to satisfy the overlap assumption and must be discarded. In the following, we formally state this property.
+a logistic-regression between $T$ and  the covariates $y,z,u,$ and $v$. 
+This may require computing the expression $w_1*y + w_2*z + w_3*u + w_4*v$ and then applying the logit function to it.  
+While the weights of the expression may be learned without joining the tables, 
+using techniques such as \cite{schleich2016learning}, 
+the integrated table is required to impute the leaned model with the covariate values of each unit to estimate its propensity score. 
+In contrast,  CEM can be pushed
+to the normalized databases. For example, $\cem(R \bowtie S)$ is equivalent to $\cem(\cem(R)\bowtie S)$. 
+To see this, note that all subclasses discarded by performing CEM on $R$ do not satisfy the overlap assumption. 
+It is clear that joining these subclasses with $S$, forms new subclasses that still fail to satisfy the overlap assumption and
+must be discarded. In the following, we formally state this property.
 
 
 
