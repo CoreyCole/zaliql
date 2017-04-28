@@ -1,4 +1,12 @@
 /*
+TASKS for this week
+- 
+
+start paper with experimental results
+redo experiments
+
+
+
 count(distict treatment)
   group by covariates
   having count(distict treatment) = 5
@@ -56,9 +64,21 @@ BEGIN
   commandString = substring( commandString from 0 for (char_length(commandString) - 1) );
     
   commandString = commandString || ' HAVING count(distinct ' || treatment || '::INTEGER)::INTEGER = ' || treatmentLevels
-    || ') SELECT * FROM subclasses, ';
+    || ') SELECT ';
 
   -- FOR LOOP TABLE NAME . *
+  FOREACH sourceTable IN ARRAY sourceTablesArr LOOP
+    FOR columnName IN EXECUTE 'SELECT column_name FROM information_schema.columns WHERE'
+        || ' table_name = ''' || quote_ident(sourceTable) || ''''
+      LOOP
+        commandString = commandString || sourceTable || '.' || columnName || ' AS ' || sourceTable || '_' || columnName || ', ';
+      END LOOP;
+  END LOOP;
+
+  -- use substring here to chop off last comma
+  commandString = substring( commandString from 0 for (char_length(commandString) - 1) );
+
+  commandString = commandString || ' FROM subclasses, ';
 
   -- add source tables
   FOREACH sourceTable IN ARRAY sourceTablesArr LOOP
@@ -77,11 +97,10 @@ BEGIN
 
   -- use substring here to chop off last `AND`
   commandString = substring( commandString from 0 for (char_length(commandString) - 3) );
-  EXECUTE format('DROP MATERIALIZED VIEW IF EXISTS %s', output_table);
+  -- EXECUTE format('DROP MATERIALIZED VIEW IF EXISTS %s', output_table);
 
   commandString = 'CREATE MATERIALIZED VIEW ' || output_table
     || ' AS ' || commandString || ' WITH DATA;';
-  RAISE NOTICE '%', commandString;
   EXECUTE commandString;
 
   RETURN 'Match successful and materialized in ' || output_table || '!';
@@ -91,3 +110,5 @@ $func$ LANGUAGE plpgsql;
 SELECT matchit(ARRAY['demo_test_1000', 'demo_test_10000'], ARRAY['demo_test_1000.fid', 'demo_test_10000.fid'], 'demo_test_1000.thunder', 2, ARRAY['demo_test_1000.fog', 'demo_test_1000.hail', 'demo_test_10000.rain', 'demo_test_10000.snow', 'demo_test_10000.tornado'], 'test_flight2');
 
 DROP FUNCTION matchit(text,text,text,text,text,text,text,boolean);
+
+SELECT column_name FROM information_schema.columns WHERE table_name = 'demo_test_1000';

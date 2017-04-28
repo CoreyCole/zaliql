@@ -25,31 +25,43 @@
 
 Much of the success of Big data today comes from
 \emph{predictive or descriptive analytics}:
-statistical models or data mining algorithms applied to data to predict new or future observations,
-e.g., we observe how users click on ads, then build a model and predict how future users will click.
+statistical models or data mining algorithms applied to data to predict
+new or future observations,
+e.g., we observe how users click on ads, then build a model and predict 
+how future users will click.
 Predictive analysis/modeling is central to many scientific fields,
 such as bioinformatics and natural language processing,
-in other fields - such as social economics, psychology, education and environmental science - 
+in other fields - such as social economics, psychology, 
+education and environmental science - 
 researchers are focused on testing and evaluating {\em causal hypotheses}.
-While the distinction between causal and predictive analysis has been recognized, the conflation between the two is common.
+While the distinction between causal and predictive analysis has been recognized, 
+the conflation between the two is common.
 
 
-Causal inference has been studied extensively in statistics and computer science \cite{Fisher1935design,Rubin2005,holland1986statistics,PearlBook2000\ignore{,Spirtes:book01}}.
-Many tools perform causal inference using statistical software such as SAS, SPSS, or R project.
+Causal inference has been studied extensively in statistics and computer science 
+\cite{Fisher1935design,Rubin2005,holland1986statistics,PearlBook2000\ignore{,Spirtes:book01}}.
+Many tools perform causal inference using statistical software 
+such as SAS, SPSS, or R project.
 However, these toolkits do not scale to large datasets.
 Furthermore, in many of the most interesting Big Data settings,
-the data is highly relational (e.g, social networks, biological networks, sensor networks and more)
+the data is highly relational 
+(e.g, social networks, biological networks, sensor networks and more)
 and likely to pour into SQL systems.
 There is a rich ecosystem of tools and organizational requirements that encourage this.
-Transferring data from DBMS to statistical softwares or connecting these softwares to DBMS can be error prone, 
+Transferring data from DBMS to statistical softwares or 
+connecting these softwares to DBMS can be error prone, 
 difficult, time consuming and inefficient.
-For these cases, it would be helpful to push statistical methods for causal inference into the DBMS.
+For these cases, it would be helpful to push statistical methods for causal inference 
+into the DBMS.
 
 
 Both predictive and causal analysis are needed to generate and test theories,
-policy and decision making and to evaluate hypotheses, yet each plays a different role in doing so.
-In fact, performing predictive analysis to address questions that are causal in nature could lead to a flood of false discovery claims.
-In many cases, researchers who want to discover causality from data analysis settle for predictive analysis
+policy and decision making and to evaluate hypotheses, 
+yet each plays a different role in doing so.
+In fact, performing predictive analysis to address questions that are causal 
+in nature could lead to a flood of false discovery claims.
+In many cases, researchers who want to discover causality from data analysis 
+settle for predictive analysis
 either because they think it is causal or lack of available alternatives.
 
 This work introduces \GSQL,
@@ -60,8 +72,10 @@ This work introduces \GSQL,
   who gave the first explicit definition of causation in terms of counterfactuals,
   was heavily influenced by al-Ghzali's conception of causality \cite{shalizi2013advanced}.
 }
-a SQL-based framework for drawing causal inference that circumvents the scalability issue with the existing tools.
-ZaliQL supports state-of-the-art methods for causal inference and runs at scale within a database engine.
+a SQL-based framework for drawing causal inference 
+that circumvents the scalability issue with the existing tools.
+ZaliQL supports state-of-the-art methods for causal inference 
+and runs at scale within a database engine.
 We show how to express the existing advanced causal inference methods in SQL,
 and develop a series of optimization techniques allowing our system to scale to billions of records.
 We evaluate our system on a real dataset.
@@ -115,7 +129,8 @@ we illustrate causal inference on the following real example.
     \end{tabular}
     \caption{Weather dataset}
   \end{subtable}
-\vspace{-0.1cm}   \caption{\bf{List of attributes from the flight(a) and weather(b)  datasets that are relevant to our analysis.}}
+\vspace{-0.1cm}
+\caption{\bf{List of attributes from the flight(a) and weather(b)  datasets that are relevant to our analysis.}}
 \label{tab:attlist}
 \end{table*}
 \vspace{-0.1cm}
