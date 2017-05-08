@@ -16,49 +16,94 @@ This section introduces
 
 
 \vspace{-.2cm}
-\subsection{CEM on Base Relations}
+% \subsection{CEM on Base Relations}
+% \label{sec:baserel}
+
+% Real world data is scattered among many tables. For example, our flight weather merged
+% dataset consists of tables, such as Airport, Carrier, Flight, Weather, etc.
+% Existing toolkits require the analyst to merge all of this data into one table in order to do CEM.
+% ZaliQL, however, combines this sets with CEM as an optimization.
+
+
+% $\cem(R \bowtie S)$ is equivalent to $\cem(\cem(R)\bowtie S)$. 
+% To see this, note that all subclasses discarded by performing CEM on $R$ 
+% do not satisfy the overlap assumption. 
+% It is clear that joining these subclasses with $S$, 
+% forms new subclasses that still fail to satisfy the overlap assumption and
+% must be discarded. In the following, we formally state this property.
+
+
+
+
+
+% In summary, The CEM algorithm prunes groups which do not enjoy the overlap condition.
+% That is, groups that share covariates $X=x$ must have both treated and control subjects.
+% Subjects are pruned when this overlap is not met.
+% When we prune at the base relation, we see runtime improvements because significantly
+% less rows are joined.
+
+\subsection{Multiple Levels of Treatment}
 \label{sec:baserel}
 
-\subsection{CEM of Multiple Treatments}
-\label{sec:baserel}
+\corey{this is not as rigorous of an explanation as Lopez and Gutman, but I think it is sufficient?}
+It is not always sufficient to have binary treatments.
+For example, flight carrier is categorical with many more than 2 possible values.
+Let $T = \{t_1, t_2,...,t_z\}$ be the possible treatment values, with 
+$Y = \{Y(t_1), Y(t_2),...,Y(t_z)\}$ the set of possible outcomes.
+Much like the ANOVA test in statistics, we look at the entire collection of treatments $T$
+to see if there is some effect in $Y$.
+
+
+ZaliQL handles this feature with a simple GROUP BY HAVING clause.
+\begin{algorithm} \small
+\caption{Non-Binary Treatments} \label{alg:havingtreatments}
+
+\end{algorithm}
+
 
 \subsection{Multiway CEM}
 \label{sec:baserel}
 
+Real world data is scattered among many tables. For example, our flight weather merged
+dataset consists of tables, such as Airport, Carrier, Flight, Weather, etc.
+Existing toolkits require the analyst to merge all of this data into one table in order to do CEM.
+ZaliQL, however, combines this sets with CEM as an optimization.
+The CEM algorithm prunes groups which do not enjoy the overlap condition.
+That is, groups that share covariates $X=x$ must have both treated and control subjects.
+Subjects are pruned when this overlap is not met.
+When we prune down to the base relation, we see runtime improvements because significantly
+less rows are joined.
+
+% All toolkits developed for causal inference
+% assume that the input is a single table. However, data is often normalized and stored in multiple tables
+% connected by primary and foreign keys. Thus, an analyst needs to first merge relevant tables
+% into a single relation which contains all necessary columns. 
+% \ignore{
+% For instance, in  the \delay \ example, the treatment and part of the covariates
+% are stored in the weather dataset; the outcome and  rest of the covariates are stored in the flight dataset.
+% }
+% We propose to combine this merging step with CEM as an optimization. 
+% \ignore{Since data is scattered across multiple tables raises the question of whether we
+% can  push the matching methods to normalized databases.} 
+% \ignore{If so, we must question  whether we can take advantage of this property
+% to optimize the cost of  performing matching.}
 
 
-All toolkits developed for causal inference
-assume that the input is a single table. However, data is often normalized and stored in multiple tables
-connected by primary and foreign keys. Thus, an analyst needs to first merge relevant tables
-into a single relation which contains all necessary columns. 
-\ignore{
-For instance, in  the \delay \ example, the treatment and part of the covariates
-are stored in the weather dataset; the outcome and  rest of the covariates are stored in the flight dataset.
-}
-We propose to combine this merging step with CEM as an optimization. 
-\ignore{Since data is scattered across multiple tables raises the question of whether we
-can  push the matching methods to normalized databases.} 
-\ignore{If so, we must question  whether we can take advantage of this property
-to optimize the cost of  performing matching.}
+% Integrating tables is inevitable for propensity score matching. For example, suppose we have two tables
+% $R(T,x,y,z)$ and $S(x,u,v)$. To estimate the propensity scores of each unit in $R \bowtie S$, we may fit
+% a logistic-regression between $T$ and  the covariates $y,z,u,$ and $v$. 
+% This may require computing the expression $w_1*y + w_2*z + w_3*u + w_4*v$ and then applying the logit function to it.  
+% While the weights of the expression may be learned without joining the tables, 
+% using techniques such as \cite{schleich2016learning}, 
+% \corey{need to proofread the following clause}
+% the merged table is required to impute the leaned model with the covariate values of each unit to estimate its propensity score. 
+% In contrast,  CEM can be pushed to the normalized databases.
 
 
-Integrating tables is inevitable for propensity score matching. For example, suppose we have two tables
-$R(T,x,y,z)$ and $S(x,u,v)$. To estimate the propensity scores of each unit in $R \bowtie S$, we may fit
-a logistic-regression between $T$ and  the covariates $y,z,u,$ and $v$. 
-This may require computing the expression $w_1*y + w_2*z + w_3*u + w_4*v$ and then applying the logit function to it.  
-While the weights of the expression may be learned without joining the tables, 
-using techniques such as \cite{schleich2016learning}, 
-the integrated table is required to impute the leaned model with the covariate values of each unit to estimate its propensity score. 
-In contrast,  CEM can be pushed
-to the normalized databases. For example, $\cem(R \bowtie S)$ is equivalent to $\cem(\cem(R)\bowtie S)$. 
+For example, $\cem(R \bowtie S)$ is equivalent to $\cem(\cem(R)\bowtie S)$. 
 To see this, note that all subclasses discarded by performing CEM on $R$ do not satisfy the overlap assumption. 
 It is clear that joining these subclasses with $S$, forms new subclasses that still fail to satisfy the overlap assumption and
 must be discarded. In the following, we formally state this property.
-
-
-
-
-
 
 
 Let $D$ be a standard relational schema with $k$ relations
@@ -107,7 +152,7 @@ reduces the cost of matching in the \delay \ example}
 
 
 \vspace{-.1cm}
-\subsection{Multiple Treatment Effect}
+\subsection{Multiple Binary Treatments}
 
 \label{sec:mte}
 

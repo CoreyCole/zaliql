@@ -57,8 +57,6 @@ $X$ is a vector of attributes called {\em covariates}, unaffected by treatment;
 and the two attributes $Y(0), Y(1)$ represent {\em potential outcomes}:
 $Y(1)$ is the outcome of the unit if it is exposed to the treatment and
 $Y(0)$ is the outcome when it is exposed to the control.
-\corey{I'm personally confused by the following sentence and it's not included in Table 1 - 
-is $Z$ an attribute or a subject/row/unit?}
 For any attribute $Z$ we write $Z_i$ for the value of the $i$'s unit.
 The effect caused by the treatment for the $i$th unit,
 simply called the {\em treatment effect} for the $i$th unit, is defined as $Y_i(1)-Y_i(0)$.
@@ -85,26 +83,26 @@ computed over sufficiently large subsets of the data.}
 \vspace{-.15cm}
 
 \begin{example} \em \label{exa3} Lalonde (Cont.)
-In the Lalonde dataset, $T$ is true if the subject, $Z$, participated in the
+In the Lalonde dataset, $T$ is true if the subject, participated in the
 job training program. We are measuring the difference in income between those subjects
 who participated in the program and those who did not, or $Y_i(1)-Y_i(0)$
 \end{example}
 
-Somewhat surprisingly, the model assumes that {\em both} $Y_i(1)$ and
+\corey{talk about lalonde instead of flight here}
+Somewhat surprisingly, the Neyman-Rubin causal model (NRCM) assumes that {\em both} $Y_i(1)$ and
 $Y_i(0)$ are available for each unit $i$.  For example, if the
-treatment $T$ is Thunder and the outcome is DepDelayMinutes, then the
-assumption is that we have {\em both} values DepDelayMinutes, when
-thunder was present and when it was absent.  The inclusion of both
+treatment $T$ is attending the job training program and the outcome is the subject's income,
+then the assumption is that we have {\em both} values of subject's income, as if they
+attended the training program, $Y_i(1)$, {\em and} if that same subject did not, $Y_i(0)$.  The inclusion of both
 outcomes, factual and counterfactual, in the data model is considered
 to be one of the key contributions of the NRCM.
 Of course, in reality we have only one of these outcomes for each
-unit, \eg, if there was a thunder during that flight then we know
+unit, \eg, if a subject attended the job training program we know
 $Y_i(1)$ but not $Y_i(0)$, and in this case we simply write $Y_i$ to
 denote $Y_i(T_i)$.  This missing value prevents us from computing
 $\ate$ using Eq.(\ref{eq:ate}), and is called the {\em fundamental
   problem of causal inference} \cite{Holland1986}.  Therefore, in
-order to compute $\ate$, the statistics literature makes further
-assumptions.
+order to compute $\ate$, statisticians make further assumptions.
 
 
 \vspace{-0.3cm}
@@ -137,11 +135,10 @@ have:\footnote{An additional assumption is actually needed, called
 \end{eqnarray}
 Each expectation above is easily computed from the data, for example
 $\E[Y(1)|T=1] = \sum_{i: T_i=1} Y_i / N_1$ where $N_1$ is the number
-of units with $T=1$.  The golden standard in causal analysis are {\em
-  randomized experiments}, where treatments are assigned randomly to
+of units with $T=1$.  The gold standard in causal analysis is a {\em
+  randomized experiment}, where treatments are assigned randomly to
 the units to ensure independence; for example, in medical trials each
-subject is randomly assigned the treatment or a placebo, which implies
-independence.
+subject is randomly assigned the treatment or a placebo.
 \begin{figure*} \scriptsize
   \centering
   \begin{tabular}{|l|l|l|} \hline
@@ -159,14 +156,19 @@ Mahalanobis Distance (MD) & $(x_i-x_j)'\Sigma^{-1} (x_i-x_j)$ & where $\Sigma=$ 
 \paragraph*{Observational Data}
 In this paper, however, we are interested in causal analysis in {\em
   observational data}, where the mechanism used to assign treatments
-to units is not known, and where independence fails in general.  For
-example, thunders occur mostly in the summer, which is also high
-travel season and therefore delays may be caused by the high traffic.
-In that case $T$ and $Y(0)$ (the delay when thunder does not occur)
-are correlated, since they are high in the summer and low in the
-winter, and similarly for $T,Y(1)$.  The vast majority of datasets
-available to analysts today are observational data, and this motivates
-our interest in this case.  Here, the statistics literature makes the
+to units is not known, and where independence fails in general.
+\ignore{
+  For example, thunders occur mostly in the summer, which is also high
+  travel season and therefore delays may be caused by the high traffic.
+  In that case $T$ and $Y(0)$ (the delay when thunder does not occur)
+  are correlated, since they are high in the summer and low in the
+  winter, and similarly for $T,Y(1)$.
+}
+The vast majority of datasets
+available to analysts today are observational
+\ignore{, and this motivates
+our interest in this case
+}.  Here, the statistics literature makes the
 following weaker assumption~\cite{Rubin1983b}:
 \vspace{-0.1cm}
 \begin{description}
@@ -186,8 +188,8 @@ defined.  For an illustration of unconfoundedness, suppose we restrict
 to flights on dates with similar weather and traffic conditions, by a
 fixed carrier, from a fixed airport, etc; then it is reasonable to
 assume that $T$ and $Y(0)$ are independent and so are $T$ and $Y(1)$.
-In order to satisfy unconfoundedness one has to collect sufficiently
-many confounding attributes in $X$ about the data in order to break
+In order to satisfy unconfoundedness, one must collect a sufficient number
+of confounding attributes in $X$ in order to ignore
 any indirect correlations between the treatment and the outcome.
 
 % Notice the need to weight by the
@@ -195,10 +197,10 @@ any indirect correlations between the treatment and the outcome.
 % ensure that all groups have the same size, and the formula simplifies
 % to a standard average.
 
-However, once we include sufficiently many covariate attributes $X$
-(as we should) then the data becomes sparse, and many groups $X=x$ are
-either empty or have a very small number of items.  For example if a
-group has only treated units, then the overlap condition fails, in
+However, once we include a sufficient number of covariate attributes $X$,
+as we should, the data becomes sparse. Many groups $X=x$ are
+either empty or have a very small number of subjects.  For example, if a
+group $X=x$ has only treated units, then the overlap condition fails, in
 other words the conditional expectation $\E[Y(0)|X=x,T=0]$ is
 undefined.
 % The problem with this approach is that in general the data is
@@ -207,9 +209,12 @@ undefined.
 % empirical estimate of $\E[-]$ to have low precision).
 \ignore{In our example, if the covariate attributes include OriginAirportID,
 UniqueCarrier,Tempm ,Wspdm and Precipm, because in that case all units
-within a group will have the same value of Thunder.}  In general the
-strong ignorability assumption is not sufficient to estimate $\ate$ on
+within a group will have the same value of Thunder.}
+
+In general the strong ignorability assumption is not sufficient to estimate $\ate$ on
 observational data.
+
+
 \vspace{-0.3cm}
 \paragraph*{Perfect Balancing}
 The solution adopted in statistics is to increase the size of the
@@ -225,8 +230,9 @@ the strong ignorability condition holds within each group: \vspace{-0.1cm}
 %
   \newline (2) Overlap $0 < \textrm{Pr}(T = 1 | B(X)=b) < 1$
 \end{description}
-Rosenbaum and Rubin~\cite{Rubin1983b} gave an elegant characterization
-of the functions $B$ that define strongly ignorable groups, which we
+
+Rosenbaum and Rubin~\cite{Rubin1983b} give an elegant characterization
+of the functions $B$ that defines strongly ignorable groups, which we
 review here.  We say that the groups are {\em perfectly balanced}, or
 that $B$ is a {\em balancing score} if $X$ and $T$ are independent in
 each group, \ie $({X \bigCI T} | B(X)=b)$ for all values $b$.
@@ -289,7 +295,7 @@ problem in subclassification is finding a good balancing score $B$.
 Rosenbaum and Rubin proved that the best balancing score is the
 function $E(x) = \textrm{Pr}(T = 1 | X=x)$, called {\em propensity
   score}.  However, in practice the propensity score $E$ is not
-available directly, instead needs to be learned from the data using
+available directly, instead it must be learned from the data using
 logistic regression, and this leads to several
 problems~\cite{king15}.  When no good balancing function can be found,
 a related method is used, called matching.
@@ -297,7 +303,7 @@ a related method is used, called matching.
 
 \vspace{-.25cm}
 
-\paragraph*{Matching} We briefly describe matching
+\paragraph*{Matching} We describe matching
 following~\cite{Rubin1983b}.  Consider some balancing score $B(X)$
 (for example the propensity score).  One way to estimate the quantity
 in Eq.~\ref{eq:oatt} is as follows.  First randomly sample the value
