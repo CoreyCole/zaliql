@@ -8,6 +8,7 @@ CREATE OR REPLACE FUNCTION matchit(
   source_tables TEXT,        -- space separated input table names
   primary_keys TEXT,         -- space separated source tables' primary keys
   treatment TEXT,            -- treatment column name (prefixed with it's table name)
+  treatmentLevels INTEGER,   -- number of treatment levels (2 for binary)
   covariates TEXT,           -- space separated covariate column names (prefixed with their column names)
   output_table TEXT          -- output table name
 ) RETURNS TEXT AS $func$
@@ -53,7 +54,7 @@ BEGIN
   -- use substring here to chop off last comma
   commandString = substring( commandString from 0 for (char_length(commandString) - 1) );
     
-  commandString = commandString || ' HAVING count(distinct' || quote_ident(treatment) || '::NUMERIC) != min(' || quote_ident(treatment) || '::NUMERIC)'
+  commandString = commandString || ' HAVING count(distinct' || quote_ident(treatment) || '::NUMERIC) = ' || quote_ident(treatmentLevels)
     || ') SELECT * FROM subclasses, ';
 
   -- add source tables
