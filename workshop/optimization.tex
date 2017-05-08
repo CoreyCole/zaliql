@@ -55,9 +55,18 @@ to see if there is some effect in $Y$.
 
 
 ZaliQL handles this feature with a simple GROUP BY HAVING clause.
+The analyst provides the number of distinct treatment levels and ZaliQL 
+groups subjects if they are exposed to all levels of the treatment.
+
+\begin{algorithm} \small
+\caption{Binary Treatments} \label{alg:havingtreatments}
+GROUP BY CoarsendCovariates \newline
+HAVING min(Treatment) != max(Treatment)
+\end{algorithm}
 \begin{algorithm} \small
 \caption{Non-Binary Treatments} \label{alg:havingtreatments}
-
+GROUP BY CoarsendCovariates \newline
+HAVING count(distinct Treatment) = numTreatmentLevels
 \end{algorithm}
 
 
