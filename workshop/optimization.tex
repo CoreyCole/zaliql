@@ -42,6 +42,8 @@ This section introduces
 % When we prune at the base relation, we see runtime improvements because significantly
 % less rows are joined.
 
+\corey{remove a,b, not c make c more pseudo code for CEM}
+
 \subsection{Multiple Levels of Treatment}
 \label{sec:baserel}
 
@@ -52,6 +54,9 @@ Let $T = \{t_1, t_2,...,t_z\}$ be the possible treatment values, with
 $Y = \{Y(t_1), Y(t_2),...,Y(t_z)\}$ the set of possible outcomes.
 Much like the ANOVA test in statistics, we look at the entire collection of treatments $T$
 to see if there is some effect in $Y$.
+
+
+\corey{babak revisit the overlap and unconfoundedness in light of multiple levels of treatment}
 
 
 ZaliQL handles this feature with a simple GROUP BY HAVING clause.
