@@ -54,7 +54,7 @@ the flights from the same carrier.  We managed to acquire and clean
 35M weather observations between 2000 and 2015. These datasets are
 integrated by a spatio-temporal join.
 
-
+\babak{add description of the Lalonde data here}
 
 
 
@@ -189,6 +189,7 @@ R & 311 & 323
   \label{tbl:qc}
 \end{table*}
 
+\babak{Quality comparison with Lalonde should be place here}
 
 
 % \subsubsection{Causal questions and covariate selection}
@@ -208,7 +209,9 @@ assess the following counterfactual: {\em ``What would the flight
   when visibility is actually low, i.e., Visim$<1$"}; for this
 analysis, items where Visim$\in[1,5]$ were discarded.
 
+\babak{add causal question regarding Lalonde here}
 % For each analysis, all flights not in the treated or control groups are discarded (for Snow and Thunder, all units are either treated or control).
+\babak{add set of covariates selected for each causal question}
 
 \ignore{
 We used the RNCM to estimate the $\ate$ of each treatment on flight departure delay and cancellation via the matching methods. Each flight
@@ -222,8 +225,7 @@ a similar effect on flight departure delay.}
 
 
 
-
-
+\ignore{
 To obtain quality answers for each treatment, we used graphical models
 to identify a minimum number of covariate attributes to ensure
 unconfoundedness, because minimizing the number of covariates has been
@@ -250,9 +252,8 @@ blocked by a certain subset of variables (say, $X_i$), then $T_i$ and $Y_i$ are 
 independent given $X_i$. \ignore{For instance for LowVisibility we obtain that following minimal set of observed covariates:
 $X$=\{AiportTraffic, CarrierTraffic, Precipitation, Temperature, Thunder, Tornado, Carrier, Windspeed\}.}
 For instance, for LowVisibility, the filled nodes in Figure \ref{fig:dag}, represent the set of covariates that unconfound LowVisibility and DepDelay. For more details on covariate selection using CDAGs, we refer the reader to \cite{de2011covariate} and references therein.
-
 }
-
+}
 {\bf Systems} The experiments were performed locally on a 64-bit OS X machine with
 Intel Corei7 processor (16 GB RAM, 2.8 GHz).  \GSQL\
 was deployed to Postgres version 9.5.  We compared \GSQL\ with R packages MatchIt

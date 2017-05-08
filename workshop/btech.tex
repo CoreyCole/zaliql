@@ -226,7 +226,7 @@ WHERE NOT EXISTS
 \end{alltt} \vspace{-.5cm}
   \caption{\bf SQL implementation of NNMNR}\label{fig:nnmnr}
 \end{figure}
-
+\babak{Send a description to Corey}
 
 {\bf NNM Without Replacement} \ignore{Expressing NNMNR in a declarative manner
 can be complicated. In fact,} This method aims
@@ -454,6 +454,8 @@ no control unit. \ignore{Subclassification based
   on univariate continues covariate (cf Section \ref{sec:sub}) can bee
   seen as a particular form of CEM.}
 
+\babak{Explain the discretization algorithms supported by ZaliQL}
+
 For each attribute $x_i \in \cv$, we assume a set of cutpoints
 $c_i=\{c_{1} \ldots c_{(k_i-1)}\}$ is given, which can be used to
 coarsen $x_i$ into $k_i$ buckets. The view $\crele$, shown in Figure
@@ -462,7 +464,7 @@ $\ccv=\{\ccvi_1 \ldots \ccvi_n\}$, where $\ccvi_i$ is the coarsened
 version of $x_i$. Two alternative SQL implementations of CEM are
 represented in Figure \ref{fig:cem}(b) and (c).  The central idea in
 both implementations is to partition the units based on the coarsened
-covariates and discard those partitions that do not enjoy the overlap assumption. 
+covariates and discard those partitions that do not enjoy the overlap assumption.
 \corey{assumption or condition here?}
 \ignore{Then, each partition in which the maximum and minimum of
 the unit treatments are equal are discarded. This is because they do
