@@ -1,6 +1,7 @@
 # LaTeX
 latex.out
 paper.pdf
+vldb_main.pdf
 abstr.txt
 *.swp
 *.aux
