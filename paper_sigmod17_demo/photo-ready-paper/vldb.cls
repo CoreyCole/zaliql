@@ -4,7 +4,7 @@
 % SIG-ALTERNATE.CLS - VERSION 1.8
 % "COMPATIBLE" WITH THE "ACM_PROC_ARTICLE-SP.CLS" V2.7SP
 % Gerald Murray July 26th. 2005
-% 
+%
 % ---- Start of 'updates'  ----
 %
 % Allowance made to switch default fonts between those systems using
@@ -501,7 +501,7 @@
   \hrule width .4\columnwidth
   \kern 2.6\p@}                 % The \hrule has default height of .4pt .
 % ------
-\long\def\@makefntext#1{\noindent 
+\long\def\@makefntext#1{\noindent
 %\hbox to .5em{\hss$^{\@thefnmark}$}#1}   % original
 \hbox to .5em{\hss\textsuperscript{\@thefnmark}}#1}  % C. Clifton / GM Oct. 2nd. 2002
 % -------
@@ -1252,7 +1252,7 @@
 \newdimen\bibindent
 \setcounter{enumi}{1}
 \bibindent=0em
-\def\thebibliography#1{% 
+\def\thebibliography#1{%
 \ifnum\addauflag=0\addauthorsection\global\addauflag=1\fi
      \section[References]{%    <=== OPTIONAL ARGUMENT ADDED HERE
         {References} % was uppercased but this affects pdf bookmarks (SP/GM October 2004)
@@ -1384,16 +1384,19 @@
 
 % Future proceedings chair, please update the following: 1) conference sequence number, 2) date,
 % 3) location, 4) volume number, 5) Copyright year.
-\global\boilerplate={Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. To copy otherwise, to republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee.  Articles from this volume were invited to present their results at The 42nd International Conference on Very Large Data Bases, September 2016, New Delhi, India.}
+\global\boilerplate={Permission to make digital or hard copies of all or part of this work for personal or classroom use
+is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this
+notice and the full citation on the first page. To copy otherwise, to republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee.  Articles from this volume were invited to present their results at
+The 42nd International Conference on Very Large Data Bases, September 2016, New Delhi, India.}
 
 \global\conf{Proceedings of the VLDB Endowment,}
-\global\confinfo{Vol. 9, No. X}
+\global\confinfo{Vol. 10, No. 12}
 \newtoks\copyrightetc
 \global\copyrightetc{Copyright 2016 VLDB Endowment 2150-8097/11/11... \$ 10.00}
 
 %% Uncomment for camera ready
-%\toappear{\the\boilerplate\par
-%{\confname{\the\conf}} \the\confinfo\par \the\copyrightetc.}
+\toappear{\the\boilerplate\par
+{\confname{\the\conf}} \the\confinfo\par \the\copyrightetc.}
 
 %% End of vldb.cls -- V1.8c - 05/15/2011 --
 %% Ahmet Sacan  -- December 2011 (volume, issue, and dates are dynamically updated)
