@@ -321,7 +321,7 @@ We demonstrate that the issue could be avoided by conducting a careful causal an
 
 
  {\bf Causal questions:} In this step, we define the following {\em causal questions}:
-Q1: Does low air pressure causes flight departure delays?
+Q1: Does low air pressure cause flight departure delays?
 Q2: Which weather features are major causes of departure delays?
 Q3: Do the findings to the previous question differ between major airports in the states? We answer these questions using \GSQL\ by
  \vspace{-0.24cm}
@@ -382,7 +382,7 @@ Tempm< 0$) and input SQL for custom discretization methods.} and (3) specifying 
      
      \vspace*{0.2cm}
 {\small  
-   \centering  $ \ \ \E[ \text{Depdelay} | \text{LowPressure}=1] - \E[ \text{DepDelay} | \text{LowPressure}=0] $ }
+   \centering  $ \ \ \E[ \text{DepDelay} | \text{LowPressure}=1] - \E[ \text{DepDelay} | \text{LowPressure}=0] $ }
     \vspace*{0.15cm}
     
 \noindent where, $\E[ \text{DepDelay} | \text{LowPressure}=x ]$, $x=(0,1)$ is
@@ -397,8 +397,8 @@ Tempm< 0$) and input SQL for custom discretization methods.} and (3) specifying 
     the ATE for LowPressure on DepDelay, the result is  (give concrete number).}}
     We show that for LowPressure, ATE is 10 minutes.
     This is relatively large and suggests pressure affects DepDelay.
-    However, it is known that LowPressure alone does not cause departure delay.
-    This observation raises the question: where is this difference coming from?
+    However, it is known that LowPressure alone does not actually cause departure delay.
+    Where, then, is this difference coming from, and how do we account for it?
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% check ba;ance
@@ -485,7 +485,7 @@ We show that other treatments \emph{do} have significant causal effect on depart
         result by performing statistical tests, such as the chi-square test.
           \item For Q3 we report the major causes of flight delay at the airports under study.}
 For Q3, we report the major causes of flight delay at the airports under the study are
-     actually different. We validate the statistical significance of our findings with t-tests, and show that the identified causes are in accordance with
+     actually different. We validate the statistical significance of our findings with t-tests, and show that the identified causes match
 FAA reports. % \footnote{\url{https://www.faa.gov/}}
 \ignore{For example, the runway configuration at SFO makes the airport
 unusually susceptible to delays in low-visibility conditions~\cite{faa-sfo}.}
@@ -550,7 +550,8 @@ The goal of causal analysis is to compute the {\em average treatment
   \vspace{-3mm}
 \end{figure}
 \noindent
-The so-called {\em fundamental problem of causal inference} (FPCI) is that
+The so-called {\em fundamental problem of causal inference} %(FPCI)
+is that
 for each unit we only know either $Y(1)$ or $Y(0)$ but not both.
 \ignore{\danp{Can we add an example to make this more intuitive,
  since it's important e.g.: each individual flight has either
@@ -565,13 +566,12 @@ problem \cite{RosenbaumRubin1983}. }
 \danp{Explain why we are mentioning independence at all since we don't
   assume it. In a perfectly randomized trial, independence holds, but
   we are interested in observational data where it doesn't.}}
-The strongest is the {\em independence assumption}, which states that
+The strongest is the {\em independence assumption}:
 the treatment mechanism is independent of the potential outcomes,
-i.e., $(Y(1), Y(0)) \bigCI T$. Then, it holds that
-$\E[Y(1)]=\E[Y(1)|T=1]$ and similarly $\E[Y(0)]=\E[Y(0)|T=0]$ and we
-have:  $$ATE = \E[Y(1)|T=1]-\E[Y(0)|T=0].$$
+i.e., $(Y(1), Y(0)) \bigCI T$. This might hold in a properly constructed randomized trial. Then,
+$\E[Y(1)]=\E[Y(1)|T=1]$ and similarly $\E[Y(0)]=\E[Y(0)|T=0]$ and so:  $$ATE = \E[Y(1)|T=1]-\E[Y(0)|T=0].$$
 
-\GSQL\  is designed for drawing causal inference from {\em
+However, \GSQL\  is designed for drawing causal inference from {\em
   observational data}, where independence fails in general. \ignore{
 For
 example, thunder occurs mostly in the summer, which is also high
@@ -580,11 +580,11 @@ In that case $T$ and $Y(0)$ (the delay when thunder does not occur)
 are correlated, since they are high in the summer and low in the
 winter, and similarly for $T$ and $Y(1)$.  \ignore{The vast majority of datasets
 available to analysts today are observational data, and this motivates
-our interest in this case.}}  Here, statistical literature makes the
-following weaker assumption called {\em Strong
-  Ignorability}: for all $x$ the following hold:
-  (1) unconfoundedness: $({Y(0), Y(1) \bigCI T} | X=x)$ and
-  (2) overlap: $0 < \textrm{Pr}(T = 1 | X=x) < 1$ ~\cite{Rubin1983b}.
+our interest in this case.}}  Here, statistical literature makes two standard, weaker
+assumptions called {\em Strong
+  Ignorability}: for all $x$: \\% the following hold:
+  (1)  ${Y(0), Y(1) \bigCI T} | X=x$ (unconfoundedness) and \\
+  (2) $0 < \textrm{Pr}(T = 1 | X=x) < 1$ (overlap)~\cite{Rubin1983b}.
 
 
 
@@ -635,7 +635,7 @@ distance (PS)   &  & is the propensity score~\cite{Rubin1983b}\ \\ \hline
 }
 
 If strong ignorability holds, one can estimate ATE by
- taking the  average difference for each group with $X=x$ \ignore{\danp{Need to define
+ taking the  average difference for each group with a particular value of $X$ \ignore{\danp{Need to define
    what a group is here}} i.e., $\E_x[\E[Y(1)-Y(0)| X=x]]$.
 In practice, however, a direct application of this method is
 impossible, because the data is typically very sparse: for any value
@@ -954,7 +954,8 @@ and the rest of units are discarded.  Let $\ccv$ be the
 coarsened version of $\cv$ and $R^c$ be a coarsened
 version of R. As depicted in Fig. \ref{fig:cem},
 CEM is essentially a GROUP-BY-HAVING query.
- \GSQL\  also supports several supervised and unsupervised methods for coarsening proposed in \cite{dougherty1995supervised}.
+\GSQL\  also supports several supervised and unsupervised methods for coarsening% proposed in
+~\cite{dougherty1995supervised}.
 
 We observed that CEM is an {\em Iceberg query}.  These are  GROUP-BY-HAVING queries
 in which the output size is typically much smaller than the input (the
