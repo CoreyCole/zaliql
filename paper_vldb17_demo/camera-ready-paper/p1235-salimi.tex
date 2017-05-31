@@ -13,7 +13,6 @@
 \usepackage{graphicx}
 \usepackage{balance}  % for  \balance command ON LAST PAGE  (only there!)
 
-
 \begin{document}
 
 % ****************** TITLE ****************************************
@@ -78,6 +77,9 @@
 %
 % 1st. author
 
+\frenchspacing
+
+
 \maketitle
 
 \begin{abstract}
@@ -126,10 +128,10 @@ incorrectly interpret these predictive models as causal. While the distinction b
 
 To this day, {\em randomized experiments} (A/B testing) remain the gold standard for causal inference.
 However, in many domains, controlled experiments are not feasible for ethical, economical or practical reasons \cite{rosenbaum2002observational}.
-{\em Observational studies} can be used to draw causal inference without controlled experiments  \cite{rosenbaum2002observational,Rubin2005\ignore{,PearlBook2000,Spirtes:book01}}. Computational, physical, and social scientists all increasingly want to perform causal inference on big data from observational studies:
+Statistical methods for causal inference can be used to draw conclusions from {\em observational studies}, i.e., without controlled experiments  \cite{rosenbaum2002observational,Rubin2005\ignore{,PearlBook2000,Spirtes:book01}}. Computational, physical, and social scientists all increasingly want to perform causal inference on big data from observational studies:
 %Big data is most commonly observational and highly relational (e.g,
 social networks, biological networks, sensor networks and more.
-Unfortunately, current software for processing observational data for causal inference does not scale. R, Stata, SAS, and SPSS have packages such as {\em MatchIt} and {\em CEM}\cite{ho2005,iacus2009cem}, but they are designed for single-table data and are cumbersome with large datasets. For example, we found performing CEM on a dataset with 5M entries takes up to an hour using Stata, R or SAS.
+Unfortunately, current software for processing observational data for causal inference does not scale. R, Stata, SAS, and SPSS have packages such as {\em MatchIt} and {\em CEM}~\cite{ho2005,iacus2009cem}, but they are designed for single-table data and are cumbersome with large datasets. For example, we found that running CEM on a dataset with 5M entries takes up to an hour using Stata, R or SAS.
 
  Additionally, causal analysis is part of a larger pipeline that includes data acquisition,  cleaning, and integration. For large datasets, these tasks are better handled by a relational database engine, which provides most of the functionality needed for these tasks, and also scales up to large datasets. %% \dans{the previous sentence is cumbersome.  what we want to say is that causal analysis is part of a larger pipeline that includes data acquisition, data cleaning, and data integration; for large datasets, these tasks are best handled by a relational database engine, which provides most of the functionality needed for these tasks, and also scales up to large datasets.}
 \ignore{A rich ecosystem of tools and organizational requirements further encourage SQL database storage. Transferring
@@ -202,9 +204,9 @@ The \GSQL\ API is modeled after the MatchIt and CEM toolkits
 Modern causal analysis is an iterative process, as  illustrated in Fig \ref{fig:flowchart}.
 An analyst acquires and integrates data from multiple sources,
 generates a hypothesis, pre-processes the data with a matching  method (explained below), and then finally
- conducts the causal analysis. Most often this process needs to be repeated with a new matching
+ conducts the causal analysis. Frequently, this process needs to be repeated with a new matching
   method, a new hypothesis or new datasets \cite{IacKinPor09}.
-We demonstrate \GSQL\ by showing several causal investigations on integrated flight and weather datasets. \ignore{on two,
+  We demonstrate this workflow in \GSQL\ through several causal investigations on integrated flight and weather datasets. \ignore{on two,
   large datasets that we downloaded from the Web and integrated in PostgreSQL.}
 
 \ignore{
@@ -305,12 +307,12 @@ delay between flights that happen during low-pressure (treated groups) and oppos
 \end{example}
 }
 
- {\bf Data Exploration:} Our demonstration starts by exploring the effect of different weather features
+ {\bf Data exploration:} Our demonstration starts by exploring the effect of different weather features
  on flight departure delay. As an example, we show that 11\% of flights were delayed
-when pressure was low, but only 0.4\% of flights delayed
+when pressure was low, but only 0.4\% of flights 
 when pressure was high. This suggests that pressure is {\em inversely correlated} with flight delay
 (as pressure goes down, flights tend to be more delayed).
-However, after grouping by variables like airport, airline and other weather features,
+However, after grouping by variables like airport, airline, and other weather features,
 flight delay frequency declined from 11\% to almost 0\%.\footnote{This phenomenon
 is known as Simpson's paradox and arises frequently in observational studies \cite{pearl2014comment}.
 We demonstrate that the issue could be avoided by conducting a careful causal analysis.
@@ -412,9 +414,9 @@ Tempm< 0$) and input SQL for custom discretization methods.} and (3) specifying 
  {\bf Confounding variables:} The difference is a product of {\em confounding variables}
   that make it difficult to establish a causal link between a treatment and outcome.
   We will show that the observed positive effect of LowPressure
-  was actually the result of the confounding influence of other factors such as low visibility, snow and thunder.
+  was actually the result of the confounding influence of other factors such as low visibility, snow, and thunder.
      Specifically, we show that, LowPressure is highly associated with unsettled weather conditions
-    such as LowVisibility (Fig. \ref{fig:cv}). For instance the average of LowVisibility in the treated group is much less than
+    such as LowVisibility (Fig. \ref{fig:cv}). For instance, the average of LowVisibility in the treated group is much less than
   the opposite group. Thus, it is unclear that the observed DepDelay difference between the groups is caused by LowPressure or LowVisibility.
 
 
@@ -440,8 +442,8 @@ Conceptually, adjusting for one confounding variable is easy.  First, we partiti
 
 
  Sophisticated techniques are required to adjust for a large set of confounding variables. \GSQL
- implements two dominant approaches used in social science and statistics namely,
-  {\em coarsened exact matching (CEM)} and {\it propensity score matching(PSM)}
+ implements two dominant approaches used in social science and statistics, namely,
+  {\em coarsened exact matching (CEM)} and {\it propensity score matching (PSM)}
  \cite{IacKinPor09,Rubin1983b}.
  The goal of matching is to prune data so that
 the remaining {\em matched} data have better \emph{balance}
@@ -458,11 +460,11 @@ deemed to confound the treatment and DepDelay (Figure \ref{sfig:demo-tutorial}(c
 
 {\bf Checking Balance:}  In this step, we check whether the
 matching process  successfully improved the covariates' balance. In particular,
-(1)  we compare the distribution for each covariate between the
+ we compare the distribution for each covariate between the
  treated and control group on the matched data
  (this will be done for all treatments). For this task, \GSQL\  provides
  numerical and visual summaries such as mean difference and quantile-quantile plots:
-  Fig. \ref{sfig:demo-tutorial}(d,e). \ignore{
+  see Fig. \ref{sfig:demo-tutorial}(d,e). \ignore{
 (2)  we can perform different matching methods using different
         parameters, showing that different methods trade off balance and size of matched data% to demonstrate the advantages and disadvantage of different methods.
 
@@ -476,16 +478,14 @@ matching process  successfully improved the covariates' balance. In particular,
      {\bf Answers to our causal questions:} %\dans{We should give here concrete answers to the queries Q1,Q2,Q3.  Then add a sentence saying that we will perform other causal analysis during the demo}
 In this step,  we answer the causal questions created at the very first step of the demonstration using
 \GSQL. For Q1, we show that LowPressure has no significant causal effect on DepDelay.
-For Q2, we identify that other treatments have significant causal effect on DepDelay
- (Figure \ref{sfig:demo-tutorial}(f)).
+We show that other treatments \emph{do} have significant causal effect on departure delays (Q2), and further that these causes are different for different airports in the study (Q3, Figure \ref{sfig:demo-tutorial}(f)).
    \ignore{
        \item for each treatment we compute ATE on the associated balanced matched data
       \item we evaluate the statistical significance of the obtained
         result by performing statistical tests, such as the chi-square test.
           \item For Q3 we report the major causes of flight delay at the airports under study.}
 For Q3, we report the major causes of flight delay at the airports under the study are
-     actually different. We validate the statistical significance of our findings with t-tests.
-          We show that the obtained results are in accordance with
+     actually different. We validate the statistical significance of our findings with t-tests, and show that the identified causes are in accordance with
 FAA reports. % \footnote{\url{https://www.faa.gov/}}
 \ignore{For example, the runway configuration at SFO makes the airport
 unusually susceptible to delays in low-visibility conditions~\cite{faa-sfo}.}
