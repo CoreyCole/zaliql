@@ -708,10 +708,8 @@ joining the treated with the control units that are closer on propensity score t
 the caliper. Then, this set is sorted into ascending order of
 distances.  In addition, the order of each row in the sorted set is identified
 using the window function {\verb|ROW_NUMBER|}.
-Finally, $k$ closest controls are selected as the matched units.
-
-Note: \GSQL\  generates more efficient SQL statements by
-leveraging recent developments in the context of spatial-databases
+Finally, $k$ closest controls are selected as the matched units. Note that \GSQL\  generates more efficient SQL statements by
+leveraging recent developments in  spatial-databases
 (see e.g., \cite{obe2015postgis}).
 
 \ignore{\dans{can you give more details here.  What is the schema of
