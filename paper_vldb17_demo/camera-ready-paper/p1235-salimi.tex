@@ -205,7 +205,7 @@ Modern causal analysis is an iterative process, as  illustrated in Fig \ref{fig:
 An analyst acquires and integrates data from multiple sources,
 generates a hypothesis, pre-processes the data with a matching  method (explained below), and then finally
  conducts the causal analysis. Frequently, this process needs to be repeated with a new matching
-  method, a new hypothesis or new datasets \cite{IacKinPor09}.
+  method, a new hypothesis or new datasets \cite{IacKinPor09}. Our system does not address statistical validity of multiple hypothesis testing. 
   We demonstrate this workflow in \GSQL\ through several causal investigations on integrated flight and weather datasets. \ignore{on two,
   large datasets that we downloaded from the Web and integrated in PostgreSQL.}
 
@@ -650,7 +650,7 @@ statistics is {\em matching}~\cite{Rubin1983b}.
 
 The idea is to match each treated unit to one or multiple control
 units with ``close'' values of the covariate attributes $X$
-(closeness is defined using some distance function between the covariate values of two units).
+(closeness is defined using some distance function between the covariate values of two units) \cite{iacus2009cem}.
 \ignore{
 Given a table $R(T, X_1, X_2, \ldots, Y)$, the goal is to compute
 ATE conditioned on some function of the a set of covariates $X$.} Given a table $R(T,X_1 \ldots,X_n,Y)$,
