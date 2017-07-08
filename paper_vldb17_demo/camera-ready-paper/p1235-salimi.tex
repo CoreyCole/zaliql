@@ -107,16 +107,16 @@ social networks, biological networks, sensor networks and more.
 Unfortunately, current software for processing observational data for causal inference does not scale. R, Stata, SAS, and SPSS have packages such as {\em MatchIt} and {\em CEM}~\cite{ho2005,iacus2009cem}, but they are designed for single-table data and are cumbersome with large datasets. For example, we found that running CEM on a dataset with 5M entries takes up to an hour using Stata, R or SAS.}
 
 % paragraph 1 after
-Randomized experiments (AB testing) remain the gold standard for causal inference; however, they do pose a number of problems. Namely, controlled experiments are not feasible for ethical, economical, or practical reasons in a number of disciplines \cite{rosenbaum2002observational}. Observational studies can be used to draw causal inference without controlled experiments \cite{rosenbaum2002observational,Rubin2005\ignore{,PearlBook2000,Spirtes:book01}}. 
+Randomized experiments (A/B testing) remain the gold standard for causal inference; however, they do pose a number of problems. Namely, controlled experiments are not feasible for ethical, economical, or practical reasons in a number of disciplines \cite{rosenbaum2002observational}. Observational studies can be used to draw causal inference without controlled experiments \cite{rosenbaum2002observational,Rubin2005,PearlBook2000\ignore{,Spirtes:book01}}.
 
 %pararaph 2 after
-Computational, physical, and social scientists all increasingly want to perform causal inference on big datasets from observational studies including social networks, biological networks, sensor networks, and others. Unfortunately, the current software for processing observational data in terms of causal inference simply cannot scale. R, Stata, SAS, and SPSS all have packages; however, they are designed to be used only with single table data, making them cumbersome and often ineffective with large datasets \cite{ho2005,iacus2009cem}. For example, we found performing CEM on a dataset with 5M entries takes up to an hour using Stata, R, or SAS. This is obviously not an effective practice for researchers. 
+Computational, physical, and social scientists all increasingly want to perform causal inference on big observational data, e.g., data from social networks and biological networks. Unfortunately, the current software for processing observational data in terms of causal inference cannot scale. R, Stata, SAS, and SPSS all have packages \cite{ho2005,iacus2009cem}; however, they are designed to be used only with single table data, making them cumbersome and often ineffective with large datasets. For example, we found performing CEM on a dataset with 5M entries takes up to an hour using Stata, R, or SAS. This is obviously not an effective practice for researchers.
 
 %paragraph 2 before
 \ignore{Additionally, causal analysis is part of a larger pipeline that includes data acquisition,  cleaning, and integration. For large datasets, these tasks are better handled by a relational database engine, which provides most of the functionality needed for these tasks, and also scales up to large datasets. %% \dans{the previous sentence is cumbersome.  what we want to say is that causal analysis is part of a larger pipeline that includes data acquisition, data cleaning, and data integration; for large datasets, these tasks are best handled by a relational database engine, which provides most of the functionality needed for these tasks, and also scales up to large datasets.}
 }
 % paragraph 3 after
-Additionally, causal analysis is part of a larger pipeline that includes data acquisition, cleaning, and integration. For large datasets, these tasks are better handled by a relational database engine which provides most of the functionality needed for these tasks while also scaling up to large datasets. 
+Additionally, causal analysis is part of a larger pipeline that includes data acquisition, cleaning, and integration. For large datasets, these tasks are better handled by a relational database engine which provides most of the functionality needed for these tasks while also scaling up to large datasets.
 
 %paragraph 3 before
 \ignore {
@@ -129,32 +129,33 @@ In this demonstration, we propose \GSQL,\footnote{ The prefix Zali refers to
   causal inference can be approached from this perspective, and that doing so is key to scalability and robustness.  \GSQL\ supports state-of-the-art methods for causal inference and runs at scale within a database engine.
 }
 % paragrpah 4 after
-The purpose of this demonstration is to propose ZaliQL1,\footnote{ The prefix Zali refers to
+In this demonstration, we propose \GSQL,\footnote{ The prefix Zali refers to
   al-Ghzali (1058-1111), a medieval Persian philosopher. It is known
   that David Hume (1711-1776), a Scottish philosopher, who gave the
   first explicit definition of causation in terms of counterfactuals,
-  was heavily influenced by al-Ghzali's conception of causality.} an SQL-based framework for drawing causal inference within the DBMS. ZaliQL takes the initial step towards truly scalable causal inference by modeling it as a data management problem. We demonstrate that causal inference can be approached from this perspective and that doing so is key to scalability and robustness of the data. ZaliQL supports innovative methods for causal inference and runs at scale within a database engine. 
+  was heavily influenced by al-Ghzali's conception of causality.}
+  a SQL-based framework for drawing causal inference.  \GSQL\ takes the initial step towards scalable causal inference by modeling it as a data management problem. We show that causal inference can be approached from this perspective and that doing so is key for  scalable and robust causal analysis. \GSQL\ supports state-of-the-art methods for causal inference and runs at scale within a database engine.
 
 
 
 \begin{figure}\center
  \includegraphics[scale=0.20]{Figures/System-Overview.png}
-  \vspace{-3.3mm} \caption{ZaliQL architecture}
+  \vspace{-3mm} \caption{ZaliQL architecture}
 
   \label{fig:arch}
   \vspace{-3mm}
 \end{figure}
 
-
+  \vspace*{-3mm}
 \begin{figure} \center
   \includegraphics[scale=0.21]{Figures/Matching-Flowchart.png}
-  \vspace{2mm}\caption{Causal analysis workflow}
+  \vspace*{-4mm}\caption{Causal analysis workflow}
 
 \label{fig:flowchart}
 \vspace{-0.3cm}
 \end{figure}
 
-\vspace{-.3cm}
+%\vspace{-.1cm}
 
 \section{System Architecture}
 
@@ -164,10 +165,10 @@ The API is a set of functions that support causal inference on data stored in a 
 The API will be packaged as a PostgreSQL extension.
 The \GSQL\ API is modeled after the MatchIt and CEM toolkits
 \cite{ho2005,iacus2009cem} and includes methods for drawing causal inference from relational data. For demonstration and exploration purposes, \GSQL\ also includes a web GUI
-(see Fig. \ref{sfig:demo-tutorial}). 
+(see Fig. \ref{sfig:demo-tutorial}).
 }
 % paragraph 1 after
-The overall architecture of ZaliQL can be seen in Fig. \ref{fig:arch}. The API is a set of functions that support causal inference on data stored in a PostgreSQL DBMS. The API will be packaged as a PostgreSQL extension. The ZaliQL API is modeled after the MatchIt and CEM toolkits \cite{ho2005,iacus2009cem} and includes methods for drawing causal inference from relational data. A web GUI is also included for demonstration and exploration purposes and is illustrated in Fig. \ref{sfig:demo-tutorial}. 
+The overall architecture of ZaliQL can be seen in Fig. \ref{fig:arch}. The API is a set of functions that support causal inference on data stored in a PostgreSQL DBMS. The API will be packaged as a PostgreSQL extension. The ZaliQL API is modeled after the MatchIt and CEM toolkits \cite{ho2005,iacus2009cem} and includes methods for drawing causal inference from relational data. A web GUI is also included for demonstration and exploration purposes and is illustrated in Fig. \ref{sfig:demo-tutorial}.
 
 \begin{figure*} \centering
 \hspace*{-.1cm}
@@ -188,7 +189,7 @@ generates a hypothesis, pre-processes the data with a matching  method (explaine
   method, a new hypothesis or new datasets \cite{IacKinPor09}.
   We demonstrate this workflow in \GSQL\ through several causal investigations on integrated flight and weather datasets.}
 % paragraph 1 after
-As the illustration in Fig. 2 shows, modern causal analysis is an iterative process. An analyst must acquire and integrate data from a myriad of sources, generate a hypothesis, pre-process the data through a matching method, and finally conduct the causal analysis. This linear process often must be repeated with new matching methods, new hypotheses, or even new datasets \cite{IacKinPor09}. We will demonstrate ZaliQL by providing walkthroughs using causal investigations on integrated flight and weather datasets.
+As the illustration in Fig. 2 shows, modern causal analysis is an iterative process. An analyst must acquire and integrate data from a myriad of sources, generate a hypothesis, pre-process the data through a matching method, and finally conduct the causal analysis. This linear process often must be repeated with new matching methods, new hypotheses, or even new datasets \cite{IacKinPor09}. Note that our system does not address the statistical validity of performing multiple hypothesis testing. We will demonstrate ZaliQL by providing walkthroughs using causal investigations on integrated flight and weather datasets.
 
 % data before
 \ignore{{\bf Data:} The analysis will be conducted on a spatio-temporal join of the following two datasets:
@@ -203,7 +204,7 @@ Date, Time,  Visim (visibility in km),
   Tempm (Temperature in C$^{\circ}$)
   Wspdm (wind speed in kph), Pressurem (Pressure in mBar), Precipm  (Precipitation in mm), Snow (binary), Thunder (binary).}
 % data after
-{\bf Data:} The analysis will be conducted on a spatio-temporal join of the following datasets: (a) Flight dataset (105M entries) collected by the U.S. Department of Transportation.\footnote{\url{http://www.transtats.bts.gov/}} This dataset contains records of over 90\% of U.S. domestic flights of major airlines between 1988 and the present. It includes the following variables: FlightDate, OriginAirportID, CarrierID, CRSDepTime (scheduled departure time), and DepDelay (departure delay); (b){\it Weather dataset (40M entries):} collected using Weather Underground API.\footnote{\url{https://www.wunderground.com}} It contains historical weather data that is related to flights and includes the following variables: Code (Airport ID), Date, Time, Visim (visibility in km), Tempm (Temperature in Celsius), Wspdm (wind speed in kph), Pressurem (Pressure in mBar), Precipm (Precipitation in mm), Snow (binary), and Thunder (binary).
+{\bf Data:} The analysis will be conducted on a spatio-temporal join of the following datasets: (a) {\em Flight data (105M entries)} collected by the U.S. Department of Transportation. This dataset contains records of over 90\% of U.S. domestic flights of major airlines between 1988 and the present. It includes the following variables: Date, AirportID, CarrierID, and DepDelay (departure delay); (b){\it Weather data (40M entries):} collected using Weather Underground API.\footnote{\url{https://www.wunderground.com}} It contains historical weather data of U.S. airports and includes the following variables: Code (airport ID), Date, Time, Visim (visibility in km), Tempm (temperature in Celsius), Wspdm (wind speed in kph), Pressurem (pressure in mBar), Precipm (precipitation in mm), Snow (binary), and Thunder (binary).
 
 % data exploration before
 \ignore{ {\bf Data exploration:} Our demonstration starts by exploring the effect of different weather features
@@ -217,8 +218,8 @@ is known as Simpson's paradox and arises frequently in observational studies \ci
 We demonstrate that the issue could be avoided by conducting a careful causal analysis.
 } In light of this, does low pressure really affect flight delays?}
 % data exploration after
-{\bf Data exploration:} Our demonstration will start by exploring the effect of different weather features on flight departure delay. As an example, we will show that 11\% of flights were delayed when pressure was low; however, only 0.4\% of flights were delayed when pressure was high. This suggests that pressure is inversely correlated with flight delay. However, after grouping by different variables such as airport, airline, and other weather features, flight delay frequency declined from 11\% to nearly 0\%.\footnote{This phenomenon
-is known as Simpson's paradox and arises frequently in observational studies \cite{pearl2014comment}.We demonstrate that the issue could be avoided by conducting a careful causal analysis.} Thus, we are forced to reconsider if low pressure is really a causative factor for weather delays.
+{\bf Data exploration:} Our demonstration will start by exploring the effect of different weather features on flight departure delay. As an example, we will show that 11\% of flights were delayed when pressure was low; however, only 0.4\% of flights were delayed when pressure was high. This suggests that pressure is inversely correlated with flight delay. However, after grouping by different variables such as airport, airline, and other weather features, flight delay frequency declined from 11\% to nearly 0\%. \footnote{This phenomenon
+is known as Simpson's paradox and arises frequently in observational studies \cite{pearl2014comment}.} Thus, we are forced to reconsider if low pressure is really a causative factor for weather delays.
 
 % causal questions before
 \ignore{ {\bf Causal questions:} In this step, we define the following {\em causal questions}:
@@ -253,8 +254,8 @@ Q3: Do the findings to the previous questions differ between major airports?
 These questions will be answered by ZaliQL using the following steps:
 \begin{itemize}
 	\item Specifying DepDelay as our outcome of interest (effect) as shown in Fig. \ref{sfig:demo-tutorial}a.
-	\item Specifying a set of binary treatments (causes) that could affect DepDelay as shown in Fig. \ref{sfig:demo-tutorial}b. Particularly, the following binary treatments will be created: LowVisibility (1 if Visim $<1$); HeavySnow (1 if Prcipm $>0.3$ and Snow $=1$); HighWindSpeed (1 if Wspdm $>40$; 0 if Wspdm $<20$); Thunder; Low-Pressure (1 if Pressurem $<1009.14$; 0 if Pressurem $>1022.69$).
-	\item •	Specifying a subset of data that is relevant to the analysis. We will selecte five U.S. airports with high rates of weather-related delay. Specifically, San Francisco (SFO), John F. Kennedy (JFK), Newark Liberty (EWR), George Bush-Houston (IAH), and LaGuardia (LGA).
+	\vspace*{-2mm}  \item Specifying a set of binary treatments (causes) that could affect DepDelay as shown in Fig. \ref{sfig:demo-tutorial}b. Particularly, the following binary treatments will be created: LowVisibility (1 if Visim $<1$); HeavySnow (1 if Prcipm $>0.3$ and Snow $=1$); HighWindSpeed (1 if Wspdm $>40$; 0 if Wspdm $<20$); Thunder; Low-Pressure (1 if Pressurem $<1009.14$; 0 if Pressurem $>1022.69$).
+	\item Specifying a relevant subset of data for analysis. We will select five U.S. airports with  frequent weather-related delays. Specifically, San Francisco (SFO), John F. Kennedy (JFK), Newark Liberty (EWR), George Bush-Houston (IAH), and LaGuardia (LGA).
 \end{itemize}
 
 % computing ate before
@@ -292,13 +293,17 @@ These questions will be answered by ZaliQL using the following steps:
     Where, then, is this difference coming from, and how do we account for it?}
 
 % computing ATE after
-{ \bf Computing ATE:} The primary objective of causal inference is to quantify the causal effect of a binary treatment on an outcome. As a result, a common measure of effect is average treatment effect (ATE). ATE is defined as the difference in expected values of the treated and untreated units.\footnote{In causality literature, subjects of a study -- e.g., patients in a clinical trial -- are called units. In our case, each flight is considered a unit.} For example, regarding Q1, ZaliQL computes ATE as:
+   \vspace*{-0.25cm}
+{ \bf Computing ATE:} The primary objective of causal inference is to quantify the causal effect of a binary treatment on an outcome. It is quite common to compare an outcome (DepDelay) between the {\em treated} and {\em control} groups. That is, to compare subjects (flights) that receive a treatment (LowPressure = 1) with subjects that do not (LowPressure = 0). A common measure to do this is that of average treatment effect (ATE) which is computed, for example, for Q1, as follows:
+
+\ignore{
+\footnote{In causality literature, subjects of a study -- e.g., patients in a clinical trial -- are called units. In our case, each flight is considered a unit.}}
 
 \vspace*{0.2cm}
 {\small \centering $ \ \ \E[ \text{DepDelay} | \text{LowPressure}=1] - \E[ \text{DepDelay} | \text{LowPressure}=0] $ }
 \vspace*{0cm}
 
-In this example, $\E[ \text{DepDelay} | \text{LowPressure}=x ]$, $x=(0,1)$ is computed by taking the emetical average of DepDelay where LowPressure is $x$. It is quite common to compare an outcome (DepDelay) in the {\em treated group}, those subjects (flights) that receive a treatment (LowPressure = 1) with the {\em control group} (LowPressure = 0). We show that for LowPressure, ATE is 10 minutes. This is relatively large and suggests that pressure affects DepDelay. However, it is known from prior analysis that LowPressure alone does not serve as the sole causative factor for departure delay. This observation thus raises the question: Where is this difference coming from?
+In this example, $\E[ \text{DepDelay} | \text{LowPressure}=x ]$, $x=(0,1)$ is computed by taking the emperical average of DepDelay where LowPressure is $x$.  We show that for LowPressure ATE is significantly large, which suggests pressure affects DepDelay. However, it is known from prior analysis that LowPressure alone does not serve as the sole causative factor for departure delay. This observation thus raises the question: Where is this difference coming from?
 
 % confounding variables before
 \ignore{{\bf Confounding variables:} The difference is a product of {\em confounding variables}
@@ -310,11 +315,11 @@ In this example, $\E[ \text{DepDelay} | \text{LowPressure}=x ]$, $x=(0,1)$ is co
   the opposite group. Thus, it is unclear that the observed DepDelay difference between the groups is caused by LowPressure or LowVisibility.}
 
 % confounding variables after
-{\bf Confounding variables:} The difference is a product of confounding variables, which make it difficult to establish a causal link between a treatment and outcome. This is often the case in real world analysis as the myriad of variables involved greatly complicate understanding a phenomenon. In this example, we will show that the observed positive effect of LowPressure was actually the result of the confounding influence of other factors including low visibility, snow, and thunder. Specifically, we will show that Low Pressure is highly associated with unsettled weather conditions such as LowVisibility (see Fig. \ref{fig:cv}). The average of LowVisibility in the treated group is much less than that of the opposite group. Thus, it is unclear that the observed DepDelay difference between the groups is caused by LowPressure or LowVisibility. 
+{\bf Confounding variables:} The difference is a product of confounding variables, which make it difficult to establish a causal link between a treatment and outcome. This is often the case in real world analysis as the myriad of variables involved greatly complicate understanding a phenomenon. In this example, we will show that the observed positive effect of LowPressure was actually the result of the confounding influence of other factors including low visibility, snow, and thunder. Specifically, we will show that Low Pressure is  associated with unsettled weather conditions such as LowVisibility (see Fig. \ref{fig:cv}). The average of LowVisibility in the treated group is much less than that of the opposite group. Thus, it is unclear that the observed DepDelay difference between the groups is caused by LowPressure or LowVisibility.
 
 {
 \begin{figure} \centering
-\includegraphics[scale=0.25]{figures/Scenario-Graph.png}
+\includegraphics[scale=0.16]{figures/Scenario-Graph.png}
 \caption{Confounding influence}
 \label{fig:cv}
 \vspace{-0.5cm}
@@ -346,11 +351,12 @@ outcome between the two groups can be attributed to the treatment. In
 our demo, (1)\ for each treatment, we select a set of covariates
 deemed to confound the treatment and DepDelay (Figure \ref{sfig:demo-tutorial}c) and
   (2)\ we select a matching method and adjust its tuning parameters.}
-% adjusting for confounding variables after
-{\bf Adjusting for confounding variables:} 
-For the sake of drawing valid conclusions to the research questions, we must adjust for these confounding variables. Conceptually, adjusting for one confounding variable is easy. It involves partitioning the data into similar groups with similar confounding influence measures. Next, the ATE is computed as the weighted average of the effects \emph{in each group}. However, real world causal inference is much more complicated as it involves many confounding variables. Fig. \ref{fig:cv} shows some of the confounding variables in this example. In this case, the groups become overly specific and begin to lack enough units to create a meaningful calculation of the ATE.
+% adjusting for confounding variables after 
+%\newpage
+{\bf Adjusting for confounding variables:}
+For the sake of drawing valid conclusions to the causal questions, we must adjust for these confounding variables. Conceptually, adjusting for one confounding variable is easy. It involves partitioning the data into similar groups with similar confounding influence measures. Next, the ATE is computed using the weighted average of the effects \emph{in each group}. However, real world causal inference is much more complicated as it involves many confounding variables. Fig. \ref{fig:cv} shows some of the many confounding variables in this example. In this case, the groups become overly specific and begin to lack enough units to create a meaningful calculation of the ATE.
 
-Sophisticated techniques are required to adjust for a large set of confounding variables. ZaliQL implements two primary approaches that are commonly found in social sciences and statistics: {\em coarsened exact matching (CEM)} and {\em propensity score matching (PSM)} \cite{IacKinPor09,Rubin1983b}. The goal of matching is to cut data so that the remaining {\em matched} data have greater {\em balance} between the treatment and control groups. In other words, the empirical distributions of the confounding variables in the treated and control groups are similar after matching. Once the groups have more or less achieved a sense of balance, the observed difference of the outcome between the two groups can be attributed to the treatment. In our demonstration, we will select a set of covariates deemed to confound the treatment of DepDelay (Fig. \ref{sfig:demo-tutorial}c) and we will select a matching method and adjust its tuning parameters. 
+Sophisticated techniques are required to adjust for a large set of confounding variables. ZaliQL implements two primary approaches that are commonly found in statistics: {\em coarsened exact matching (CEM)} and {\em propensity score matching (PSM)} \cite{IacKinPor09,Rubin1983b}. The goal of matching is to prune data so that the remaining {\em matched} data have greater {\em balance} between the treated and control groups. In other words, the empirical distributions of the confounding variables in the treated and control groups are similar after matching. Once the groups have more or less achieved a sense of balance, the observed difference of the outcome between the two groups can be attributed to the treatment. In our demonstration, we will select a set of covariates deemed to confound the treatments and outcome (Fig. \ref{sfig:demo-tutorial}c) and we will select a matching method and adjust its tuning parameters.
 
 % checking balance before
 \ignore{{\bf Checking Balance:}  In this step, we check whether the
@@ -361,7 +367,7 @@ matching process  successfully improved the covariates' balance. In particular,
  numerical and visual summaries such as mean difference and quantile-quantile plots:
   see Fig. \ref{sfig:demo-tutorial}(d,e).}
 % checking balance after
-{\bf Checking Balance:} This next step requires verifying that the matching process improved the covariates’ balance. Specifically, we will compare the distribution for each covariate between the treated and control group on the matched data for all treatments. ZaliQL provides both numerical and visual summaries for this step of the process including quartile-quartile and mean difference plots. This can be seen in Fig. \ref{sfig:demo-tutorial}d and Fig. \ref{sfig:demo-tutorial}e. 
+{\bf Checking balance:} This next step requires verifying that the matching process improved the covariates’ balance. Specifically, we will compare the distribution for each covariate between the treated and control group on the matched data for all treatments. ZaliQL provides both numerical and visual summaries for this step of the process including quartile-quartile and mean difference plots. This can be seen in Fig. \ref{sfig:demo-tutorial}d and Fig. \ref{sfig:demo-tutorial}e.
 
 % answers to our causal questions before
 {\bf Answers to our causal questions:}
@@ -371,7 +377,7 @@ We show that other treatments \emph{do} have significant causal effect on depart
 For Q3, we report the major causes of flight delay at the airports under the study are actually different. We validate the statistical significance of our findings with t-tests, and show that the identified causes match
 FAA reports.}
 % answers to our causal questions after
-Finally, we are able to answer the causal questions created in the first step of our process. For Q1, we will show that LowPressure has no significant causal effect on DepDelay. For Q2, we will identify that other treatments have significant causal effects on DepDelay (Fig. \ref{sfig:demo-tutorial}f). Regarding Q3, we will report that the major causes of flight delay at the airports included in the study are actually different. T-tests are used to validate the statistical significance of our findings. We also show that the obtained results are validated by FAA reports. 
+Finally, we are able to answer the causal questions created in the first step of our process. For Q1, we will show that LowPressure has no significant causal effect on DepDelay. For Q2, we will identify that other treatments have significant causal effects on DepDelay (Fig. \ref{sfig:demo-tutorial}f). Regarding Q3, we will report that the major causes of flight delay at the airports included in the study are actually different. Two sample z-tests will be used to validate the statistical significance of the results. We will show that the obtained results are validated by FAA reports.
 
 % scalability before
 \ignore{{\bf Scalability:} Finally, we demonstrate
@@ -412,7 +418,7 @@ The goal of causal analysis is to compute the {\em average treatment
 
 \begin{figure}
   \centering
-{\scriptsize
+{
   \scalebox{0.7}{\begin{tabular}{|c|c|c|c|c|c|} \hline
     Unit & Covariates & Treatment & Treatment & Control & Causal  Effect \\
    & $X$ & assignment $T$ & outcome $Y(1)$ & outcome $Y(0)$ & $Y(1)-Y(0)$ \\
@@ -481,9 +487,9 @@ units with ``close'' values of the covariate attributes $X$
 (closeness is defined using some distance function between the covariate values of two units). Given a table $R(T,X_1 \ldots,X_n,Y)$,
  \GSQL\ offers the following two matching methods:}
 % matching methods after
-This process involves theoretically matching each treated unit to one of multiple control units with similar values of the covariate attributes. Closeness is defined using some distance function between the covariate values of two units. Given a table, $R(T,X_1 \ldots,X_n,Y)$, ZaliQL offers the following two matching methods.
+This process involves theoretically matching each treated unit to one of multiple control units with similar values of the covariate attributes \cite{IacKinPor09}. Closeness is defined using some distance function between the covariate values of two units. Given a table, $R(T,X_1 \ldots,X_n,Y)$, ZaliQL offers the following two matching methods.
 
-
+\newpage
 {\bf Propensity score matching:}
 \label{sec:nnm}
 % propensity score matching paragraph 1 before
@@ -494,11 +500,12 @@ treatment given a set of  covariates i.e., $P(x)=P(T=1|X=x)$.  This method
 in the treatment group, that are closer than a pre-specified {\em caliper}, in a greedy manner.
 \GSQL\ estimates propensity score using logistic regression.}
 % propensity score matching paragraph 1 after
-The most common method is $k:1$ nearest neighbor matching based on {\em propensity score matching (PSM)} \cite{Rubin1983b}. A propensity score is the probability of a unit being assigned to a particular treatment given a set of covariates (i.e. $P(x)=P(T=1|X=x)$). This method selects the $k$ best control matches for each individual in the treatment group which are closer than a pre-specified {
-\em caliper}. ZaliQL estimates propensity score using logistic regression. 
+The most common method is $k:1$ nearest neighbor matching based on {\em propensity score matching (PSM)} \cite{Rubin1983b}. Propensity score is the probability of a unit being assigned to a treatment given a set of covariates (i.e. $P(x)=P(T=1|X=x)$). This method selects the $k$ best control matches for each individual in the treatment group which are closer than a pre-specified {
+\em caliper}. ZaliQL estimates propensity score using logistic regression.
 
 
-% propensity score matching paragraph 2 before
+% propensity score matching paragraph 2 before 
+\ignore{
 The basic SQL statement to perform PSM
 is depicted in Fig. \ref{fig:nnmnr}.
 In this solution,
@@ -511,9 +518,9 @@ distances.  In addition, the order of each row in the sorted set is identified
 using the window function {\verb|ROW_NUMBER|}.
 Finally, $k$ closest controls are selected as the matched units. Note that \GSQL\  generates more efficient SQL statements by
 leveraging recent developments in  spatial-databases
-(see e.g., \cite{obe2015postgis}).
+(see e.g., \cite{obe2015postgis}).}
 % propensity score matching paragraph 2 after
-The basic SQL statement to perform PSM is depicted in Fig. \ref{fig:nnmnr}. In this solution, nearest control units are identified by means of an anti-join. In other words, all potential matches, and their distances, are identified by joining the treated with the control units that are closer on propensity score than the caliper. Then, this set is sorted into ascending order of distances. Additionally, the order of each row in the sorted set is identified using the window function {\verb|ROW_NUMBER|}. Finally, $k$ closest controls are selected as the matched units. Note that \GSQL\  generates more efficient SQL statements by leveraging recent developments in spatial-databases (see e.g., \cite{obe2015postgis}).
+The basic SQL statement to perform PSM is depicted in Fig. \ref{fig:nnmnr}. In this solution, nearest control units are identified by means of an anti-join. In other words, all potential matches, and their distances, are identified by joining the treated with the control units that are closer on propensity score than the caliper. Then, this set is sorted in ascending order of distances. Additionally, the order of each row in the sorted set is identified using the window function {\verb|ROW_NUMBER|}. Finally, $k$ closest controls are selected as the matched units. Note that \GSQL\  generates more efficient SQL statements using recent developments in spatial-databases (see e.g., \cite{obe2015postgis}).
 
 
 \begin{figure}
@@ -564,7 +571,7 @@ WHERE subclasses.\(\ccv\)=\(\crele\).\(\ccv\)
 
 
 
-{\bf Coarsened exact matching (CEM):} 
+{\bf Coarsened exact matching (CEM):}
 % cem paragraph 1 before
 \ignore{In this method the vector of covariates $\cv$ is
 coarsened according to a set of user-defined cutpoints or any
@@ -580,7 +587,7 @@ CEM is essentially a GROUP-BY-HAVING query.
 \GSQL\  also supports several supervised and unsupervised methods for coarsening% proposed in
 ~\cite{dougherty1995supervised}.}
 % cem paragraph 1 after
-In this method, the vector of covariates $\cv$ is coarsened according to a set of user-defined cut points or any automatic discretization algorithm. All units with similar coarsened covariate values are placed in unique groups. These unique groups with at least one treated and one control unit are retained while all others are discarded from the remainder of the process. We let $\cv$ be the coarsened version of $\cv$ and $R^c$ be a coarsened version of R. As depicted in Fig. \ref{fig:cem}, CEM is essentially a GROUP-BY-HAVING query. ZaliQL also supports several supervised and unsupervised methods for coarsening that have been proposed \cite{dougherty1995supervised}.
+In this method, the vector of covariates $\cv$ is coarsened according to a set of user-defined cut points or with a discretization algorithm. All units with similar coarsened covariate values are placed in unique groups. Then, groups with at least one treated and one control unit are retained while all others are discarded from data. We let $\ccv$ be the coarsened version of $\cv$ and $R^c$ be a coarsened version of R. As depicted in Fig. \ref{fig:cem}, CEM is essentially a GROUP-BY-HAVING query. 
 
 % cem paragraph 2 before
 \ignore{We observed that CEM is an {\em Iceberg query}.  These are  GROUP-BY-HAVING queries
@@ -593,14 +600,7 @@ extensively in databases and data mining (see e.g.,
 We observed that CEM is an ``Iceberg query'' in the sense that it is a GROUP-BY-HAVING query where the output size is typically much smaller than the input (i.e. the tip of an iceberg). Iceberg queries have been studied extensively in databases and data mining \cite{fang1999computing,findlater2003iceberg}. ZaliQL leverages these techniques and the prior research on them in order to more efficiently compute CEM for several treatments simultaneously, giving it a strong advantage over other softwares.
 
 
-{\bf Analysis after matching:}
-% analysis after matching before
-After a balanced matched subset of data is extracted,
-ATE can be computed. \GSQL\  supports a wide range of statistical
-tests such as z-test, t-test, linear regression t-test, and Chi-Square test
-to compute the statistical significance of the treatment effect.
-% analysis after matching after
-After a balanced and matched subset of data is extracted, ATE can be computed. ZaliQL supports a wide range of statistical tests such as z-test, t-test, linear regression t-test, and Chi-square test to compute the statistical significant of the treatment group.
+{\bf Analysis after matching:} After a balanced and matched subset of data is extracted, ATE can be computed. ZaliQL supports a wide range of statistical tests such as z-test, t-test, egression-based tests , and Chi-square test to compute the statistical significant of the treatment group.
 
 
 \section{Conclusions}
