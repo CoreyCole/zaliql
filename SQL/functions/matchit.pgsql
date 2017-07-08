@@ -1,23 +1,9 @@
-/*
-TASKS for this week
-- 
-
-start paper with experimental results
-redo experiments
-
-
-
-count(distict treatment)
-  group by covariates
-  having count(distict treatment) = 5
-*/
-
 CREATE OR REPLACE FUNCTION matchit(
   sourceTablesArr TEXT[],        -- input table names arr
   primaryKeysArr TEXT[],         -- source tables' primary keys arr
-  treatment TEXT,                -- treatment column name (prefixed with it's table name)
+  treatment TEXT,                -- treatment column name (prefixed with it's table name - `tableName.columnName`)
   treatmentLevels INTEGER,
-  covariatesArr TEXT[],          -- space separated covariate column names (prefixed with their column names)
+  covariatesArr TEXT[],          -- space separated covariate column names (prefixed with their table names - `tableName.columnName`)
   output_table TEXT              -- output table name
 ) RETURNS TEXT AS $func$
 DECLARE
