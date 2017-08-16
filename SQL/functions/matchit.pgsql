@@ -7,8 +7,6 @@ CREATE OR REPLACE FUNCTION matchit(
 ) RETURNS TEXT AS $func$
 DECLARE
   commandString TEXT;
-  numGroups INTEGER;
-  numDiscarded INTEGER;
   treatment TEXT;
   covariate TEXT;
   columnName TEXT;
