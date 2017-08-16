@@ -2,7 +2,6 @@ CREATE OR REPLACE FUNCTION matchit(
   sourceTable TEXT,        -- input table name
   primaryKey TEXT,         -- source table's primary key
   treatments TEXT[],       -- array of treatment column names
-  treatmentLevels INTEGER,
   covariatesArr TEXT[],    -- space separated covariate column names
   output_table TEXT        -- output table name
 ) RETURNS TEXT AS $func$
@@ -10,12 +9,10 @@ DECLARE
   commandString TEXT;
   numGroups INTEGER;
   numDiscarded INTEGER;
+  treatment TEXT;
   covariate TEXT;
   columnName TEXT;
 BEGIN
-  -- SELECT regexp_split_to_array(covariates, '\s+') INTO covariatesArr;
-  -- SELECT regexp_split_to_array(sourceTables, '\s+') INTO sourceTable;
-  -- SELECT regexp_split_to_array(primary_keys, '\s+') INTO primaryKey;
   commandString := 'WITH subclasses as (SELECT '
     || ' max(' || primaryKey || ') AS subclass_' || primaryKey;
 
@@ -31,9 +28,16 @@ BEGIN
 
   -- use substring here to chop off last comma
   commandString = substring( commandString from 0 for (char_length(commandString) - 1) );
-    
-  commandString = commandString || ' HAVING count(distinct ' || treatment || ') = ' || treatmentLevels
-    || ') SELECT * FROM subclasses, ' || quote_ident(sourceTable) || ' st WHERE';
+  
+  commandString = commandString || ' HAVING (';
+  FOREACH treatment IN ARRAY treatments LOOP
+    commandString = commandString || 'max(' || treatment || ') != min(' || treatment || ') OR ';
+  END LOOP;
+
+  -- use substring here to chop off last OR
+  commandString = substring( commandString from 0 for (char_length(commandString) - 3) );
+
+  commandString = commandString || ')) SELECT * FROM subclasses, ' || quote_ident(sourceTable) || ' st WHERE';
 
   FOREACH covariate IN ARRAY covariatesArr LOOP
     commandString = commandString || ' subclasses.' || quote_ident(covariate) || '_matched = st.' || quote_ident(covariate) || ' AND';
@@ -55,7 +59,7 @@ $func$ LANGUAGE plpgsql;
 
 DROP MATERIALIZED VIEW IF EXISTS test_flight;
 
-SELECT matchit('demo_test_1000', 'fid', 'thunder', 2, ARRAY['fog', 'hail'], 'test_flight');
+SELECT matchit('demo_test_1000', 'fid', ARRAY['thunder', 'rain'], ARRAY['fog', 'hail'], 'test_flight');
 
 SELECT * FROM test_flight;
 
