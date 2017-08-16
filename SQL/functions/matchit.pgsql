@@ -1,7 +1,7 @@
 CREATE OR REPLACE FUNCTION matchit(
   sourceTable TEXT,        -- input table name
   primaryKey TEXT,         -- source table's primary key
-  treatments TEXT[],       -- array of treatment column names
+  treatmentsArr TEXT[],       -- array of treatment column names
   covariatesArr TEXT[],    -- space separated covariate column names
   output_table TEXT        -- output table name
 ) RETURNS TEXT AS $func$
@@ -28,7 +28,7 @@ BEGIN
   commandString = substring( commandString from 0 for (char_length(commandString) - 1) );
   
   commandString = commandString || ' HAVING (';
-  FOREACH treatment IN ARRAY treatments LOOP
+  FOREACH treatment IN ARRAY treatmentsArr LOOP
     commandString = commandString || 'max(' || treatment || ') != min(' || treatment || ') OR ';
   END LOOP;
 
