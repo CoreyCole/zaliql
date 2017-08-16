@@ -1,10 +1,10 @@
 CREATE OR REPLACE FUNCTION matchit(
   sourceTable TEXT,        -- input table name
   primaryKey TEXT,         -- source table's primary key
-  treatments TEXT[],       -- array of treatment column names
+  treatment TEXT,                -- treatment column name (prefixed with it's table name - `tableName.columnName`)
   treatmentLevels INTEGER,
-  covariatesArr TEXT[],    -- space separated covariate column names
-  output_table TEXT        -- output table name
+  covariatesArr TEXT[],          -- space separated covariate column names (prefixed with their table names - `tableName.columnName`)
+  output_table TEXT              -- output table name
 ) RETURNS TEXT AS $func$
 DECLARE
   commandString TEXT;

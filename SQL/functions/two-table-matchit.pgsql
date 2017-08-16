@@ -26,7 +26,7 @@ BEGIN
   commandString = 'DROP MATERIALIZED VIEW IF EXISTS ' || intermediateTable;
   EXECUTE commandString;
 
-  SELECT matchit(
+  SELECT multi_level_treatment_matchit(
     sourceTableA,
     sourceTableAPrimaryKey,
     treatment,
@@ -43,7 +43,7 @@ BEGIN
     || ' WITH DATA;';
   EXECUTE commandString;
 
-  RETURN matchit(
+  RETURN multi_level_treatment_matchit(
     joinedTable,
     sourceTableBPrimaryKey,
     treatment,
