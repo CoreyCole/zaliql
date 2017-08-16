@@ -1,8 +1,8 @@
 CREATE OR REPLACE FUNCTION matchit(
   sourceTable TEXT,        -- input table name
   primaryKey TEXT,         -- source table's primary key
-  treatmentsArr TEXT[],       -- array of treatment column names
-  covariatesArr TEXT[],    -- space separated covariate column names
+  treatmentsArr TEXT[],    -- array of treatment column names
+  covariatesArr TEXT[],    -- array of covariate column names
   output_table TEXT        -- output table name
 ) RETURNS TEXT AS $func$
 DECLARE
@@ -61,6 +61,6 @@ SELECT matchit('demo_test_1000', 'fid', ARRAY['thunder', 'rain'], ARRAY['fog', '
 
 SELECT * FROM test_flight;
 
-DROP FUNCTION matchit(text,text,text,integer,text[],text);
+DROP FUNCTION matchit(text,text,text[],text[],text);
 
 SELECT column_name FROM information_schema.columns WHERE table_name = 'demo_test_1000';

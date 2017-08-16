@@ -3,7 +3,7 @@ CREATE OR REPLACE FUNCTION multi_level_treatment_matchit(
   primaryKey TEXT,         -- source table's primary key
   treatment TEXT,          -- treatment column names
   treatmentLevels INTEGER, -- possible levels for given treatment
-  covariatesArr TEXT[],    -- space separated covariate column names
+  covariatesArr TEXT[],    -- array of covariate column names
   output_table TEXT        -- output table name
 ) RETURNS TEXT AS $func$
 DECLARE
