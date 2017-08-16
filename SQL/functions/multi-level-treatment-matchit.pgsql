@@ -1,21 +1,16 @@
 CREATE OR REPLACE FUNCTION multi_level_treatment_matchit(
   sourceTable TEXT,        -- input table name
   primaryKey TEXT,         -- source table's primary key
-  treatment TEXT,                -- array of treatment column names
-  treatmentLevels INTEGER,
-  covariatesArr TEXT[],          -- space separated covariate column names
-  output_table TEXT              -- output table name
+  treatment TEXT,          -- treatment column names
+  treatmentLevels INTEGER, -- possible levels for given treatment
+  covariatesArr TEXT[],    -- space separated covariate column names
+  output_table TEXT        -- output table name
 ) RETURNS TEXT AS $func$
 DECLARE
   commandString TEXT;
-  numGroups INTEGER;
-  numDiscarded INTEGER;
   covariate TEXT;
   columnName TEXT;
 BEGIN
-  -- SELECT regexp_split_to_array(covariates, '\s+') INTO covariatesArr;
-  -- SELECT regexp_split_to_array(sourceTables, '\s+') INTO sourceTable;
-  -- SELECT regexp_split_to_array(primary_keys, '\s+') INTO primaryKey;
   commandString := 'WITH subclasses as (SELECT '
     || ' max(' || primaryKey || ') AS subclass_' || primaryKey;
 
