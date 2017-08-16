@@ -1,7 +1,7 @@
 CREATE OR REPLACE FUNCTION multi_level_treatment_matchit(
   sourceTable TEXT,        -- input table name
   primaryKey TEXT,         -- source table's primary key
-  treatments TEXT[],                -- array of treatment column names
+  treatment TEXT,                -- array of treatment column names
   treatmentLevels INTEGER,
   covariatesArr TEXT[],          -- space separated covariate column names
   output_table TEXT              -- output table name
