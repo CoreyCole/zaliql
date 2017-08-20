@@ -57,7 +57,9 @@ $func$ LANGUAGE plpgsql;
 
 DROP MATERIALIZED VIEW IF EXISTS test_flight;
 
-SELECT matchit('demo_test_1000', 'fid', ARRAY['thunder', 'rain'], ARRAY['fog', 'hail'], 'test_flight');
+SELECT matchit('demo_data_1000000', 'fid', ARRAY['lowpressure'], ARRAY['rain', 'fog'], 'test_flight');
+
+SELECT rain_matched, fog_matched, count(*), avg(depdelay) FROM test_flight GROUP BY rain_matched, fog_matched ORDER BY rain_matched, fog_matched;
 
 SELECT * FROM test_flight;
 
