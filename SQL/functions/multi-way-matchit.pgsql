@@ -11,9 +11,8 @@ DECLARE
   columnName TEXT;
   index INTEGER;
 BEGIN
-
   index := 0;
-  sourceTable := sourceTables[0]
+  sourceTable := sourceTables[0];
   FOREACH treatment IN ARRAY treatmentArr LOOP
     matchedCovariates = matchit(
       sourceTable,
