@@ -15,16 +15,23 @@ import {
   MdToolbarModule,
   MdGridListModule,
   MdTabsModule,
-  MdCardModule
+  MdCardModule,
+  MdListModule
 } from '@angular/material';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
+import { DemoComponent } from './demo/demo.component';
+import { ImplementationComponent } from './implementation/implementation.component';
+import { CitationsComponent } from './citations/citations.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent
+    HomeComponent,
+    DemoComponent,
+    ImplementationComponent,
+    CitationsComponent
   ],
   imports: [
     BrowserModule,
@@ -36,7 +43,8 @@ import { HomeComponent } from './home/home.component';
     MdToolbarModule,
     MdGridListModule,
     MdTabsModule,
-    MdCardModule
+    MdCardModule,
+    MdListModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,0 +1,16 @@
+<md-toolbar>Contents</md-toolbar>
+<md-nav-list>
+  <md-list-item *ngFor="let function of functions">
+    <a md-line [routerLink]="['./']" fragment="{{function.link}}">{{ function.name }}</a>
+  </md-list-item>
+</md-nav-list>
+<md-toolbar>Functions</md-toolbar>
+<md-card *ngFor="let function of functions" [id]="function.link">
+  <md-card-title>{{ function.name }}</md-card-title>
+  <md-card-content>{{ function.description }}</md-card-content>
+  <pre class="markdown-pre">
+    <code class="markdown-code">
+      {{ function.code }}
+    </code>
+  </pre>
+</md-card>
