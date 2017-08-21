@@ -1,10 +1,10 @@
 CREATE OR REPLACE FUNCTION multi_level_treatment_matchit(
   sourceTable TEXT,        -- input table name
   primaryKey TEXT,         -- source table's primary key
-  treatment TEXT,          -- treatment column names
+  treatment TEXT,          -- treatment column name
   treatmentLevels INTEGER, -- possible levels for given treatment
-  covariatesArr TEXT[],    -- array of covariate column names
-  output_table TEXT        -- output table name
+  covariatesArr TEXT[],    -- array of covariate column names for given treatment
+  outputTable TEXT         -- output table name
 ) RETURNS TEXT AS $func$
 DECLARE
   commandString TEXT;
@@ -37,14 +37,14 @@ BEGIN
   -- use substring here to chop off last `AND`
   commandString = substring( commandString from 0 for (char_length(commandString) - 3) );
 
-  -- EXECUTE format('DROP MATERIALIZED VIEW IF EXISTS %s', output_table);
+  -- EXECUTE format('DROP MATERIALIZED VIEW IF EXISTS %s', outputTable);
 
-  commandString = 'CREATE MATERIALIZED VIEW ' || output_table
+  commandString = 'CREATE MATERIALIZED VIEW ' || outputTable
     || ' AS ' || commandString || ' WITH DATA;';
   RAISE NOTICE '%', commandString;
   EXECUTE commandString;
 
-  RETURN 'Match successful and materialized in ' || output_table || '!';
+  RETURN 'Match successful and materialized in ' || outputTable || '!';
 END;
 $func$ LANGUAGE plpgsql;
 

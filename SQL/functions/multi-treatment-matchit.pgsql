@@ -1,9 +1,9 @@
 CREATE OR REPLACE FUNCTION multi_treatment_matchit(
-  sourceTable TEXT,
-  primaryKey TEXT,
-  treatmentsArr TEXT[],
+  sourceTable TEXT,             -- input table name
+  primaryKey TEXT,              -- source table's primary key
+  treatmentsArr TEXT[],         -- array of treatment column names
   covariatesArraysArr TEXT[][], -- array of arrays of covariates, each treatment has its own set of covariates
-  outputTableBasename TEXT    -- name used in all output tables, treatment appended
+  outputTableBasename TEXT      -- name used in all output tables, treatment appended
 ) RETURNS TEXT AS $func$
 DECLARE
   commandString TEXT;
