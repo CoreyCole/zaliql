@@ -1,8 +1,8 @@
 CREATE OR REPLACE FUNCTION ate(
-  matchedSourceTable TEXT,  -- input table name that was output by matchit
+  sourceTable TEXT,         -- input table name that was output by matchit
   outcome TEXT,             -- column name of the outcome of interest
   treatment TEXT,           -- column name of the treatment of interest
-  covariatesArr TEXT[]      -- array of covariate column names that were matched by matchit
+  covariatesArr TEXT[]      -- array of covariate column names
 ) RETURNS NUMERIC AS $func$
 DECLARE
   commandString TEXT;
@@ -22,7 +22,7 @@ BEGIN
   END LOOP;
 
   commandString = commandString || 'count(*) AS groupSize, avg(' || outcome || ') AS avgOutcome'
-    || ' FROM ' || matchedSourceTable
+    || ' FROM ' || sourceTable
     || ' WHERE ' || treatment || ' IS NOT NULL'
     || ' GROUP BY ' || treatment || ', ';
 
