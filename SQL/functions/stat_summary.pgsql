@@ -1,4 +1,4 @@
-SELECT stat_summary('demo_data_1000000', 'test_flight', 'lowpressure', ARRAY['thunder', 'snow', 'lowvisibility']);
+SELECT matchit_summary('demo_data_1000000', 'test_flight', 'lowpressure', ARRAY['thunder', 'snow', 'lowvisibility']);
 
 CREATE OR REPLACE FUNCTION get_json_covariate_stats(
   sourceTable TEXT,
@@ -55,7 +55,7 @@ BEGIN
 END;
 $func$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION stat_summary(
+CREATE OR REPLACE FUNCTION matchit_summary(
   originalSourceTable TEXT,  -- original input table name
   matchedSourceTable TEXT,   -- table name that was output by matchit
   treatment TEXT,            -- treatment column name
