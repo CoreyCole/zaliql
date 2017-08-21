@@ -1,0 +1,186 @@
+<md-tab-group>
+  <md-tab label="Overview">
+    <md-grid-list cols="4" rowHeight="100px">
+      <md-grid-tile [colspan]="1" [rowspan]="2">
+        <md-card class="avatar">
+          <md-card-header>
+            <img md-card-avatar src="assets/ghazali.png">
+            <md-card-title>
+              Abū al-Ghazālī
+            </md-card-title>
+          </md-card-header>
+        </md-card>
+      </md-grid-tile>
+      <md-grid-tile [colspan]="1" [rowspan]="1">
+        <md-card class="avatar">
+          <md-card-header>
+            <img md-card-avatar src="assets/hume.png">
+            <md-card-title>
+              David Hume
+            </md-card-title>
+          </md-card-header>
+        </md-card>
+      </md-grid-tile>
+      <md-grid-tile [colspan]="1" [rowspan]="1">
+        <md-card class="avatar">
+          <md-card-header>
+            <img md-card-avatar src="assets/lewis.png">
+            <md-card-title>
+              David Lewis
+            </md-card-title>
+          </md-card-header>
+        </md-card>
+      </md-grid-tile>
+      <md-grid-tile [colspan]="1" [rowspan]="1">
+        <md-card class="avatar">
+          <md-card-header>
+            <img md-card-avatar src="assets/fisher.png">
+            <md-card-title>
+              Ronald Fisher
+            </md-card-title>
+          </md-card-header>
+        </md-card>
+      </md-grid-tile>
+      <md-grid-tile [colspan]="1" [rowspan]="1">
+        <md-card class="avatar">
+          <md-card-header>
+            <img md-card-avatar src="assets/neyman.png">
+            <md-card-title>
+              Jerzy Neyman
+            </md-card-title>
+          </md-card-header>
+        </md-card>
+      </md-grid-tile>
+      <md-grid-tile [colspan]="1" [rowspan]="1">
+        <md-card class="avatar">
+          <md-card-header>
+            <img md-card-avatar src="assets/rubin.png">
+            <md-card-title>
+              Donald Rubin
+            </md-card-title>
+          </md-card-header>
+        </md-card>
+      </md-grid-tile>
+      <md-grid-tile [colspan]="1" [rowspan]="1">
+        <md-card class="avatar">
+          <md-card-header>
+            <img md-card-avatar src="assets/pearl.png">
+            <md-card-title>
+              Judea Pearl
+            </md-card-title>
+          </md-card-header>
+        </md-card>
+      </md-grid-tile>
+    </md-grid-list>
+
+    <md-card class="content">
+      <md-card-title>
+        Abstract
+      </md-card-title>
+      <md-card-content>
+        <p>
+          Causal inference from observational data is a subject of active research and
+          development in statistics and computer science.
+          Many statistical software packages have been developed for this purpose.
+          However, these toolkits do not scale to large datasets.
+          We propose and demonstrate ZaliQL: a SQL-based framework for drawing causal inference from observational data.
+          ZaliQL supports the state-of-the-art meth- ods for causal inference and runs at scale within PostgreSQL database system.
+          In addition, we built a visual interface to wrap around ZaliQL.
+          In our demonstration, we will use this GUI to show a live investigation
+          of the causal effect of different weather conditions on flight delays.
+        </p>
+      </md-card-content>
+    </md-card>
+    <md-card class="content">
+      <md-grid-list cols="2" rowHeight="425px">
+        <md-grid-tile>
+          <md-grid-tile-header>Figure 1: {{ name }}'s Architecture</md-grid-tile-header>
+          <img src="assets/System-Overview.png" class="content">
+        </md-grid-tile>
+        <md-grid-tile>
+          <md-grid-tile-header>Figure 2: Confounding Influence</md-grid-tile-header>
+          <img src="assets/Matching-Flowchart.png" class="content">
+        </md-grid-tile>
+      </md-grid-list>
+    </md-card>
+    <md-card class="content">
+      <md-card-title>
+        Introduction
+      </md-card-title>
+      <md-card-content>
+        <p>
+          Most data driven decisions today are based on purely predictive analytics, which only finds associational dependencies and
+          correlations. The danger is that naive data enthusiasts will incorrectly interpret these predictive models as causal.
+          While the distinction between causal and predictive analysis has been recognized, the conflation between the two
+          is common which results in false discovery claims.
+        </p>
+        <p>
+          Causal inference has been studied extensively in statistics and computer science [1, 3, 8, 11], and many toolkits have been
+          developed for performing causal inference in statistical software such as R, e.g., [MatchIt] and [CEM]. However,
+          these toolkits do not scale to large datasets. For example, performing causal inference on a dataset with 10M entries
+          takes several hours using MatchIt or CEM. Additionally, causal analysis is part of a larger pipeline that includes
+          data acquisition, data cleaning, and data integration; for large datasets, these tasks are best handled by a relational
+          database engine, which provides most of the functionality needed for these tasks, and also scales up to large datasets.
+        </p>
+        <p>
+          In this demonstration, we propose
+          <span mdTooltip="The prefix Zali refers to al-Ghzali (1058-1111), a medieval Persian philosopher.">
+            {{ name }},
+          </span>
+            a SQL-based framework for drawing causal inference within DBMS. {{ name }} takes the first step towards
+            truly scalable causal inference by modeling it as a data management problem. We demonstrate that approaching
+            causal inference from this fresh perspective is key to scalability and robustness. {{ name }} supports state-of-the-art
+            methods for causal inference and runs at scale within a database engine. The framework includes a series of optimization
+            techniques that allow it to scale to billions of records.
+        </p>
+      </md-card-content>
+    </md-card>
+    <md-card class="content">
+      <md-card-title>
+        System Architecture
+      </md-card-title>
+      <md-card-content>
+        <p>
+          The overall architecture of {{ name }} is shown in Figure 1. The API is a set of stored procedures that support a wide range
+          of methods for performing causal inference on data stored in the PostgreSQL DBMS. The API will be packaged as a
+          PostgreSQL extension. The functionality of the API is modeled after the MatchIt and CEM R libraries [2, 5] and
+          includes methods for drawing causal inference from relational data. {{ name }} also includes a web GUI that can
+          be hosted either locally or remotely.
+        </p>
+      </md-card-content>
+    </md-card>
+  </md-tab>
+  <md-tab label="Demo">
+
+  </md-tab>
+  <md-tab label="Implementation">
+
+  </md-tab>
+  <md-tab label="Citations">
+    <p>[1] Ronald Aylmer Fisher. 1935. e design of experiments. Oliver and Boyd, Oxford, England.</p>
+    <p>[2] Daniel E Ho, Kosuke Imai, Gary King, and Elizabeth A Stuart. 2007. Matching as nonparametric preprocessing for reducing
+      model dependence in parametric causal inference. Political analysis 15, 3 (2007), 199–236.</p>
+    <p>[3] Paul W Holland. 1986. Statistics and causal inference. Journal of the American statistical Association 81, 396 (1986),
+      945–960.
+    </p>
+    <p>[4] Stefano M Iacus, Gary King, and Giuseppe Porro. 2011. Causal inference without balance checking: Coarsened exact
+      matching. Political analysis (2011), mpr013.</p>
+    <p>[5] Stefano M Iacus, Gary King, Giuseppe Porro, and others. 2009. CEM: so ware for coarsened exact matching. Journal
+      of Statistical So ware 30, 9 (2009), 1–27.</p>
+    <p>[6] Mark Lunt. 2014. Selecting an appropriate caliper can be essential for achieving good balance with propensity score
+      matching. American journal of epidemiology 179, 2 (2014), 226–235.</p>
+    <p>[7] Regina O Obe and Leo S Hsu. 2015. PostGIS in action. Manning Publications Co.</p>
+    <p>[8] Judea Pearl. 2000. Causality: models, reasoning, and inference. Cambridge University Press.</p>
+    <p>[9] Paul R. Rosenbaum and Donald B. Rubin. 1983. e Central Role of the Propensity Score in Observational Studies for
+      Causal E ects. Biometrika 70, 1 (1983), pp. 41–55.</p>
+    <p>[10] Paul R Rosenbaum and Donald B Rubin. 1984. Reducing bias in observational studies using subclassi cation on the
+      propensity score. Journal of the American statistical Association 79, 387 (1984), 516–524.</p>
+    <p>[11] Donald B Rubin. 2005. Causal Inference Using Potential Outcomes. J. Amer. Statist. Assoc. 100, 469 (2005), 322–331.
+      DOI:h p://dx.doi.org/10.1198/ 016214504000001880</p>
+    <p>[12] Cosma Shalizi. 2012. Advanced data analysis from an elementary point of view. Cambridge University Press.</p>
+    <p>[13] Elizabeth A Stuart. 2010. Matching methods for causal inference: A review and a look forward. Statistical science
+      25, 1 (2010), 1.</p>
+    <p>[14] United States Department of Transportation, Federal Aviation Administration. 2008. FAA. Pilots Handbook of Aeronautical
+      Knowledge. (2008).</p>
+  </md-tab>
+</md-tab-group>
