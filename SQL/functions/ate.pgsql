@@ -1,8 +1,8 @@
 CREATE OR REPLACE FUNCTION ate(
-  sourceTable TEXT,         -- input table name that was output by matchit
-  outcome TEXT,             -- column name of the outcome of interest
-  treatment TEXT,           -- column name of the treatment of interest
-  covariatesArr TEXT[]      -- array of covariate column names
+  sourceTable TEXT,    -- input table name that was output by matchit
+  outcome TEXT,        -- column name of the outcome of interest
+  treatment TEXT,      -- column name of the treatment of interest
+  covariatesArr TEXT[] -- array of covariate column names
 ) RETURNS NUMERIC AS $func$
 DECLARE
   commandString TEXT;
