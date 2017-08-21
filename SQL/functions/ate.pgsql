@@ -1,15 +1,99 @@
 CREATE OR REPLACE FUNCTION ate(
   matchedSourceTable TEXT,  -- input table name that was output by matchit
   outcome TEXT,             -- column name of the outcome of interest
-  covariatesArr TEXT[],     -- array of covariate column names that were matched by matchit
-  outputTable TEXT          -- name of table for results matrix
+  treatment TEXT,           -- column name of the treatment of interest
+  covariatesArr TEXT[]      -- array of covariate column names that were matched by matchit
 ) RETURNS NUMERIC AS $func$
 DECLARE
-
+  commandString TEXT;
+  covariate TEXT;
+  currentRow RECORD;
+  prevRow RECORD;
+  isTreatedRow BOOLEAN;
+  weightedAvgTreated NUMERIC;
+  weightedAvgControl NUMERIC;
+  countTreated INTEGER;
+  countControl INTEGER;
 BEGIN
+  commandString = 'SELECT ' || treatment || ' AS treatment, ';
+
+  FOREACH covariate IN ARRAY covariatesArr LOOP
+    commandString = commandString || covariate || ', ';
+  END LOOP;
+
+  commandString = commandString || 'count(*) AS groupSize, avg(' || outcome || ') AS avgOutcome'
+    || ' FROM ' || matchedSourceTable
+    || ' WHERE ' || treatment || ' IS NOT NULL'
+    || ' GROUP BY ' || treatment || ', ';
+
+  FOREACH covariate IN ARRAY covariatesArr LOOP
+    commandString = commandString || covariate || ', ';
+  END LOOP;
+
+  -- use substring here to chop off last comma
+  commandString = substring( commandString from 0 for (char_length(commandString) - 1) );
+
+  commandString = commandString || ' ORDER BY ';
+
+  FOREACH covariate IN ARRAY covariatesArr LOOP
+    commandString = commandString || covariate || ', ';
+  END LOOP;
+
+  commandString = commandString || treatment;
+
+  isTreatedRow = FALSE;
+  weightedAvgTreated = 0.0;
+  weightedAvgControl = 0.0;
+  countTreated = 0;
+  countControl = 0;
+  prevRow = row(NULL);
+  FOR currentRow IN EXECUTE commandString LOOP
+    isTreatedRow = currentRow.treatment::BOOLEAN;
+    IF (isTreatedRow AND prevRow IS NOT NULL) THEN
+      IF (currentRow.avgOutcome IS NOT NULL AND prevRow.avgOutcome IS NOT NULL
+          AND currentRow.groupSize >= 1 AND prevRow.groupSize >= 1) THEN
+        weightedAvgTreated = weightedAvgTreated + currentRow.avgOutcome * currentRow.groupSize;
+        weightedAvgControl = weightedAvgControl + prevRow.avgOutcome * prevRow.groupSize;
+        countTreated = countTreated + currentRow.groupSize;
+        countControl = countControl + prevRow.groupSize;
+        RAISE NOTICE 'successful treatment/control pair
+          treatedGroupSize: %
+          controlGroupSize: %
+          treatedGroupAvg: %
+          controlGroupAvg: %',
+          currentRow.groupSize, prevRow.groupSize, currentRow.avgOutcome, prevRow.avgOutcome;
+        END IF;
+    ELSIF NOT isTreatedRow THEN
+      prevRow = currentRow;
+    ELSE
+      RAISE NOTICE 'invalid treatment/control pair
+        treatedGroupSize: %
+        controlGroupSize: %
+        treatedGroupAvg: %
+        controlGroupAvg: %',
+        currentRow.groupSize, prevRow.groupSize, currentRow.avgOutcome, prevRow.avgOutcome;
+    END IF;
+  END LOOP;
+
+  RETURN weightedAvgTreated / countTreated - weightedAvgControl / countControl;
 
 END;
 $func$ LANGUAGE plpgsql;
 
+SELECT ate('test_flight', 'depdelay', 'lowpressure', ARRAY['thunder_matched', 'snow_matched', 'lowvisibility_matched']);
 
-SELECT treatedOutcomeAverage, controlOutcomeAverage, 
+DROP MATERIALIZED VIEW IF EXISTS test_flight;
+
+SELECT matchit('demo_data_1000000', 'fid', ARRAY['lowpressure'], ARRAY['thunder', 'snow', 'lowvisibility'], 'test_flight');
+
+SELECT 
+  lowpressure AS treatment,
+  thunder_matched AS cov1,
+  snow_matched AS cov2,
+  lowvisibility_matched AS cov3,
+  count(*) AS groupSize,
+  avg(depdelay) AS avgOutcome
+FROM test_flight
+WHERE treatment IS NOT NULL
+GROUP BY treatment, cov1, cov2, cov3
+ORDER BY cov1, cov2, cov3, treatment;
