@@ -1,14 +1,14 @@
 CREATE OR REPLACE FUNCTION two_table_matchit(
-  sourceTableA TEXT,
-  sourceTableAPrimaryKey TEXT,
-  sourceTableAForeignKey TEXT,
-  covariatesArrA TEXT[],
-  sourceTableB TEXT,
-  sourceTableBPrimaryKey TEXT,
-  covariatesArrB TEXT[],
+  sourceTableA TEXT,           -- input table A name
+  sourceTableAPrimaryKey TEXT, -- input table A primary key
+  sourceTableAForeignKey TEXT, -- foreign key linking to input table B
+  covariatesArrA TEXT[],       -- covariates included in input table A
+  sourceTableB TEXT,           -- input table B name
+  sourceTableBPrimaryKey TEXT, -- input table B primary key
+  covariatesArrB TEXT[],       -- covariates included in input table B
   treatment TEXT,              -- treatment column must be in sourceTableA
-  treatmentLevels INTEGER,
-  outputTable TEXT
+  treatmentLevels INTEGER,     -- possible levels for given treatment
+  outputTable TEXT             -- output table name
 ) RETURNS TEXT AS $func$
 DECLARE
   intermediateTable TEXT;
