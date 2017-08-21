@@ -22,7 +22,7 @@ export class ImplementationComponent implements OnInit {
           covariatesArr TEXT[], -- array of covariate column names
                                 -- (all covariates are applied to all treatments)
           outputTable TEXT      -- output table name
-        ) RETURNS TEXT          -- RETURNS function call status string
+        ) RETURNS TEXT          -- RETURNS function call status TEXT
       `,
     },
     {
@@ -40,7 +40,7 @@ export class ImplementationComponent implements OnInit {
           treatmentLevels INTEGER, -- possible levels for given treatment
           covariatesArr TEXT[],    -- array of covariate column names for given treatment
           outputTable TEXT         -- output table name
-        ) RETURNS TEXT             -- RETURNS function call status string
+        ) RETURNS TEXT             -- RETURNS function call status TEXT
       `
     },
     {
@@ -58,7 +58,7 @@ export class ImplementationComponent implements OnInit {
           treatmentsArr TEXT[],         -- array of treatment column names
           covariatesArraysArr TEXT[][], -- array of arrays of covariates, each treatment has its own set of covariates
           outputTableBasename TEXT      -- name used in all output tables, treatment appended
-        ) RETURNS TEXT                  -- RETURNS function call status string
+        ) RETURNS TEXT                  -- RETURNS function call status TEXT
       `
     },
     {
@@ -81,7 +81,40 @@ export class ImplementationComponent implements OnInit {
           treatment TEXT,              -- treatment column must be in sourceTableA
           treatmentLevels INTEGER,     -- possible levels for given treatment
           outputTable TEXT             -- output table name
-        ) RETURNS TEXT                 -- RETURNS function call status string
+        ) RETURNS TEXT                 -- RETURNS function call status TEXT
+      `
+    },
+    {
+      name: 'Average Treatment Effect (ATE)',
+      link: 'ate',
+      description: `
+        This computes the average treatment effect that the given treatment has on the given outcome
+        weighted on the size of the groups made by the exact match of covariates.
+      `,
+      code: `
+        FUNCTION ate(
+          sourceTable TEXT,         -- input table name that was output by matchit
+          outcome TEXT,             -- column name of the outcome of interest
+          treatment TEXT,           -- column name of the treatment of interest
+          covariatesArr TEXT[]      -- array of covariate column names
+        ) RETURNS NUMERIC           -- RETURNS ate NUMERIC
+      `
+    },
+    {
+      name: 'Matching Summary',
+      link: 'matchit_summary',
+      description: `
+        Computes summary statistics of matching operation.
+        Returns a JSON object containing summary for original data and data after matching.
+      `,
+      code: `
+        FUNCTION matchit_summary(
+          originalSourceTable TEXT, -- original input table name
+          matchedSourceTable TEXT,  -- table name that was output by matchit
+          treatment TEXT,           -- treatment column name
+          covariatesArr TEXT[],     -- array of covariate column names
+          outcome TEXT              -- outcome column name
+        ) RETURNS JSON              -- RETURNS summary object JSON
       `
     },
   ];
