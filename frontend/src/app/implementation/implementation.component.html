@@ -6,11 +6,17 @@
 </md-nav-list>
 <md-toolbar>Functions</md-toolbar>
 <md-card *ngFor="let function of functions" [id]="function.link">
-  <md-card-title>{{ function.name }}</md-card-title>
-  <md-card-content>{{ function.description }}</md-card-content>
-  <pre class="markdown-pre">
-    <code class="markdown-code">
-      {{ function.code }}
-    </code>
-  </pre>
+  <md-toolbar color="accent">
+    <span>{{ function.name }}</span>
+  </md-toolbar>
+  <md-card-content>
+    <p>{{ function.description }}</p>
+  </md-card-content>
+  <md-card-content highlight-js-content=".highlight">
+    <pre>
+      <code class="SQL highlight">
+        {{ function.code }}
+      </code>
+    </pre>
+  </md-card-content>
 </md-card>

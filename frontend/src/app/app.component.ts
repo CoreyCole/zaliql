@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import 'rxjs/add/operator/filter';
 
 @Component({
-  selector: 'app-root',
+  selector: 'zql-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
       .subscribe(f => {
         const element = document.querySelector('#' + f);
         if (element) {
-          element.scrollIntoView(element);
+          element.scrollIntoView(element as ScrollIntoViewOptions);
         }
       });
   }

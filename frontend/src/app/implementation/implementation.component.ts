@@ -15,7 +15,7 @@ export class ImplementationComponent implements OnInit {
         The results are materialized in a view.
       `,
       code: `
-        FUNCTION matchit(
+        CREATE FUNCTION matchit(
           sourceTable TEXT,     -- input table name
           primaryKey TEXT,      -- source table's primary key
           treatmentsArr TEXT[], -- array of treatment column names
@@ -33,7 +33,7 @@ export class ImplementationComponent implements OnInit {
         The results are materialized in a view.
       `,
       code: `
-        FUNCTION multi_level_treatment_matchit(
+        CREATE FUNCTION multi_level_treatment_matchit(
           sourceTable TEXT,        -- input table name
           primaryKey TEXT,         -- source table's primary key
           treatment TEXT,          -- treatment column names
@@ -52,7 +52,7 @@ export class ImplementationComponent implements OnInit {
         The results are materialized in a view.
       `,
       code: `
-        FUNCTION multi_treatment_matchit(
+        CREATE FUNCTION multi_treatment_matchit(
           sourceTable TEXT,             -- input table name
           primaryKey TEXT,              -- source table's primary key
           treatmentsArr TEXT[],         -- array of treatment column names
@@ -70,7 +70,7 @@ export class ImplementationComponent implements OnInit {
         The results are materialized in a view.
       `,
       code: `
-        CREATE OR REPLACE FUNCTION two_table_matchit(
+        CREATE FUNCTION two_table_matchit(
           sourceTableA TEXT,           -- input table A name
           sourceTableAPrimaryKey TEXT, -- input table A primary key
           sourceTableAForeignKey TEXT, -- foreign key linking to input table B
@@ -92,7 +92,7 @@ export class ImplementationComponent implements OnInit {
         weighted on the size of the groups made by the exact match of covariates.
       `,
       code: `
-        FUNCTION ate(
+        CREATE FUNCTION ate(
           sourceTable TEXT,         -- input table name that was output by matchit
           outcome TEXT,             -- column name of the outcome of interest
           treatment TEXT,           -- column name of the treatment of interest
@@ -108,7 +108,7 @@ export class ImplementationComponent implements OnInit {
         Returns a JSON object containing summary for original data and data after matching.
       `,
       code: `
-        FUNCTION matchit_summary(
+        CREATE FUNCTION matchit_summary(
           originalSourceTable TEXT, -- original input table name
           matchedSourceTable TEXT,  -- table name that was output by matchit
           treatment TEXT,           -- treatment column name

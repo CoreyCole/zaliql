@@ -16,14 +16,27 @@ import {
   MdGridListModule,
   MdTabsModule,
   MdCardModule,
-  MdListModule
+  MdListModule,
+  MdSlideToggleModule
 } from '@angular/material';
+
+// ngx charts
+import {
+  BarChartModule
+} from '@swimlane/ngx-charts';
+
+// ngx datatable
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+
+// highlightJS
+import { HighlightJsModule, HighlightJsService } from 'angular2-highlight-js';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { DemoComponent } from './demo/demo.component';
 import { ImplementationComponent } from './implementation/implementation.component';
 import { CitationsComponent } from './citations/citations.component';
+import { GroupedVerticalBarChartComponent } from './demo/grouped-vertical-bar-chart/grouped-vertical-bar-chart.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +44,8 @@ import { CitationsComponent } from './citations/citations.component';
     HomeComponent,
     DemoComponent,
     ImplementationComponent,
-    CitationsComponent
+    CitationsComponent,
+    GroupedVerticalBarChartComponent
   ],
   imports: [
     BrowserModule,
@@ -44,9 +58,18 @@ import { CitationsComponent } from './citations/citations.component';
     MdGridListModule,
     MdTabsModule,
     MdCardModule,
-    MdListModule
+    MdListModule,
+    MdSlideToggleModule,
+    // ngx charts components
+    BarChartModule,
+    // ngx datatable
+    NgxDatatableModule,
+    // highlightJS
+    HighlightJsModule
   ],
-  providers: [],
+  providers: [
+    HighlightJsService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

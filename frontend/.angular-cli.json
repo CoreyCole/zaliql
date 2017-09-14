@@ -19,7 +19,8 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "zql",
       "styles": [
-        "styles.css"
+        "styles.css",
+        "../node_modules/@swimlane/ngx-datatable/release/themes/material.css"
       ],
       "scripts": [],
       "environmentSource": "environments/environment.ts",

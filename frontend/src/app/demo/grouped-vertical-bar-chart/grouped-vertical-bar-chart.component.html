@@ -1,0 +1,102 @@
+<div class="datatable">
+  <md-toolbar color="accent">
+    <span>Example Flight Data (partial columns)</span>
+  </md-toolbar>
+  <ngx-datatable
+    class="material"
+    [rows]="schemaRows"
+    [columns]="schemaColumns"
+    [columnMode]="'force'"
+    [headerHeight]="50"
+    [footerHeight]="50"
+    [rowHeight]="'auto'">
+  </ngx-datatable>
+</div>
+<md-card class="code-card">
+  <md-toolbar color="accent">
+    <span>Simple Query: Which Carrier has <em>more delays?</em></span>
+  </md-toolbar>
+  <md-card-content highlight-js-content=".highlight">
+    <pre>
+      <code class="SQL highlight">
+        SELECT avg(Delayed)
+        FROM FlightData
+        GROUP BY Carrier
+        WHERE Carrier IN ('AA, 'UA')
+          AND Airport IN ('COS', 'MFE', 'MTJ', 'ROC');
+      </code>
+    </pre>
+  </md-card-content>
+</md-card>
+<md-card>
+  <md-toolbar color="accent">
+    <span>Simple Query Answers</span>
+  </md-toolbar>
+  <ngx-charts-bar-vertical
+    [view]="view"
+    [scheme]="colorScheme"
+    [results]="simpleQueryAnswers.data"
+    [xAxis]="true"
+    [yAxis]="true"
+    [legend]="true"
+    [showXAxisLabel]="true"
+    [showYAxisLabel]="true"
+    [xAxisLabel]="simpleQueryAnswers.xAxis"
+    [yAxisLabel]="simpleQueryAnswers.yAxis">
+  </ngx-charts-bar-vertical>
+</md-card>
+<md-card>
+  <md-toolbar color="accent">
+    <span>`GROUP BY` <em>Airport</em> leads to Simpson's Paradox</span>
+  </md-toolbar>
+  <ngx-charts-bar-vertical-2d
+    [view]="view"
+    [scheme]="colorScheme"
+    [results]="simpsonsParadox.data"
+    [xAxis]="true"
+    [yAxis]="true"
+    [legend]="true"
+    [showXAxisLabel]="true"
+    [showYAxisLabel]="true"
+    [xAxisLabel]="simpsonsParadox.xAxis"
+    [yAxisLabel]="simpsonsParadox.yAxis">
+  </ngx-charts-bar-vertical-2d>
+</md-card>
+<div class="datatable">
+  <md-toolbar color="accent">
+    <span>Top Causes of Biased Answer</span>
+  </md-toolbar>
+  <ngx-datatable
+    class="material"
+    [rows]="biasRows"
+    [columns]="biasColumns"
+    [columnMode]="'force'"
+    [headerHeight]="50"
+    [footerHeight]="50"
+    [rowHeight]="'auto'">
+  </ngx-datatable>
+</div>
+<md-card>
+  <md-toolbar color="accent">
+    <span>Total vs Direct Effect & SQL Query</span>
+    <span class="spacer"></span>
+    <md-slide-toggle
+        [color]="'primary'"
+        [checked]="groupByCarrier"
+        (change)="groupByCarrier = !groupByCarrier">
+      {{ groupByCarrier ? 'Group By Carrier' : 'Group Effect' }}
+    </md-slide-toggle>
+  </md-toolbar>
+  <ngx-charts-bar-vertical-2d
+    [view]="view"
+    [scheme]="colorScheme"
+    [results]="groupByCarrier ? effectQuery1.data : effectQuery2.data"
+    [xAxis]="true"
+    [yAxis]="true"
+    [legend]="true"
+    [showXAxisLabel]="true"
+    [showYAxisLabel]="true"
+    [xAxisLabel]="effectQuery1.xAxis"
+    [yAxisLabel]="effectQuery1.yAxis">
+  </ngx-charts-bar-vertical-2d>
+</md-card>

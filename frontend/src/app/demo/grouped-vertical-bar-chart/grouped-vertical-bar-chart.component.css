@@ -1,0 +1,26 @@
+.spacer {
+  flex: 1 1 auto;
+}
+
+md-slide-toggle {
+  width: 150px;
+}
+
+div.datatable {
+  padding: 16px;
+}
+
+md-card {
+  margin: 16px;
+  padding: 0;
+  padding-bottom: 16px;
+  overflow: auto;
+}
+
+md-card.code-card {
+  padding-bottom: 0;
+}
+
+ngx-charts-bar-vertical, ngx-charts-bar-vertical-2d {
+  margin: 32px;
+}
