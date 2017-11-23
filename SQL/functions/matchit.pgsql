@@ -29,7 +29,7 @@ BEGIN
   
   commandString = commandString || ' HAVING (';
   FOREACH treatment IN ARRAY treatmentsArr LOOP
-    commandString = commandString || 'max(' || treatment || ') != min(' || treatment || ') OR ';
+    commandString = commandString || 'max(' || treatment || '::integer) != min(' || treatment || '::integer) OR ';
   END LOOP;
 
   -- use substring here to chop off last OR
@@ -41,8 +41,7 @@ BEGIN
     commandString = commandString || ' subclasses.' || quote_ident(covariate) || '_matched = st.' || quote_ident(covariate) || ' AND';
   END LOOP;
 
-  -- use substring here to chop off last `AND`
-  commandString = substring( commandString from 0 for (char_length(commandString) - 3) );
+  commandString = commandString || ' ' || treatment || ' IS NOT NULL';
 
   -- EXECUTE format('DROP MATERIALIZED VIEW IF EXISTS %s', outputTable);
 
@@ -59,7 +58,9 @@ DROP MATERIALIZED VIEW IF EXISTS test_flight;
 
 SELECT matchit('demo_data_1000000', 'fid', ARRAY['lowpressure'], ARRAY['rain', 'fog'], 'test_flight');
 
-SELECT rain_matched, fog_matched, count(*), avg(depdelay) FROM test_flight GROUP BY rain_matched, fog_matched ORDER BY rain_matched, fog_matched;
+SELECT lowpressure, rain_matched, fog_matched, count(*), avg(depdelay)
+	FROM test_flight GROUP BY lowpressure, rain_matched, fog_matched 
+	ORDER BY lowpressure, rain_matched, fog_matched;
 
 SELECT * FROM test_flight;
 

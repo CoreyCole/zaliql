@@ -1,5 +1,3 @@
-DROP MATERIALIZED VIEW IF EXISTS demo_data_1000;
-
 CREATE OR REPLACE FUNCTION is_low_pressure(
   pressurem NUMERIC
 ) RETURNS BIT AS $func$
