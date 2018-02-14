@@ -29,7 +29,7 @@ BEGIN
   commandString := 'CREATE MATERIALIZED VIEW ' || outputTable
     || ' AS (SELECT ' || sourceTable || '.' || primaryKey || ' AS pk,'
     || ' madlib.logregr_predict_prob(ARRAY[' || coefText || '], '
-    || covariatesTextArr || ' AS propensity_score) FROM ' || sourceTable || ') WITH DATA;';
+    || covariatesTextArr || ') AS propensity_score FROM ' || sourceTable || ') WITH DATA;';
   EXECUTE commandString;
 
   RETURN 'Propensity score estimations successfully materialized in ' || outputTable || '!';
