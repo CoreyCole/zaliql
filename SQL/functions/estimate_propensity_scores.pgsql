@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION estimate_propensity_score(
+CREATE OR REPLACE FUNCTION estimate_propensity_scores(
   sourceTable TEXT,         -- input table name
   primaryKey TEXT,          -- input table primary key
   treatment TEXT,           -- treatment column name
@@ -26,11 +26,10 @@ BEGIN
   SELECT array_to_string(coef, ',') INTO coefText;
 
   -- Create materialzied view
-  RAISE NOTICE '%', sourceTable;
-  commandString := 'CREATE MATERIALZIED VIEW ' || outputTable
-    || ' AS SELECT ' || sourceTable || '.' || primaryKey || ','
-    || ' madlib.logregr_predict(ARRAY[' || coefText || '], '
-    || covariatesTextArr || ') FROM ' || sourceTable || ' WITH DATA;';
+  commandString := 'CREATE MATERIALIZED VIEW ' || outputTable
+    || ' AS (SELECT ' || sourceTable || '.' || primaryKey || ','
+    || ' madlib.logregr_predict_prob(ARRAY[' || coefText || '], '
+    || covariatesTextArr || ') FROM ' || sourceTable || ') WITH DATA;';
   EXECUTE commandString;
 
   RETURN 'Propensity score estimations successfully materialized in ' || outputTable || '!';
@@ -41,11 +40,11 @@ DROP TABLE demo_data_1000_logregr;
 DROP TABLE demo_data_1000_logregr_summary;
 DROP MATERIALIZED VIEW IF EXISTS test_flight;
 
-SELECT estimate_propensity_score('demo_data_1000', 'fid', 'depdel15', 'ARRAY[1, fog, hail, thunder, lowvisibility, highwindspeed]', 'test_flight');
+SELECT estimate_propensity_scores('demo_data_1000', 'fid', 'depdel15', 'ARRAY[1, fog, hail, thunder, lowvisibility, highwindspeed]', 'test_flight');
 
 SELECT * FROM test_flight;
 
-DROP FUNCTION estimate_propensity_score(text, text, text, text, text);
+DROP FUNCTION estimate_propensity_scores(text, text, text, text, text);
 
 -- Example without function
 DROP TABLE demo_data_1000_logregr;
