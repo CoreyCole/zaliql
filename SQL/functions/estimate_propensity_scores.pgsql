@@ -25,8 +25,8 @@ BEGIN
   EXECUTE commandString INTO coef;
   SELECT array_to_string(coef, ',') INTO coefText;
 
-  -- Create materialzied view
-  commandString := 'CREATE MATERIALIZED VIEW ' || outputTable
+  -- Create table
+  commandString := 'CREATE TABLE ' || outputTable
     || ' AS (SELECT ' || sourceTable || '.' || primaryKey || ' AS pk,'
     || ' madlib.logregr_predict_prob(ARRAY[' || coefText || '], '
     || covariatesTextArr || ') AS logregr_predict_prob, 0 AS used FROM ' || sourceTable || ') WITH DATA;';
