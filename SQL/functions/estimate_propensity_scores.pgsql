@@ -27,7 +27,7 @@ BEGIN
 
   -- Create materialzied view
   commandString := 'CREATE MATERIALIZED VIEW ' || outputTable
-    || ' AS (SELECT ' || sourceTable || '.' || primaryKey || ','
+    || ' AS (SELECT ' || sourceTable || '.' || primaryKey || ' AS pk,'
     || ' madlib.logregr_predict_prob(ARRAY[' || coefText || '], '
     || covariatesTextArr || ' AS propensity_score) FROM ' || sourceTable || ') WITH DATA;';
   EXECUTE commandString;
