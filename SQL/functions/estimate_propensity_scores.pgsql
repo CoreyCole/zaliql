@@ -27,7 +27,7 @@ BEGIN
 
   -- Create table
   commandString := 'CREATE TABLE ' || outputTable
-    || ' AS (SELECT ' || sourceTable || '.' || primaryKey || ' AS pk,'
+    || ' AS (SELECT ' || sourceTable || '.' || primaryKey || ' AS ' || primaryKey || ','
     || ' madlib.logregr_predict_prob(ARRAY[' || coefText || '], '
     || covariatesTextArr || ') AS logregr_predict_prob, 0 AS used FROM ' || sourceTable || ') WITH DATA;';
   EXECUTE commandString;
