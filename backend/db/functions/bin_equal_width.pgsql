@@ -1,8 +1,10 @@
+-- Create type minMax
+CREATE TYPE minMax AS (minimum NUMERIC, maximum NUMERIC);
 CREATE OR REPLACE FUNCTION bin_equal_width(
   source_table TEXT,    -- input table name
   target_columns TEXT,  -- space separated list of continuous column names to bin
   output_table TEXT,    -- output table name
-  num_bins TEXT      -- space separated list of prescribed number of bins, correspond to target_columns
+  num_bins TEXT         -- space separated list of prescribed number of bins, correspond to target_columns
 ) RETURNS TEXT AS $func$
 DECLARE
   targetColumnArr TEXT[];
@@ -68,13 +70,3 @@ BEGIN
   RETURN 'Successfully created materialized view with entity name ' || output_table || '!';
 END;
 $func$ LANGUAGE plpgsql;
-
-SELECT bin_equal_width('flight', 'distance vism', 'test_flight', '10 9');
-
--- use this to veriy types, not working with dynamic sql for some reason
-SELECT data_type FROM information_schema.columns WHERE table_name = 'flight' AND column_name = 'distance';
-
--- Create type minMax
-CREATE TYPE minMax AS (minimum NUMERIC, maximum NUMERIC);
-
-DROP FUNCTION bin_equal_width(text,text,text,text);

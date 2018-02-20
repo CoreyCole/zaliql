@@ -1,195 +1,189 @@
+TODO:
+- get demo flight data in docker `flights_weather_demo`
+- test all functions in readme
+  - make sure carrier works for multi-level-treatment matchit
+
 # ZaliSQL
 A SQL-Based Framework for Drawing Causal Inference from Big Data
 ### Table of Contents
+- [Demo Setup](https://gitlab.cs.washington.edu/bsalimi/ZaliSQL#Demo)
 - [Matching](https://gitlab.cs.washington.edu/bsalimi/ZaliSQL#matching)
-- [Discretization](https://gitlab.cs.washington.edu/bsalimi/ZaliSQL#discretization)
-- [Binning](https://gitlab.cs.washington.edu/bsalimi/ZaliSQL#binning)
-- [Summary Statistics](https://gitlab.cs.washington.edu/bsalimi/ZaliSQL#summary-statistics)
+
+# Demo
+This command spins up a stack of docker containers to run the demo
+```bash
+docker-compose -f docker/docker-compose.yml up -d --build
+```
+These containers include
+- app: the python webserver (port 5000)
+- db: a postgres database (port 5432)
+
+To see the live-logs for the python app:
+```bash
+docker-compose -f docker/docker-compose.yml logs -t -f app
+```
+
+To connect to the database from a client like `postico`
+- host: localhost
+- user: madlib
+- password: password
+- database: maddb
 
 # Matching
-ZaliSQL's matching functions are modeled after the R packages [MatchIt](https://cran.r-project.org/web/packages/MatchIt/MatchIt.pdf) and [CEM](https://cran.r-project.org/web/packages/cem/cem.pdf). Matching is a pre-processing method that makes the estimation 
+ZaliSQL's matching functions are modeled after the R packages [MatchIt](https://cran.r-project.org/web/packages/MatchIt/MatchIt.pdf) and [CEM](https://cran.r-project.org/web/packages/cem/cem.pdf). Matching is a statistical method that makes the estimation of
 causal effect less model-dependant and biased. After preprocessing data with matching methods, researchers can use whatever parametric model they would have used without matching, but produce inferences with substantially more robustness and less sensitivity to modeling assumptions.
+
 ## MatchIt
-ZaliSQL's MatchIt function uses a logistic regression function to estimate propensity score.
+ZaliQL's `matchit` function currently supports 2 matching methods: `cem` (coarsened exact matching) and `ps` (propensity score matching). Propensity score matching only supports 1 treatment.
+```sql
+CREATE FUNCTION matchit(
+  sourceTable TEXT,     -- input table name
+  primaryKey TEXT,      -- source table's primary key
+  treatmentsArr TEXT[], -- array of treatment column names
+  covariatesArr TEXT[], -- array covariate column names (all covariates are applied to all treatments)
+  method TEXT,          -- matching method (either 'cem' or 'ps')
+  outputTable TEXT      -- output table name
+) RETURNS TEXT
 
+-- example call with propensity score matching
+SELECT matchit(
+  'flights_weather_demo',
+  'fid',
+  ARRAY['lowpressure'],
+  ARRAY['fog', 'hail', 'hum', 'rain', 'snow'],
+  'ps',
+  'propensity_score_matchit_flights_weather'
+);
 ```
-matchit(
-  source_table,
-  treatment
-  covariates,
-  output_table,
-  method,
-  method_input,
-)
-```
-### Arguments
-- source_table
-  - TEXT. The name of the table containing the data to be matched.
-- treatment
-  - TEXT. The name of the column containing the binary treatment indicator
-- covariates
-  - TEXT. A comma-separated list of the covariate column names.
-- output_table
-  - TEXT. The name of the materialized source_table subclass where the additional columns will be appended or updated.
-- method
-  - TEXT, default: "nearest". The name of the desired matching method. Currently, "exact" (exact matching), "nearest" (nearest neighbor matching), and "subclass" (Subclassification) are available.
-- method_input (optional)
-  - TEXT, default: NULL. This optional argument specifies the optional arguments that are passed to the selected matching method.
 
-# Discretization
-## Discretize
-Discretize outputs a materialized table that is a superset of the passed source_table. The additional columns represent the desired discretized covariates.
+ZaliQL's `multi_level_treatment_matchit` function is a variation of CEM matchit where the treatment variable is non-binary.
+```sql
+CREATE FUNCTION multi_level_treatment_matchit(
+  sourceTable TEXT,        -- input table name
+  primaryKey TEXT,         -- source table's primary key
+  treatment TEXT,          -- treatment column name
+  treatmentLevels INTEGER, -- possible levels for given treatment
+  covariatesArr TEXT[],    -- array of covariate column names for given treatment
+  outputTable TEXT         -- output table name
+) RETURNS TEXT
+
+-- example call
+SELECT multi_level_treatment_matchit(
+  'flights_weather_demo',
+  'fid',
+  'carrier',
+  3,
+  ARRAY['fog', 'hail', 'hum', 'rain', 'snow'],
+  'multi_level_treatment_matchit_flights_weather'
+);
 ```
-discretize(
-  source_table,
-  covariates,
-  bin_function,
-  bin_function_input,
-  output_table
-)
+
+ZaliQL's `multi_treatment_matchit` function is a variation of CEM matchit where there are multiple treatment variables the analyst would like to consider.
+```sql
+CREATE FUNCTION multi_treatment_matchit(
+  sourceTable TEXT,             -- input table name
+  primaryKey TEXT,              -- source table's primary key
+  treatmentsArr TEXT[],         -- array of treatment column names
+  covariatesArraysArr TEXT[][], -- array of arrays of covariates, each treatment has its own set of covariates
+  outputTableBasename TEXT      -- name used in all output tables, treatment appended
+) RETURNS TEXT
+
+-- example call 
+SELECT multi_treatment_matchit(
+  'flights_weather_demo',
+  'fid',
+  ARRAY['thunder', 'lowpressure'],
+  ARRAY[
+    ARRAY['fog', 'hail', 'hum', 'rain', 'snow'],
+    ARRAY['fog', 'hail', 'hum', 'rain', 'snow']
+  ],
+  'multi_treatment_matchit_flights_weather'
+);
 ```
-### Arguments
-- source_table
-  - TEXT. The name of the table containing the data to be discretized.
-- covariates
-  - TEXT. A comma-separated list of the covariate column names.
-- bin_function
-  - TEXT. The name of the desired binning function (e.g. `bin_equal_width`, `bin_equal_frequency`, or `bin_quantile`)
-- bin_function_input
-  - NUMERIC. The value of the binning function input variable.
-- output_table
-  - TEXT. The name of the materialized source_table subclass where the additional columns will be appended or updated.
+
+ZaliQL's `two_table_matchit` function is a variation of CEM matchit where the treatment variable is in table A, but covariates are spread across both table A and B. Must pass the primary/foreign key relationship between the two tables
+```sql
+CREATE FUNCTION two_table_matchit(
+  sourceTableA TEXT,           -- input table A name
+  sourceTableAPrimaryKey TEXT, -- input table A primary key
+  sourceTableAForeignKey TEXT, -- foreign key linking to input table B
+  covariatesArrA TEXT[],       -- covariates included in input table A
+  sourceTableB TEXT,           -- input table B name
+  sourceTableBPrimaryKey TEXT, -- input table B primary key
+  covariatesArrB TEXT[],       -- covariates included in input table B
+  treatment TEXT,              -- treatment column must be in sourceTableA
+  treatmentLevels INTEGER,     -- possible levels for given treatment
+  outputTable TEXT             -- output table name
+) RETURNS TEXT
+
+-- example call joining data from weather table onto flights table
+SELECT two_table_matchit(
+  'flights',
+  'fid',
+  'flightWid',
+  ARRAY['airlineid', 'carrier', 'dest'],
+  'weather',
+  'wid',
+  ARRAY['fog', 'hail', 'hum', 'rain', 'snow'],
+  'carrier',
+  3,
+  'two_table_matchit_flights_weather'
+);
+```
 
 # Binning
-## Quantile Binning
-Bin quantile splits continuous data into a prescribed number of intervals with approximately equal number of values in each interval. (e.g. 3 intervals would split the data into quartiles)
-```
-bin_quantile(
-  source_table,
-  target_column,
-  output_table,
-  num_intervals
-)
-```
-### Arguments
-- source_table
-  - TEXT. The name of the table containing the target_column.
-- target_column
-  - TEXT. The name of the column containig the continuous data to be binned.
-- output_table
-  - TEXT. The name of the materialized source_table subclass where the binned data will be appended or updated.
-- num_buckets
-  - INTEGER. The number of intervals to split the continuous data into.
+ZaliQL's `bin_equal_width` function materializes a view where the provided continuous-data columns are split into intervals of a prescribed width.
+```sql
+CREATE FUNCTION bin_equal_width(
+  source_table TEXT,    -- input table name
+  target_columns TEXT,  -- space separated list of continuous column names to bin
+  output_table TEXT,    -- output table name
+  num_bins TEXT         -- space separated list of prescribed number of bins, correspond to target_columns
+) RETURNS TEXT
 
-## Equal Width Binning
-Bin equal width splits continuous data into intervals of a prescribed width.
+-- example call splitting `distance` into 10 bins and `vism` into 9
+SELECT bin_equal_width(
+  'flights_weather_demo',
+  'distance vism',
+  'equal_width_binned_flights_weather',
+  '10 9'
+);
 ```
-bin_equal_width(
-  source_table,
-  target_column,
-  output_table,
-  num_bins
-)
-```
-### Arguments
-- source_table
-  - TEXT. The name of the table containing the target_column.
-- target_column
-  - TEXT. The name of the column containig the continuous data to be binned.
-- output_table
-  - TEXT. The name of the materialized source_table subclass where the binned data will be appended or updated.
-- num_bins
-  - INTEGER. The prescribed number of intervals to partition the data into.
-
-## Equal Frequency Binning
-Bin equal frequency splits continuous data into intervals that approximately contain the same number of values.
-```
-bin_equal_frequency(
-  source_table,
-  target_column,
-  output_table,
-  frequency
-)
-```
-### Arguments
-- source_table
-  - TEXT. The name of the table containing the target_column.
-- target_column
-  - TEXT. The name of the column containig the continuous data to be binned.
-- output_table
-  - TEXT. The name of the materialized source_table subclass where the binned data will be appended or updated.
-- frequency
-  - INTEGER. The approximate number of values to be contained within each bin.
+TODO: `bin_quantile`, `bin_equal_frequency`
 
 # Summary Statistics
-## Matching Summary
-Matching summary outputs matching result statistics about the given table to standard out. This is modeled after the output of the `matchit()` function from the R package [MatchIt]((https://cran.r-project.org/web/packages/MatchIt/MatchIt.pdf)). This can only be called on a source_table that has been output by one of ZaliQL's matching functions.
-```
-matching_summary(
-  source_table,
-  covariates,
-  verbose,
-  output_table
-)
-```
-### Arguments
-- source_table
-  - TEXT. The name of the table containing the data to be summarized.
-- covariates
-  - TEXT. A comma-separated list of the covariate column names.
-- verbose (optional)
-  - BOOLEAN, default: TRUE. Print verbose output to standard out.
-- output_table (optional)
-  - TEXT, default: NULL. The name of the table where the matching summary output will be stored. This table must contain the following columns (NOTE: outputs are organized into `pre` for original data, `post` for matched data, and `comp` for comparing the two data sets):
-    - match_summary_id INTEGER (not unique, ties covariates to same matching method calculations)
-    - table_name VARCHAR
-    - covariate_name VARCHAR
-    - calculated_datetime DATETIME
-    - pre_means_treated NUMERIC
-    - pre_means_control NUMERIC
-    - pre_sd_control NUMERIC
-    - pre_mean_diff NUMERIC
-    - pre_eQQ_med NUMERIC
-    - pre_eQQ_mean NUMERIC
-    - pre_eQQ_max NUMERIC
-    - post_means_treated NUMERIC
-    - post_means_control NUMERIC
-    - post_sd_control NUMERIC
-    - post_mean_diff NUMERIC
-    - post_eQQ_med NUMERIC
-    - post_eQQ_mean NUMERIC
-    - post_eQQ_max NUMERIC
-    - comp_mean_diff NUMERIC
-    - comp_eQQ_med NUMERIC
-    - comp_eQQ_mean NUMERIC
-    - comp_eQQ_max NUMERIC
+ZaliQL's `matchit_summary` function returns a json object with summary statitics of the orignal table and matched materialized view.
+```sql
+CREATE FUNCTION matchit_summary(
+  originalSourceTable TEXT,  -- original input table name
+  matchedSourceTable TEXT,   -- table name that was output by matchit
+  treatment TEXT,            -- treatment column name
+  covariatesArr TEXT[]       -- array of covariate column names
+) RETURNS JSON
 
-## Statistical Summary
-Statistical summary outputs generic summary statistics about the given table to standard out. This is modeled after the output of the `summary(dataframe)` function from the R standard library.
+-- example call
+SELECT matchit_summary(
+  'flights_weather_demo',
+  'propensity_score_matchit_flights_weather',
+  'lowpressure',
+  ARRAY['fog', 'hail', 'hum', 'rain', 'snow']
+);
 ```
-stat_summary(
-  source_table,
-  verbose,
-  target_cols,
-  output_table
-)
+
+ZaliQL's `ate` function returns the weighted average treatment effect across the matched covariate groups of the passed treatment on the passed outcome.
+```sql
+CREATE FUNCTION ate(
+  sourceTable TEXT,    -- input table name that was output by matchit
+  outcome TEXT,        -- column name of the outcome of interest
+  treatment TEXT,      -- column name of the treatment of interest
+  covariatesArr TEXT[] -- array of covariate column names
+) RETURNS NUMERIC
+
+-- example call
+SELECT ate(
+  'propensity_score_matchit_flights_weather',
+  'depdelay',
+  'lowpressure',
+  ARRAY['fog-matched', 'hail-matched', 'hum-matched', 'rain-matched', 'snow-matched']
+);
 ```
-### Arguments
-- source_table
-  - TEXT. The name of the table containing the data to be summarized.
-- verbose (optional)
-  - BOOLEAN, default: TRUE. Print verbose output to standard out.
-- target_cols (optional)
-  - TEXT, default: '*'. A comma-separated list of the columns to summarize. If NULL or '*', results are produced for all numeric columns.
-- output_table (optional)
-  - TEXT, default: NULL. The name of the table where the statistical summary output will be stored. This table must contain the following columns:
-    - stat_summary_id INTEGER
-    - table_name VARCHAR
-    - column_name VARCHAR
-    - calculated_datetime DATETIME
-    - mean NUMERIC
-    - median NUMERIC
-    - 25th quartile NUMERIC
-    - 75th quartile NUMERIC
-    - min NUMERIC
-    - max NUMERIC
