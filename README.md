@@ -17,11 +17,9 @@ The only external dependency for ZaliQL is [Docker](https://docs.docker.com/inst
 ### These containers include:
 - app: the python webserver (port 5000)
   - The python webserver is instantiated with the anaconda distribution packages on python version 3.6.4
-
 - db: a postgres database (port 5432)
   - The postgres database is version 9.6 and comes pre-populated with demo data along with ZaliQL's and Madlib's function libraries
-
-- redis: an in memory cache for certain user experience features
+- redis: an in-memory cache for certain user experience features
 
 To spin up the containerized stack, use `docker-compose`:
 ```bash
