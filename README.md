@@ -12,7 +12,7 @@ A SQL-Based Framework for Drawing Causal Inference from Big Data
 - [Analysis](https://gitlab.cs.washington.edu/bsalimi/ZaliSQL#Analysis)
 
 # Demo
-The only external dependency for ZaliQL is Docker. It allows anyone with docker installed on their machine to spin up a containerized stack with all of the internal dependencies and demo data automatically installed.
+The only external dependency for ZaliQL is [Docker](https://docs.docker.com/install/#supported-platforms). It allows anyone with docker installed on their machine to spin up a containerized stack with all of the internal dependencies and demo data automatically installed.
 
 ### These containers include:
 - app: the python webserver (port 5000)
