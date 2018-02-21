@@ -10,14 +10,14 @@ import 'hammerjs';
 
 // angular material components
 import {
-  MdButtonModule,
-  MdCheckboxModule,
-  MdToolbarModule,
-  MdGridListModule,
-  MdTabsModule,
-  MdCardModule,
-  MdListModule,
-  MdSlideToggleModule
+  MatButtonModule,
+  MatCheckboxModule,
+  MatToolbarModule,
+  MatGridListModule,
+  MatTabsModule,
+  MatCardModule,
+  MatListModule,
+  MatSlideToggleModule
 } from '@angular/material';
 
 // ngx charts
@@ -52,14 +52,14 @@ import { GroupedVerticalBarChartComponent } from './demo/grouped-vertical-bar-ch
     BrowserAnimationsModule,
     AppRoutingModule,
     // angular material components
-    MdButtonModule,
-    MdCheckboxModule,
-    MdToolbarModule,
-    MdGridListModule,
-    MdTabsModule,
-    MdCardModule,
-    MdListModule,
-    MdSlideToggleModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    MatToolbarModule,
+    MatGridListModule,
+    MatTabsModule,
+    MatCardModule,
+    MatListModule,
+    MatSlideToggleModule,
     // ngx charts components
     BarChartModule,
     // ngx datatable
