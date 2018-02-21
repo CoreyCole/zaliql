@@ -44,7 +44,7 @@ To see the live-logs for one of the containers:
 # python
 docker-compose -f backend/docker/docker-compose.yml logs -t -f app
 # database
-docker-compose -f backend/docker/docker-compose.yml logs -t -f app
+docker-compose -f backend/docker/docker-compose.yml logs -t -f db
 ```
 
 To ssh into one of the containers using a bash interface:
@@ -55,7 +55,7 @@ docker exec -it docker_app_1 bash
 docker exec -it docker_db_1 bash
 ```
 
-To connect to the database from a client like `postico`
+To connect to the container database from a client on your host machine like `postico`:
 - host: localhost
 - user: madlib
 - password: password
