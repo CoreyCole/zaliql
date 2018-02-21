@@ -1,26 +1,58 @@
 TODO:
 - get demo flight data in docker `flights_weather_demo`
 - test all functions in readme
-  - make sure carrier works for multi-level-treatment matchit
+  - test multi-level-treatment matchit with carrier treatment
 
 # ZaliSQL
 A SQL-Based Framework for Drawing Causal Inference from Big Data
 ### Table of Contents
 - [Demo Setup](https://gitlab.cs.washington.edu/bsalimi/ZaliSQL#Demo)
-- [Matching](https://gitlab.cs.washington.edu/bsalimi/ZaliSQL#matching)
+- [Preprocessing](https://gitlab.cs.washington.edu/bsalimi/ZaliSQL#Preprocessing)
+- [Matching](https://gitlab.cs.washington.edu/bsalimi/ZaliSQL#Matching)
+- [Analysis](https://gitlab.cs.washington.edu/bsalimi/ZaliSQL#Analysis)
 
 # Demo
-This command spins up a stack of docker containers to run the demo
-```bash
-docker-compose -f docker/docker-compose.yml up -d --build
-```
-These containers include
-- app: the python webserver (port 5000)
-- db: a postgres database (port 5432)
+The only external dependency for ZaliQL is Docker. It allows anyone with docker installed on their machine to spin up a containerized stack with all of the internal dependencies and demo data automatically installed.
 
-To see the live-logs for the python app:
+### These containers include:
+- app: the python webserver (port 5000)
+  - The python webserver is instantiated with the anaconda distribution packages on python version 3.6.4
+
+- db: a postgres database (port 5432)
+  - The postgres database is version 9.6 and comes pre-populated with demo data along with ZaliQLs and Madlib's function libraries
+
+- redis: an in memory cache for certain user experience features
+
+To spin up the containerized stack, use `docker-compose`:
 ```bash
-docker-compose -f docker/docker-compose.yml logs -t -f app
+docker-compose -f backend/docker/docker-compose.yml up -d --build
+# NOTE: this takes some time, message "localhost:5432 - rejecting connections" is expected
+```
+
+To see what containers are running on your host machine:
+```bash
+docker ps -a
+# Should see something like...
+# NAMES
+# docker_app_1
+# docker_db_1
+# docker_redis_1
+```
+
+To see the live-logs for one of the containers:
+```bash
+# python
+docker-compose -f backend/docker/docker-compose.yml logs -t -f app
+# database
+docker-compose -f backend/docker/docker-compose.yml logs -t -f app
+```
+
+To ssh into one of the containers using a bash interface:
+```bash
+# python
+docker exec -it docker_app_1 bash
+# database
+docker exec -it docker_db_1 bash
 ```
 
 To connect to the database from a client like `postico`
@@ -28,6 +60,27 @@ To connect to the database from a client like `postico`
 - user: madlib
 - password: password
 - database: maddb
+
+# Preprocessing
+## Binning
+ZaliQL's `bin_equal_width` function materializes a view where the provided continuous-data columns are split into intervals of a prescribed width.
+```sql
+CREATE FUNCTION bin_equal_width(
+  source_table TEXT,    -- input table name
+  target_columns TEXT,  -- space separated list of continuous column names to bin
+  output_table TEXT,    -- output table name
+  num_bins TEXT         -- space separated list of prescribed number of bins, correspond to target_columns
+) RETURNS TEXT
+
+-- example call splitting `distance` into 10 bins and `vism` into 9
+SELECT bin_equal_width(
+  'flights_weather_demo',
+  'distance vism',
+  'equal_width_binned_flights_weather',
+  '10 9'
+);
+```
+TODO: `bin_quantile`, `bin_equal_frequency`
 
 # Matching
 ZaliSQL's matching functions are modeled after the R packages [MatchIt](https://cran.r-project.org/web/packages/MatchIt/MatchIt.pdf) and [CEM](https://cran.r-project.org/web/packages/cem/cem.pdf). Matching is a statistical method that makes the estimation of
@@ -131,27 +184,8 @@ SELECT two_table_matchit(
 );
 ```
 
-# Binning
-ZaliQL's `bin_equal_width` function materializes a view where the provided continuous-data columns are split into intervals of a prescribed width.
-```sql
-CREATE FUNCTION bin_equal_width(
-  source_table TEXT,    -- input table name
-  target_columns TEXT,  -- space separated list of continuous column names to bin
-  output_table TEXT,    -- output table name
-  num_bins TEXT         -- space separated list of prescribed number of bins, correspond to target_columns
-) RETURNS TEXT
-
--- example call splitting `distance` into 10 bins and `vism` into 9
-SELECT bin_equal_width(
-  'flights_weather_demo',
-  'distance vism',
-  'equal_width_binned_flights_weather',
-  '10 9'
-);
-```
-TODO: `bin_quantile`, `bin_equal_frequency`
-
-# Summary Statistics
+# Analysis
+## Matching Summary Statistics
 ZaliQL's `matchit_summary` function returns a json object with summary statitics of the orignal table and matched materialized view.
 ```sql
 CREATE FUNCTION matchit_summary(
@@ -170,6 +204,7 @@ SELECT matchit_summary(
 );
 ```
 
+## Average Treatment Effect
 ZaliQL's `ate` function returns the weighted average treatment effect across the matched covariate groups of the passed treatment on the passed outcome.
 ```sql
 CREATE FUNCTION ate(
