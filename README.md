@@ -6,7 +6,7 @@ TODO:
 # ZaliSQL
 A SQL-Based Framework for Drawing Causal Inference from Big Data
 ### Table of Contents
-- [Demo Setup](https://gitlab.cs.washington.edu/bsalimi/ZaliSQL#Demo)
+- [Demo](https://gitlab.cs.washington.edu/bsalimi/ZaliSQL#Demo)
 - [Preprocessing](https://gitlab.cs.washington.edu/bsalimi/ZaliSQL#Preprocessing)
 - [Matching](https://gitlab.cs.washington.edu/bsalimi/ZaliSQL#Matching)
 - [Analysis](https://gitlab.cs.washington.edu/bsalimi/ZaliSQL#Analysis)
