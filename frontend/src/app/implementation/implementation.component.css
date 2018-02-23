@@ -1,9 +1,9 @@
-md-card {
+mat-card {
   margin: 16px;
   padding: 0;
 }
 
-md-card p {
+mat-card p {
   margin: 16px;
   font-size: 14pt;
 }

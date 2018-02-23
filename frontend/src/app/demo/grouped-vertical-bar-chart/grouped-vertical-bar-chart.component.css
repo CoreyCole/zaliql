@@ -2,7 +2,7 @@
   flex: 1 1 auto;
 }
 
-md-slide-toggle {
+mat-slide-toggle {
   width: 150px;
 }
 
@@ -10,14 +10,14 @@ div.datatable {
   padding: 16px;
 }
 
-md-card {
+mat-card {
   margin: 16px;
   padding: 0;
   padding-bottom: 16px;
   overflow: auto;
 }
 
-md-card.code-card {
+mat-card.code-card {
   padding-bottom: 0;
 }
 

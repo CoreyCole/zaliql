@@ -27,15 +27,15 @@
     "@ngtools/json-schema" "^1.1.0"
     rxjs "^5.5.6"
 
-"@angular/animations@5.2.0":
-  version "5.2.0"
-  resolved "https://registry.yarnpkg.com/@angular/animations/-/animations-5.2.0.tgz#a3ce02c01b074f0de7c2c23c1f08b4a00f0bec5f"
+"@angular/animations@5.2.6":
+  version "5.2.6"
+  resolved "https://registry.yarnpkg.com/@angular/animations/-/animations-5.2.6.tgz#433aace8929ce362762dcccdb5044c3945a194bd"
   dependencies:
     tslib "^1.7.1"
 
-"@angular/cdk@5.0.0-rc.1":
-  version "5.0.0-rc.1"
-  resolved "https://registry.yarnpkg.com/@angular/cdk/-/cdk-5.0.0-rc.1.tgz#7d6d937fea50074962db8ce02664b164401d197d"
+"@angular/cdk@5.2.2":
+  version "5.2.2"
+  resolved "https://registry.yarnpkg.com/@angular/cdk/-/cdk-5.2.2.tgz#5a53929e3a4ce4d0166d6319611d2035454bb778"
   dependencies:
     tslib "^1.7.1"
 
@@ -104,9 +104,9 @@
   optionalDependencies:
     node-sass "^4.7.2"
 
-"@angular/common@5.2.0":
-  version "5.2.0"
-  resolved "https://registry.yarnpkg.com/@angular/common/-/common-5.2.0.tgz#d184fb90763da1d1bab1f6c4f41dd80c79e47506"
+"@angular/common@5.2.6":
+  version "5.2.6"
+  resolved "https://registry.yarnpkg.com/@angular/common/-/common-5.2.6.tgz#0c6771739f1407eae0533e82c3ee42425badd489"
   dependencies:
     tslib "^1.7.1"
 
@@ -119,27 +119,27 @@
     reflect-metadata "^0.1.2"
     tsickle "^0.26.0"
 
-"@angular/compiler@5.2.0":
-  version "5.2.0"
-  resolved "https://registry.yarnpkg.com/@angular/compiler/-/compiler-5.2.0.tgz#3798795b97e60b47fdc0a150e062dedb4ac39467"
+"@angular/compiler@5.2.6":
+  version "5.2.6"
+  resolved "https://registry.yarnpkg.com/@angular/compiler/-/compiler-5.2.6.tgz#0abf72b46c401688342057e3fb7cd59fef0a5ab1"
   dependencies:
     tslib "^1.7.1"
 
-"@angular/core@5.2.0":
-  version "5.2.0"
-  resolved "https://registry.yarnpkg.com/@angular/core/-/core-5.2.0.tgz#f91bf83de3e0defd621adcc007c25d7cd5a85af1"
+"@angular/core@5.2.6":
+  version "5.2.6"
+  resolved "https://registry.yarnpkg.com/@angular/core/-/core-5.2.6.tgz#483fb0b720d563d3ec4d1895878249beafa39b9b"
   dependencies:
     tslib "^1.7.1"
 
-"@angular/forms@5.2.0":
-  version "5.2.0"
-  resolved "https://registry.yarnpkg.com/@angular/forms/-/forms-5.2.0.tgz#b5fb6b9ba97334bca0e3202d7fee6b9162cbc824"
+"@angular/forms@5.2.6":
+  version "5.2.6"
+  resolved "https://registry.yarnpkg.com/@angular/forms/-/forms-5.2.6.tgz#fa3e37a9e97fa3e2b24d8564a66a11d430379bfe"
   dependencies:
     tslib "^1.7.1"
 
-"@angular/http@5.2.0":
-  version "5.2.0"
-  resolved "https://registry.yarnpkg.com/@angular/http/-/http-5.2.0.tgz#ebffff97e6c7baa3609a2d68e982bf990b1c72dc"
+"@angular/http@5.2.6":
+  version "5.2.6"
+  resolved "https://registry.yarnpkg.com/@angular/http/-/http-5.2.6.tgz#4fa92e61b9848f8571c61ae9ad32af27cd71b043"
   dependencies:
     tslib "^1.7.1"
 
@@ -147,27 +147,27 @@
   version "5.2.5"
   resolved "https://registry.yarnpkg.com/@angular/language-service/-/language-service-5.2.5.tgz#7c3021f347dd4b28ae0a867700894f3de4930f48"
 
-"@angular/material@5.0.0-rc.1":
-  version "5.0.0-rc.1"
-  resolved "https://registry.yarnpkg.com/@angular/material/-/material-5.0.0-rc.1.tgz#63456b7568c102b6bb7983a2837cc317350fe270"
+"@angular/material@5.2.2":
+  version "5.2.2"
+  resolved "https://registry.yarnpkg.com/@angular/material/-/material-5.2.2.tgz#13822736b7aa034ed0566a6962ee574d299208ee"
   dependencies:
     tslib "^1.7.1"
 
-"@angular/platform-browser-dynamic@5.2.0":
-  version "5.2.0"
-  resolved "https://registry.yarnpkg.com/@angular/platform-browser-dynamic/-/platform-browser-dynamic-5.2.0.tgz#6d3e074363606b559c3319d2433d1c08ccaefbad"
+"@angular/platform-browser-dynamic@5.2.6":
+  version "5.2.6"
+  resolved "https://registry.yarnpkg.com/@angular/platform-browser-dynamic/-/platform-browser-dynamic-5.2.6.tgz#8795cca57306b7bdc2bc166d3928bc8eb145125c"
   dependencies:
     tslib "^1.7.1"
 
-"@angular/platform-browser@5.2.0":
-  version "5.2.0"
-  resolved "https://registry.yarnpkg.com/@angular/platform-browser/-/platform-browser-5.2.0.tgz#89cbc8abf54171ecf3dd9a40970b4982eecc9f73"
+"@angular/platform-browser@5.2.6":
+  version "5.2.6"
+  resolved "https://registry.yarnpkg.com/@angular/platform-browser/-/platform-browser-5.2.6.tgz#ecb8a6d37506ffb3f181ea10696a3c7feaf1674c"
   dependencies:
     tslib "^1.7.1"
 
-"@angular/router@5.2.0":
-  version "5.2.0"
-  resolved "https://registry.yarnpkg.com/@angular/router/-/router-5.2.0.tgz#0a43f1c6add592c9cb0b9846fc157fc5b23ee73d"
+"@angular/router@5.2.6":
+  version "5.2.6"
+  resolved "https://registry.yarnpkg.com/@angular/router/-/router-5.2.6.tgz#513b555d5cc4b206833646468ffb47fa8f5c1c0b"
   dependencies:
     tslib "^1.7.1"
 
@@ -202,13 +202,25 @@
     semver "^5.3.0"
     semver-intersect "^1.1.2"
 
-"@swimlane/ngx-charts@6.0.2":
-  version "6.0.2"
-  resolved "https://registry.yarnpkg.com/@swimlane/ngx-charts/-/ngx-charts-6.0.2.tgz#0ab346cf9569fd62433d329a31cfd9c07bf0edab"
+"@swimlane/ngx-charts@7.1.1":
+  version "7.1.1"
+  resolved "https://registry.yarnpkg.com/@swimlane/ngx-charts/-/ngx-charts-7.1.1.tgz#f95f520d81dde71055ead57032ad48f9218c36d8"
+  dependencies:
+    d3-array "^1.2.1"
+    d3-brush "^1.0.4"
+    d3-color "^1.0.3"
+    d3-force "^1.1.0"
+    d3-format "^1.2.0"
+    d3-hierarchy "^1.1.5"
+    d3-interpolate "^1.1.5"
+    d3-scale "^1.0.6"
+    d3-selection "^1.1.0"
+    d3-shape "^1.2.0"
+    d3-time-format "^2.1.0"
 
-"@swimlane/ngx-datatable@10.2.3":
-  version "10.2.3"
-  resolved "https://registry.yarnpkg.com/@swimlane/ngx-datatable/-/ngx-datatable-10.2.3.tgz#19b607fc34c47d6bd5f6082d7a7d0d8491889e4a"
+"@swimlane/ngx-datatable@11.2.0":
+  version "11.2.0"
+  resolved "https://registry.yarnpkg.com/@swimlane/ngx-datatable/-/ngx-datatable-11.2.0.tgz#fdc353bdffb676a14c5dfd7834509427cb30060b"
 
 "@types/jasmine@*":
   version "2.5.54"
@@ -1463,11 +1475,15 @@ d3-array@1, d3-array@1.2.0, d3-array@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/d3-array/-/d3-array-1.2.0.tgz#147d269720e174c4057a7f42be8b0f3f2ba53108"
 
+d3-array@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/d3-array/-/d3-array-1.2.1.tgz#d1ca33de2f6ac31efadb8e050a021d7e2396d5dc"
+
 d3-axis@1.0.8:
   version "1.0.8"
   resolved "https://registry.yarnpkg.com/d3-axis/-/d3-axis-1.0.8.tgz#31a705a0b535e65759de14173a31933137f18efa"
 
-d3-brush@1.0.4:
+d3-brush@1.0.4, d3-brush@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/d3-brush/-/d3-brush-1.0.4.tgz#00c2f238019f24f6c0a194a26d41a1530ffe7bc4"
   dependencies:
@@ -1488,7 +1504,7 @@ d3-collection@1, d3-collection@1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/d3-collection/-/d3-collection-1.0.4.tgz#342dfd12837c90974f33f1cc0a785aea570dcdc2"
 
-d3-color@1, d3-color@1.0.3:
+d3-color@1, d3-color@1.0.3, d3-color@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/d3-color/-/d3-color-1.0.3.tgz#bc7643fca8e53a8347e2fbdaffa236796b58509b"
 
@@ -1524,9 +1540,22 @@ d3-force@1.0.6:
     d3-quadtree "1"
     d3-timer "1"
 
+d3-force@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/d3-force/-/d3-force-1.1.0.tgz#cebf3c694f1078fcc3d4daf8e567b2fbd70d4ea3"
+  dependencies:
+    d3-collection "1"
+    d3-dispatch "1"
+    d3-quadtree "1"
+    d3-timer "1"
+
 d3-format@1, d3-format@1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/d3-format/-/d3-format-1.2.0.tgz#6b480baa886885d4651dc248a8f4ac9da16db07a"
+
+d3-format@^1.2.0:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/d3-format/-/d3-format-1.2.2.tgz#1a39c479c8a57fe5051b2e67a3bee27061a74e7a"
 
 d3-geo@1.6.4:
   version "1.6.4"
@@ -1534,13 +1563,19 @@ d3-geo@1.6.4:
   dependencies:
     d3-array "1"
 
-d3-hierarchy@1.1.5:
+d3-hierarchy@1.1.5, d3-hierarchy@^1.1.5:
   version "1.1.5"
   resolved "https://registry.yarnpkg.com/d3-hierarchy/-/d3-hierarchy-1.1.5.tgz#a1c845c42f84a206bcf1c01c01098ea4ddaa7a26"
 
 d3-interpolate@1, d3-interpolate@1.1.5:
   version "1.1.5"
   resolved "https://registry.yarnpkg.com/d3-interpolate/-/d3-interpolate-1.1.5.tgz#69e099ff39214716e563c9aec3ea9d1ea4b8a79f"
+  dependencies:
+    d3-color "1"
+
+d3-interpolate@^1.1.5:
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/d3-interpolate/-/d3-interpolate-1.1.6.tgz#2cf395ae2381804df08aa1bf766b7f97b5f68fb6"
   dependencies:
     d3-color "1"
 
@@ -1585,11 +1620,23 @@ d3-scale@1.0.6:
     d3-time "1"
     d3-time-format "2"
 
+d3-scale@^1.0.6:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/d3-scale/-/d3-scale-1.0.7.tgz#fa90324b3ea8a776422bd0472afab0b252a0945d"
+  dependencies:
+    d3-array "^1.2.0"
+    d3-collection "1"
+    d3-color "1"
+    d3-format "1"
+    d3-interpolate "1"
+    d3-time "1"
+    d3-time-format "2"
+
 d3-selection@1, d3-selection@1.1.0, d3-selection@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/d3-selection/-/d3-selection-1.1.0.tgz#1998684896488f839ca0372123da34f1d318809c"
 
-d3-shape@1.2.0:
+d3-shape@1.2.0, d3-shape@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/d3-shape/-/d3-shape-1.2.0.tgz#45d01538f064bafd05ea3d6d2cb748fd8c41f777"
   dependencies:
@@ -1598,6 +1645,12 @@ d3-shape@1.2.0:
 d3-time-format@2, d3-time-format@2.0.5:
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/d3-time-format/-/d3-time-format-2.0.5.tgz#9d7780204f7c9119c9170b1a56db4de9a8af972e"
+  dependencies:
+    d3-time "1"
+
+d3-time-format@^2.1.0:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/d3-time-format/-/d3-time-format-2.1.1.tgz#85b7cdfbc9ffca187f14d3c456ffda268081bb31"
   dependencies:
     d3-time "1"
 

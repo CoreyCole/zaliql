@@ -1,22 +1,22 @@
-<md-toolbar>Contents</md-toolbar>
-<md-nav-list>
-  <md-list-item *ngFor="let function of functions">
-    <a md-line [routerLink]="['./']" fragment="{{function.link}}">{{ function.name }}</a>
-  </md-list-item>
-</md-nav-list>
-<md-toolbar>Functions</md-toolbar>
-<md-card *ngFor="let function of functions" [id]="function.link">
-  <md-toolbar color="accent">
+<mat-toolbar>Contents</mat-toolbar>
+<mat-nav-list>
+  <mat-list-item *ngFor="let function of functions">
+    <a mat-line [routerLink]="['./']" fragment="{{function.link}}">{{ function.name }}</a>
+  </mat-list-item>
+</mat-nav-list>
+<mat-toolbar>Functions</mat-toolbar>
+<mat-card *ngFor="let function of functions" [id]="function.link">
+  <mat-toolbar color="accent">
     <span>{{ function.name }}</span>
-  </md-toolbar>
-  <md-card-content>
+  </mat-toolbar>
+  <mat-card-content>
     <p>{{ function.description }}</p>
-  </md-card-content>
-  <md-card-content highlight-js-content=".highlight">
+  </mat-card-content>
+  <mat-card-content highlight-js-content=".highlight">
     <pre>
       <code class="SQL highlight">
         {{ function.code }}
       </code>
     </pre>
-  </md-card-content>
-</md-card>
+  </mat-card-content>
+</mat-card>

@@ -17,7 +17,9 @@ import {
   MatTabsModule,
   MatCardModule,
   MatListModule,
-  MatSlideToggleModule
+  MatSlideToggleModule,
+  MatSidenav,
+  MatSidenavModule
 } from '@angular/material';
 
 // ngx charts
@@ -60,6 +62,7 @@ import { GroupedVerticalBarChartComponent } from './demo/grouped-vertical-bar-ch
     MatCardModule,
     MatListModule,
     MatSlideToggleModule,
+    MatSidenavModule,
     // ngx charts components
     BarChartModule,
     // ngx datatable

@@ -1,7 +1,7 @@
 <div class="datatable">
-  <md-toolbar color="accent">
+  <mat-toolbar color="accent">
     <span>Example Flight Data (partial columns)</span>
-  </md-toolbar>
+  </mat-toolbar>
   <ngx-datatable
     class="material"
     [rows]="schemaRows"
@@ -12,11 +12,11 @@
     [rowHeight]="'auto'">
   </ngx-datatable>
 </div>
-<md-card class="code-card">
-  <md-toolbar color="accent">
+<mat-card class="code-card">
+  <mat-toolbar color="accent">
     <span>Simple Query: Which Carrier has <em>more delays?</em></span>
-  </md-toolbar>
-  <md-card-content highlight-js-content=".highlight">
+  </mat-toolbar>
+  <mat-card-content highlight-js-content=".highlight">
     <pre>
       <code class="SQL highlight">
         SELECT avg(Delayed)
@@ -26,12 +26,12 @@
           AND Airport IN ('COS', 'MFE', 'MTJ', 'ROC');
       </code>
     </pre>
-  </md-card-content>
-</md-card>
-<md-card>
-  <md-toolbar color="accent">
+  </mat-card-content>
+</mat-card>
+<mat-card>
+  <mat-toolbar color="accent">
     <span>Simple Query Answers</span>
-  </md-toolbar>
+  </mat-toolbar>
   <ngx-charts-bar-vertical
     [view]="view"
     [scheme]="colorScheme"
@@ -44,11 +44,11 @@
     [xAxisLabel]="simpleQueryAnswers.xAxis"
     [yAxisLabel]="simpleQueryAnswers.yAxis">
   </ngx-charts-bar-vertical>
-</md-card>
-<md-card>
-  <md-toolbar color="accent">
+</mat-card>
+<mat-card>
+  <mat-toolbar color="accent">
     <span>`GROUP BY` <em>Airport</em> leads to Simpson's Paradox</span>
-  </md-toolbar>
+  </mat-toolbar>
   <ngx-charts-bar-vertical-2d
     [view]="view"
     [scheme]="colorScheme"
@@ -61,11 +61,11 @@
     [xAxisLabel]="simpsonsParadox.xAxis"
     [yAxisLabel]="simpsonsParadox.yAxis">
   </ngx-charts-bar-vertical-2d>
-</md-card>
+</mat-card>
 <div class="datatable">
-  <md-toolbar color="accent">
+  <mat-toolbar color="accent">
     <span>Top Causes of Biased Answer</span>
-  </md-toolbar>
+  </mat-toolbar>
   <ngx-datatable
     class="material"
     [rows]="biasRows"
@@ -76,17 +76,17 @@
     [rowHeight]="'auto'">
   </ngx-datatable>
 </div>
-<md-card>
-  <md-toolbar color="accent">
+<mat-card>
+  <mat-toolbar color="accent">
     <span>Total vs Direct Effect & SQL Query</span>
     <span class="spacer"></span>
-    <md-slide-toggle
+    <mat-slide-toggle
         [color]="'primary'"
         [checked]="groupByCarrier"
         (change)="groupByCarrier = !groupByCarrier">
       {{ groupByCarrier ? 'Group By Carrier' : 'Group Effect' }}
-    </md-slide-toggle>
-  </md-toolbar>
+    </mat-slide-toggle>
+  </mat-toolbar>
   <ngx-charts-bar-vertical-2d
     [view]="view"
     [scheme]="colorScheme"
@@ -99,4 +99,4 @@
     [xAxisLabel]="effectQuery1.xAxis"
     [yAxisLabel]="effectQuery1.yAxis">
   </ngx-charts-bar-vertical-2d>
-</md-card>
+</mat-card>

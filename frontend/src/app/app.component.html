@@ -1,15 +1,11 @@
-<md-toolbar color="primary">
+<mat-toolbar color="primary">
   <span>{{ name }}: Causal Inference from Observational Data at Scale</span>
-</md-toolbar>
-<div>
-  <nav md-tab-nav-bar aria-label="demo navigation links">
-    <a md-tab-link
-       *ngFor="let tabLink of tabLinks"
-       [routerLink]="tabLink.link"
-       routerLinkActive #rla="routerLinkActive"
-       [active]="rla.isActive">
-      {{tabLink.label}}
-    </a>
-  </nav>
-  <router-outlet></router-outlet>
-</div>
+</mat-toolbar>
+<mat-sidenav-container>
+  <mat-sidenav mode="side" opened="true" fixedInViewport="true">
+    
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

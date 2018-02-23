@@ -1,15 +1,15 @@
-md-card.avatar {
+mat-card.avatar {
   margin-top: 32px;
   width: 100%;
   height: 100%;
 }
 
-md-card.figure {
+mat-card.figure {
   width: 100%;
   height: 100%;
   margin: 8px;
 }
 
-md-card.content {
+mat-card.content {
   margin: 8px;
 }
