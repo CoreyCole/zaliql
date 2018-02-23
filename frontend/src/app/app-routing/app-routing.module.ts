@@ -19,6 +19,7 @@ import { MultiTreatmentMatchitComponent } from '../pages/api/matching/multi-trea
 import { TwoTableMatchitComponent } from '../pages/api/matching/two-table-matchit/two-table-matchit.component';
 import { MatchitSummaryStatisticsComponent } from '../pages/api/analysis/matchit-summary-statistics/matchit-summary-statistics.component';
 import { AverageTreatmentEffectComponent } from '../pages/api/analysis/average-treatment-effect/average-treatment-effect.component';
+import { ApiComponent } from '../pages/api/api.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -35,8 +36,7 @@ const routes: Routes = [
         { path: 'causal-answers', component: CausalAnswersComponent }
       ]
   },
-  { path: 'implementation', component: ImplementationComponent },
-  { path: 'citations', component: CitationsComponent },
+  { path: 'api-home', component: ApiComponent },
   {
     path: 'api', children:
       [
@@ -63,7 +63,9 @@ const routes: Routes = [
             ]
         }
       ]
-  }
+  },
+  { path: 'implementation', component: ImplementationComponent },
+  { path: 'citations', component: CitationsComponent }
 ];
 
 @NgModule({

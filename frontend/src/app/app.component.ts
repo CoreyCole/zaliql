@@ -53,6 +53,7 @@ export class AppComponent implements OnInit {
       ]
     },
     {
+      url: '/api-home',
       title: 'API',
       tooltip: 'API',
       children: [
