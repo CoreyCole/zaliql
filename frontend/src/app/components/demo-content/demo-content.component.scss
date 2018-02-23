@@ -1,0 +1,26 @@
+div.toolbar {
+  position: absolute;
+  left: 0;
+}
+mat-toolbar.demo-header {
+  position: fixed;
+  top: 64px;
+  padding-left: 276px;
+  right: 0;
+  z-index: 1;
+  .flex-span {
+    flex: 1 1 auto;
+  }
+  a {
+    color: #fff;
+    font-size: 12pt;
+    text-decoration: none;
+    font-weight: 200;
+  }
+  .next-nav {
+    min-width: 150px;
+  }
+}
+.ng-content {
+  padding-top: 80px;
+}

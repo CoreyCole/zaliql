@@ -1,11 +1,13 @@
-<mat-toolbar color="primary">
-  <span>{{ name }}: Causal Inference from Observational Data at Scale</span>
+<mat-toolbar color="primary" class="header">
+  <span>ZaliQL: Causal Inference from Observational Data at Scale</span>
 </mat-toolbar>
 <mat-sidenav-container>
-  <mat-sidenav mode="side" opened="true" fixedInViewport="true">
-    
+  <mat-sidenav mode="side" opened="true" fixedInViewport="false">
+    <zql-nav-menu [nodes]="navigationNodes"></zql-nav-menu>
   </mat-sidenav>
   <mat-sidenav-content>
-    <router-outlet></router-outlet>
+    <div class="mat-sidenav-content">
+      <router-outlet></router-outlet>
+    </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

@@ -1,0 +1,85 @@
+$main-font: "Roboto","Helvetica Neue Light","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
+
+div a {
+  padding-left: 6px;
+}
+
+.vertical-menu-item {
+  box-sizing: border-box;
+  color: #333;
+  cursor: pointer;
+  display: block;
+  max-width: 260px;
+  overflow-wrap: break-word;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  text-decoration: none;
+  text-align: left;
+  width: 93%;
+  word-wrap: break-word;
+
+  &:hover {
+    background-color: #DBDBDB;
+    color: #673ab7;
+    text-shadow: 0 0 5px #ffffff;
+  }
+
+  &:focus {
+    outline: #673ab7 auto 2px;
+  }
+
+  //icons _within_ nav
+  .mat-icon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 4px;
+  }
+}
+
+button.vertical-menu-item {
+  border: none;
+  background-color: transparent;
+  margin-right: 0;
+}
+
+.heading {
+  color: #333;
+  cursor: pointer;
+  position: relative;
+  text-transform: uppercase;
+}
+
+.heading-children {
+  visibility: visible;
+  opacity: 1;
+  max-height: 4000px; // Arbitrary max-height. Can increase if needed. Must have measurement to transition height.
+  transition: visibility 500ms, opacity 500ms, max-height 500ms;
+  -webkit-transition-timing-function: ease-in-out;
+  transition-timing-function: ease-in-out;
+}
+
+.level-1 {
+  font-family: $main-font;
+  font-size: 14px;
+  font-weight: 400;
+  margin-left: 14px;
+  transition: background-color 0.2s;
+  text-transform: uppercase;
+}
+
+.level-2 {
+  color: #6e6e6e;
+  font-family: $main-font;
+  font-size: 14px;
+  font-weight: 400;
+  margin-left: 12px;
+  text-transform: none;
+}
+
+.level-3 {
+  color: #6e6e6e;
+  font-family: $main-font;
+  font-size: 14px;
+  margin-left: 10px;
+}
