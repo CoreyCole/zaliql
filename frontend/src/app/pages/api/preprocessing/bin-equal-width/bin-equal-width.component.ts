@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'zql-bin-equal-width',
-  templateUrl: './bin-equal-width.component.html',
-  styleUrls: ['./bin-equal-width.component.scss']
+  styleUrls: ['./bin-equal-width.component.scss'],
+  template: `
+  <zql-api-content></zql-api-content>
+  `
 })
 export class BinEqualWidthComponent implements OnInit {
 

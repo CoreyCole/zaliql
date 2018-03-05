@@ -10,19 +10,19 @@ import falcon
 LOGGER = logging.getLogger('main')
 LOGGER.setLevel(logging.INFO)
 # create console handler and set level to info
-ch = logging.StreamHandler()
-ch.setLevel(logging.INFO)
-# add ch to logger
-LOGGER.addHandler(ch)
+CH = logging.StreamHandler()
+CH.setLevel(logging.INFO)
+# add CH to logger
+LOGGER.addHandler(CH)
 
-class RateLimiter(object):
+class RateLimiterComponent(object):
   """This class is a middleware that prevents excessive requests to the server"""
   def __init__(self, limit=100, window=60):
     self.limit = limit
     self.window = window
     self.redis = redis.StrictRedis(host='redis', port=6379)
 
-  def process_request(self, req, res):
+  def process_request(self, req, resp):
     """This function is checks the request path in the redis
     to make sure it has not made too many requests recently"""
     requester = req.env['REMOTE_ADDR']
@@ -45,9 +45,9 @@ class RateLimiter(object):
       self.redis.expire(key, self.window)
       expires_in = self.window
 
-    res.append_header('X-RateLimit-Remaining: ', str(remaining - 1))
-    res.append_header('X-RateLimit-Limit: ', str(self.limit))
-    res.append_header('X-RateLimit-Reset: ', str(time() + expires_in))
+    resp.append_header('X-RateLimit-Remaining: ', str(remaining - 1))
+    resp.append_header('X-RateLimit-Limit: ', str(self.limit))
+    resp.append_header('X-RateLimit-Reset: ', str(time() + expires_in))
 
     if remaining > 0:
       self.redis.incr(key, 1)

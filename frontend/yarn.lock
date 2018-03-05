@@ -352,10 +352,6 @@ amdefine@>=0.0.4:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
 
-angular2-highlight-js@6.0.1-alpha:
-  version "6.0.1-alpha"
-  resolved "https://registry.yarnpkg.com/angular2-highlight-js/-/angular2-highlight-js-6.0.1-alpha.tgz#a49450457a000ec19cc6fe52311db02ec9188e3b"
-
 ansi-html@0.0.7:
   version "0.0.7"
   resolved "https://registry.yarnpkg.com/ansi-html/-/ansi-html-0.0.7.tgz#813584021962a9e9e6fd039f940d12f56ca7859e"
@@ -4137,6 +4133,10 @@ ncname@1.0.x:
 negotiator@0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.1.tgz#2b327184e8992101177b28563fb5e7102acd0ca9"
+
+ngx-highlight-js@1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/ngx-highlight-js/-/ngx-highlight-js-1.0.3.tgz#b46ef9069d443baae7a43e5e4217d64fb8049003"
 
 no-case@^2.2.0:
   version "2.3.2"

@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'zql-multi-treatment-matchit',
-  templateUrl: './multi-treatment-matchit.component.html',
-  styleUrls: ['./multi-treatment-matchit.component.scss']
+  styleUrls: ['./multi-treatment-matchit.component.scss'],
+  template: `
+  <zql-api-content></zql-api-content>`
 })
 export class MultiTreatmentMatchitComponent implements OnInit {
 

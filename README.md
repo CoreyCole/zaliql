@@ -37,7 +37,7 @@ docker ps -a
 # docker_redis_1
 ```
 
-To see the live-logs for one of the containers:
+To see the live-logs (or retroactive logs after a container crash) for one of the containers:
 ```bash
 # python
 docker-compose -f backend/docker/docker-compose.yml logs -t -f app
@@ -54,7 +54,7 @@ docker exec -it docker_db_1 bash
 ```
 
 To connect to the container database from a client on your host machine like `postico`:
-- host: localhost
+- host: localhost:5432
 - user: madlib
 - password: password
 - database: maddb
@@ -85,7 +85,7 @@ ZaliSQL's matching functions are modeled after the R packages [MatchIt](https://
 causal effect less model-dependant and biased. After preprocessing data with matching methods, researchers can use whatever parametric model they would have used without matching, but produce inferences with substantially more robustness and less sensitivity to modeling assumptions.
 
 ## MatchIt
-ZaliQL's `matchit` function currently supports 2 matching methods: `cem` (coarsened exact matching) and `ps` (propensity score matching). Propensity score matching only supports 1 treatment.
+ZaliQL's `matchit` function currently supports 2 matching methods: `cem` (coarsened exact matching) and `ps` (propensity score matching). Propensity score matching only supports 1 treatment. Caorsend exact matching supports multiple binary treatments.
 ```sql
 CREATE FUNCTION matchit(
   sourceTable TEXT,     -- input table name

@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 
 // angular router
 import { AppRoutingModule } from './app-routing/app-routing.module';
@@ -19,7 +20,10 @@ import {
   MatListModule,
   MatSlideToggleModule,
   MatSidenav,
-  MatSidenavModule
+  MatSidenavModule,
+  MatInputModule,
+  MatSelectModule,
+  MatChipsModule
 } from '@angular/material';
 // material icons
 import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
@@ -34,19 +38,18 @@ import {
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
 // highlightJS
-import { HighlightJsModule, HighlightJsService } from 'angular2-highlight-js';
+import { HighlightJsModule } from 'ngx-highlight-js';
 
 // tslint:disable:max-line-length
+// root app component
 import { AppComponent } from './app.component';
+
+// zql pages
 import { HomeComponent } from './pages/home/home.component';
 import { DemoComponent } from './pages/demo/demo.component';
 import { ImplementationComponent } from './pages/implementation/implementation.component';
 import { CitationsComponent } from './pages/citations/citations.component';
 import { GroupedVerticalBarChartComponent } from './pages/demo/grouped-vertical-bar-chart/grouped-vertical-bar-chart.component';
-import { NavItemComponent } from './components/nav-item/nav-item.component';
-import { NavMenuComponent } from './components/nav-menu/nav-menu.component';
-import { DemoContentComponent } from './components/demo-content/demo-content.component';
-import { ApiContentComponent } from './components/api-content/api-content.component';
 import { ApiComponent } from './pages/api/api.component';
 import { BinEqualWidthComponent } from './pages/api/preprocessing/bin-equal-width/bin-equal-width.component';
 import { MatchitComponent } from './pages/api/matching/matchit/matchit.component';
@@ -61,6 +64,22 @@ import { ConfoundingVariablesComponent } from './pages/demo/confounding-variable
 import { AdjustingForCovariatesComponent } from './pages/demo/adjusting-for-covariates/adjusting-for-covariates.component';
 import { CheckingBalanceComponent } from './pages/demo/checking-balance/checking-balance.component';
 import { CausalAnswersComponent } from './pages/demo/causal-answers/causal-answers.component';
+import { TestApiCallComponent } from './pages/api/test-api-call/test-api-call.component';
+
+// zql components
+import { NavItemComponent } from './components/nav-item/nav-item.component';
+import { NavMenuComponent } from './components/nav-menu/nav-menu.component';
+import { DemoContentComponent } from './components/demo-content/demo-content.component';
+import { ApiContentComponent } from './components/api-content/api-content.component';
+import { TestApiComponent } from './components/test-api/test-api.component';
+import { TestApiParamComponent } from './components/test-api/test-api-param/test-api-param.component';
+
+// zql services
+import { ApiService } from './pages/api/api.service';
+import { TestApiParamTableTextComponent } from './components/test-api/test-api-param/test-api-param-table-text/test-api-param-table-text.component';
+import { TestApiParamColumnTextComponent } from './components/test-api/test-api-param/test-api-param-column-text/test-api-param-column-text.component';
+import { TestApiParamColumnsTextArrComponent } from './components/test-api/test-api-param/test-api-param-columns-text-arr/test-api-param-columns-text-arr.component';
+import { TestApiParamTextComponent } from './components/test-api/test-api-param/test-api-param-text/test-api-param-text.component';
 
 @NgModule({
   declarations: [
@@ -87,12 +106,20 @@ import { CausalAnswersComponent } from './pages/demo/causal-answers/causal-answe
     ConfoundingVariablesComponent,
     AdjustingForCovariatesComponent,
     CheckingBalanceComponent,
-    CausalAnswersComponent
+    CausalAnswersComponent,
+    TestApiComponent,
+    TestApiCallComponent,
+    TestApiParamComponent,
+    TestApiParamTableTextComponent,
+    TestApiParamColumnTextComponent,
+    TestApiParamColumnsTextArrComponent,
+    TestApiParamTextComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
+    HttpClientModule,
     // angular material components
     MatButtonModule,
     MatCheckboxModule,
@@ -103,6 +130,9 @@ import { CausalAnswersComponent } from './pages/demo/causal-answers/causal-answe
     MatListModule,
     MatSlideToggleModule,
     MatSidenavModule,
+    MatInputModule,
+    MatSelectModule,
+    MatChipsModule,
     // material icons
     MatIconModule,
     // ngx charts components
@@ -113,10 +143,10 @@ import { CausalAnswersComponent } from './pages/demo/causal-answers/causal-answe
     HighlightJsModule
   ],
   providers: [
+    // zql services
+    ApiService,
     // material icons
-    MatIconRegistry,
-    // highlightJS
-    HighlightJsService
+    MatIconRegistry
   ],
   bootstrap: [AppComponent]
 })

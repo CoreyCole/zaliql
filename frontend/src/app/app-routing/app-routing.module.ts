@@ -20,6 +20,8 @@ import { TwoTableMatchitComponent } from '../pages/api/matching/two-table-matchi
 import { MatchitSummaryStatisticsComponent } from '../pages/api/analysis/matchit-summary-statistics/matchit-summary-statistics.component';
 import { AverageTreatmentEffectComponent } from '../pages/api/analysis/average-treatment-effect/average-treatment-effect.component';
 import { ApiComponent } from '../pages/api/api.component';
+import { TestApiComponent } from '../components/test-api/test-api.component';
+import { TestApiCallComponent } from '../pages/api/test-api-call/test-api-call.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -36,6 +38,7 @@ const routes: Routes = [
         { path: 'causal-answers', component: CausalAnswersComponent }
       ]
   },
+  { path: 'test-api/:functionName', component: TestApiCallComponent },
   { path: 'api-home', component: ApiComponent },
   {
     path: 'api', children:

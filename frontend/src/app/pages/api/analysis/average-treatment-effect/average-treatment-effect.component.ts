@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'zql-average-treatment-effect',
-  templateUrl: './average-treatment-effect.component.html',
-  styleUrls: ['./average-treatment-effect.component.scss']
+  styleUrls: ['./average-treatment-effect.component.scss'],
+  template: `
+  <zql-api-content></zql-api-content>`
 })
 export class AverageTreatmentEffectComponent implements OnInit {
 
