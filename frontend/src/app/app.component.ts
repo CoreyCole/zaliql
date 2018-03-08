@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import 'rxjs/add/operator/filter';
 import { NavigationNode } from './models';
 
@@ -117,16 +117,9 @@ export class AppComponent implements OnInit {
     }
   ];
 
-  constructor(private route: ActivatedRoute) { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
-    this.route.fragment
-      .filter(f => f && f.length > 0)
-      .subscribe(f => {
-        const element = document.querySelector('#' + f);
-        if (element) {
-          element.scrollIntoView(element as ScrollIntoViewOptions);
-        }
-      });
+    this.router.events.subscribe(() => window.scrollTo(0, 0));
   }
 }

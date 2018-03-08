@@ -37,7 +37,6 @@ export class DemoContentComponent implements OnInit {
   @Input() nextTitle: string;
 
   ngOnInit() {
-    window.scrollTo(0, 0);
   }
 
 }

@@ -50,7 +50,7 @@ export class TestApiParamColumnsTextArrComponent implements OnInit {
     this.tableNames = this.api.queryTableNames();
     this.columnNames = this.api.queryColumnNames(this.paramData.default.table);
     this.selectedColumns = this.paramData.default.columns;
-    this.columnsUpdated.emit(this.selectedColumns);
+    this.columnsUpdated.emit([...this.selectedColumns]);
   }
 
   public addColumn(fullColumnName: string) {

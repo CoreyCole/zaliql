@@ -36,7 +36,6 @@ export class TestApiComponent implements OnInit {
   constructor(private api: ApiService) { }
 
   ngOnInit() {
-    window.scrollTo(0, 0);
   }
 
   public updateFunctionParams(paramName: string, data: string | string[]) {
