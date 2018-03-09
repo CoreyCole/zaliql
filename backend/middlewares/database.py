@@ -25,18 +25,18 @@ def database_connection():
   else:
     return connection
 
-class DatabaseCursorComponent(object):
+class DatabaseComponent(object):
   """Initiates a new Session for incoming request and closes it in the end."""
   def __init__(self):
-    self.database = database_connection()
+    self.connection = database_connection()
 
   def process_resource(self, req, resp, resource, params):
     """Processes the given resource and mutates it"""
     if resource is not None:
-      if self.database.closed:
-        self.database = database_connection()
-      resource.database = self.database
-      resource.cursor = self.database.cursor()
+      if self.connection.closed:
+        self.connection = database_connection()
+      resource.connection = self.connection
+      resource.cursor = self.connection.cursor()
 
   def process_response(self, req, resp, resource):
     """Processes the given resource and closes the cursor"""

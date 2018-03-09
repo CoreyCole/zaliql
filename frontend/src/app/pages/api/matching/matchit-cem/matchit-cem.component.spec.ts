@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MatchitComponent } from './matchit.component';
+import { MatchitCemComponent } from './matchit-cem.component';
 
-describe('MatchitComponent', () => {
-  let component: MatchitComponent;
-  let fixture: ComponentFixture<MatchitComponent>;
+describe('MatchitCemComponent', () => {
+  let component: MatchitCemComponent;
+  let fixture: ComponentFixture<MatchitCemComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MatchitComponent ]
+      declarations: [ MatchitCemComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MatchitComponent);
+    fixture = TestBed.createComponent(MatchitCemComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -52,8 +52,8 @@ import { CitationsComponent } from './pages/citations/citations.component';
 import { GroupedVerticalBarChartComponent } from './pages/demo/grouped-vertical-bar-chart/grouped-vertical-bar-chart.component';
 import { ApiComponent } from './pages/api/api.component';
 import { BinEqualWidthComponent } from './pages/api/preprocessing/bin-equal-width/bin-equal-width.component';
-import { MatchitComponent } from './pages/api/matching/matchit/matchit.component';
-import { MultiLevelTreatmentMatchitComponent } from './pages/api/matching/multi-level-treatment-matchit/multi-level-treatment-matchit.component';
+import { MatchitCemComponent } from './pages/api/matching/matchit-cem/matchit-cem.component';
+import { MatchitPsComponent } from './pages/api/matching/matchit-ps/matchit-ps.component'; import { MultiLevelTreatmentMatchitComponent } from './pages/api/matching/multi-level-treatment-matchit/multi-level-treatment-matchit.component';
 import { MultiTreatmentMatchitComponent } from './pages/api/matching/multi-treatment-matchit/multi-treatment-matchit.component';
 import { TwoTableMatchitComponent } from './pages/api/matching/two-table-matchit/two-table-matchit.component';
 import { MatchitSummaryStatisticsComponent } from './pages/api/analysis/matchit-summary-statistics/matchit-summary-statistics.component';
@@ -80,6 +80,7 @@ import { TestApiParamTableTextComponent } from './components/test-api/test-api-p
 import { TestApiParamColumnTextComponent } from './components/test-api/test-api-param/test-api-param-column-text/test-api-param-column-text.component';
 import { TestApiParamColumnsTextArrComponent } from './components/test-api/test-api-param/test-api-param-columns-text-arr/test-api-param-columns-text-arr.component';
 import { TestApiParamTextComponent } from './components/test-api/test-api-param/test-api-param-text/test-api-param-text.component';
+import { TestApiParamIntegerComponent } from './components/test-api/test-api-param/test-api-param-integer/test-api-param-integer.component';
 
 @NgModule({
   declarations: [
@@ -95,7 +96,6 @@ import { TestApiParamTextComponent } from './components/test-api/test-api-param/
     ApiContentComponent,
     ApiComponent,
     BinEqualWidthComponent,
-    MatchitComponent,
     MultiLevelTreatmentMatchitComponent,
     MultiTreatmentMatchitComponent,
     TwoTableMatchitComponent,
@@ -113,7 +113,10 @@ import { TestApiParamTextComponent } from './components/test-api/test-api-param/
     TestApiParamTableTextComponent,
     TestApiParamColumnTextComponent,
     TestApiParamColumnsTextArrComponent,
-    TestApiParamTextComponent
+    TestApiParamTextComponent,
+    MatchitCemComponent,
+    MatchitPsComponent,
+    TestApiParamIntegerComponent
   ],
   imports: [
     BrowserModule,

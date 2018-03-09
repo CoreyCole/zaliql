@@ -63,7 +63,7 @@ export class AppComponent implements OnInit {
           tooltip: 'Preprocessing',
           children: [
             {
-              url: '/api/preprocessing/bin-equal-width',
+              url: '/api/preprocessing/bin_equal_width',
               title: 'Bin Equal Width',
               tooltip: 'Bin Equal Width'
             }
@@ -75,22 +75,27 @@ export class AppComponent implements OnInit {
           tooltip: 'Matching',
           children: [
             {
-              url: '/api/matching/matchit',
-              title: 'Matchit',
-              tooltip: 'Matchit'
+              url: '/api/matching/matchit_propensity_score',
+              title: 'Matchit Propensity Score',
+              tooltip: 'Matchit Propensity Score'
             },
             {
-              url: '/api/matching/multi-level-treatment-matchit',
+              url: '/api/matching/matchit_cem',
+              title: 'Matchit CEM',
+              tooltip: 'Matchit Coarsened Exact Matching'
+            },
+            {
+              url: '/api/matching/multi_level_treatment_matchit',
               title: 'Multi Level Treatment Matchit',
               tooltip: 'Multi Level Treatment Matchit'
             },
             {
-              url: '/api/matching/multi-treatment-matchit',
+              url: '/api/matching/multi_treatment_matchit',
               title: 'Multi Treatment Matchit',
               tooltip: 'Multi Treatment Matchit'
             },
             {
-              url: '/api/matching/two-table-matchit',
+              url: '/api/matching/two_table_matchit',
               title: 'Two Table Matchit',
               tooltip: 'Two Table Matchit'
             }
@@ -102,7 +107,7 @@ export class AppComponent implements OnInit {
           tooltip: 'Analysis',
           children: [
             {
-              url: '/api/analysis/matchit-summary',
+              url: '/api/analysis/matchit_summary',
               title: 'Matchit Summary Statistics',
               tooltip: 'Matchit Summary Statistics'
             },

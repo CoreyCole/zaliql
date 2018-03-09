@@ -45,9 +45,9 @@ class RateLimiterComponent(object):
       self.redis.expire(key, self.window)
       expires_in = self.window
 
-    resp.append_header('X-RateLimit-Remaining: ', str(remaining - 1))
-    resp.append_header('X-RateLimit-Limit: ', str(self.limit))
-    resp.append_header('X-RateLimit-Reset: ', str(time() + expires_in))
+    resp.set_header('X-RateLimit-Remaining', str(remaining - 1))
+    resp.set_header('X-RateLimit-Limit', str(self.limit))
+    resp.set_header('X-RateLimit-Reset', str(time() + expires_in))
 
     if remaining > 0:
       self.redis.incr(key, 1)

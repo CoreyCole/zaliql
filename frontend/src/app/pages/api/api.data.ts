@@ -4,12 +4,10 @@ export const apiData = {
     'bin_equal_width': {
       name: 'bin_equal_width'
     },
-    'matchit': {
-      name: 'matchit',
-      description: 'ZaliQL\'s `matchit` function currently supports 2 matching methods: \
-      `cem` (coarsened exact matching) and \
-      `ps` (propensity score matching). \
-      Propensity score matching only supports 1 treatment. \
+    'matchit_propensity_score': {
+      name: 'matchit_propensity_score',
+      description: 'ZaliQL\'s propensity score matching function \
+      Only supports 1 treatment. \
       Coarsened exact matching supports multiple binary treatments.',
       returns: 'TEXT function call status',
       params: [
@@ -29,12 +27,12 @@ export const apiData = {
           }
         },
         {
-          name: 'treatmentsArr',
-          description: 'array of treatment column names',
-          type: 'columns-text-arr',
+          name: 'treatment',
+          description: 'treatment column name',
+          type: 'column-text',
           default: {
             table: 'lalonde_demo',
-            columns: ['lalonde_demo.treat']
+            column: 'treat'
           }
         },
         {
@@ -44,14 +42,14 @@ export const apiData = {
           type: 'columns-text-arr',
           default: {
             table: 'lalonde_demo',
-            columns: ['lalonde_demo.nodegree', 'lalonde_demo.black']
+            columns: ['nodegree']
           }
         },
         {
-          name: 'method',
-          description: 'matchit method name (`cem` or `ps`)',
+          name: 'k',
+          description: 'k nearest neighbors',
           type: 'text',
-          default: 'ps'
+          default: '2'
         },
         {
           name: 'outputTable',
@@ -60,6 +58,9 @@ export const apiData = {
           default: 'lalonde_demo_matched'
         }
       ]
+    },
+    'matchit_cem': {
+      name: 'matchit_cem'
     },
     'multi_level_treatment_matchit': {
       name: 'multi_level_treatment_matchit'

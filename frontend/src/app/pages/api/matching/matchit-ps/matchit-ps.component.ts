@@ -1,39 +1,37 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'zql-matchit',
-  styleUrls: ['./matchit.component.scss'],
+  selector: 'zql-matchit-ps',
+  styleUrls: ['./matchit-ps.component.scss'],
   template: `
   <zql-api-content [functionData]="functionData">
     <textarea highlight-js [options]="{}" [lang]="'SQL'">
-CREATE FUNCTION matchit(
+CREATE OR REPLACE FUNCTION matchit_propensity_score(
   sourceTable TEXT,     -- input table name
   primaryKey TEXT,      -- source table's primary key
-  treatmentsArr TEXT[], -- array of treatment column names
-  covariatesArr TEXT[], -- array covariate column names (all covariates are applied to all treatments)
-  method TEXT,          -- matching method (either 'cem' or 'ps')
+  treatment TEXT,       -- treatment column name
+  covariatesArr TEXT[], -- array of covariate column names (all covariates are applied to all treatments)
+  k INTEGER,            -- k nearest neighbors
   outputTable TEXT      -- output table name
-) RETURNS TEXT
+) RETURNS TEXT AS $func$
 
--- example call with propensity score matching
-SELECT matchit(
+-- example call
+matchit_propensity_score(
   'flights_weather_demo',
   'fid',
-  ARRAY['lowpressure'],
+  'lowpressure',
   ARRAY['fog', 'hail', 'hum', 'rain', 'snow'],
-  'ps',
+  2,
   'propensity_score_matchit_flights_weather'
-);
+)
     </textarea>
   </zql-api-content>`
 })
-export class MatchitComponent implements OnInit {
+export class MatchitPsComponent implements OnInit {
   functionData = {
-    name: 'matchit',
-    description: 'ZaliQL\'s `matchit` function currently supports 2 matching methods: \
-    `cem` (coarsened exact matching) and \
-    `ps` (propensity score matching). \
-    Propensity score matching only supports 1 treatment. \
+    name: 'matchit_propensity_score',
+    description: 'ZaliQL\'s propensity score matching function \
+    Only supports 1 treatment. \
     Coarsened exact matching supports multiple binary treatments.',
     returns: 'TEXT function call status',
     params: [
@@ -50,9 +48,9 @@ export class MatchitComponent implements OnInit {
         placeholder: 'pk'
       },
       {
-        name: 'treatmentsArr',
+        name: 'treatment',
         description: 'array of treatment column names',
-        type: 'columns-text-arr',
+        type: 'column-text',
         placeholder: 'treat'
       },
       {

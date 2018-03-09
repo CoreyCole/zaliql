@@ -1,14 +1,14 @@
 CREATE OR REPLACE FUNCTION matchit_propensity_score(
   sourceTable TEXT,     -- input table name
   primaryKey TEXT,      -- source table's primary key
-  treatmentsArr TEXT[], -- array of treatment column names
+  treatment TEXT,       -- treatment column name
   covariatesArr TEXT[], -- array of covariate column names (all covariates are applied to all treatments)
   k INTEGER,            -- k nearest neighbors
   outputTable TEXT      -- output table name
 ) RETURNS TEXT AS $func$
 DECLARE
-  treatmentText TEXT;   -- assumes only 1 treatment
   covariatesTextArr TEXT;
+  kInt INTEGER;
   psOutputTable TEXT;
   idx INTEGER;
   treatmentRow REFCURSOR;
@@ -20,9 +20,6 @@ DECLARE
   currCpp NUMERIC;
   commandString TEXT;
 BEGIN
-  -- assumes only 1 treatment
-  SELECT array_to_string(treatmentsArr, ',')
-    INTO treatmentText;
   -- need to add "1" to front of array for intercept variable
   SELECT 'ARRAY[1,' || array_to_string(covariatesArr, ',') || ']'
     INTO covariatesTextArr;
@@ -37,7 +34,7 @@ BEGIN
   PERFORM estimate_propensity_scores(
     sourceTable,
     primaryKey,
-    treatmentText,
+    treatment,
     covariatesTextArr,
     psOutputTable
   ); -- outputs { pk, propensity_score } tuples to output table
@@ -45,7 +42,7 @@ BEGIN
   -- get the minimum treatment propensity score (logregr_predict_prob from logistic regression)
   commandString := 'SELECT min(logregr_predict_prob) FROM ' || psOutputTable
     || ' JOIN ' || sourceTable || ' ON ' || psOutputTable || '.' || primaryKey || ' = ' || sourceTable || '.' || primaryKey
-    || ' WHERE ' || sourceTable || '.' || treatmentText || ' = 1';
+    || ' WHERE ' || sourceTable || '.' || treatment || ' = 1';
   EXECUTE commandString INTO minTpp;
 
   /**
@@ -54,7 +51,7 @@ BEGIN
   commandString := 'SELECT ' || psOutputTable || '.' || primaryKey || ',' || psOutputTable || '.logregr_predict_prob FROM ' || psOutputTable
     || ' JOIN ' || sourceTable || ' ON ' || psOutputTable || '.' || primaryKey || ' = ' || sourceTable || '.' || primaryKey
     || ' WHERE ' || psOutputTable || '.logregr_predict_prob IS NOT NULL'
-    || ' AND ' || sourceTable || '.' || treatmentText || ' = 1' -- get treated subjects
+    || ' AND ' || sourceTable || '.' || treatment || ' = 1' -- get treated subjects
     || ' ORDER BY ' || psOutputTable || '.logregr_predict_prob';
   OPEN treatmentRow FOR EXECUTE commandString;
 
@@ -65,7 +62,7 @@ BEGIN
   commandString := 'SELECT ' || psOutputTable || '.' || primaryKey || ',' || psOutputTable || '.logregr_predict_prob FROM ' || psOutputTable
     || ' JOIN ' || sourceTable || ' ON ' || psOutputTable || '.' || primaryKey || ' = ' || sourceTable || '.' || primaryKey
     || ' WHERE ' || psOutputTable || '.logregr_predict_prob IS NOT NULL'
-    || ' AND ' || sourceTable || '.' || treatmentText || ' = 0' -- get control subjects
+    || ' AND ' || sourceTable || '.' || treatment || ' = 0' -- get control subjects
     || ' ORDER BY abs(' || psOutputTable || '.logregr_predict_prob - ' || minTpp::TEXT || ')';
   idx := 0;
   OPEN controlRow FOR EXECUTE commandString;

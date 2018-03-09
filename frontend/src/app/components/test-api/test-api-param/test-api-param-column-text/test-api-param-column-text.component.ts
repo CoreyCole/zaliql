@@ -19,9 +19,10 @@ import { ApiService } from '../../../../pages/api/api.service';
     </mat-select>
   </mat-form-field>
   <mat-form-field>
-    <mat-select [placeholder]="paramData.description"
+    <mat-select
       #selectedColumn
-      (value)="paramData.default.column"
+      [placeholder]="paramData.description"
+      [value]="paramData.default.column"
       (valueChange)="columnSelected.emit(selectedColumn.value)">
       <mat-option *ngFor="let column of columnNames | async" [value]="column">
         {{ column }}
@@ -42,6 +43,10 @@ export class TestApiParamColumnTextComponent implements OnInit {
     this.tableNames = this.api.queryTableNames();
     this.columnNames = this.api.queryColumnNames(this.paramData.default.table);
     this.columnSelected.emit(this.paramData.default.column);
+  }
+
+  public getFullColumnName(tableName: string, columnName: string): string {
+    return `${tableName}.${columnName}`;
   }
 
   public updateColumns(selectedTable: string) {

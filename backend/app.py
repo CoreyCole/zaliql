@@ -5,7 +5,7 @@ import falcon
 # app middlewares
 from middlewares.cors import CORSComponent
 from middlewares.rate_limiter import RateLimiterComponent
-from middlewares.database_cursor import DatabaseCursorComponent
+from middlewares.database import DatabaseComponent
 # app resources
 from resources.columns import ColumnsResource
 from resources.functions import FunctionsResource
@@ -26,14 +26,14 @@ INFO_LOGGER.addHandler(CH)
 
 INFO_LOGGER.info('starting server')
 
-DATABASE_CURSOR = DatabaseCursorComponent()
+DATABASE = DatabaseComponent()
 APP = falcon.API(middleware=[
     CORSComponent(),
     RateLimiterComponent(limit=RATE_LIMIT, window=RATE_LIMIT_WINDOW),
-    DATABASE_CURSOR
+    DATABASE
 ])
 APP.req_options.auto_parse_form_urlencoded = True
 APP.add_route('/test', TestResource())
-APP.add_route('/tables', TablesResource(DATABASE_CURSOR))
-APP.add_route('/columns/{table_name}', ColumnsResource(DATABASE_CURSOR))
-APP.add_route('/function/{function_name}', FunctionsResource(DATABASE_CURSOR, INFO_LOGGER))
+APP.add_route('/tables', TablesResource(DATABASE))
+APP.add_route('/columns/{table_name}', ColumnsResource(DATABASE))
+APP.add_route('/function/{function_name}', FunctionsResource(DATABASE, INFO_LOGGER))

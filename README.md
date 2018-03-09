@@ -84,28 +84,51 @@ TODO: `bin_quantile`, `bin_equal_frequency`
 ZaliSQL's matching functions are modeled after the R packages [MatchIt](https://cran.r-project.org/web/packages/MatchIt/MatchIt.pdf) and [CEM](https://cran.r-project.org/web/packages/cem/cem.pdf). Matching is a statistical method that makes the estimation of
 causal effect less model-dependant and biased. After preprocessing data with matching methods, researchers can use whatever parametric model they would have used without matching, but produce inferences with substantially more robustness and less sensitivity to modeling assumptions.
 
-## MatchIt
-ZaliQL's `matchit` function currently supports 2 matching methods: `cem` (coarsened exact matching) and `ps` (propensity score matching). Propensity score matching only supports 1 treatment. Caorsend exact matching supports multiple binary treatments.
+## Matchit Propensity Score
+ZaliQL's `matchit_propensity_score` function. Supports only 1 binary treatment column.
 ```sql
-CREATE FUNCTION matchit(
+CREATE OR REPLACE FUNCTION matchit_propensity_score(
+  sourceTable TEXT,     -- input table name
+  primaryKey TEXT,      -- source table's primary key
+  treatment TEXT,       -- treatment column name
+  covariatesArr TEXT[], -- array of covariate column names (all covariates are applied to all treatments)
+  k INTEGER,            -- k nearest neighbors
+  outputTable TEXT      -- output table name
+) RETURNS TEXT AS $func$
+
+-- example call
+matchit_propensity_score(
+  'flights_weather_demo',
+  'fid',
+  'lowpressure',
+  ARRAY['fog', 'hail', 'hum', 'rain', 'snow'],
+  2,
+  'propensity_score_matchit_flights_weather'
+) 
+```
+
+## MatchIt Coarsened Exact Matching
+ZaliQL's `matchit_cem` function. Supports multiple binary treatment columns.
+```sql
+CREATE OR REPLACE FUNCTION matchit_cem(
   sourceTable TEXT,     -- input table name
   primaryKey TEXT,      -- source table's primary key
   treatmentsArr TEXT[], -- array of treatment column names
-  covariatesArr TEXT[], -- array covariate column names (all covariates are applied to all treatments)
-  method TEXT,          -- matching method (either 'cem' or 'ps')
+  covariatesArr TEXT[], -- array of covariate column names (all covariates are applied to all treatments)
   outputTable TEXT      -- output table name
-) RETURNS TEXT
+) RETURNS TEXT AS $func$
 
--- example call with propensity score matching
-SELECT matchit(
+-- example call
+SELECT matchit_cem(
   'flights_weather_demo',
   'fid',
   ARRAY['lowpressure'],
   ARRAY['fog', 'hail', 'hum', 'rain', 'snow'],
-  'ps',
-  'propensity_score_matchit_flights_weather'
+  'cem_matchit_flights_weather'
 );
 ```
+
+ZqliQL's 
 
 ZaliQL's `multi_level_treatment_matchit` function is a variation of CEM matchit where the treatment variable is non-binary.
 ```sql

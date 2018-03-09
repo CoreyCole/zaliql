@@ -16,6 +16,11 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
           [paramData]="paramData"
           (textSelected)="updateFunctionCall($event)"></zql-test-api-param-text>
       </mat-card-content>
+      <mat-card-content *ngSwitchCase="'integer'">
+        <zql-test-api-param-integer
+          [paramData]="paramData"
+          (textSelected)="updateFunctionCall($event)"></zql-test-api-param-integer>
+      </mat-card-content>
       <mat-card-content *ngSwitchCase="'table-text'">
         <zql-test-api-param-table-text
           [paramData]="paramData"

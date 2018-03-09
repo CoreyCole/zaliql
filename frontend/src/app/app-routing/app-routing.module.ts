@@ -13,7 +13,8 @@ import { AdjustingForCovariatesComponent } from '../pages/demo/adjusting-for-cov
 import { CheckingBalanceComponent } from '../pages/demo/checking-balance/checking-balance.component';
 import { CausalAnswersComponent } from '../pages/demo/causal-answers/causal-answers.component';
 import { BinEqualWidthComponent } from '../pages/api/preprocessing/bin-equal-width/bin-equal-width.component';
-import { MatchitComponent } from '../pages/api/matching/matchit/matchit.component';
+import { MatchitCemComponent } from '../pages/api/matching/matchit-cem/matchit-cem.component';
+import { MatchitPsComponent } from '../pages/api/matching/matchit-ps/matchit-ps.component';
 import { MultiLevelTreatmentMatchitComponent } from '../pages/api/matching/multi-level-treatment-matchit/multi-level-treatment-matchit.component';
 import { MultiTreatmentMatchitComponent } from '../pages/api/matching/multi-treatment-matchit/multi-treatment-matchit.component';
 import { TwoTableMatchitComponent } from '../pages/api/matching/two-table-matchit/two-table-matchit.component';
@@ -46,22 +47,23 @@ const routes: Routes = [
         {
           path: 'preprocessing', children:
             [
-              { path: 'bin-equal-width', component: BinEqualWidthComponent }
+              { path: 'bin_equal_width', component: BinEqualWidthComponent }
             ]
         },
         {
           path: 'matching', children:
             [
-              { path: 'matchit', component: MatchitComponent },
-              { path: 'multi-level-treatment-matchit', component: MultiLevelTreatmentMatchitComponent },
-              { path: 'multi-treatment-matchit', component: MultiTreatmentMatchitComponent },
-              { path: 'two-table-matchit', component: TwoTableMatchitComponent }
+              { path: 'matchit_propensity_score', component: MatchitPsComponent },
+              { path: 'matchit_cem', component: MatchitCemComponent },
+              { path: 'multi_level_treatment_matchit', component: MultiLevelTreatmentMatchitComponent },
+              { path: 'multi_treatment_matchit', component: MultiTreatmentMatchitComponent },
+              { path: 'two_table_matchit', component: TwoTableMatchitComponent }
             ]
         },
         {
           path: 'analysis', children:
             [
-              { path: 'matchit-summary', component: MatchitSummaryStatisticsComponent },
+              { path: 'matchit_summary', component: MatchitSummaryStatisticsComponent },
               { path: 'ate', component: AverageTreatmentEffectComponent }
             ]
         }

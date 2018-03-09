@@ -6,9 +6,9 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   template: `
   <mat-form-field class="full-width">
     <input matInput [placeholder]="paramData.description"
-      #input
+      #selectedText
       [value]="paramData.default"
-      (blur)="textSelected.emit(input.value)">
+      (blur)="textSelected.emit(selectedText.value)">
   </mat-form-field>
   `
 })
