@@ -1,3 +1,5 @@
+-- compute the count distinct, eliminate multi_level_treatment_matchit
+
 CREATE OR REPLACE FUNCTION matchit_cem(
   sourceTable TEXT,     -- input table name
   primaryKey TEXT,      -- source table's primary key

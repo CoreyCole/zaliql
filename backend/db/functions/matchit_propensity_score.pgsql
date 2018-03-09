@@ -68,7 +68,7 @@ BEGIN
   OPEN controlRow FOR EXECUTE commandString;
 
   WHILE TRUE LOOP
-    IF (idx % k) = 0 THEN
+    IF (idx % k) = 0 THEN --TODO: add caliper skip to next treatment if out of range of caliper
       FETCH treatmentRow INTO currTpk, currTpp;
     END IF;
     FETCH controlRow INTO currCpk, currCpp;

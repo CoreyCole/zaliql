@@ -25,7 +25,13 @@ BEGIN
   commandString = 'DROP MATERIALIZED VIEW IF EXISTS ' || outputTableBasename;
   EXECUTE commandString;
 
-  SELECT matchit(
+  -- create new mat view with column T that is the T1 | T2 | T3 | ... | TN
+  -- union of all covariates arr (dynamic build up query to UNION all)
+  -- D' <- matchit_cem(sourceTableMatViewWithT, T, CovUnion)
+  -- D1' <- matchit_cem(D', T, CovUnion)
+  -- D2' <- matchit_cem(D', T, CovUnion)
+
+  SELECT matchit_cem(
     sourceTable,
     primaryKey,
     treatmentsArr,

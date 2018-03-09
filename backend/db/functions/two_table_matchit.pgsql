@@ -1,3 +1,5 @@
+-- remove treatment levels here also
+
 CREATE OR REPLACE FUNCTION two_table_matchit(
   sourceTableA TEXT,           -- input table A name
   sourceTableAPrimaryKey TEXT, -- input table A primary key
