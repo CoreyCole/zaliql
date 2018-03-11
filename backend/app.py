@@ -15,18 +15,27 @@ from resources.test import TestResource
 RATE_LIMIT = 5        # limits 5 requests
 RATE_LIMIT_WINDOW = 5 # per 5 seconds
 
-# create logger
+# create info logger
 INFO_LOGGER = logging.getLogger('main')
 INFO_LOGGER.setLevel(logging.INFO)
 # create console handler and set level to info
-CH = logging.StreamHandler()
-CH.setLevel(logging.INFO)
-# add CH to logger
-INFO_LOGGER.addHandler(CH)
+INFO_CH = logging.StreamHandler()
+INFO_CH.setLevel(logging.INFO)
+# add INFO_CH to logger
+INFO_LOGGER.addHandler(INFO_CH)
+
+# create error logger
+ERROR_LOGGER = logging.getLogger('main')
+ERROR_LOGGER.setLevel(logging.ERROR)
+# create console handler and set level to error
+ERROR_CH = logging.StreamHandler()
+ERROR_CH.setLevel(logging.ERROR)
+# add ERROR_CH to logger
+ERROR_LOGGER.addHandler(ERROR_CH)
 
 INFO_LOGGER.info('starting server')
 
-DATABASE = DatabaseComponent()
+DATABASE = DatabaseComponent(ERROR_LOGGER)
 APP = falcon.API(middleware=[
     CORSComponent(),
     RateLimiterComponent(limit=RATE_LIMIT, window=RATE_LIMIT_WINDOW),
