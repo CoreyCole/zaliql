@@ -3,7 +3,7 @@ DROP TABLE lalonde_demo_logregr_summary;
 DROP TABLE lalonde_demo_ps;
 DROP TABLE lalonde_demo_matched;
 
-SELECT matchit_propensity_score('lalonde_demo', 'pk', ARRAY['treat'], ARRAY['age', 'educ', 'nodegree'], 2, 'lalonde_demo_matched');
+SELECT matchit_propensity_score('lalonde_demo', 'pk', 'treat', ARRAY['age', 'educ', 'nodegree'], 2, 'lalonde_demo_matched');
 
 SELECT * FROM lalonde_demo ORDER BY pk asc;
 SELECT unnest(array['intercept', 'age', 'educ', 'nodegree']) as attribute,
