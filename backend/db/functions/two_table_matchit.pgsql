@@ -1,5 +1,3 @@
--- remove treatment levels here also
-
 CREATE OR REPLACE FUNCTION two_table_matchit(
   sourceTableA TEXT,           -- input table A name
   sourceTableAPrimaryKey TEXT, -- input table A primary key
@@ -9,7 +7,6 @@ CREATE OR REPLACE FUNCTION two_table_matchit(
   sourceTableBPrimaryKey TEXT, -- input table B primary key
   covariatesArrB TEXT[],       -- covariates included in input table B
   treatment TEXT,              -- treatment column must be in sourceTableA
-  treatmentLevels INTEGER,     -- possible levels for given treatment
   outputTable TEXT             -- output table name
 ) RETURNS TEXT AS $func$
 DECLARE
@@ -21,18 +18,10 @@ BEGIN
   intermediateTable = outputTable || '_intermediate';
   joinedTable = outputTable || '_joined';
 
-  commandString = 'DROP MATERIALIZED VIEW IF EXISTS ' || outputTable;
-  EXECUTE commandString;
-  commandString = 'DROP MATERIALIZED VIEW IF EXISTS ' || joinedTable;
-  EXECUTE commandString;
-  commandString = 'DROP MATERIALIZED VIEW IF EXISTS ' || intermediateTable;
-  EXECUTE commandString;
-
-  SELECT multi_level_treatment_matchit(
+  SELECT matchit_cem(
     sourceTableA,
     sourceTableAPrimaryKey,
     treatment,
-    treatmentLevels,
     covariatesArrA,
     intermediateTable
   ) INTO resultString;
@@ -45,11 +34,10 @@ BEGIN
     || ' WITH DATA;';
   EXECUTE commandString;
 
-  RETURN multi_level_treatment_matchit(
+  RETURN matchit_cem(
     joinedTable,
     sourceTableBPrimaryKey,
     treatment,
-    treatmentLevels,
     covariatesArrB,
     outputTable
   );
