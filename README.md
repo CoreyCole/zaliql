@@ -43,6 +43,8 @@ To see the live-logs (or retroactive logs after a container crash) for one of th
 docker-compose -f backend/docker/docker-compose.yml logs -t -f app
 # database
 docker-compose -f backend/docker/docker-compose.yml logs -t -f db
+# NOTE: database logs messages are not output to console
+# ssh into the database container and `cat /var/lib/pgsql/9.6/data/pg_log/logname.log`
 ```
 
 To ssh into one of the containers using a bash interface:
@@ -58,6 +60,11 @@ To connect to the container database from a client on your host machine like `po
 - user: madlib
 - password: password
 - database: maddb
+
+To shut down all of the dockers (useful for a hard reset of database functions/data):
+```bash
+docker-compose -f backend/docker/docker-compose.yml down
+```
 
 # Preprocessing
 ## Binning
