@@ -29,9 +29,9 @@ BEGIN
   commandString := 'CREATE TABLE ' || outputTable
     || ' AS (SELECT ' || sourceTable || '.' || primaryKey || ' AS ' || primaryKey || ','
     || ' madlib.logregr_predict_prob(ARRAY[' || coefText || '], '
-    || covariatesTextArr || ') AS logregr_predict_prob, 0 AS used FROM ' || sourceTable || ') WITH DATA;';
+    || covariatesTextArr || ') AS logregr_predict_prob, 0 AS used FROM ' || sourceTable || ')';
   EXECUTE commandString;
 
-  RETURN 'Propensity score estimations successfully materialized in ' || outputTable || '!';
+  RETURN 'Propensity score estimations successfully output in table ' || outputTable || '!';
 END;
 $func$ LANGUAGE plpgsql;

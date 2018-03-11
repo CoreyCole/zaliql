@@ -89,6 +89,6 @@ BEGIN
   - take
   */
 
-  RETURN 'Propensity score matching successful and materialized in ' || outputTable || '!';
+  RETURN 'Propensity score matching successful and output in table ' || outputTable || '!';
 END;
 $func$ LANGUAGE plpgsql;

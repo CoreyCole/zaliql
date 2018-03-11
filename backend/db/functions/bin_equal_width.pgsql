@@ -58,15 +58,12 @@ BEGIN
     i = i + 1;
   END LOOP;
 
-  EXECUTE format('DROP MATERIALIZED VIEW IF EXISTS %s', output_table);
-
-  commandString := 'CREATE MATERIALIZED VIEW ' || output_table
-    || ' AS ' || format('SELECT *%s FROM %s', binningString, source_table)
-    || ' WITH DATA';
-  RAISE NOTICE 'full cmd: %', commandString;
+  commandString := 'CREATE TABLE ' || output_table
+    || ' AS ' || format('SELECT *%s FROM %s', binningString, source_table);
+  RAISE NOTICE '%', commandString;
   EXECUTE commandString;
 
   DROP TABLE minMaxRecord;
-  RETURN 'Successfully created materialized view with entity name ' || output_table || '!';
+  RETURN 'Successfully created table ' || output_table || '!';
 END;
 $func$ LANGUAGE plpgsql;

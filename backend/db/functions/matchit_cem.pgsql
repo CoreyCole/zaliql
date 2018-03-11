@@ -17,23 +17,25 @@ BEGIN
   -- compute the distinct levels of the given treatment variable
   treatmentIndex := 0;
   FOREACH treatment IN ARRAY treatmentsArr LOOP
-    commandString := 'SELECT count(DISTINCT ' || treatment || ')::INTEGER FROM ' || sourceTable;
+    commandString := 'SELECT count(DISTINCT ' || quote_ident(treatment) || ')::INTEGER FROM ' 
+      || quote_ident(sourceTable);
     EXECUTE commandString INTO treatmentLevel;
     treatmentLevels[treatmentIndex] := treatmentLevel;
     treatmentIndex := treatmentIndex + 1;
   END LOOP;
 
   commandString := 'WITH subclasses as (SELECT '
-    || ' max(' || primaryKey || ') AS subclass_' || primaryKey;
+    || ' max(' || quote_ident(primaryKey) || ') AS ' || quote_ident('subclass_' || primaryKey);
 
   FOREACH covariate IN ARRAY covariatesArr LOOP
-    commandString := commandString || ', ' || quote_ident(covariate) || ' AS ' || quote_ident(covariate) || '_matched';
+    commandString := commandString || ', ' || quote_ident(covariate) || ' AS ' 
+      || quote_ident(covariate || '_matched');
   END LOOP;
 
   commandString := commandString || ' FROM ' || quote_ident(sourceTable) || ' GROUP BY ';
 
   FOREACH covariate IN ARRAY covariatesArr LOOP
-    commandString := commandString || quote_ident(covariate) || '_matched, ';
+    commandString := commandString || quote_ident(covariate || '_matched') || ', ';
   END LOOP;
 
   -- use substring here to chop off last comma
@@ -42,7 +44,7 @@ BEGIN
   commandString := commandString || ' HAVING (';
   treatmentIndex := 0;
   FOREACH treatment IN ARRAY treatmentsArr LOOP
-    commandString := commandString || 'count(DISTINCT ' || treatment || ') = '
+    commandString := commandString || 'count(DISTINCT ' || quote_ident(treatment) || ') = '
       || treatmentLevels[treatmentIndex] || ' OR ';
     treatmentIndex := treatmentIndex + 1;
   END LOOP;
@@ -53,18 +55,19 @@ BEGIN
   commandString := commandString || ')) SELECT * FROM subclasses, ' || quote_ident(sourceTable) || ' st WHERE';
 
   FOREACH covariate IN ARRAY covariatesArr LOOP
-    commandString := commandString || ' subclasses.' || quote_ident(covariate) || '_matched = st.' || quote_ident(covariate) || ' AND';
+    commandString := commandString || ' subclasses.' || quote_ident(covariate || '_matched')
+      || ' = st.' || quote_ident(covariate) || ' AND';
   END LOOP;
 
-  commandString := commandString || ' ' || treatment || ' IS NOT NULL';
+  commandString := commandString || ' ' || quote_ident(treatment) || ' IS NOT NULL';
 
   -- EXECUTE format('DROP MATERIALIZED VIEW IF EXISTS %s', outputTable);
 
-  commandString := 'CREATE MATERIALIZED VIEW ' || outputTable
-    || ' AS ' || commandString || ' WITH DATA;';
+  commandString := 'CREATE TABLE ' || quote_ident(outputTable)
+    || ' AS ' || commandString;
   RAISE NOTICE '%', commandString;
   EXECUTE commandString;
 
-  RETURN 'Coarsened exact matching successful and materialized in ' || outputTable || '!';
+  RETURN 'Coarsened exact matching successful and output in table ' || quote_ident(outputTable) || '!';
 END;
 $func$ LANGUAGE plpgsql;

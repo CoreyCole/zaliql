@@ -26,12 +26,11 @@ BEGIN
     intermediateTable
   ) INTO resultString;
 
-  commandString = 'CREATE MATERIALIZED VIEW ' || joinedTable
+  commandString = 'CREATE TABLE ' || joinedTable
     || ' AS SELECT * FROM ' || intermediateTable
     || ' JOIN ' || sourceTableB || ' ON '
     || sourceTableB || '.' || sourceTableBPrimaryKey || ' = '
-    || intermediateTable || '.' || sourceTableAForeignKey
-    || ' WITH DATA;';
+    || intermediateTable || '.' || sourceTableAForeignKey;
   EXECUTE commandString;
 
   RETURN matchit_cem(

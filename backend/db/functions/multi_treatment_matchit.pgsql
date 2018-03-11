@@ -1,3 +1,8 @@
+CREATE OR REPLACE FUNCTION array_distinct(anyarray)
+RETURNS anyarray AS $$
+  SELECT ARRAY(SELECT DISTINCT unnest($1))
+$$ LANGUAGE sql;
+
 -- PRECONDITION: Only supports binary treatment columns
 CREATE OR REPLACE FUNCTION multi_treatment_matchit(
   sourceTable TEXT,             -- input table name
@@ -17,6 +22,7 @@ DECLARE
   covariateArr TEXT[];
   uniqueCovariates TEXT[];
   covariate TEXT;
+  matchedPk TEXT;
 BEGIN
   -- get unique covariates
   uniqueCovariates = ARRAY[]::TEXT[];
@@ -26,9 +32,9 @@ BEGIN
   uniqueCovariates = array_distinct(uniqueCovariates);
   RAISE NOTICE 'Unique covariates: %', uniqueCovariates;
 
-  -- create new materialized view with column `matchit_t` that is the T_1 OR T_2 OR ... OR T_N
+  -- create new table with column `matchit_t` that is the T_1 OR T_2 OR ... OR T_N
   allTreatmentsName := outputTableBasename || '_all_treatments';
-  commandString := 'CREATE MATERIALIZED VIEW ' || allTreatmentsName || ' AS SELECT (';
+  commandString := 'CREATE TABLE ' || allTreatmentsName || ' AS SELECT (';
   FOREACH treatment IN ARRAY treatmentsArr LOOP
     commandString := commandString || treatment || '::BOOLEAN OR ';
   END LOOP;
@@ -37,8 +43,7 @@ BEGIN
   commandString := substring( commandString from 0 for (char_length(commandString) - 3) );
 
   -- name combined treatment variable `matchit_t, SELECT rest of columns`
-  commandString := commandString || ')::INTEGER AS matchit_t, * FROM ' || sourceTable
-    || ' WITH DATA';
+  commandString := commandString || ')::INTEGER AS matchit_t, * FROM ' || sourceTable;
 
   -- create the OR combined treatment table
   RAISE NOTICE '%', commandString;
@@ -53,6 +58,7 @@ BEGIN
     allTreatmentsMatchedName
   ) INTO resultString;
   
+  matchedPk := quote_ident('subclass_' || primaryKey);
   treatmentIndex := 0;
   FOREACH treatment IN ARRAY treatmentsArr LOOP
     SELECT ARRAY(SELECT unnest(treatmentsArr[treatmentIndex:1])) INTO covariateArr;
@@ -60,7 +66,7 @@ BEGIN
 
     SELECT matchit_cem(
       allTreatmentsMatchedName,
-      'subclass_fid',
+      matchedPk,
       array_append(ARRAY[]::TEXT[], treatment),
       covariateArr,
       outputTableBasename || '_' || treatment || '_matched'
