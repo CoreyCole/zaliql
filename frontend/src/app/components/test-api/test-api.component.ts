@@ -66,6 +66,7 @@ export class TestApiComponent implements OnInit {
         console.log(data);
         this.error = '';
         this.results = data;
+        this.api.queryTableNames();
       });
   }
 

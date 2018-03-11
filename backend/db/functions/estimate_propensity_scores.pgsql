@@ -12,7 +12,7 @@ DECLARE
   commandString TEXT;
 BEGIN
   -- Train logistic regression
-  logregrTable := sourceTable || '_logregr';
+  logregrTable := outputTable || '_logregr';
   PERFORM madlib.logregr_train(
     sourceTable,
     logregrTable,

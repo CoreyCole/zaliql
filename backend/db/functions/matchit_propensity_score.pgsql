@@ -30,7 +30,7 @@ BEGIN
   EXECUTE commandString;
 
   -- create propensity score output table
-  psOutputTable := sourceTable || '_ps';
+  psOutputTable := sourceTable || '_' || outputTable || '_ps';
   PERFORM estimate_propensity_scores(
     sourceTable,
     primaryKey,
@@ -45,9 +45,7 @@ BEGIN
     || ' WHERE ' || sourceTable || '.' || treatment || ' = 1';
   EXECUTE commandString INTO minTpp;
 
-  /**
-   * query to point cursor to treatment rows sorted in ascending order by propensity score
-   */
+  -- query to point cursor to treatment rows sorted in ascending order by propensity score
   commandString := 'SELECT ' || psOutputTable || '.' || primaryKey || ',' || psOutputTable || '.logregr_predict_prob FROM ' || psOutputTable
     || ' JOIN ' || sourceTable || ' ON ' || psOutputTable || '.' || primaryKey || ' = ' || sourceTable || '.' || primaryKey
     || ' WHERE ' || psOutputTable || '.logregr_predict_prob IS NOT NULL'

@@ -47,6 +47,7 @@ class FunctionsResource(object):
       resp.status = falcon.HTTP_500
       resp.body = json.dumps({'status': str(err)})
     else:
+      self.cursor.connection.commit()
       resp.content_type = 'application/json'
       resp.status = falcon.HTTP_200
       resp.body = json.dumps({'status': status})
