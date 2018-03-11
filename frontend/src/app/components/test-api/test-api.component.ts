@@ -64,6 +64,7 @@ export class TestApiComponent implements OnInit {
       )
       .subscribe(data => {
         console.log(data);
+        this.error = '';
         this.results = data;
       });
   }
