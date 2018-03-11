@@ -11,6 +11,6 @@ BEGIN
     || ')';
   EXECUTE commandString INTO resultsArr;
 
-  RETURN resultsArr
+  RETURN resultsArr;
 END;
 $func$ LANGUAGE plpgsql;
