@@ -1,16 +1,16 @@
 CREATE OR REPLACE FUNCTION get_columns(
-  tableName TEXT
+  table_name TEXT
 ) RETURNS TEXT[] AS $func$
 DECLARE
-  commandString TEXT;
-  resultsArr TEXT[];
+  command_string TEXT;
+  results_arr TEXT[];
 BEGIN
-  commandString := 'SELECT ARRAY('
+  command_string := 'SELECT ARRAY('
     || ' SELECT column_name::TEXT'
     || ' FROM information_schema.columns'
-    || ' WHERE table_name=''' || tableName || ''''
+    || ' WHERE table_name=''' || quote_ident(table_name) || ''''
     || ')';
-  EXECUTE commandString INTO resultsArr;
-  RETURN resultsArr;
+  EXECUTE command_string INTO results_arr;
+  RETURN results_arr;
 END;
 $func$ LANGUAGE plpgsql;

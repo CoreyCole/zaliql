@@ -1,3 +1,13 @@
+-- compute weighted average treatment effect for each covariate
+
+-- average difference of the means before and after matching = imbalance reduction
+--  fraction of improvement = 100 * (avg_diff_beofre - avg_diff_after) / avg_diff_before
+-- ignore balance improvement
+-- ignore red vs green
+
+-- qq plot quantile function percentile_cont(0.1), percentile_cont(0.2) ...
+-- for both before and after matching, for each covariate
+-- use bubble combo line chart on frontend
 CREATE OR REPLACE FUNCTION get_json_covariate_stats(
   sourceTable TEXT,
   treatment TEXT,
@@ -47,7 +57,6 @@ BEGIN
   jsonCommandString = jsonCommandString || ');';
 
   RAISE NOTICE '%', jsonCommandString;
-
   EXECUTE jsonCommandString INTO jsonResult;
   RETURN jsonResult;
 END;

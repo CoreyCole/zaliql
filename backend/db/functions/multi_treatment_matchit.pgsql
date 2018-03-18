@@ -5,77 +5,78 @@ $$ LANGUAGE sql;
 
 -- PRECONDITION: Only supports binary treatment columns
 CREATE OR REPLACE FUNCTION multi_treatment_matchit(
-  sourceTable TEXT,             -- input table name
-  primaryKey TEXT,              -- source table's primary key
-  treatmentsArr TEXT[],         -- array of treatment column names
-  covariatesArraysArr TEXT[][], -- array of arrays of covariates, each treatment has its own set of covariates
-  outputTableBasename TEXT      -- name used in all output tables, treatment appended
+  source_table TEXT,             -- input table name
+  primary_key TEXT,              -- source table's primary key
+  treatments_arr TEXT[],         -- array of treatment column names
+  covariates_arrays_arr TEXT[][], -- array of arrays of covariates, each treatment has its own set of covariates
+  output_table_basename TEXT      -- name used in all output tables, treatment appended
 ) RETURNS TEXT AS $func$
 DECLARE
-  commandString TEXT;
-  allTreatmentsName TEXT;
-  allTreatmentsMatchedName TEXT;
-  resultString TEXT;
-  resultStringTemp TEXT;
+  command_string TEXT;
+  all_treatments_name TEXT;
+  all_treatments_matched_name TEXT;
+  result_string TEXT;
+  result_string_temp TEXT;
   treatment TEXT;
-  treatmentIndex INTEGER;
-  covariateArr TEXT[];
-  uniqueCovariates TEXT[];
+  treatment_idx INTEGER;
+  covariate_arr TEXT[];
+  unique_covariates TEXT[];
   covariate TEXT;
-  matchedPk TEXT;
+  matched_pk TEXT;
 BEGIN
   -- get unique covariates
-  uniqueCovariates = ARRAY[]::TEXT[];
-  FOREACH covariateArr SLICE 1 IN ARRAY covariatesArraysArr LOOP
-    uniqueCovariates = array_cat(uniqueCovariates, covariateArr);
+  unique_covariates = ARRAY[]::TEXT[];
+  FOREACH covariate_arr SLICE 1 IN ARRAY covariates_arrays_arr LOOP
+    unique_covariates = array_cat(unique_covariates, covariate_arr);
   END LOOP;
-  uniqueCovariates = array_distinct(uniqueCovariates);
-  RAISE NOTICE 'Unique covariates: %', uniqueCovariates;
+  unique_covariates = array_distinct(unique_covariates);
+  RAISE NOTICE 'Unique covariates: %', unique_covariates;
 
+  -- call composite treatment
   -- create new table with column `matchit_t` that is the T_1 OR T_2 OR ... OR T_N
-  allTreatmentsName := outputTableBasename || '_all_treatments';
-  commandString := 'CREATE TABLE ' || allTreatmentsName || ' AS SELECT (';
-  FOREACH treatment IN ARRAY treatmentsArr LOOP
-    commandString := commandString || treatment || '::BOOLEAN OR ';
+  all_treatments_name := output_table_basename || '_all_treatments';
+  command_string := 'CREATE TABLE ' || all_treatments_name || ' AS SELECT (';
+  FOREACH treatment IN ARRAY treatments_arr LOOP
+    command_string := command_string || treatment || '::BOOLEAN OR ';
   END LOOP;
 
   -- use substring here to chop off last OR
-  commandString := substring( commandString from 0 for (char_length(commandString) - 3) );
+  command_string := substring( command_string from 0 for (char_length(command_string) - 3) );
 
   -- name combined treatment variable `matchit_t, SELECT rest of columns`
-  commandString := commandString || ')::INTEGER AS matchit_t, * FROM ' || sourceTable;
+  command_string := command_string || ')::INTEGER AS matchit_t, * FROM ' || source_table;
 
   -- create the OR combined treatment table
-  RAISE NOTICE '%', commandString;
-  EXECUTE commandString;
+  RAISE NOTICE '%', command_string;
+  EXECUTE command_string;
 
-  allTreatmentsMatchedName := allTreatmentsName || '_matched';
+  all_treatments_matched_name := all_treatments_name || '_matched';
   SELECT matchit_cem(
-    allTreatmentsName,
-    primaryKey,
+    all_treatments_name,
+    primary_key,
     array_append(ARRAY[]::TEXT[], 'matchit_t'),
-    uniqueCovariates,
-    allTreatmentsMatchedName
-  ) INTO resultString;
+    unique_covariates,
+    all_treatments_matched_name
+  ) INTO result_string;
   
-  matchedPk := quote_ident('subclass_' || primaryKey);
-  treatmentIndex := 0;
-  FOREACH treatment IN ARRAY treatmentsArr LOOP
-    SELECT ARRAY(SELECT unnest(treatmentsArr[treatmentIndex:1])) INTO covariateArr;
-    treatmentIndex := treatmentIndex + 1;
+  matched_pk := quote_ident('subclass_' || primary_key);
+  treatment_idx := 0;
+  FOREACH treatment IN ARRAY treatments_arr LOOP
+    SELECT ARRAY(SELECT unnest(treatments_arr[treatment_idx:1])) INTO covariate_arr;
+    treatment_idx := treatment_idx + 1;
 
     SELECT matchit_cem(
-      allTreatmentsMatchedName,
-      matchedPk,
+      all_treatments_matched_name,
+      matched_pk,
       array_append(ARRAY[]::TEXT[], treatment),
-      covariateArr,
-      outputTableBasename || '_' || treatment || '_matched'
-    ) INTO resultStringTemp;
+      covariate_arr,
+      output_table_basename || '_' || treatment || '_matched'
+    ) INTO result_string_temp;
 
     -- combine result strings
-    resultString := resultString || ' ' || resultStringTemp;
+    result_string := result_string || ' ' || result_string_temp;
   END LOOP;
 
-  RETURN resultString;
+  RETURN result_string;
 END;
 $func$ LANGUAGE plpgsql;

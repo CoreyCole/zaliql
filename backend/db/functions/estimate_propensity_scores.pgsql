@@ -1,37 +1,38 @@
 CREATE OR REPLACE FUNCTION estimate_propensity_scores(
-  sourceTable TEXT,         -- input table name
-  primaryKey TEXT,          -- input table primary key
-  treatment TEXT,           -- treatment column name
-  covariatesTextArr TEXT,   -- Expression list to evaluate for the independent variables
-  outputTable TEXT          -- output table name
+  source_table TEXT,         -- input table name
+  primary_key TEXT,          -- input table primary key
+  treatment TEXT,            -- treatment column name
+  covariates_text_arr TEXT,  -- expression list to evaluate for the independent variables
+  output_table TEXT          -- output table name
 ) RETURNS TEXT AS $func$
 DECLARE
-  logregrTable TEXT;
+  logregr_table TEXT;
   coef NUMERIC[];
-  coefText TEXT;
-  commandString TEXT;
+  coef_text TEXT;
+  command_string TEXT;
 BEGIN
   -- Train logistic regression
-  logregrTable := outputTable || '_logregr';
+  logregr_table := output_table || '_logregr';
   PERFORM madlib.logregr_train(
-    sourceTable,
-    logregrTable,
+    source_table,
+    logregr_table,
     treatment,
-    covariatesTextArr
+    covariates_text_arr
   );
 
   -- Get logistic regression coefficients
-  commandString := 'SELECT coef FROM ' || logregrTable;
-  EXECUTE commandString INTO coef;
-  SELECT array_to_string(coef, ',') INTO coefText;
+  command_string := 'SELECT coef FROM ' || quote_ident(logregr_table);
+  EXECUTE command_string INTO coef;
+  SELECT array_to_string(coef, ',') INTO coef_text;
 
   -- Create table
-  commandString := 'CREATE TABLE ' || outputTable
-    || ' AS (SELECT ' || sourceTable || '.' || primaryKey || ' AS ' || primaryKey || ','
+  command_string := 'CREATE TABLE ' || quote_ident(output_table)
+    || ' AS (SELECT ' || quote_ident(source_table) || '.' || quote_ident(primary_key)
+    || ' AS ' || quote_ident(primary_key) || ','
     || ' madlib.logregr_predict_prob(ARRAY[' || coefText || '], '
-    || covariatesTextArr || ') AS logregr_predict_prob, 0 AS used FROM ' || sourceTable || ')';
-  EXECUTE commandString;
+    || covariates_text_arr || ') AS logregr_predict_prob, 0 AS used FROM ' || quote_ident(source_table) || ')';
+  EXECUTE command_string;
 
-  RETURN 'Propensity score estimations successfully output in table ' || outputTable || '!';
+  RETURN 'Propensity score estimations successfully output in table ' || output_table || '!';
 END;
 $func$ LANGUAGE plpgsql;
