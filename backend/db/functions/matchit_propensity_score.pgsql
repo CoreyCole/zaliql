@@ -62,9 +62,9 @@ BEGIN
     || ' WHERE ' || ps_output_table || '.logregr_predict_prob IS NOT NULL'
     || ' AND ' || quote_ident(source_table) || '.' || quote_ident(treatment) || ' = 0' -- get control subjects
     || ' ORDER BY abs(' || ps_output_table || '.logregr_predict_prob - ' || min_tpp::TEXT || ')';
-  idx := 0;
   OPEN control_row FOR EXECUTE command_string;
 
+  idx := 0;
   WHILE TRUE LOOP
     IF (idx % k) = 0 THEN --TODO: add caliper skip to next treatment if out of range of caliper
       FETCH treatment_row INTO curr_tpk, curr_tpp;
@@ -72,12 +72,15 @@ BEGIN
     FETCH control_row INTO curr_cpk, curr_cpp;
     IF curr_tpk IS NULL OR curr_cpk IS NULL THEN
       EXIT; -- exits loop if out of treatments or controls
-    END IF;
-    command_string := 'INSERT INTO ' || output_table || ' (treatment_pk, control_pk, treatment_pp, control_pp) VALUES'
+    ELSIF abs(curr_tpp - curr_cpp) > caliper THEN
+      -- if curr_cpp is out of range of the caliper, need to fetch next treatment row
+      idx := 0; -- do this by resetting idx and fetching on next iteration
+    ELSE
+      command_string := 'INSERT INTO ' || output_table || ' (treatment_pk, control_pk, treatment_pp, control_pp) VALUES'
       || ' (' || curr_tpk || ',' || curr_cpk || ',' || curr_tpp || ',' || curr_cpp || ')';
-    EXECUTE command_string;
-    
-    idx := idx + 1;
+      EXECUTE command_string;
+      idx := idx + 1;
+    END IF;
   END LOOP;
 
   RETURN 'Propensity score matching successful and output in table ' || output_table || '!';
