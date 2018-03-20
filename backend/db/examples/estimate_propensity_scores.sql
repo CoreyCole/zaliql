@@ -1,27 +1,47 @@
-DROP TABLE demo_data_1000_logregr;
-DROP TABLE demo_data_1000_logregr_summary;
-DROP TABLE test_flight;
+DROP TABLE test_flight_logregr;
+DROP TABLE IF EXISTS test_flight_logregr_summary;
+DROP TABLE IF EXISTS test_flight;
 
-SELECT estimate_propensity_scores('demo_data_1000', 'fid', 'depdel15', 'ARRAY[1, fog, hail, thunder, lowvisibility, highwindspeed]', 'test_flight');
-
-SELECT * FROM test_flight;
-
-DROP FUNCTION estimate_propensity_scores(text, text, text, text, text);
-
--- Example without function
-DROP TABLE demo_data_1000_logregr;
-DROP TABLE demo_data_1000_logregr_summary;
+-- test `madlib.logregr_train()`
 SELECT madlib.logregr_train(
-  'demo_data_1000',                                 -- source table
-  'demo_data_1000_logregr',                         -- output table
-  'depdel15',                            -- labels
-  'ARRAY[1, fog, hail, thunder, lowvisibility, highwindspeed]'
+  'flights_weather_demo',                                       -- source table
+  'test_flight_logregr',                                        -- output table
+  'depdel15',                                                   -- labels
+  'ARRAY[1, fog, hail, thunder, lowvisibility, highwindspeed]'  -- covariates
 );
-SELECT coef FROM demo_data_1000_logregr;
+
+-- test `estimate_propensity_scores()`
+DROP TABLE test_flight_logregr;
+DROP TABLE test_flight_logregr_summary;
+SELECT estimate_propensity_scores(
+  'flights_weather_demo',
+  'fid',
+  'depdel15',
+  'ARRAY[1, fog, hail, thunder, lowvisibility, highwindspeed]',
+  'test_flight'
+);
+
+-- see all results of the logistic regression
+SELECT unnest(array['intercept', 'fog', 'hail', 'thunder', 'lowvisibility', 'highwindspeed']) as attribute,
+       unnest(coef) as coefficient,
+       unnest(std_err) as standard_error,
+       unnest(z_stats) as z_stat,
+       unnest(p_values) as pvalue,
+       unnest(odds_ratios) as odds_ratio
+FROM test_flight_logregr;
+
+-- see just logistic regression coefficients
+SELECT coef FROM flights_weather_demo_logregr;
+
+-- see logistic regression prediction for each fid
 SELECT
-    demo_data_1000.fid, 
+    flights_weather_demo.fid, 
     madlib.logregr_predict_prob(
       ARRAY[-1.90290678046899209,6.04963391099593622e-12,0,-0.662042576992547871,0,-10.2999800561562278],
       ARRAY[1, fog, hail, thunder, lowvisibility, highwindspeed]
     ) AS logregr_prob_prediction
-FROM demo_data_1000;
+FROM flights_weather_demo;
+
+DROP TABLE flights_weather_demo_logregr;
+DROP TABLE flights_weather_demo_logregr_summary;
+DROP TABLE test_flight;

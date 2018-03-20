@@ -1,6 +1,11 @@
-SELECT bin_equal_width('flight', 'distance vism', 'test_flight', '10 9');
+DROP TABLE IF EXISTS test_flight;
 
--- use this to veriy types, not working with dynamic sql for some reason
-SELECT data_type FROM information_schema.columns WHERE table_name = 'flight' AND column_name = 'distance';
+-- test `bin_equal_width()`
+SELECT bin_equal_width(
+  'flights_weather_demo',
+  ARRAY['pressurem', 'vism'],
+  ARRAY[10, 9],
+  'test_flight'
+);
 
-DROP FUNCTION bin_equal_width(text,text,text,text);
+DROP TABLE test_flight;

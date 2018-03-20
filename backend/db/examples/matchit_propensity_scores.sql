@@ -1,36 +1,30 @@
-DROP TABLE lalonde_demo_logregr;
-DROP TABLE lalonde_demo_logregr_summary;
-DROP TABLE lalonde_demo_ps;
-DROP TABLE lalonde_demo_matched;
+DROP TABLE IF EXISTS flights_weather_demo_test_flight_ps;
+DROP TABLE IF EXISTS flights_weather_demo_test_flight_ps_logregr;
+DROP TABLE IF EXISTS flights_weather_demo_test_flight_ps_logregr_summary;
+DROP TABLE IF EXISTS test_flight;
 
-SELECT matchit_propensity_score('lalonde_demo', 'pk', 'treat', ARRAY['age', 'educ', 'nodegree'], 2, 'lalonde_demo_matched');
+-- test `matchit_propensity_score()`
+SELECT matchit_propensity_score(
+  'flights_weather_demo',
+  'fid',
+  'lowpressure',
+  ARRAY['hour', 'fog', 'hail'],
+  2,
+  1,
+  'test_flight'
+);
 
-SELECT * FROM lalonde_demo ORDER BY pk asc;
-SELECT unnest(array['intercept', 'age', 'educ', 'nodegree']) as attribute,
+-- see all propensity score matches
+SELECT * FROM test_flight;
+
+-- see logistic regression model
+SELECT unnest(array['intercept', 'hour', 'fog', 'hail']) as attribute,
        unnest(coef) as coefficient,
        unnest(std_err) as standard_error,
        unnest(z_stats) as z_stat,
        unnest(p_values) as pvalue,
        unnest(odds_ratios) as odds_ratio
-FROM lalonde_demo_logregr;
-SELECT * FROM lalonde_demo_logregr_summary;
-SELECT * FROM lalonde_demo_ps;
-SELECT * FROM lalonde_demo_matched;
-SELECT treatment_pk, ld.id AS treatment_id, treatment_pp, control_pk, ld2.id AS control_id, control_pp
-FROM lalonde_demo_matched ldm
-JOIN lalonde_demo ld ON ld.pk = treatment_pk
-JOIN lalonde_demo ld2 ON ld2.pk = control_pk;
+FROM flights_weather_demo_test_flight_ps_logregr;
 
-DROP FUNCTION matchit_propensity_score(text,text,text[],text[],text);
-
-/** Creating demo data with unique int primary keys */
-DROP SEQUENCE lalonde_demo_id_seq;
-CREATE SEQUENCE lalonde_demo_id_seq;
-SELECT * FROM lalonde;
-DROP TABLE lalonde_demo;
-CREATE TABLE lalonde_demo (pk serial primary key, id TEXT, treat INTEGER, age INTEGER, educ INTEGER, black INTEGER, hispan INTEGER, married INTEGER, nodegree INTEGER, re74 NUMERIC, re75 NUMERIC, re78 NUMERIC);
-SELECT * FROM lalonde_demo;
-INSERT INTO lalonde_demo 
-SELECT nextval('lalonde_demo_id_seq'), id, treat::INTEGER, age::INTEGER, educ::INTEGER, black::INTEGER, hispan::INTEGER, married::INTEGER, nodegree::INTEGER, re74::NUMERIC, re75::NUMERIC, re78::NUMERIC
-FROM lalonde
-ORDER BY id asc;
+-- see summary of logistic regression training
+SELECT * FROM flights_weather_demo_test_flight_ps_logregr_summary;

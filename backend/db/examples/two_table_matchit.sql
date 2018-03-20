@@ -1,7 +1,16 @@
-
-SELECT count(distinct carrier) FROM demo_test_1000_flights;
-
-SELECT two_table_matchit('demo_test_1000_flights', 'fid', 'flightWid', ARRAY['airlineid', 'carrier', 'dest'], 'demo_test_1000_weather', 'wid', ARRAY['fog', 'hail', 'hum', 'rain', 'snow'], 'carrier', 3, 'two_table_test');
+-- test `two_table_matchit()`
+SELECT two_table_matchit(
+  'demo_test_1000_flights',
+  'fid',
+  'flightWid',
+  ARRAY['airlineid', 'carrier', 'dest'],
+  'demo_test_1000_weather',
+  'wid',
+  ARRAY['fog', 'hail', 'hum', 'rain', 'snow'],
+  'carrier',
+  3,
+  'two_table_test'
+);
 
 DROP TABLE demo_test_1000_weather;
 DROP TABLE demo_test_1000_flights;
