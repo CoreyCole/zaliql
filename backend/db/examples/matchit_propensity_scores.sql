@@ -8,9 +8,9 @@ SELECT matchit_propensity_score(
   'flights_weather_demo',
   'fid',
   'lowpressure',
-  ARRAY['hour', 'fog', 'hail'],
+  ARRAY['vism', 'hum', 'wspdm', 'thunder', 'fog', 'hail'],
   2,
-  1,
+  0.1,
   'test_flight'
 );
 
