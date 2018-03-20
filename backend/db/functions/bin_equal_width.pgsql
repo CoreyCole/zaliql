@@ -1,41 +1,22 @@
 -- Create type minMax
 CREATE TYPE minMax AS (minimum NUMERIC, maximum NUMERIC);
 CREATE OR REPLACE FUNCTION bin_equal_width(
-  source_table TEXT,    -- input table name
-  target_columns TEXT,  -- space separated list of continuous column names to bin
-  output_table TEXT,    -- output table name
-  num_bins TEXT         -- space separated list of prescribed number of bins, correspond to target_columns
+  source_table TEXT,          -- input table name
+  target_columns_arr TEXT[],  -- array of continuous column names to bin
+  num_bins_arr INTEGER[],     -- array of prescribed number of bins, correspond to target_columns
+  output_table TEXT           -- output table name
 ) RETURNS TEXT AS $func$
 DECLARE
-  target_column_arr TEXT[];
-  num_bins_arr TEXT[];
-  i INTEGER;
+  column_idx INTEGER;
   target_column TEXT;
-  column_type TEXT;
   binning_string TEXT;
   command_string TEXT;
   min_max_string TEXT;
   min_max_res minMax;
 BEGIN
-  SELECT regexp_split_to_array(target_columns, '\s+') INTO target_column_arr;
-  SELECT regexp_split_to_array(num_bins, '\s+') INTO num_bins_arr;
-
-  -- check type of target columns to make sure they are numeric, integer, etc
-  -- see query below function definition
-
-  -- FOREACH target_column IN ARRAY target_column_arr LOOP
-  --   command_string := 'SELECT data_type FROM information_schema.columns WHERE'
-  --     || ' table_name = ' || quote_ident(source_table)
-  --     || ' AND column_name = ' || quote_ident(target_column);
-  --   EXECUTE command_string INTO column_type;
-  --   RAISE NOTICE 'column type: %', column_type;
-  -- END LOOP;
-
-  -- check if output table exists, throw error?
-  
   min_max_string := '';
-  FOREACH target_column IN ARRAY target_column_arr LOOP
-    min_max_string = min_max_string || ', MIN(' || target_column || '::NUMERIC) as min_' || target_column || ','
+  FOREACH target_column IN ARRAY target_columns_arr LOOP
+    min_max_string := min_max_string || ', MIN(' || target_column || '::NUMERIC) as min_' || target_column || ','
       || ' MAX(' || target_column || '::NUMERIC) as max_' || target_column;
   END LOOP;
 
@@ -47,22 +28,24 @@ BEGIN
   EXECUTE format('CREATE TEMP TABLE minMaxRecord AS %s', command_string);
 
   binning_string := '';
-  i := 1;
-  FOREACH target_column IN ARRAY target_column_arr LOOP
+  column_idx := 1;
+  FOREACH target_column IN ARRAY target_columns_arr LOOP
+    RAISE NOTICE '%', binning_string;
     EXECUTE format('SELECT min_%s as minimum, max_%s as maximum FROM minMaxRecord', target_column, target_column) INTO min_max_res;
     RAISE NOTICE 'min:% max:%', min_max_res.minimum, min_max_res.maximum;
-    binning_string = binning_string || ', width_bucket(' || quote_ident(target_column)
-      || '::NUMERIC,' || min_max_res.minimum || ',' || min_max_res.maximum || ','
-      || numBinsArr[i] || ') AS ew_binned_' || target_column;
-    i = i + 1;
+    RAISE NOTICE '% : % : ', num_bins_arr[column_idx]::TEXT, target_column || '_ew_binned_' || num_bins_arr[column_idx]::TEXT;
+    binning_string := binning_string || ', width_bucket(' || quote_ident(target_column) || ', ' 
+      || min_max_res.minimum || ', ' || min_max_res.maximum || ', '
+      || num_bins_arr[column_idx]::TEXT || ') AS ' || target_column || '_ew_binned_' || num_bins_arr[column_idx]::TEXT;
+    column_idx = column_idx + 1;
   END LOOP;
-
+  RAISE NOTICE '%', binning_string;
   command_string := 'CREATE TABLE ' || output_table
     || ' AS ' || format('SELECT *%s FROM %s', binning_string, source_table);
   RAISE NOTICE '%', command_string;
   EXECUTE command_string;
 
   DROP TABLE minMaxRecord;
-  RETURN 'Successfully created table ' || output_table || '!';
+  RETURN 'Successfully created binned table ' || output_table || '!';
 END;
 $func$ LANGUAGE plpgsql;

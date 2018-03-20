@@ -29,7 +29,7 @@ BEGIN
   command_string := 'CREATE TABLE ' || quote_ident(output_table)
     || ' AS (SELECT ' || quote_ident(source_table) || '.' || quote_ident(primary_key)
     || ' AS ' || quote_ident(primary_key) || ','
-    || ' madlib.logregr_predict_prob(ARRAY[' || coefText || '], '
+    || ' madlib.logregr_predict_prob(ARRAY[' || coef_text || '], '
     || covariates_text_arr || ') AS logregr_predict_prob, 0 AS used FROM ' || quote_ident(source_table) || ')';
   EXECUTE command_string;
 

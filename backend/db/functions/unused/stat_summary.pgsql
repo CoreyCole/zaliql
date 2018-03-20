@@ -12,7 +12,7 @@ CREATE OR REPLACE FUNCTION get_json_covariate_stats(
   sourceTable TEXT,
   treatment TEXT,
   covariatesArr TEXT[]
-) RETURNS JSON AS $func$
+) RETURNS JSONB AS $func$
 DECLARE
   commandString TEXT;
   jsonCommandString TEXT;
@@ -21,9 +21,9 @@ DECLARE
   meanTreatedStdDev NUMERIC;
   meanControlAvg NUMERIC;
   meanControlStdDev NUMERIC;
-  jsonResult JSON;
+  jsonResult JSONB;
 BEGIN
-  jsonCommandString = 'SELECT json_build_object(';
+  jsonCommandString = 'SELECT jsonb_build_object(';
   FOREACH covariate IN ARRAY covariatesArr LOOP
     commandString = 'SELECT avg(' || covariate ||')'
       || ' FROM ' || sourceTable
@@ -42,7 +42,7 @@ BEGIN
       || ' WHERE ' || treatment || ' = 0;';
     EXECUTE commandString INTO meanControlStdDev;
     jsonCommandString = jsonCommandString || '''' || covariate || ''', '
-      || 'json_build_object('
+      || 'jsonb_build_object('
         || '''meanTreated'', ' || meanTreatedAvg || ', '
         || '''meanTreatedStdDev'', ' || meanTreatedStdDev || ', '
         || '''meanControl'', ' || meanControlAvg || ', '
@@ -62,21 +62,36 @@ BEGIN
 END;
 $func$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION matchit_summary(
-  originalSourceTable TEXT,  -- original input table name
-  matchedSourceTable TEXT,   -- table name that was output by matchit
-  treatment TEXT,            -- treatment column name
-  covariatesArr TEXT[]       -- array of covariate column names
-) RETURNS JSON AS $func$
+CREATE OR REPLACE FUNCTION stat_summary_cem(
+  original_table TEXT,          -- original input table name
+  matchit_cem_table TEXT,       -- table name that was output by matchit
+  treatment TEXT,               -- column name of the treatment of interest
+  outcome TEXT,                 -- column name of the outcome of interest
+  grouping_attribute TEXT,      -- compare ATE across specified groups (can be null)
+  covariates_arr TEXT[]         -- array of all original covariate column names
+                                --  (column names AFTER discretization/binning)
+  ordinal_covariates_arr TEXT[] -- array of original ordinal covariate column names
+                                --  (column names BEFORE discretization/binning)
+) RETURNS JSONB AS $func$
 DECLARE
-  allJson JSON;
-  matchedJson JSON;
+  all_json JSONB;
+  matched_json JSONB;
+  ate_json JSONB;
+  qq_json JSONB;
 BEGIN
-  SELECT get_json_covariate_stats(originalSourceTable, treatment, covariatesArr) INTO allJson;
-  SELECT get_json_covariate_stats(matchedSourceTable, treatment, covariatesArr) INTO matchedJson;
-  RETURN json_build_object(
-    'allData', allJson,
-    'matchedData', matchedJson
+  SELECT get_json_covariate_stats(original_table, treatment, covariates_arr)
+    INTO all_json;
+  SELECT get_json_covariate_stats(matchit_cem_table, treatment, covariates_arr)
+    INTO matched_json;
+  SELECT ate_cem(original_table, matchit_cem_table, treatment, outcome, grouping_attribute, ordinal_covariates_arr)
+    INTO ate_json;
+  SELECT qq_cem(original_table, matchit_cem_table, ordinal_covariates_arr)
+    INTO qq_json;
+  RETURN jsonb_build_object(
+    'allData', all_json,
+    'matchedData', matched_json
+    'ate', ate_json,
+    'qq', qq_json
   );
 END;
 $func$ LANGUAGE plpgsql;

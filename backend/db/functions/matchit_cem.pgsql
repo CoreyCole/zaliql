@@ -1,7 +1,7 @@
 CREATE OR REPLACE FUNCTION matchit_cem(
   source_table TEXT,     -- input table name
   primary_key TEXT,      -- source table's primary key
-  treatment TEXT,       -- array of treatment column names
+  treatment TEXT,        -- array of treatment column names
   covariates_arr TEXT[], -- array of covariate column names (all covariates are applied to all treatments)
   output_table TEXT      -- output table name
 ) RETURNS TEXT AS $func$
@@ -44,8 +44,6 @@ BEGIN
   END LOOP;
 
   command_string := command_string || ' ' || quote_ident(treatment) || ' IS NOT NULL';
-
-  -- EXECUTE format('DROP MATERIALIZED VIEW IF EXISTS %s', output_table);
 
   command_string := 'CREATE TABLE ' || quote_ident(output_table)
     || ' AS ' || command_string;

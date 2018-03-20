@@ -32,7 +32,6 @@ BEGIN
   unique_covariates = array_distinct(unique_covariates);
   RAISE NOTICE 'Unique covariates: %', unique_covariates;
 
-  -- call composite treatment
   -- create new table with column `matchit_t` that is the T_1 OR T_2 OR ... OR T_N
   all_treatments_name := output_table_basename || '_all_treatments';
   command_string := 'CREATE TABLE ' || all_treatments_name || ' AS SELECT (';
@@ -50,25 +49,38 @@ BEGIN
   RAISE NOTICE '%', command_string;
   EXECUTE command_string;
 
+  -- call matchit on the combined treatment variable
+  -- to prune subjects that don't satisfy the overlap condition
   all_treatments_matched_name := all_treatments_name || '_matched';
   SELECT matchit_cem(
     all_treatments_name,
     primary_key,
-    array_append(ARRAY[]::TEXT[], 'matchit_t'),
+    'matchit_t',
     unique_covariates,
     all_treatments_matched_name
   ) INTO result_string;
+
+  -- drop the subclass_id column because this will be created again in subsequent calls
+  command_string := 'ALTER TABLE ' || quote_ident(all_treatments_matched_name)
+    || ' DROP COLUMN subclass_id';
+  EXECUTE command_string;
+
+  -- drop the matched covariate columns as they will be created again in subsequent calls
+  FOREACH covariate IN ARRAY unique_covariates LOOP
+    command_string := 'ALTER TABLE ' || quote_ident(all_treatments_matched_name)
+      || ' DROP COLUMN ' || quote_ident(covariate || '_matched');
+    EXECUTE command_string;
+  END LOOP;
   
-  matched_pk := quote_ident('subclass_' || primary_key);
-  treatment_idx := 0;
+  treatment_idx := 1;
   FOREACH treatment IN ARRAY treatments_arr LOOP
-    SELECT ARRAY(SELECT unnest(treatments_arr[treatment_idx:1])) INTO covariate_arr;
+    SELECT ARRAY(SELECT unnest(covariates_arrays_arr[treatment_idx:treatment_idx])) INTO covariate_arr;
     treatment_idx := treatment_idx + 1;
 
     SELECT matchit_cem(
       all_treatments_matched_name,
-      matched_pk,
-      array_append(ARRAY[]::TEXT[], treatment),
+      primary_key,
+      treatment,
       covariate_arr,
       output_table_basename || '_' || treatment || '_matched'
     ) INTO result_string_temp;

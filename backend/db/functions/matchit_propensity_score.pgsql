@@ -15,7 +15,7 @@ DECLARE
   treatment_row REFCURSOR;
   control_row REFCURSOR;
   min_tpp NUMERIC;
-  curr_tpk INTEGER;      -- assumes integer primary key
+  curr_tpk INTEGER;  -- assumes integer primary key
   curr_tpp NUMERIC;
   curr_cpk INTEGER;
   curr_cpp NUMERIC;
