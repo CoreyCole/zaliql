@@ -56,6 +56,7 @@ SELECT
   re78
 FROM lalonde
 ORDER BY id asc;
+DROP TABLE lalonde;
 
 -- instantiate flights & weather demo data
 CREATE TABLE weather_demo (
