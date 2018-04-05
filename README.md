@@ -1,8 +1,3 @@
-TODO:
-- get demo flight data in docker `flights_weather_demo`
-- test all functions in readme
-  - test multi-level-treatment matchit with carrier treatment
-
 # ZaliSQL
 A SQL-Based Framework for Drawing Causal Inference from Big Data
 ### Table of Contents
