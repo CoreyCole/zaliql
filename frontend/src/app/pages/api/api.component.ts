@@ -2,8 +2,12 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'zql-api',
-  templateUrl: './api.component.html',
-  styleUrls: ['./api.component.scss']
+  styleUrls: ['./api.component.scss'],
+  template: `
+  <p>
+    api works!
+  </p>
+  `
 })
 export class ApiComponent implements OnInit {
 

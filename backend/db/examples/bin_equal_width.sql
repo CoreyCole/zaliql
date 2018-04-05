@@ -1,11 +1,11 @@
-DROP TABLE IF EXISTS test_flight;
+DROP TABLE IF EXISTS flights_weather_demo_binned;
 
 -- test `bin_equal_width()`
 SELECT bin_equal_width(
   'flights_weather_demo',
-  ARRAY['pressurem', 'vism'],
+  ARRAY['vism', 'wspdm'],
   ARRAY[10, 9],
-  'test_flight'
+  'flights_weather_demo_binned'
 );
 
-DROP TABLE test_flight;
+DROP TABLE flights_weather_demo_binned;

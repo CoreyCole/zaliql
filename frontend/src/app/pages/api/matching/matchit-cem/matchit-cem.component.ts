@@ -1,76 +1,43 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+
+import { FunctionData } from '../../../../models';
+import { ApiService } from '../../api.service';
 
 @Component({
   selector: 'zql-matchit-cem',
-  styleUrls: ['./matchit-cem.component.scss'],
   template: `
-  <zql-api-content [functionData]="functionData">
-    <textarea highlight-js [options]="{}" [lang]="'SQL'">
+  <div *ngIf="functionData | async as data">
+    <zql-api-content [functionData]="data">
+      <textarea highlight-js [options]="{}" [lang]="'SQL'">
 CREATE OR REPLACE FUNCTION matchit_cem(
-  sourceTable TEXT,     -- input table name
-  primaryKey TEXT,      -- source table's primary key
-  treatmentsArr TEXT[], -- array of treatment column names
-  covariatesArr TEXT[], -- array of covariate column names (all covariates are applied to all treatments)
-  outputTable TEXT      -- output table name
-) RETURNS TEXT AS $func$
+  source_table TEXT,     -- input table name
+  primary_key TEXT,      -- source table's primary key
+  treatment TEXT,        -- array of treatment column names
+  covariates_arr TEXT[], -- array of covariate column names (all covariates are applied to all treatments)
+  output_table TEXT      -- output table name
+) RETURNS TEXT;
 
 -- example call
+-- NOTE: must bin vism and wspdm for this call to work
 SELECT matchit_cem(
-  'flights_weather_demo',
+  'flights_weather_demo_binned',
   'fid',
-  ARRAY['lowpressure'],
-  ARRAY['fog', 'hail', 'hum', 'rain', 'snow'],
-  'cem_matchit_flights_weather'
+  'lowpressure',
+  ARRAY['vism_ew_binned_10', 'wspdm_ew_binned_9', 'hour', 'rain', 'fog'],
+  'test_flight'
 );
-    </textarea>
-  </zql-api-content>`
+      </textarea>
+    </zql-api-content>
+  </div>`
 })
 export class MatchitCemComponent implements OnInit {
-  functionData = {
-    name: 'matchit',
-    description: 'ZaliQL\'s `matchit` function currently supports 2 matching methods: \
-    `cem` (coarsened exact matching) and \
-    `ps` (propensity score matching). \
-    Propensity score matching only supports 1 treatment. \
-    Coarsened exact matching supports multiple binary treatments.',
-    returns: 'TEXT function call status',
-    params: [
-      {
-        name: 'sourceTable',
-        description: 'input table name',
-        type: 'table-text',
-        placeholder: 'lalonde_demo',
-      },
-      {
-        name: 'primaryKey',
-        description: 'source table\'s primary key',
-        type: 'column-text',
-        placeholder: 'pk'
-      },
-      {
-        name: 'treatmentsArr',
-        description: 'array of treatment column names',
-        type: 'columns-text-arr',
-        placeholder: 'treat'
-      },
-      {
-        name: 'covariatesArr',
-        description: 'array of covariate column names. \
-        (all covariates are applied to all treatments)',
-        type: 'columns-text-arr',
-        placeholder: 'nodegree'
-      },
-      {
-        name: 'outputTable',
-        description: '',
-        type: 'text',
-        placeholder: 'lalonde_demo_matched'
-      }
-    ]
-  };
-  constructor() { }
+  public functionData: Observable<FunctionData>;
+  public functionName = 'matchit_cem';
+
+  constructor(private api: ApiService) { }
 
   ngOnInit() {
+    this.functionData = this.api.getFunction(this.functionName);
   }
-
 }

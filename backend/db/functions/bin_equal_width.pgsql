@@ -2,7 +2,7 @@
 CREATE TYPE minMax AS (minimum NUMERIC, maximum NUMERIC);
 CREATE OR REPLACE FUNCTION bin_equal_width(
   source_table TEXT,          -- input table name
-  target_columns_arr TEXT[],  -- array of continuous column names to bin
+  target_columns_arr TEXT[],  -- array of ordinal column names to bin
   num_bins_arr INTEGER[],     -- array of prescribed number of bins, correspond to target_columns
   output_table TEXT           -- output table name
 ) RETURNS TEXT AS $func$

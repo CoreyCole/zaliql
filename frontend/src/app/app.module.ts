@@ -50,37 +50,44 @@ import { DemoComponent } from './pages/demo/demo.component';
 import { ImplementationComponent } from './pages/implementation/implementation.component';
 import { CitationsComponent } from './pages/citations/citations.component';
 import { GroupedVerticalBarChartComponent } from './pages/demo/grouped-vertical-bar-chart/grouped-vertical-bar-chart.component';
+
+// zql api pages
 import { ApiComponent } from './pages/api/api.component';
 import { BinEqualWidthComponent } from './pages/api/preprocessing/bin-equal-width/bin-equal-width.component';
 import { MatchitCemComponent } from './pages/api/matching/matchit-cem/matchit-cem.component';
-import { MatchitPsComponent } from './pages/api/matching/matchit-ps/matchit-ps.component'; import { MultiLevelTreatmentMatchitComponent } from './pages/api/matching/multi-level-treatment-matchit/multi-level-treatment-matchit.component';
+import { MatchitPsComponent } from './pages/api/matching/matchit-ps/matchit-ps.component';
 import { MultiTreatmentMatchitComponent } from './pages/api/matching/multi-treatment-matchit/multi-treatment-matchit.component';
 import { TwoTableMatchitComponent } from './pages/api/matching/two-table-matchit/two-table-matchit.component';
-import { MatchitSummaryStatisticsComponent } from './pages/api/analysis/matchit-summary-statistics/matchit-summary-statistics.component';
-import { AverageTreatmentEffectComponent } from './pages/api/analysis/average-treatment-effect/average-treatment-effect.component';
+import { MatchitCemSummaryStatisticsComponent } from './pages/api/analysis/matchit-cem-summary-statistics/matchit-cem-summary-statistics.component';
+
+// zql demo pages
 import { CausalQuestionsComponent } from './pages/demo/causal-questions/causal-questions.component';
 import { NaiveApproachComponent } from './pages/demo/naive-approach/naive-approach.component';
 import { ConfoundingVariablesComponent } from './pages/demo/confounding-variables/confounding-variables.component';
 import { AdjustingForCovariatesComponent } from './pages/demo/adjusting-for-covariates/adjusting-for-covariates.component';
 import { CheckingBalanceComponent } from './pages/demo/checking-balance/checking-balance.component';
 import { CausalAnswersComponent } from './pages/demo/causal-answers/causal-answers.component';
-import { TestApiCallComponent } from './pages/api/test-api-call/test-api-call.component';
 
 // zql components
 import { NavItemComponent } from './components/nav-item/nav-item.component';
 import { NavMenuComponent } from './components/nav-menu/nav-menu.component';
 import { DemoContentComponent } from './components/demo-content/demo-content.component';
+
+// zql api components
 import { ApiContentComponent } from './components/api-content/api-content.component';
-import { TestApiComponent } from './components/test-api/test-api.component';
-import { TestApiParamComponent } from './components/test-api/test-api-param/test-api-param.component';
+import { TestApiComponent } from './components/api-content/test-api/test-api.component';
+
+// zql test api param components
+import { TestApiParamComponent } from './components/api-content/test-api/test-api-param/test-api-param.component';
+import { TestApiParamTableTextComponent } from './components/api-content/test-api/test-api-param/test-api-param-table-text/test-api-param-table-text.component';
+import { TestApiParamColumnTextComponent } from './components/api-content/test-api/test-api-param/test-api-param-column-text/test-api-param-column-text.component';
+import { TestApiParamColumnsTextArrComponent } from './components/api-content/test-api/test-api-param/test-api-param-columns-text-arr/test-api-param-columns-text-arr.component';
+import { TestApiParamTextComponent } from './components/api-content/test-api/test-api-param/test-api-param-text/test-api-param-text.component';
+import { TestApiParamTextArrComponent } from './components/api-content/test-api/test-api-param/test-api-param-text-arr/test-api-param-text-arr.component';
+import { TestApiParamColumnsTextArrArrComponent } from './components/api-content/test-api/test-api-param/test-api-param-columns-text-arr-arr/test-api-param-columns-text-arr-arr.component';
 
 // zql services
 import { ApiService } from './pages/api/api.service';
-import { TestApiParamTableTextComponent } from './components/test-api/test-api-param/test-api-param-table-text/test-api-param-table-text.component';
-import { TestApiParamColumnTextComponent } from './components/test-api/test-api-param/test-api-param-column-text/test-api-param-column-text.component';
-import { TestApiParamColumnsTextArrComponent } from './components/test-api/test-api-param/test-api-param-columns-text-arr/test-api-param-columns-text-arr.component';
-import { TestApiParamTextComponent } from './components/test-api/test-api-param/test-api-param-text/test-api-param-text.component';
-import { TestApiParamIntegerComponent } from './components/test-api/test-api-param/test-api-param-integer/test-api-param-integer.component';
 
 @NgModule({
   declarations: [
@@ -96,11 +103,8 @@ import { TestApiParamIntegerComponent } from './components/test-api/test-api-par
     ApiContentComponent,
     ApiComponent,
     BinEqualWidthComponent,
-    MultiLevelTreatmentMatchitComponent,
     MultiTreatmentMatchitComponent,
     TwoTableMatchitComponent,
-    MatchitSummaryStatisticsComponent,
-    AverageTreatmentEffectComponent,
     CausalQuestionsComponent,
     NaiveApproachComponent,
     ConfoundingVariablesComponent,
@@ -108,15 +112,16 @@ import { TestApiParamIntegerComponent } from './components/test-api/test-api-par
     CheckingBalanceComponent,
     CausalAnswersComponent,
     TestApiComponent,
-    TestApiCallComponent,
     TestApiParamComponent,
     TestApiParamTableTextComponent,
     TestApiParamColumnTextComponent,
     TestApiParamColumnsTextArrComponent,
     TestApiParamTextComponent,
+    TestApiParamTextArrComponent,
     MatchitCemComponent,
     MatchitPsComponent,
-    TestApiParamIntegerComponent
+    MatchitCemSummaryStatisticsComponent,
+    TestApiParamColumnsTextArrArrComponent
   ],
   imports: [
     BrowserModule,

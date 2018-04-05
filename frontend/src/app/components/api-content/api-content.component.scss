@@ -6,12 +6,19 @@ mat-toolbar.api-header {
   z-index: 1;
   text-align: center;
   font-family: monospace;
+  button {
+    position: fixed;
+    right: 16px;
+  }
 }
 .flex-span {
   flex: 1 1 auto;
 }
 .ng-content {
   padding-top: 80px;
+  .call-results {
+    margin-bottom: 16px;
+  }
 }
 mat-card p {
   margin: 16px;

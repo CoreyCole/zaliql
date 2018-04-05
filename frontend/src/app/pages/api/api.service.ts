@@ -6,6 +6,8 @@ import { map } from 'rxjs/operators';
 // zql data
 import { apiData } from './api.data';
 
+import { FunctionData } from '../../models';
+
 @Injectable()
 export class ApiService {
   public apiUrl: string;
@@ -28,9 +30,12 @@ export class ApiService {
     );
   }
 
-  public callFunction(functionName: string, functionParamData: { [paramName: string]: string | string[] }): Observable<any> {
-    console.log(functionParamData);
-    return this.http.post(`${this.apiUrl}/function/${functionName}`, {}, { params: functionParamData });
+  public getFunction(functionName: string): Observable<FunctionData> {
+    return this.http.get(`${this.apiUrl}/function/${functionName}`);
   }
 
+  public callFunction(functionName: string, functionParamData: { [paramName: string]: string | string[] | string[][] }): Observable<any> {
+    console.log(functionParamData);
+    return this.http.post(`${this.apiUrl}/function/${functionName}`, functionParamData);
+  }
 }
