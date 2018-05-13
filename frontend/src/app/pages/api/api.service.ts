@@ -12,10 +12,18 @@ import { FunctionData } from '../../models';
 export class ApiService {
   public apiUrl: string;
   public functions;
+  public resultData: any;
 
   constructor(private http: HttpClient) {
     this.apiUrl = apiData.apiUrl;
     this.functions = apiData.functions;
+    const resultDataString = localStorage.getItem('resultData');
+    this.resultData = resultDataString ? JSON.parse(resultDataString) : null;
+  }
+
+  public setResultData(data: any) {
+    this.resultData = data;
+    localStorage.setItem('resultData', JSON.stringify(data));
   }
 
   public queryTableNames(): Observable<string[]> {

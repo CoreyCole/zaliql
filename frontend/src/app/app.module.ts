@@ -88,6 +88,8 @@ import { TestApiParamColumnsTextArrArrComponent } from './components/api-content
 
 // zql services
 import { ApiService } from './pages/api/api.service';
+import { JsonResultsComponent } from './components/api-content/json-results/json-results.component';
+import { JsonResultsVizComponent } from './pages/api/json-results-viz/json-results-viz.component';
 
 @NgModule({
   declarations: [
@@ -121,7 +123,9 @@ import { ApiService } from './pages/api/api.service';
     MatchitCemComponent,
     MatchitPsComponent,
     MatchitCemSummaryStatisticsComponent,
-    TestApiParamColumnsTextArrArrComponent
+    TestApiParamColumnsTextArrArrComponent,
+    JsonResultsComponent,
+    JsonResultsVizComponent
   ],
   imports: [
     BrowserModule,

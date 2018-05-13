@@ -20,6 +20,7 @@ import { TwoTableMatchitComponent } from '../pages/api/matching/two-table-matchi
 import { MatchitCemSummaryStatisticsComponent } from '../pages/api/analysis/matchit-cem-summary-statistics/matchit-cem-summary-statistics.component';
 import { ApiComponent } from '../pages/api/api.component';
 import { TestApiComponent } from '../components/api-content/test-api/test-api.component';
+import { JsonResultsVizComponent } from '../pages/api/json-results-viz/json-results-viz.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -60,6 +61,9 @@ const routes: Routes = [
             [
               { path: 'matchit_cem_summary_statistics', component: MatchitCemSummaryStatisticsComponent }
             ]
+        },
+        {
+          path: 'json-results-viz', component: JsonResultsVizComponent
         }
       ]
   },

@@ -19,3 +19,12 @@ body {
   font-family: Roboto Mono,monospace;
   background: transparent;
 }
+
+.flex-span {
+  flex: 1 1 auto;
+}
+
+.flex-row-container {
+  display: flex;
+  flex-direction: row;
+}

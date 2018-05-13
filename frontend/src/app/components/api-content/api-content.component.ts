@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
@@ -24,7 +24,12 @@ import { ApiService } from '../../pages/api/api.service';
   <div class="ng-content">
     <mat-card class="call-results" *ngIf="results || error">
       <mat-card-content>
-        {{ results | json }}{{ error }}
+        <span *ngIf="jsonResults">
+          <zql-json-results [results]="results"></zql-json-results>
+        </span>
+        <span *ngIf="!jsonResults">
+          {{ results }}{{ error }}
+        </span>
       </mat-card-content>
     </mat-card>
     <mat-card>
@@ -42,17 +47,22 @@ import { ApiService } from '../../pages/api/api.service';
   </zql-test-api>
   `
 })
-export class ApiContentComponent {
+export class ApiContentComponent implements AfterViewInit {
   @Input() functionData;
   public functionParamData: { [paramName: string]: string | string[] | string[][] } = {};
   public results$: Observable<any>;
   public results: string;
   public error: string;
+  public jsonResults: boolean;
 
   constructor(
     private router: Router,
     private api: ApiService
   ) {}
+
+  ngAfterViewInit() {
+    this.jsonResults = this.functionData['returns'].toLowerCase().includes('json');
+  }
 
   public updateFunctionParams(functionParamUpdate: FunctionParamUpdate) {
     this.functionParamData[functionParamUpdate.name] = functionParamUpdate.data;
@@ -77,6 +87,7 @@ export class ApiContentComponent {
         this.error = '';
         this.results = data;
         this.api.queryTableNames();
+        window.scrollTo(0, 0);
       });
   }
 }
