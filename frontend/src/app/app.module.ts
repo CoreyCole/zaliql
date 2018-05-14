@@ -49,7 +49,7 @@ import { HomeComponent } from './pages/home/home.component';
 import { DemoComponent } from './pages/demo/demo.component';
 import { ImplementationComponent } from './pages/implementation/implementation.component';
 import { CitationsComponent } from './pages/citations/citations.component';
-import { GroupedVerticalBarChartComponent } from './pages/demo/grouped-vertical-bar-chart/grouped-vertical-bar-chart.component';
+import { GroupedVerticalBarChartComponent } from './components/grouped-vertical-bar-chart/grouped-vertical-bar-chart.component';
 
 // zql api pages
 import { ApiComponent } from './pages/api/api.component';

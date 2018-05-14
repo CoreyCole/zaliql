@@ -1,3 +1,59 @@
-<p>
-  json-results-viz works!
-</p>
+<div class="datatable">
+  <mat-toolbar color="accent">
+    <span>Sample Sizes</span>
+  </mat-toolbar>
+  <ngx-datatable
+    class="material"
+    [rows]="sampleSizeRows"
+    [columns]="sampleSizeColumns"
+    [columnMode]="'force'"
+    [headerHeight]="50"
+    [footerHeight]="50"
+    [rowHeight]="'auto'">
+  </ngx-datatable>
+</div>
+
+<mat-card>
+  <mat-toolbar color="accent" class="flex-row-container">
+    <span>Treatment ATE</span>
+  </mat-toolbar>
+  <!-- <ngx-charts-bar-vertical-2d
+    [view]="view"
+    [scheme]="colorScheme"
+    [results]="groupByCarrier ? effectQuery1.data : effectQuery2.data"
+    [xAxis]="true"
+    [yAxis]="true"
+    [legend]="true"
+    [showXAxisLabel]="true"
+    [showYAxisLabel]="true"
+    [xAxisLabel]="effectQuery1.xAxis"
+    [yAxisLabel]="effectQuery1.yAxis">
+  </ngx-charts-bar-vertical-2d> -->
+</mat-card>
+
+<mat-card>
+  <mat-toolbar color="accent" class="flex-row-container">
+    <span>Covariate ATE</span>
+    <span class="flex-span"></span>
+    <span class="covariate-dropdown">
+      <mat-select placeholder="Covariate">
+        <mat-option *ngFor="let covariate of covariates" [value]="covariates[0]">
+          {{ covariate }}
+        </mat-option>
+      </mat-select>
+    </span>
+  </mat-toolbar>
+  <!-- <ngx-charts-bar-vertical-2d
+    [view]="view"
+    [scheme]="colorScheme"
+    [results]="groupByCarrier ? effectQuery1.data : effectQuery2.data"
+    [xAxis]="true"
+    [yAxis]="true"
+    [legend]="true"
+    [showXAxisLabel]="true"
+    [showYAxisLabel]="true"
+    [xAxisLabel]="effectQuery1.xAxis"
+    [yAxisLabel]="effectQuery1.yAxis">
+  </ngx-charts-bar-vertical-2d> -->
+</mat-card>
+
