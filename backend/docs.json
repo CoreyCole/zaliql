@@ -71,7 +71,7 @@
           "type": "columns-text-arr",
           "default": {
             "table": "flights_weather_demo_binned",
-            "columns": ["vism_ew_binned_10", "wspdm_ew_binned_9", "hour", "rain", "fog"]
+            "columns": ["vism_ew_binned_10", "wspdm_ew_binned_9", "hum", "thunder", "fog", "hail"]
           }
         },
         {
@@ -316,7 +316,7 @@
           "type": "column-text",
           "default": {
             "table": "flights_weather_demo",
-            "column": "dest"
+            "column": "airport"
           }
         },
         {
@@ -325,7 +325,7 @@
           "type": "columns-text-arr",
           "default": {
             "table": "flights_weather_demo",
-            "columns": ["vism", "hum", "wspdm", "thunder", "fog", "hail"]
+            "columns": ["vism", "wspdm", "hum", "thunder", "fog", "hail"]
           }
         },
         {
@@ -334,7 +334,7 @@
           "type": "columns-text-arr",
           "default": {
             "table": "flights_weather_demo",
-            "columns": ["vism", "hum", "wspdm", "thunder", "fog", "hail"]
+            "columns": ["vism", "wspdm"]
           }
         },
         {
@@ -343,7 +343,7 @@
           "type": "columns-text-arr",
           "default": {
             "table": "flights_weather_demo",
-            "columns": ["vism", "hum", "wspdm", "thunder", "fog", "hail"]
+            "columns": ["vism_ew_binned_10", "wspdm_ew_binned_9"]
           }
         }
       ]

@@ -26,7 +26,6 @@ export class JsonResultsComponent implements OnInit {
   }
 
   public viewResults() {
-    this.api.setResultData(this.results);
     this.router.navigateByUrl('api/json-results-viz');
   }
 

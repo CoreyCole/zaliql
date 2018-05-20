@@ -23,7 +23,8 @@ import {
   MatSidenavModule,
   MatInputModule,
   MatSelectModule,
-  MatChipsModule
+  MatChipsModule,
+  MatProgressSpinnerModule
 } from '@angular/material';
 // material icons
 import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
@@ -145,6 +146,7 @@ import { JsonResultsVizComponent } from './pages/api/json-results-viz/json-resul
     MatInputModule,
     MatSelectModule,
     MatChipsModule,
+    MatProgressSpinnerModule,
     // material icons
     MatIconModule,
     // ngx charts components

@@ -58,9 +58,18 @@ class FunctionsResource(object):
       self.cursor.connection.rollback()
       resp.content_type = 'application/json'
       resp.status = falcon.HTTP_500
-      resp.body = json.dumps({'status': str(err)})
+      resp.body = json.dumps({
+          'status': str(err),
+          'function_name': function_name,
+          'params': params
+      })
     else:
       self.cursor.connection.commit()
       resp.content_type = 'application/json'
       resp.status = falcon.HTTP_200
-      resp.body = json.dumps({'status': status})
+      resp.body = json.dumps({
+          'function_name': function_name,
+          'params': params,
+          'status': status
+      })
+      self.info_logger.info('body={%s}', resp.body)

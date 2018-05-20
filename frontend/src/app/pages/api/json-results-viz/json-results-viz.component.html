@@ -1,3 +1,28 @@
+<mat-card class="call-summary">
+  <mat-toolbar color="accent">
+    <span>Call Summary</span>
+  </mat-toolbar>
+  <div *ngFor="let param of callParams">
+    <h3 mat-subheader>{{ param }}</h3>
+    <div *ngIf="!isArray(pData(param))">
+      <mat-list>
+        <mat-list-item>
+          <mat-icon mat-list-icon>done</mat-icon>
+          <h4 mat-line>{{ pData(param) }}</h4>
+        </mat-list-item>
+      </mat-list>
+    </div>
+    <div *ngIf="isArray(pData(param))">
+      <mat-list>
+        <mat-list-item *ngFor="let val of pData(param)">
+          <mat-icon mat-list-icon>done</mat-icon>
+          <h4 mat-line>{{ val }}</h4>
+        </mat-list-item>
+      </mat-list>
+    </div>
+  </div>
+</mat-card>
+
 <div class="datatable">
   <mat-toolbar color="accent">
     <span>Sample Sizes</span>
@@ -8,7 +33,7 @@
     [columns]="sampleSizeColumns"
     [columnMode]="'force'"
     [headerHeight]="50"
-    [footerHeight]="50"
+    [footerHeight]="false"
     [rowHeight]="'auto'">
   </ngx-datatable>
 </div>

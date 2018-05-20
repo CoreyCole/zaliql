@@ -17,6 +17,9 @@ export class JsonResultsVizComponent implements OnInit {
   ];
   public sampleSizeRows: any[];
   public covariates: string[];
+  public functionName: string;
+  public callParams: string[];
+  public callParamData: any;
 
   constructor(
     private api: ApiService
@@ -24,9 +27,20 @@ export class JsonResultsVizComponent implements OnInit {
 
   ngOnInit() {
     console.log(JSON.stringify(this.api.resultData));
-    this.data = { ...this.api.resultData };
+    this.data = { ...this.api.resultData.status };
+    this.functionName = this.api.resultData['function_name'];
+    this.callParams = Object.keys(this.api.resultData['params']);
+    this.callParamData = this.api.resultData['params'];
     this.sampleSizeRows = this.parseSampleSizeRows(this.data);
     this.covariates = Object.keys(this.data['allData']['covariateStats']);
+  }
+
+  public pData(param: string) {
+    return this.callParamData[param];
+  }
+
+  public isArray(paramData: string | string[]): boolean {
+    return Array.isArray(paramData);
   }
 
   public parseSampleSizeRows(data): any[] {

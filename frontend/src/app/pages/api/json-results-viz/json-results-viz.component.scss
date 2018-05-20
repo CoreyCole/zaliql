@@ -1,3 +1,25 @@
+mat-card.call-summary {
+  mat-toolbar {
+    margin-bottom: 16px;
+  }
+  .mat-list-icon {
+    color: rgba(0, 0, 0, 0.54);
+  }
+  h3 {
+    margin: 0;
+    margin-top: 16px;
+    margin-left: 16px;
+    padding: 0;
+    font-size: 14pt;
+    font-family: monospace;
+    color: rgba(0, 0, 0, 0.74);
+  }
+  h4 {
+    font-family: monospace;
+    color: rgba(0, 0, 0, 0.54);
+  }
+}
+
 div.datatable {
   padding: 16px;
 }
