@@ -40,7 +40,7 @@
 
 <mat-card>
   <mat-toolbar color="accent" class="flex-row-container">
-    <span>Treatment ATE</span>
+    <span>Treatment ATE ({{ pData('treatment') }} -> {{ pData('outcome') }})</span>
   </mat-toolbar>
   <!-- <ngx-charts-bar-vertical-2d
     [view]="view"
@@ -58,11 +58,14 @@
 
 <mat-card>
   <mat-toolbar color="accent" class="flex-row-container">
-    <span>Covariate ATE</span>
+    <span>Covariate ATE ({{ currentCovariate }} -> {{ pData('outcome') }})</span>
     <span class="flex-span"></span>
     <span class="covariate-dropdown">
-      <mat-select placeholder="Covariate">
-        <mat-option *ngFor="let covariate of covariates" [value]="covariates[0]">
+      <mat-select 
+          placeholder="Covariate" 
+          (selectionChange)="changeCovariate($event)" 
+          [value]="currentCovariate">
+        <mat-option *ngFor="let covariate of covariates" [value]="covariate">
           {{ covariate }}
         </mat-option>
       </mat-select>

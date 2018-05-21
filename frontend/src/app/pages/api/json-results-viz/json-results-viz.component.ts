@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { ApiService } from '../api.service';
+import { MatSelectChange } from '@angular/material';
 
 @Component({
   selector: 'zql-json-results-viz',
@@ -20,6 +21,7 @@ export class JsonResultsVizComponent implements OnInit {
   public functionName: string;
   public callParams: string[];
   public callParamData: any;
+  public currentCovariate: string;
 
   constructor(
     private api: ApiService
@@ -33,10 +35,15 @@ export class JsonResultsVizComponent implements OnInit {
     this.callParamData = this.api.resultData['params'];
     this.sampleSizeRows = this.parseSampleSizeRows(this.data);
     this.covariates = Object.keys(this.data['allData']['covariateStats']);
+    this.currentCovariate = this.covariates[0];
   }
 
   public pData(param: string) {
     return this.callParamData[param];
+  }
+
+  public changeCovariate(change: MatSelectChange) {
+    this.currentCovariate = change.value;
   }
 
   public isArray(paramData: string | string[]): boolean {

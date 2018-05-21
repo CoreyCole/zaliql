@@ -78,7 +78,7 @@
           "name": "output_table",
           "description": "output table name",
           "type": "text",
-          "default": "test_flight"
+          "default": "flights_weather_demo_matched"
         }
       ]
     },
@@ -131,7 +131,7 @@
           "name": "output_table",
           "description": "output table name",
           "type": "text",
-          "default": "test_flight"
+          "default": "flights_weather_demo_matched"
         }
       ]
     },
@@ -211,7 +211,7 @@
           "name": "output_table",
           "description": "output table name",
           "type": "text",
-          "default": "test_flight"
+          "default": "flights_weather_demo_matched"
         }
       ]
     },
@@ -270,7 +270,7 @@
           "name": "output_table",
           "description": "output table name",
           "type": "text",
-          "default": "test_flight"
+          "default": "flights_weather_demo_matched"
         }
       ]
     },
@@ -290,7 +290,7 @@
           "name": "matchit_cem_table",
           "description": "table name that was output by matchit_cem",
           "type": "table-text",
-          "default": "test_flight"
+          "default": "flights_weather_demo_matched"
         },
         {
           "name": "treatment",
