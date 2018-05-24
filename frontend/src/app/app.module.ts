@@ -23,7 +23,8 @@ import {
   MatSidenavModule,
   MatInputModule,
   MatSelectModule,
-  MatChipsModule
+  MatChipsModule,
+  MatProgressSpinnerModule
 } from '@angular/material';
 // material icons
 import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
@@ -49,7 +50,7 @@ import { HomeComponent } from './pages/home/home.component';
 import { DemoComponent } from './pages/demo/demo.component';
 import { ImplementationComponent } from './pages/implementation/implementation.component';
 import { CitationsComponent } from './pages/citations/citations.component';
-import { GroupedVerticalBarChartComponent } from './pages/demo/grouped-vertical-bar-chart/grouped-vertical-bar-chart.component';
+import { GroupedVerticalBarChartComponent } from './components/grouped-vertical-bar-chart/grouped-vertical-bar-chart.component';
 
 // zql api pages
 import { ApiComponent } from './pages/api/api.component';
@@ -90,6 +91,7 @@ import { TestApiParamColumnsTextArrArrComponent } from './components/api-content
 import { ApiService } from './pages/api/api.service';
 import { JsonResultsComponent } from './components/api-content/json-results/json-results.component';
 import { JsonResultsVizComponent } from './pages/api/json-results-viz/json-results-viz.component';
+import { TestApiParamColumnTextNullComponent } from './components/api-content/test-api/test-api-param/test-api-param-column-text-null/test-api-param-column-text-null.component';
 
 @NgModule({
   declarations: [
@@ -125,7 +127,8 @@ import { JsonResultsVizComponent } from './pages/api/json-results-viz/json-resul
     MatchitCemSummaryStatisticsComponent,
     TestApiParamColumnsTextArrArrComponent,
     JsonResultsComponent,
-    JsonResultsVizComponent
+    JsonResultsVizComponent,
+    TestApiParamColumnTextNullComponent
   ],
   imports: [
     BrowserModule,
@@ -145,6 +148,7 @@ import { JsonResultsVizComponent } from './pages/api/json-results-viz/json-resul
     MatInputModule,
     MatSelectModule,
     MatChipsModule,
+    MatProgressSpinnerModule,
     // material icons
     MatIconModule,
     // ngx charts components

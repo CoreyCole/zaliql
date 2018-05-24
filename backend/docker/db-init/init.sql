@@ -86,11 +86,11 @@ CREATE TABLE flights_demo (
   hour INTEGER,
   carrierid INTEGER,
   carrier TEXT,
+  airport TEXT,
   dest TEXT,
   crsdeptime TEXT,
   depdelay NUMERIC,
   depdel15 INTEGER,
-  airport TEXT,
   wid SERIAL references weather_demo (wid)
 );
 CREATE TABLE flights_weather_demo (
@@ -141,7 +141,7 @@ COPY weather_demo (
   lowvisibility,
   wspdm,
   highwindspeed
-) FROM '/db/data/weather.csv' CSV HEADER;
+) FROM '/db/data/weather-airports.csv' CSV HEADER;
 COPY flights_demo (
   fid,
   yyear,
@@ -157,7 +157,7 @@ COPY flights_demo (
   depdel15,
   airport,
   wid
-) FROM '/db/data/flights.csv' CSV HEADER;
+) FROM '/db/data/flights-airport.csv' CSV HEADER;
 INSERT INTO flights_weather_demo
 SELECT
   fid,

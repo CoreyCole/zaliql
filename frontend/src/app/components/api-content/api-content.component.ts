@@ -17,7 +17,7 @@ import { ApiService } from '../../pages/api/api.service';
       <span class="flex-span"></span>
       <span>{{ functionData.name }}</span>
       <span class="flex-span"></span>
-      <button mat-raised-button color="accent" type="button"
+      <button mat-raised-button color="accent" type="button" *ngIf="!calling"
         (click)="testFunction(functionData.name, functionParamData)">Test</button>
     </mat-toolbar>
   </div>
@@ -32,6 +32,7 @@ import { ApiService } from '../../pages/api/api.service';
         </span>
       </mat-card-content>
     </mat-card>
+    <mat-spinner color="accent" *ngIf="calling"></mat-spinner>
     <mat-card>
       <mat-card-content>
         <p>{{ functionData.description }}</p>
@@ -54,6 +55,7 @@ export class ApiContentComponent implements AfterViewInit {
   public results: string;
   public error: string;
   public jsonResults: boolean;
+  public calling = false;
 
   constructor(
     private router: Router,
@@ -70,13 +72,15 @@ export class ApiContentComponent implements AfterViewInit {
   }
 
   public testFunction(functionName: string, functionParamData: { [paramName: string]: string | string[] | string[][] }) {
+    window.scrollTo(0, 0);
+    this.calling = true;
     this.results$ = this.api.callFunction(functionName, functionParamData);
     this.results$.pipe(
-        map(data => data.status),
         catchError(err => {
           console.log(err);
           this.results = '';
           this.error = err.error.status;
+          this.calling = false;
           return ErrorObservable.create(err.error.status);
         })
       )
@@ -85,9 +89,10 @@ export class ApiContentComponent implements AfterViewInit {
         // typeof data === 'object'
         console.log(data);
         this.error = '';
-        this.results = data;
+        this.results = data.status;
+        this.api.setResultData(data);
         this.api.queryTableNames();
-        window.scrollTo(0, 0);
+        this.calling = false;
       });
   }
 }

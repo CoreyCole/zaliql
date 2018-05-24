@@ -76,14 +76,15 @@ DECLARE
   result_arr JSONB;
 BEGIN
   command_string := 'SELECT json_agg(json_build_object('
-    || '''' || treatment || ''', treatment, '
+    || '''treatment'', treatment, '
     || '''weighted_avg_outcome'', weighted_avg_outcome';
 
   IF grouping_attribute IS NOT NULL THEN
-    command_string := command_string || ', ''' || grouping_attribute || ''', ' || quote_ident(grouping_attribute);
+    command_string := command_string || ', ''grouping_attribute'', ' || quote_ident(grouping_attribute);
   END IF;
 
-  command_string := command_string || ')) FROM ' || quote_ident(table_name);
+  command_string := command_string || ')) FROM ' || quote_ident(table_name)
+    || ' GROUP BY ' || quote_ident(grouping_attribute);
 
   RAISE NOTICE '%', command_string;
   EXECUTE command_string INTO result_arr;
