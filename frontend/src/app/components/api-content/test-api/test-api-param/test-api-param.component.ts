@@ -36,6 +36,11 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
           [paramData]="paramData"
           (columnSelected)="updateFunctionCall($event)"></zql-test-api-param-column-text>
       </mat-card-content>
+      <mat-card-content *ngSwitchCase="'column-text-null'">
+        <zql-test-api-param-column-text-null
+          [paramData]="paramData"
+          (columnSelected)="updateFunctionCall($event)"></zql-test-api-param-column-text-null>
+      </mat-card-content>
       <mat-card-content *ngSwitchCase="'columns-text-arr'">
         <zql-test-api-param-columns-text-arr
           [paramData]="paramData"

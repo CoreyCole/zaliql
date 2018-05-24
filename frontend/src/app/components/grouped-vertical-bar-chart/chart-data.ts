@@ -39,7 +39,7 @@ const simpsonsParadox = {
         },
         {
           'name': 'UA',
-          'value': 0.07
+          'value': 0.071
         }
       ]
     },

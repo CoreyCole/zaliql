@@ -40,48 +40,50 @@
 
 <mat-card>
   <mat-toolbar color="accent" class="flex-row-container">
-    <span>Treatment ATE ({{ pData('treatment') }} -> {{ pData('outcome') }})</span>
+    <span>Treatment ATE Before & After Matching ({{ pData('treatment') }} -> {{ pData('outcome') }})</span>
   </mat-toolbar>
-  <!-- <ngx-charts-bar-vertical-2d
-    [view]="view"
-    [scheme]="colorScheme"
-    [results]="groupByCarrier ? effectQuery1.data : effectQuery2.data"
-    [xAxis]="true"
-    [yAxis]="true"
-    [legend]="true"
-    [showXAxisLabel]="true"
-    [showYAxisLabel]="true"
-    [xAxisLabel]="effectQuery1.xAxis"
-    [yAxisLabel]="effectQuery1.yAxis">
-  </ngx-charts-bar-vertical-2d> -->
+  <div *ngIf="originalTreatmentData && matchedTreatmentData">
+    <ngx-charts-bar-vertical-2d
+      [view]="view"
+      [scheme]="colorScheme"
+      [results]="treatmentData"
+      [xAxis]="true"
+      [yAxis]="true"
+      [legend]="true"
+      [showXAxisLabel]="true"
+      [showYAxisLabel]="true"
+      [xAxisLabel]="'Treatment (' + pData('treatment') + ')'"
+      [yAxisLabel]="'Average Outcome (' + pData('outcome') + ')'">
+    </ngx-charts-bar-vertical-2d>
+  </div>
 </mat-card>
 
 <mat-card>
   <mat-toolbar color="accent" class="flex-row-container">
-    <span>Covariate ATE ({{ currentCovariate }} -> {{ pData('outcome') }})</span>
+    <span>Covariate ATE After Matching ({{ currentCovariate }} -> {{ pData('outcome') }})</span>
     <span class="flex-span"></span>
     <span class="covariate-dropdown">
       <mat-select 
           placeholder="Covariate" 
           (selectionChange)="changeCovariate($event)" 
           [value]="currentCovariate">
-        <mat-option *ngFor="let covariate of covariates" [value]="covariate">
+        <mat-option *ngFor="let covariate of binaryCovariates" [value]="covariate">
           {{ covariate }}
         </mat-option>
       </mat-select>
     </span>
   </mat-toolbar>
-  <!-- <ngx-charts-bar-vertical-2d
+  <ngx-charts-bar-vertical
     [view]="view"
     [scheme]="colorScheme"
-    [results]="groupByCarrier ? effectQuery1.data : effectQuery2.data"
+    [results]="covariateATE[currentCovariate]"
     [xAxis]="true"
     [yAxis]="true"
     [legend]="true"
     [showXAxisLabel]="true"
     [showYAxisLabel]="true"
-    [xAxisLabel]="effectQuery1.xAxis"
-    [yAxisLabel]="effectQuery1.yAxis">
-  </ngx-charts-bar-vertical-2d> -->
+    [xAxisLabel]="currentCovariate"
+    [yAxisLabel]="'Average Outcome (' + pData('outcome') + ')'">
+  </ngx-charts-bar-vertical>
 </mat-card>
 

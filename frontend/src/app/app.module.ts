@@ -91,6 +91,7 @@ import { TestApiParamColumnsTextArrArrComponent } from './components/api-content
 import { ApiService } from './pages/api/api.service';
 import { JsonResultsComponent } from './components/api-content/json-results/json-results.component';
 import { JsonResultsVizComponent } from './pages/api/json-results-viz/json-results-viz.component';
+import { TestApiParamColumnTextNullComponent } from './components/api-content/test-api/test-api-param/test-api-param-column-text-null/test-api-param-column-text-null.component';
 
 @NgModule({
   declarations: [
@@ -126,7 +127,8 @@ import { JsonResultsVizComponent } from './pages/api/json-results-viz/json-resul
     MatchitCemSummaryStatisticsComponent,
     TestApiParamColumnsTextArrArrComponent,
     JsonResultsComponent,
-    JsonResultsVizComponent
+    JsonResultsVizComponent,
+    TestApiParamColumnTextNullComponent
   ],
   imports: [
     BrowserModule,
