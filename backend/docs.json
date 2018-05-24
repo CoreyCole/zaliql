@@ -1,4 +1,4 @@
-{
+ {
   "functions": {
     "bin_equal_width": {
       "name": "bin_equal_width",
@@ -71,7 +71,7 @@
           "type": "columns-text-arr",
           "default": {
             "table": "flights_weather_demo_binned",
-            "columns": ["vism_ew_binned_10", "wspdm_ew_binned_9", "hum", "thunder", "fog", "hail"]
+            "columns": ["vism_ew_binned_10", "wspdm_ew_binned_9", "thunder", "fog", "rain", "heavysnow"]
           }
         },
         {
@@ -282,9 +282,9 @@
       "params": [
         {
           "name": "original_table",
-          "description": "original input table name",
+          "description": "original input table name with binned columns",
           "type": "table-text",
-          "default": "flights_weather_demo"
+          "default": "flights_weather_demo_binned"
         },
         {
           "name": "matchit_cem_table",
@@ -313,10 +313,10 @@
         {
           "name": "grouping_attribute",
           "description": "compare ATE across specified groups (can be null)",
-          "type": "column-text",
+          "type": "column-text-null",
           "default": {
-            "table": "flights_weather_demo",
-            "column": "airport"
+            "table": "null",
+            "column": "null"
           }
         },
         {
@@ -325,7 +325,7 @@
           "type": "columns-text-arr",
           "default": {
             "table": "flights_weather_demo",
-            "columns": ["vism", "wspdm", "hum", "thunder", "fog", "hail"]
+            "columns": ["vism", "wspdm", "thunder", "fog", "rain", "heavysnow"]
           }
         },
         {

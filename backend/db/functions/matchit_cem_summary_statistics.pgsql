@@ -44,7 +44,7 @@ BEGIN
     command_string := command_string || ', ' || quote_ident(grouping_attribute);
   END IF;
 
-  command_string := command_string || ' HAVING count(DISTINCT ' || quote_ident(treatment) || ') = 2)'
+  command_string := command_string || ')'
     || ' SELECT Blocks.' || quote_ident(treatment) || ' AS treatment,'
     || ' sum(avg_outcome * block_weight) AS weighted_avg_outcome';
 
@@ -83,8 +83,11 @@ BEGIN
     command_string := command_string || ', ''grouping_attribute'', ' || quote_ident(grouping_attribute);
   END IF;
 
-  command_string := command_string || ')) FROM ' || quote_ident(table_name)
-    || ' GROUP BY ' || quote_ident(grouping_attribute);
+  command_string := command_string || ')) FROM ' || quote_ident(table_name);
+
+  IF grouping_attribute IS NOT NULL THEN
+    command_string := command_string || ' GROUP BY ' || quote_ident(grouping_attribute);
+  END IF;
 
   RAISE NOTICE '%', command_string;
   EXECUTE command_string INTO result_arr;
@@ -99,9 +102,11 @@ CREATE OR REPLACE FUNCTION ate_cem(
   treatment TEXT,               -- column name of the treatment of interest
   outcome TEXT,                 -- column name of the outcome of interest
   grouping_attribute TEXT,      -- compare ATE across specified groups (can be null)
-  ordinal_covariates_arr TEXT[] -- array of original ordinal covariate column names
-                                --  (column names BEFORE discretization/binning)
-                                --  can be empty array if no covariates were ordinal
+  binned_covariates_arr TEXT[], -- array of original binned covariate column names
+                                --  (column names AFTER discretization/binning)
+                                --  can be empty array if no covariates were binned
+  binary_covariates_arr TEXT[]  -- array of binary covariate column names
+                                --  can be empty array if no covairates were binary
 ) RETURNS JSONB AS $func$
 DECLARE
   output_table TEXT;
@@ -112,34 +117,73 @@ DECLARE
   original_avg_outcome_control NUMERIC;
   orignal_avg_diff NUMERIC;
   matched_avg_diff NUMERIC;
-  treatment_result_arr JSONB;
+  matched_treatment_result_arr JSONB;
   result_arr JSONB;
-  covariates_result_arr JSONB;
+  original_treatment_result_arr JSONB;
+  original_binary_covariates_result_arr JSONB;
+  matched_binary_covariates_result_arr JSONB;
+  binned_covariates_result_arr JSONB;
 BEGIN
   output_table := matchit_cem_table || '_ate_cem';
+  
+  -- clean up result table
+  drop_output_command := 'DROP TABLE ' || quote_ident(output_table);
+
+  -- PERFORM weighted_average_matchit_cem(original_table, output_table, treatment, outcome, grouping_attribute);
+
+  -- SELECT get_json_ate(output_table, treatment, grouping_attribute)
+  --   INTO original_treatment_result_arr;
+
+  -- EXECUTE drop_output_command;
+
   PERFORM weighted_average_matchit_cem(matchit_cem_table, output_table, treatment, outcome, grouping_attribute);
 
   SELECT get_json_ate(output_table, treatment, grouping_attribute)
-    INTO treatment_result_arr;
+    INTO matched_treatment_result_arr;
 
-  -- clean up result table
-  drop_output_command := 'DROP TABLE ' || quote_ident(output_table);
   EXECUTE drop_output_command;
+  
+  -- original_binary_covariates_result_arr := jsonb_build_object();
+  -- IF binary_covariates_arr IS NOT NULL THEN
+  --   FOREACH covariate IN ARRAY binary_covariates_arr LOOP
+  --     PERFORM weighted_average_matchit_cem(original_table, output_table, covariate, outcome, grouping_attribute);
+  --     SELECT get_json_ate(output_table, covariate, grouping_attribute)
+  --       INTO result_arr;
+  --     original_binary_covariates_result_arr := original_binary_covariates_result_arr || jsonb_build_object(
+  --       covariate, result_arr
+  --     );
+  --     -- clean up result table
+  --     EXECUTE drop_output_command; -- uses same output_table for treatment and all covariates 
+  --   END LOOP;
+  -- END IF;
 
-  covariates_result_arr := jsonb_build_object();
-  IF ordinal_covariates_arr IS NOT NULL THEN
-    FOREACH covariate IN ARRAY ordinal_covariates_arr LOOP
-      PERFORM weighted_average_matchit_cem(matchit_cem_table, output_table, treatment, outcome, grouping_attribute);
+  matched_binary_covariates_result_arr := jsonb_build_object();
+  IF binary_covariates_arr IS NOT NULL THEN
+    FOREACH covariate IN ARRAY binary_covariates_arr LOOP
+      PERFORM weighted_average_matchit_cem(matchit_cem_table, output_table, covariate, outcome, grouping_attribute);
       SELECT get_json_ate(output_table, covariate, grouping_attribute)
         INTO result_arr;
-      covariates_result_arr := covariates_result_arr || jsonb_build_object(
+      matched_binary_covariates_result_arr := matched_binary_covariates_result_arr || jsonb_build_object(
         covariate, result_arr
       );
-
       -- clean up result table
-      EXECUTE drop_output_command; -- uses same output_table for treatment and all covariates
+      EXECUTE drop_output_command; -- uses same output_table for treatment and all covariates 
     END LOOP;
   END IF;
+
+  -- binned_covariates_result_arr := jsonb_build_object();
+  -- IF binned_covariates_arr IS NOT NULL THEN
+  --   FOREACH covariate IN ARRAY binned_covariates_arr LOOP
+  --     PERFORM weighted_average_matchit_cem(matchit_cem_table, output_table, covariate, outcome, grouping_attribute);
+  --     SELECT get_json_ate(output_table, covariate, grouping_attribute)
+  --       INTO result_arr;
+  --     binned_covariates_result_arr := binned_covariates_result_arr || jsonb_build_object(
+  --       covariate, result_arr
+  --     );
+  --     -- clean up result table
+  --     EXECUTE drop_output_command; -- uses same output_table for treatment and all covariates 
+  --   END LOOP;
+  -- END IF;
 
   -- get ate from unmatched data
   command_string := 'SELECT avg(' || quote_ident(outcome) || ')'
@@ -159,8 +203,8 @@ BEGIN
         'avgOutcomeDiff', orignal_avg_diff
       ),
     'matchedData', jsonb_build_object(
-      'treatment', treatment_result_arr,
-      'covariates', covariates_result_arr
+      'treatment', matched_treatment_result_arr,
+      'binary_covariates', matched_binary_covariates_result_arr
     )
   );
 END;
@@ -197,7 +241,6 @@ BEGIN
   IF covariates_arr IS NULL OR array_length(covariates_arr, 1) IS NULL THEN
     RETURN jsonb_build_object();
   END IF;
-  RAISE NOTICE 'asdf %, %', covariates_arr, array_length(covariates_arr, 1);
 
   json_command_string = 'SELECT jsonb_build_object(';
   FOREACH covariate IN ARRAY covariates_arr LOOP
@@ -333,7 +376,7 @@ END;
 $func$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE FUNCTION matchit_cem_summary_statistics(
-  binned_original_table TEXT, -- original input table name
+  binned_original_table TEXT, -- original input table name with binned columns
                               -- (table name after discretization/binning if binning was done
                               --  otherwise table name before binning is OK)
   matchit_cem_table TEXT,     -- table name that was output by matchit_cem
@@ -354,12 +397,23 @@ DECLARE
   matched_json JSONB;
   ate_json JSONB;
   qq_json JSONB;
+  binary_covariates_arr TEXT[];
 BEGIN
+  IF grouping_attribute='null' THEN
+    grouping_attribute = NULL;
+  END IF;
+
+  SELECT array_agg(elements) FROM (
+    SELECT unnest(original_covariates_arr)
+    EXCEPT
+    SELECT unnest(original_ordinal_covariates_arr)
+  ) t (elements) INTO binary_covariates_arr;
+
   SELECT get_json_covariate_stats(binned_original_table, treatment, original_covariates_arr)
     INTO all_json;
   SELECT get_json_covariate_stats(matchit_cem_table, treatment, binned_ordinal_covariates_arr)
     INTO matched_json;
-  SELECT ate_cem(binned_original_table, matchit_cem_table, treatment, outcome, grouping_attribute, original_ordinal_covariates_arr)
+  SELECT ate_cem(binned_original_table, matchit_cem_table, treatment, outcome, grouping_attribute, binned_ordinal_covariates_arr, binary_covariates_arr)
     INTO ate_json;
   SELECT qq_cem(binned_original_table, matchit_cem_table, treatment, original_ordinal_covariates_arr, binned_ordinal_covariates_arr)
     INTO qq_json;

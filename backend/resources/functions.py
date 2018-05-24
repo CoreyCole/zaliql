@@ -14,10 +14,13 @@ def call_function(cursor, function_name, request_params, function_docs):
     for param in doc['params']:
       data = request_params[param['name']]
       type = param['type']
+      info_logger.info('data=%s', data)
       if type is 'int':
         data = int(data)
       elif type is 'numeric':
         data = float(data)
+      elif data is 'null':
+        data = None
       param_list.append(data)
 
     info_logger.info('Calling function {%s} with params %s', function_name, param_list)

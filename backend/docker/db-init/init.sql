@@ -102,11 +102,11 @@ CREATE TABLE flights_weather_demo (
   hour INTEGER,
   carrierid INTEGER,
   carrier TEXT,
+  airport TEXT,
   dest TEXT,
   crsdeptime TEXT,
   depdelay NUMERIC,
   depdel15 INTEGER,
-  airport TEXT,
   wid SERIAL,
   fog INTEGER,
   hail INTEGER,
@@ -151,13 +151,13 @@ COPY flights_demo (
   hour,
   carrierid,
   carrier,
+  airport,
   dest,
   crsdeptime,
   depdelay,
   depdel15,
-  airport,
   wid
-) FROM '/db/data/flights-airport.csv' CSV HEADER;
+) FROM '/db/data/flights-airports.csv' CSV HEADER;
 INSERT INTO flights_weather_demo
 SELECT
   fid,
@@ -168,11 +168,11 @@ SELECT
   hour,
   carrierid,
   carrier,
+  airport,
   dest,
   crsdeptime,
   depdelay,
   depdel15,
-  airport,
   wid,
   fog,
   hail,
