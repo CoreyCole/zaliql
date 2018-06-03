@@ -1,0 +1,25 @@
+version: "3.1"
+
+services:
+  python:
+    image: coreyleoc/zaliql-python
+    environment:
+      PYTHONBUFFERED: 'true'
+    volumes:
+      - ../backend/:/backend/
+    ports:
+      - 5000:5000
+    depends_on:
+      - db
+
+  angular:
+    image: coreyleoc/zaliql-angular
+    volumes:
+      - ../frontend/src/:/frontend/src/
+    ports:
+      - 4201:4200
+
+  db:
+    image: coreyleoc/zaliql-db
+    ports:
+      - 5434:5432
