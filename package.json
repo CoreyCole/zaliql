@@ -1,0 +1,32 @@
+{
+  "name": "ZaliQL",
+  "version": "1.0.0",
+  "description": "A SQL-Based Framework for Drawing Causal Inference from Big Data ([Paper](https://drive.google.com/file/d/0B5MQIp52G7ohc0NSSEl0V19yclk/view)) ### Table of Contents - [Demo](https://gitlab.cs.washington.edu/bsalimi/ZaliSQL#Demo) - [Preprocessing](https://gitlab.cs.washington.edu/bsalimi/ZaliSQL#Preprocessing) - [Matching](https://gitlab.cs.washington.edu/bsalimi/ZaliSQL#Matching) - [Analysis](https://gitlab.cs.washington.edu/bsalimi/ZaliSQL#Analysis)",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "docker": "docker-compose -f docker/docker-compose.yml up -d --build",
+    "logs-python": "docker-compose -f docker/docker-compose.yml logs -t -f python",
+    "logs-db": "docker-compose -f docker/docker-compose.yml logs -t -f db",
+    "logs-angular": "docker-compose -f docker/docker-compose.yml logs -t -f angular",
+    "ssh-python": "",
+    "ssh-db": "",
+    "ssh-angular": "",
+    "docker-down": "docker-compose -f docker/docker-compose.yml down",
+    "docker-build-python": "docker build --file docker/python.Dockerfile --tag coreyleoc/zaliql-python ./backend",
+    "docker-push-python": "npm run docker-build-python && docker push coreyleoc/zaliql-python",
+    "docker-build-db": "docker build --file docker/db.Dockerfile --tag coreyleoc/zaliql-db .",
+    "docker-push-db": "npm run docker-build-db && docker push coreyleoc/zaliql-db",
+    "docker-build-angular": "docker build --file docker/angular.Dockerfile --tag coreyleoc/zaliql-angular ./frontend",
+    "docker-push-angular": "npm run docker-build-angular && docker push coreyleoc/zaliql-angular"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CoreyCole/zaliql.git"
+  },
+  "author": "Corey Cole",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CoreyCole/zaliql/issues"
+  },
+  "homepage": "https://github.com/CoreyCole/zaliql#readme"
+}

@@ -5,16 +5,12 @@ import json
 import falcon
 # app middlewares
 from middlewares.cors import CORSComponent
-from middlewares.rate_limiter import RateLimiterComponent
 from middlewares.database import DatabaseComponent
 # app resources
 from resources.columns import ColumnsResource
 from resources.functions import FunctionsResource
 from resources.tables import TablesResource
 from resources.test import TestResource
-
-RATE_LIMIT = 10       # limits 10 requests
-RATE_LIMIT_WINDOW = 5 # per 5 seconds
 
 # create info logger
 INFO_LOGGER = logging.getLogger('info')
@@ -42,7 +38,6 @@ DOCS = json.load(open('./docs.json'))
 DATABASE = DatabaseComponent()
 APP = falcon.API(middleware=[
     CORSComponent(),
-    RateLimiterComponent(limit=RATE_LIMIT, window=RATE_LIMIT_WINDOW),
     DATABASE
 ])
 # APP.req_options.auto_parse_form_urlencoded = True
