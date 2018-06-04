@@ -398,6 +398,8 @@ DECLARE
   ate_json JSONB;
   qq_json JSONB;
   binary_covariates_arr TEXT[];
+  pre_matched_covariates_arr TEXT[];
+  matched_covariates_arr TEXT[];
 BEGIN
   IF grouping_attribute='null' THEN
     grouping_attribute = NULL;
@@ -409,9 +411,15 @@ BEGIN
     SELECT unnest(original_ordinal_covariates_arr)
   ) t (elements) INTO binary_covariates_arr;
 
-  SELECT get_json_covariate_stats(binned_original_table, treatment, original_covariates_arr)
+  SELECT array_cat(binary_covariates_arr, original_ordinal_covariates_arr)
+    INTO pre_matched_covariates_arr;
+
+  SELECT array_cat(binary_covariates_arr, binned_ordinal_covariates_arr)
+    INTO matched_covariates_arr;
+
+  SELECT get_json_covariate_stats(binned_original_table, treatment, pre_matched_covariates_arr)
     INTO all_json;
-  SELECT get_json_covariate_stats(matchit_cem_table, treatment, binned_ordinal_covariates_arr)
+  SELECT get_json_covariate_stats(matchit_cem_table, treatment, matched_covariates_arr)
     INTO matched_json;
   SELECT ate_cem(binned_original_table, matchit_cem_table, treatment, outcome, grouping_attribute, binned_ordinal_covariates_arr, binary_covariates_arr)
     INTO ate_json;
