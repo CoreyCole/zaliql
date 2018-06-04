@@ -22,16 +22,7 @@ export class JsonResultsVizComponent implements OnInit {
   ];
   public sampleSizeRows: any[];
 
-  public covariateStatsSizeColumns = [
-    { name: 'Column' },
-    { name: 'Mean Control' },
-    { name: 'Mean Treated' },
-    { name: 'Mean Difference' },
-    { name: 'Control Standard Deviation' },
-    { name: 'Treated Standard Deviation' },
-  ];
-  public preMatchedCovariateStatsRows: any[];
-  public matchedCovariateStatsRows: any[];
+  public qqData: any;
 
   public covariates: string[];
   public functionName: string;
@@ -48,6 +39,17 @@ export class JsonResultsVizComponent implements OnInit {
   public currentCovariate: string;
   public covariateATE: any = {};
 
+  public covariateStatsSizeColumns = [
+    { name: 'Column' },
+    { name: 'Mean Control' },
+    { name: 'Mean Treated' },
+    { name: 'Mean Difference' },
+    { name: 'Control Standard Deviation' },
+    { name: 'Treated Standard Deviation' },
+  ];
+  public preMatchedCovariateStatsRows: any[];
+  public matchedCovariateStatsRows: any[];
+
   constructor(
     private api: ApiService
   ) { }
@@ -58,6 +60,7 @@ export class JsonResultsVizComponent implements OnInit {
     this.functionName = this.api.resultData['function_name'];
     this.callParams = Object.keys(this.api.resultData['params']);
     this.callParamData = this.api.resultData['params'];
+    this.qqData = this.data['qq'];
     this.sampleSizeRows = this.parseSampleSizeRows(this.data);
     this.covariates = Object.keys(this.data['allData']['covariateStats']);
     this.currentCovariate = this.covariates[0];

@@ -38,34 +38,11 @@
   </ngx-datatable>
 </mat-card>
 
-<mat-card class="datatable">
-  <mat-toolbar color="accent">
-    <span>Covariate Stats Before Matching</span>
+<mat-card>
+  <mat-toolbar color="accent" class="flex-row-container">
+    <span>Covariate QQ Plots</span>
   </mat-toolbar>
-  <ngx-datatable
-    class="material"
-    [rows]="preMatchedCovariateStatsRows"
-    [columns]="covariateStatsSizeColumns"
-    [columnMode]="'force'"
-    [headerHeight]="50"
-    [footerHeight]="false"
-    [rowHeight]="'auto'">
-  </ngx-datatable>
-</mat-card>
-
-<mat-card class="datatable">
-  <mat-toolbar color="accent">
-    <span>Covariate Stats After Matching</span>
-  </mat-toolbar>
-  <ngx-datatable
-    class="material"
-    [rows]="matchedCovariateStatsRows"
-    [columns]="covariateStatsSizeColumns"
-    [columnMode]="'force'"
-    [headerHeight]="50"
-    [footerHeight]="false"
-    [rowHeight]="'auto'">
-  </ngx-datatable>
+  <zql-qq-plot [data]="qqData"></zql-qq-plot>
 </mat-card>
 
 <mat-card>
@@ -117,3 +94,32 @@
   </ngx-charts-bar-vertical>
 </mat-card>
 
+<mat-card class="datatable">
+  <mat-toolbar color="accent">
+    <span>Covariate Stats Before Matching</span>
+  </mat-toolbar>
+  <ngx-datatable
+    class="material"
+    [rows]="preMatchedCovariateStatsRows"
+    [columns]="covariateStatsSizeColumns"
+    [columnMode]="'force'"
+    [headerHeight]="50"
+    [footerHeight]="false"
+    [rowHeight]="'auto'">
+  </ngx-datatable>
+</mat-card>
+
+<mat-card class="datatable">
+  <mat-toolbar color="accent">
+    <span>Covariate Stats After Matching</span>
+  </mat-toolbar>
+  <ngx-datatable
+    class="material"
+    [rows]="matchedCovariateStatsRows"
+    [columns]="covariateStatsSizeColumns"
+    [columnMode]="'force'"
+    [headerHeight]="50"
+    [footerHeight]="false"
+    [rowHeight]="'auto'">
+  </ngx-datatable>
+</mat-card>
