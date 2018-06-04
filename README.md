@@ -4,6 +4,14 @@ A SQL-Based Framework for Drawing Causal Inference from Big Data ([Paper](https:
 # Demo
 The only external dependency for ZaliQL is [Docker](https://docs.docker.com/install/#supported-platforms). It allows anyone with docker installed on their machine to spin up a containerized stack with all of the internal dependencies and demo data automatically installed.
 
+
+To spin up the containerized stack, use `docker-compose`:
+```bash
+docker-compose -f docker/docker-compose.yml up -d --build
+# OR
+npm run docker
+```
+
 ### These containers include:
 - python: the python webserver (port 5000)
   - The python webserver is instantiated with the anaconda distribution packages on python version 3.6.4
@@ -11,14 +19,7 @@ The only external dependency for ZaliQL is [Docker](https://docs.docker.com/inst
   - The postgres database is version 9.6 and comes pre-populated with demo data along with ZaliQL's and Madlib's function libraries
 - angular: frontend client for interacting with the database functions
 
-To spin up the containerized stack, use `docker-compose`:
-```bash
-docker-compose -f docker/docker-compose.yml up -d --build
-# OR
-npm run docker
-# NOTE: this takes some time, message "localhost:5432 - rejecting connections" is expected
-```
-
+#### Other useful docker commands
 To see what containers are running on your host machine:
 ```bash
 docker ps -a
