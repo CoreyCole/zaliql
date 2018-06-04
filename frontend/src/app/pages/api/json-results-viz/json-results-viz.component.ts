@@ -18,9 +18,21 @@ export class JsonResultsVizComponent implements OnInit {
     { name: 'Type' },
     { name: 'All' },
     { name: 'Matched' },
-    { name: 'Unmatched'}
+    { name: 'Unmatched' }
   ];
   public sampleSizeRows: any[];
+
+  public covariateStatsSizeColumns = [
+    { name: 'Column' },
+    { name: 'Mean Control' },
+    { name: 'Mean Treated' },
+    { name: 'Mean Difference' },
+    { name: 'Control Standard Deviation' },
+    { name: 'Treated Standard Deviation' },
+  ];
+  public preMatchedCovariateStatsRows: any[];
+  public matchedCovariateStatsRows: any[];
+
   public covariates: string[];
   public functionName: string;
   public callParams: string[];
@@ -49,6 +61,37 @@ export class JsonResultsVizComponent implements OnInit {
     this.sampleSizeRows = this.parseSampleSizeRows(this.data);
     this.covariates = Object.keys(this.data['allData']['covariateStats']);
     this.currentCovariate = this.covariates[0];
+
+    // covariate stats
+    this.preMatchedCovariateStatsRows = [];
+    const preMatchCovariateData = this.data['allData']['covariateStats'];
+    const preMatchCovariates = Object.keys(preMatchCovariateData);
+    for (const covariate of preMatchCovariates) {
+      const data = preMatchCovariateData[covariate];
+      this.preMatchedCovariateStatsRows.push({
+        column: covariate,
+        meanControl: data['meanControl'],
+        meanTreated: data['meanTreated'],
+        meanDifference: data['meanDiff'],
+        controlStandardDeviation: data['meanControlStdDev'],
+        treatedStandardDeviation: data['meanTreatedStdDev']
+      });
+    }
+
+    this.matchedCovariateStatsRows = [];
+    const matchedCovariateData = this.data['matchedData']['covariateStats'];
+    const matchedCovariates = Object.keys(matchedCovariateData);
+    for (const covariate of matchedCovariates) {
+      const data = matchedCovariateData[covariate];
+      this.matchedCovariateStatsRows.push({
+        column: covariate,
+        meanControl: data['meanControl'],
+        meanTreated: data['meanTreated'],
+        meanDifference: data['meanDiff'],
+        controlStandardDeviation: data['meanControlStdDev'],
+        treatedStandardDeviation: data['meanTreatedStdDev']
+      });
+    }
 
     // original treatment data
     const originalOutcomeControl = this.data['ate']['originalData']['avgOutcomeControl'];

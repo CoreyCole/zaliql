@@ -38,6 +38,36 @@
   </ngx-datatable>
 </div>
 
+<div class="datatable">
+  <mat-toolbar color="accent">
+    <span>Covariate Stats Before Matching</span>
+  </mat-toolbar>
+  <ngx-datatable
+    class="material"
+    [rows]="preMatchedCovariateStatsRows"
+    [columns]="covariateStatsSizeColumns"
+    [columnMode]="'force'"
+    [headerHeight]="50"
+    [footerHeight]="false"
+    [rowHeight]="'auto'">
+  </ngx-datatable>
+</div>
+
+<div class="datatable">
+  <mat-toolbar color="accent">
+    <span>Covariate Stats After Matching</span>
+  </mat-toolbar>
+  <ngx-datatable
+    class="material"
+    [rows]="matchedCovariateStatsRows"
+    [columns]="covariateStatsSizeColumns"
+    [columnMode]="'force'"
+    [headerHeight]="50"
+    [footerHeight]="false"
+    [rowHeight]="'auto'">
+  </ngx-datatable>
+</div>
+
 <mat-card>
   <mat-toolbar color="accent" class="flex-row-container">
     <span>Treatment ATE Before & After Matching ({{ pData('treatment') }} -> {{ pData('outcome') }})</span>

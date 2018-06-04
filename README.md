@@ -12,15 +12,7 @@ docker-compose -f docker/docker-compose.yml up -d --build
 npm run docker
 ```
 
-### These containers include:
-- python: the python webserver (port 5000)
-  - The python webserver is instantiated with the anaconda distribution packages on python version 3.6.4
-- db: a postgres database (port 5434)
-  - The postgres database is version 9.6 and comes pre-populated with demo data along with ZaliQL's and Madlib's function libraries
-- angular: frontend client for interacting with the database functions
-
-#### Other useful docker commands
-To see what containers are running on your host machine:
+To verify the containers are successfully running on your host machine:
 ```bash
 docker ps -a
 # Should see something like...
@@ -29,6 +21,16 @@ docker ps -a
 # docker_db_1
 # docker_angular_1
 ```
+
+### These containers include:
+- python: the python webserver (port 5000)
+  - The python webserver is instantiated with the anaconda distribution packages on python version 3.6.4
+- db: a postgres database (port 5434)
+  - The postgres database is version 9.6 and comes pre-populated with demo data along with ZaliQL's and Madlib's function libraries
+- angular: frontend client for interacting with the database functions
+
+#### Other useful docker commands
+Shortcuts to these docker commands can be found in root `package.json`
 
 To see the live-logs (or retroactive logs after a container crash) for one of the containers:
 ```bash
