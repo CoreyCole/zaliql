@@ -92,6 +92,7 @@ import { ApiService } from './pages/api/api.service';
 import { JsonResultsComponent } from './components/api-content/json-results/json-results.component';
 import { JsonResultsVizComponent } from './pages/api/json-results-viz/json-results-viz.component';
 import { TestApiParamColumnTextNullComponent } from './components/api-content/test-api/test-api-param/test-api-param-column-text-null/test-api-param-column-text-null.component';
+import { QqPlotComponent } from './components/api-content/qq-plot/qq-plot.component';
 
 @NgModule({
   declarations: [
@@ -128,7 +129,8 @@ import { TestApiParamColumnTextNullComponent } from './components/api-content/te
     TestApiParamColumnsTextArrArrComponent,
     JsonResultsComponent,
     JsonResultsVizComponent,
-    TestApiParamColumnTextNullComponent
+    TestApiParamColumnTextNullComponent,
+    QqPlotComponent
   ],
   imports: [
     BrowserModule,

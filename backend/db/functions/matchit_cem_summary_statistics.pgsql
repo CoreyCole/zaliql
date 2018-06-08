@@ -160,7 +160,7 @@ BEGIN
   matched_binary_covariates_result_arr := jsonb_build_object();
   IF binary_covariates_arr IS NOT NULL THEN
     FOREACH covariate IN ARRAY binary_covariates_arr LOOP
-      PERFORM weighted_average_matchit_cem(matchit_cem_table, output_table, covariate, outcome, grouping_attribute);
+      PERFORM weighted_average_matchit_cem(matchit_cem_table, output_table, treatment, covariate, grouping_attribute);
       SELECT get_json_ate(output_table, covariate, grouping_attribute)
         INTO result_arr;
       matched_binary_covariates_result_arr := matched_binary_covariates_result_arr || jsonb_build_object(
@@ -171,19 +171,19 @@ BEGIN
     END LOOP;
   END IF;
 
-  -- binned_covariates_result_arr := jsonb_build_object();
-  -- IF binned_covariates_arr IS NOT NULL THEN
-  --   FOREACH covariate IN ARRAY binned_covariates_arr LOOP
-  --     PERFORM weighted_average_matchit_cem(matchit_cem_table, output_table, covariate, outcome, grouping_attribute);
-  --     SELECT get_json_ate(output_table, covariate, grouping_attribute)
-  --       INTO result_arr;
-  --     binned_covariates_result_arr := binned_covariates_result_arr || jsonb_build_object(
-  --       covariate, result_arr
-  --     );
-  --     -- clean up result table
-  --     EXECUTE drop_output_command; -- uses same output_table for treatment and all covariates 
-  --   END LOOP;
-  -- END IF;
+  binned_covariates_result_arr := jsonb_build_object();
+  IF binned_covariates_arr IS NOT NULL THEN
+    FOREACH covariate IN ARRAY binned_covariates_arr LOOP
+      PERFORM weighted_average_matchit_cem(matchit_cem_table, output_table, treatment, covariate, grouping_attribute);
+      SELECT get_json_ate(output_table, covariate, grouping_attribute)
+        INTO result_arr;
+      binned_covariates_result_arr := binned_covariates_result_arr || jsonb_build_object(
+        covariate, result_arr
+      );
+      -- clean up result table
+      EXECUTE drop_output_command; -- uses same output_table for treatment and all covariates 
+    END LOOP;
+  END IF;
 
   -- get ate from unmatched data
   command_string := 'SELECT avg(' || quote_ident(outcome) || ')'
@@ -204,7 +204,8 @@ BEGIN
       ),
     'matchedData', jsonb_build_object(
       'treatment', matched_treatment_result_arr,
-      'binary_covariates', matched_binary_covariates_result_arr
+      'binary_covariates', matched_binary_covariates_result_arr,
+      'binned_covariates', binned_covariates_result_arr
     )
   );
 END;
@@ -398,6 +399,8 @@ DECLARE
   ate_json JSONB;
   qq_json JSONB;
   binary_covariates_arr TEXT[];
+  pre_matched_covariates_arr TEXT[];
+  matched_covariates_arr TEXT[];
 BEGIN
   IF grouping_attribute='null' THEN
     grouping_attribute = NULL;
@@ -409,9 +412,15 @@ BEGIN
     SELECT unnest(original_ordinal_covariates_arr)
   ) t (elements) INTO binary_covariates_arr;
 
-  SELECT get_json_covariate_stats(binned_original_table, treatment, original_covariates_arr)
+  SELECT array_cat(binary_covariates_arr, original_ordinal_covariates_arr)
+    INTO pre_matched_covariates_arr;
+
+  SELECT array_cat(binary_covariates_arr, binned_ordinal_covariates_arr)
+    INTO matched_covariates_arr;
+
+  SELECT get_json_covariate_stats(binned_original_table, treatment, pre_matched_covariates_arr)
     INTO all_json;
-  SELECT get_json_covariate_stats(matchit_cem_table, treatment, binned_ordinal_covariates_arr)
+  SELECT get_json_covariate_stats(matchit_cem_table, treatment, matched_covariates_arr)
     INTO matched_json;
   SELECT ate_cem(binned_original_table, matchit_cem_table, treatment, outcome, grouping_attribute, binned_ordinal_covariates_arr, binary_covariates_arr)
     INTO ate_json;

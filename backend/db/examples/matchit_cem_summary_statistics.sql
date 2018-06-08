@@ -50,6 +50,24 @@ FROM Blocks, Weights
 WHERE Blocks.subclass_id = Weights.subclass_id
 GROUP BY  Blocks.lowpressure, airport;
 
+-- for covariate
+CREATE TABLE test_flight_ate_cem AS
+WITH Blocks AS 
+    (SELECT avg(fog) AS avg_outcome,
+         subclass_id,
+         lowpressure
+    FROM flights_weather_demo_matched
+    GROUP BY  subclass_id, lowpressure), Weights AS 
+    (SELECT cast(count(*) AS NUMERIC) / 8450 AS block_weight,
+         subclass_id
+    FROM flights_weather_demo_matched
+    GROUP BY  subclass_id)
+SELECT Blocks.lowpressure AS treatment,
+         sum(avg_outcome * block_weight) AS weighted_avg_outcome
+FROM Blocks, Weights
+WHERE Blocks.subclass_id = Weights.subclass_id
+GROUP BY  Blocks.lowpressure;
+
 -- test `get_json_ate()`
 SELECT get_json_ate(
   'test_flight_ate_cem',
