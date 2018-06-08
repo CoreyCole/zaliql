@@ -30,7 +30,7 @@ docker ps -a
 - angular: frontend client for interacting with the database functions
 
 #### Other useful docker commands
-Shortcuts to these docker commands can be found in root `package.json`
+Shortcuts to these docker commands can be found in root `package.json` (you'll need node/npm to use them)
 
 To see the live-logs (or retroactive logs after a container crash) for one of the containers:
 ```bash
