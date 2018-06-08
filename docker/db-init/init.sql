@@ -79,15 +79,15 @@ CREATE TABLE weather_demo (
 );
 CREATE TABLE flights_demo (
   fid SERIAL primary key,
+  carrierid INTEGER,
+  carrier TEXT,
+  airport TEXT,
+  dest TEXT,
   yyear INTEGER,
   quarter INTEGER,
   month INTEGER,
   dayofweek INTEGER,
   hour INTEGER,
-  carrierid INTEGER,
-  carrier TEXT,
-  airport TEXT,
-  dest TEXT,
   crsdeptime TEXT,
   depdelay NUMERIC,
   depdel15 INTEGER,
@@ -95,15 +95,15 @@ CREATE TABLE flights_demo (
 );
 CREATE TABLE flights_weather_demo (
   fid SERIAL primary key,
+  carrierid INTEGER,
+  carrier TEXT,
+  airport TEXT,
+  dest TEXT,
   yyear INTEGER,
   quarter INTEGER,
   month INTEGER,
   dayofweek INTEGER,
   hour INTEGER,
-  carrierid INTEGER,
-  carrier TEXT,
-  airport TEXT,
-  dest TEXT,
   crsdeptime TEXT,
   depdelay NUMERIC,
   depdel15 INTEGER,
@@ -144,15 +144,15 @@ COPY weather_demo (
 ) FROM '/db/data/weather-airports.csv' CSV HEADER;
 COPY flights_demo (
   fid,
+  carrierid,
+  carrier,
+  airport,
+  dest,
   yyear,
   quarter,
   month,
   dayofweek,
   hour,
-  carrierid,
-  carrier,
-  airport,
-  dest,
   crsdeptime,
   depdelay,
   depdel15,
@@ -161,15 +161,15 @@ COPY flights_demo (
 INSERT INTO flights_weather_demo
 SELECT
   fid,
+  carrierid,
+  carrier,
+  airport,
+  dest,
   yyear,
   quarter,
   month,
   dayofweek,
   hour,
-  carrierid,
-  carrier,
-  airport,
-  dest,
   crsdeptime,
   depdelay,
   depdel15,
@@ -193,51 +193,17 @@ FROM flights_demo
 JOIN weather_demo using(wid);
 
 -- 5M row dataset
-CREATE TABLE weather_5000000 (
-  wid SERIAL primary key,
-  fog INTEGER,
-  hail INTEGER,
-  hum INTEGER,
-  precipm NUMERIC,
-  pressurem NUMERIC,
-  lowpressure INTEGER,
-  rain INTEGER,
-  snow INTEGER,
-  heavysnow INTEGER,
-  tempm NUMERIC,
-  thunder INTEGER,
-  vism NUMERIC,
-  lowvisibility INTEGER,
-  wspdm NUMERIC,
-  highwindspeed INTEGER
-);
-CREATE TABLE flights_5000000 (
-  fid SERIAL primary key,
-  yyear INTEGER,
-  quarter INTEGER,
-  month INTEGER,
-  dayofweek INTEGER,
-  hour INTEGER,
-  carrierid INTEGER,
-  carrier TEXT,
-  airport TEXT,
-  dest TEXT,
-  crsdeptime TEXT,
-  depdelay NUMERIC,
-  depdel15 INTEGER,
-  wid SERIAL references weather_demo (wid)
-);
 CREATE TABLE flights_weather_5000000 (
   fid SERIAL primary key,
+  carrierid INTEGER,
+  carrier TEXT,
+  airport TEXT,
+  dest TEXT,
   yyear INTEGER,
   quarter INTEGER,
   month INTEGER,
   dayofweek INTEGER,
   hour INTEGER,
-  carrierid INTEGER,
-  carrier TEXT,
-  airport TEXT,
-  dest TEXT,
   crsdeptime TEXT,
   depdelay NUMERIC,
   depdel15 INTEGER,
@@ -258,52 +224,17 @@ CREATE TABLE flights_weather_5000000 (
   wspdm NUMERIC,
   highwindspeed INTEGER
 );
-COPY weather_demo (
-  wid,
-  fog,
-  hail,
-  hum,
-  precipm,
-  pressurem,
-  lowpressure,
-  rain,
-  snow,
-  heavysnow,
-  tempm,
-  thunder,
-  vism,
-  lowvisibility,
-  wspdm,
-  highwindspeed
-) FROM '/db/data/weather-5000000.csv' CSV HEADER;
-COPY flights_demo (
+COPY flights_weather_5000000 (
   fid,
+  carrierid,
+  carrier,
+  airport,
+  dest,
   yyear,
   quarter,
   month,
   dayofweek,
   hour,
-  carrierid,
-  carrier,
-  airport,
-  dest,
-  crsdeptime,
-  depdelay,
-  depdel15,
-  wid
-) FROM '/db/data/flights-5000000.csv' CSV HEADER;
-INSERT INTO flights_weather_5000000
-SELECT
-  fid,
-  yyear,
-  quarter,
-  month,
-  dayofweek,
-  hour,
-  carrierid,
-  carrier,
-  airport,
-  dest,
   crsdeptime,
   depdelay,
   depdel15,
@@ -323,5 +254,4 @@ SELECT
   lowvisibility,
   wspdm,
   highwindspeed
-FROM flights_5000000
-JOIN weather_5000000 using(wid);
+) FROM '/db/data/flights-weather-5000000.csv' CSV HEADER;
