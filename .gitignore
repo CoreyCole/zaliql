@@ -1,3 +1,7 @@
+# big csvs
+backend/db/data/flights-5000000.csv
+backend/db/data/weather-5000000.csv
+
 # LaTeX
 latex.out
 paper.pdf
