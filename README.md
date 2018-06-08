@@ -27,7 +27,8 @@ docker ps -a
   - The python webserver is instantiated with the anaconda distribution packages on python version 3.6.4
 - db: a postgres database (port 5434)
   - The postgres database is version 9.6 and comes pre-populated with demo data along with ZaliQL's and Madlib's function libraries
-- angular: frontend client for interacting with the database functions
+- angular: frontend client for interacting with the database functions (port 4201)
+  - to view the frontend, navigate to `localhost:4201` in your web browser
 
 #### Other useful docker commands
 Shortcuts to these docker commands can be found in root `package.json` (you'll need node/npm to use them)
