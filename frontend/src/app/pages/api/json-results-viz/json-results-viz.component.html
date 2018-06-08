@@ -86,7 +86,7 @@
           (selectionChange)="changeCovariate($event)" 
           [value]="currentCovariate">
         <mat-option *ngFor="let covariate of weightedAverageCovariates" [value]="covariate">
-          {{ covariate }}
+          {{ covariate }} ({{ getPercentBalance(weightedAverageCovariateData[covariate]) }}%)
         </mat-option>
       </mat-select>
     </span>
@@ -103,7 +103,7 @@
     [xAxisLabel]="'Treated vs Control (' + pData('treatment') + ')'"
     [yAxisLabel]="'Weighted Average (' + currentCovariate + ')'">
   </ngx-charts-bar-vertical>
-  <p>Percent Balance: {{ getPercentBalance(weightedAverageCovariateData[currentCovariate]) }}</p>
+  <p>Balance: {{ getPercentBalance(weightedAverageCovariateData[currentCovariate]) }}%</p>
 </mat-card>
 
 <mat-card class="datatable">

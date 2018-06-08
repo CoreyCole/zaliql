@@ -65,8 +65,6 @@ export class JsonResultsVizComponent implements OnInit {
     this.callParamData = this.api.resultData['params'];
     this.qqData = this.data['qq'];
     this.sampleSizeRows = this.parseSampleSizeRows(this.data);
-    this.covariates = Object.keys(this.data['allData']['covariateStats']);
-    this.currentCovariate = this.covariates[0];
     this.qqCovariates = Object.keys(this.data['qq']);
     this.currentQQCovariate = this.qqCovariates[0] ? this.qqCovariates[0] : '';
 
@@ -148,8 +146,9 @@ export class JsonResultsVizComponent implements OnInit {
     ];
 
     // chart data for covariates
-    this.weightedAverageCovariates = Object.keys(this.data['ate']['matchedData']['binary_covariates'])
-      .concat(Object.keys(this.data['ate']['matchedData']['binned_covariates']));
+    this.weightedAverageCovariates = Object.keys(this.data['ate']['matchedData']['binned_covariates'])
+      .concat(Object.keys(this.data['ate']['matchedData']['binary_covariates']));
+    this.currentCovariate = this.weightedAverageCovariates[0];
     for (const covariate of this.weightedAverageCovariates) {
       this.weightedAverageCovariateData[covariate] = (
             this.data['ate']['matchedData']['binary_covariates'][covariate] ||
@@ -167,10 +166,11 @@ export class JsonResultsVizComponent implements OnInit {
   }
 
   public getPercentBalance(covariateData: any): number {
-    const value1 = covariateData[0].value;
-    const value2 = covariateData[1].value;
-    const difference = value2 - value1;
-    return 100 - (difference / 100);
+    const value1 = covariateData[0].value; // treated
+    const value2 = covariateData[1].value; // control
+    const difference = Math.abs(value2 - value1);
+    const avg = (value1 + value2) / 2;
+    return 100 - ((difference / avg) * 100);
   }
 
   public changeCovariate(change: MatSelectChange) {
