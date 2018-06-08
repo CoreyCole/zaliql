@@ -2,48 +2,23 @@
 
 <p>qq plot in progress</p>
 
-<!-- <ngx-charts-chart
-  [showLegend]="false"
-  (legendLabelClick)="onClick($event)"
-  (legendLabelActivate)="onActivate($event)"
-  (legendLabelDeactivate)="onDeactivate($event)">
+<!-- <ngx-charts-chart>
   <svg:g [attr.transform]="transform" class="line-chart chart">
-    <svg:g [attr.clip-path]="clipPath">
-      <svg:g *ngFor="let series of lineChart; trackBy:trackBy">
-        <svg:g ngx-charts-line-series
-          [xScale]="xScaleLine"
-          [yScale]="yScaleLine"
-          [colors]="colorsLine"
-          [data]="series"
-          [activeEntries]="activeEntries"
-          [scaleType]="scaleType"
-          [curve]="curve"
-          [rangeFillOpacity]="rangeFillOpacity"
-          [animations]="animations"
-        />
-      </svg:g>
-      <svg:g ngx-charts-tooltip-area
-        *ngIf="!tooltipDisabled"
-        [dims]="dims"
-        [xSet]="xSet"
+    <svg:g>
+      <svg:g ngx-charts-line-series
         [xScale]="xScaleLine"
-        [yScale]="yScaleLine"
-        [results]="combinedSeries"
+        [yScale]="xScaleLine"
         [colors]="colorsLine"
-        [tooltipDisabled]="true"
-      />
-      <svg:g *ngFor="let series of lineChart">
-        <svg:g ngx-charts-circle-series
-          [xScale]="xScaleLine"
-          [yScale]="yScaleLine"
-          [colors]="colorsLine"
-          [data]="series"
-          [scaleType]="scaleType"
-          [visibleValue]="hoveredVertical"
-          [activeEntries]="activeEntries"
-          [tooltipDisabled]="true"
-        />
-      </svg:g>
-    </svg:g>
+        [data]="line45"
+        [scaleType]="'linear'"
+        [curve]="line45curve"
+      /> -->
+      <!-- <svg:g ngx-charts-bubble-series
+        [xScale]="qqxScaleLine"
+        [yScale]="qqxScaleLine"
+        [colors]="colorsLine"
+        [data]="bubbleData"
+      /> -->
+    <!-- </svg:g>
   </svg:g>
 </ngx-charts-chart> -->

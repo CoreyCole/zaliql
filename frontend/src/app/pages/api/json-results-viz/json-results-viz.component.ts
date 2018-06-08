@@ -23,6 +23,9 @@ export class JsonResultsVizComponent implements OnInit {
   public sampleSizeRows: any[];
 
   public qqData: any;
+  public currentQQCovariate: string;
+  public qqCovariates: string[];
+  public currentQQData: any;
 
   public covariates: string[];
   public functionName: string;
@@ -35,9 +38,9 @@ export class JsonResultsVizComponent implements OnInit {
   public treatmentData: any[];
 
   // covariate charts
-  public binaryCovariates: string[];
+  public weightedAverageCovariates: string[];
   public currentCovariate: string;
-  public covariateATE: any = {};
+  public weightedAverageCovariateData: any = {};
 
   public covariateStatsSizeColumns = [
     { name: 'Column' },
@@ -45,7 +48,7 @@ export class JsonResultsVizComponent implements OnInit {
     { name: 'Mean Treated' },
     { name: 'Mean Difference' },
     { name: 'Control Standard Deviation' },
-    { name: 'Treated Standard Deviation' },
+    { name: 'Treated Standard Deviation' }
   ];
   public preMatchedCovariateStatsRows: any[];
   public matchedCovariateStatsRows: any[];
@@ -64,6 +67,8 @@ export class JsonResultsVizComponent implements OnInit {
     this.sampleSizeRows = this.parseSampleSizeRows(this.data);
     this.covariates = Object.keys(this.data['allData']['covariateStats']);
     this.currentCovariate = this.covariates[0];
+    this.qqCovariates = Object.keys(this.data['qq']);
+    this.currentQQCovariate = this.qqCovariates[0] ? this.qqCovariates[0] : '';
 
     // covariate stats
     this.preMatchedCovariateStatsRows = [];
@@ -101,11 +106,11 @@ export class JsonResultsVizComponent implements OnInit {
     const originalOutcomeTreated = this.data['ate']['originalData']['avgOutcomeTreated'];
     this.originalTreatmentData = [
       {
-        name: `${this.pData('treatment')} false`,
+        name: 'Control',
         value: originalOutcomeControl
       },
       {
-        name: `${this.pData('treatment')} true`,
+        name: 'Treated',
         value: originalOutcomeTreated
       }
     ];
@@ -122,11 +127,11 @@ export class JsonResultsVizComponent implements OnInit {
     }
     this.matchedTreatmentData = [
       {
-        name: `${this.pData('treatment')} false`,
+        name: 'Control',
         value: matchedOutcomeControl
       },
       {
-        name: `${this.pData('treatment')} true`,
+        name: 'Treated',
         value: matchedOutcomeTreated
       }
     ];
@@ -143,13 +148,17 @@ export class JsonResultsVizComponent implements OnInit {
     ];
 
     // chart data for covariates
-    this.binaryCovariates = Object.keys(this.data['ate']['matchedData']['binary_covariates']);
-    for (const covariate of this.binaryCovariates) {
-      this.covariateATE[covariate] = this.data['ate']['matchedData']['binary_covariates'][covariate].map(data => {
-        const name = data['treatment'] === 1 ? `${covariate} true` : `${covariate} false`;
+    this.weightedAverageCovariates = Object.keys(this.data['ate']['matchedData']['binary_covariates'])
+      .concat(Object.keys(this.data['ate']['matchedData']['binned_covariates']));
+    for (const covariate of this.weightedAverageCovariates) {
+      this.weightedAverageCovariateData[covariate] = (
+            this.data['ate']['matchedData']['binary_covariates'][covariate] ||
+            this.data['ate']['matchedData']['binned_covariates'][covariate]
+          ).map(data => {
+        const name = data['treatment'] === 1 ? 'Treated' : 'Control';
         const value = data['weighted_avg_outcome'];
         return { name, value };
-      }).reverse();
+      });
     }
   }
 
@@ -157,8 +166,19 @@ export class JsonResultsVizComponent implements OnInit {
     return this.callParamData[param];
   }
 
+  public getPercentBalance(covariateData: any): number {
+    const value1 = covariateData[0].value;
+    const value2 = covariateData[1].value;
+    const difference = value2 - value1;
+    return 100 - (difference / 100);
+  }
+
   public changeCovariate(change: MatSelectChange) {
     this.currentCovariate = change.value;
+  }
+
+  public changeQQCovariate(change: MatSelectChange) {
+    this.currentQQCovariate = change.value;
   }
 
   public isArray(paramData: string | string[]): boolean {

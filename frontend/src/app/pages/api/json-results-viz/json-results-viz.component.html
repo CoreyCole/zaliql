@@ -40,13 +40,6 @@
 
 <mat-card>
   <mat-toolbar color="accent" class="flex-row-container">
-    <span>Covariate QQ Plots</span>
-  </mat-toolbar>
-  <zql-qq-plot [data]="qqData"></zql-qq-plot>
-</mat-card>
-
-<mat-card>
-  <mat-toolbar color="accent" class="flex-row-container">
     <span>Treatment ATE Before & After Matching ({{ pData('treatment') }} -> {{ pData('outcome') }})</span>
   </mat-toolbar>
   <div *ngIf="originalTreatmentData && matchedTreatmentData">
@@ -65,16 +58,34 @@
   </div>
 </mat-card>
 
+<!-- <mat-card *ngIf="currentQQCovariate">
+  <mat-toolbar color="accent" class="flex-row-container">
+    <span>Covariate QQ Plots Before & After Matching ({{ currentQQCovariate }})</span>
+    <span class="flex-span"></span>
+    <span class="covariate-dropdown">
+      <mat-select 
+          placeholder="Covariate" 
+          (selectionChange)="changeQQCovariate($event)" 
+          [value]="currentQQCovariate">
+        <mat-option *ngFor="let covariate of qqCovariates" [value]="covariate">
+          {{ covariate }}
+        </mat-option>
+      </mat-select>
+    </span>
+  </mat-toolbar>
+  <zql-qq-plot [data]="data['qq'][currentQQCovariate]"></zql-qq-plot>
+</mat-card> -->
+
 <mat-card>
   <mat-toolbar color="accent" class="flex-row-container">
-    <span>Covariate ATE After Matching ({{ currentCovariate }} -> {{ pData('outcome') }})</span>
+    <span>Balance after Matching ({{ currentCovariate }})</span>
     <span class="flex-span"></span>
     <span class="covariate-dropdown">
       <mat-select 
           placeholder="Covariate" 
           (selectionChange)="changeCovariate($event)" 
           [value]="currentCovariate">
-        <mat-option *ngFor="let covariate of binaryCovariates" [value]="covariate">
+        <mat-option *ngFor="let covariate of weightedAverageCovariates" [value]="covariate">
           {{ covariate }}
         </mat-option>
       </mat-select>
@@ -83,15 +94,16 @@
   <ngx-charts-bar-vertical
     [view]="view"
     [scheme]="colorScheme"
-    [results]="covariateATE[currentCovariate]"
+    [results]="weightedAverageCovariateData[currentCovariate]"
     [xAxis]="true"
     [yAxis]="true"
     [legend]="true"
     [showXAxisLabel]="true"
     [showYAxisLabel]="true"
-    [xAxisLabel]="currentCovariate"
-    [yAxisLabel]="'Average Outcome (' + pData('outcome') + ')'">
+    [xAxisLabel]="'Treated vs Control (' + pData('treatment') + ')'"
+    [yAxisLabel]="'Weighted Average (' + currentCovariate + ')'">
   </ngx-charts-bar-vertical>
+  <p>Percent Balance: {{ getPercentBalance(weightedAverageCovariateData[currentCovariate]) }}</p>
 </mat-card>
 
 <mat-card class="datatable">
