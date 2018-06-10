@@ -30,6 +30,15 @@ docker ps -a
 - angular: frontend client for interacting with the database functions (port 4201)
   - to view the frontend, navigate to `localhost:4201` in your web browser
 
+### Considerations
+- The motivation for the frontend client is to make it quick and easy to run a matchit calls in postgres and visualize the results
+  - If you'd like to run the postgres functions directly, you can see examples in `backennd/db/examples`
+- The motivation for using docker is to make it seamless to get a local version of ZaliQL running for demonstration
+  - However, databases inside docker do not scale to large datasets
+  - To use ZaliQL at scale:
+    - Install the postgres extension [Madlib](http://madlib.apache.org/)
+    - Add all of ZaliQL's functions to your postgres instance (`backend/db/functions`)
+
 #### Other useful docker commands
 Shortcuts to these docker commands can be found in root `package.json` (you'll need node/npm to use them)
 
