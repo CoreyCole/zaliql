@@ -76,11 +76,11 @@ export class JsonResultsVizComponent implements OnInit {
       const data = preMatchCovariateData[covariate];
       this.preMatchedCovariateStatsRows.push({
         column: covariate,
-        meanControl: data['meanControl'],
-        meanTreated: data['meanTreated'],
-        meanDifference: data['meanDiff'],
-        controlStandardDeviation: data['meanControlStdDev'],
-        treatedStandardDeviation: data['meanTreatedStdDev']
+        meanControl: parseFloat(data['meanControl']).toFixed(2),
+        meanTreated: parseFloat(data['meanTreated']).toFixed(2),
+        meanDifference: parseFloat(data['meanDiff']).toFixed(2),
+        controlStandardDeviation: parseFloat(data['meanControlStdDev']).toFixed(2),
+        treatedStandardDeviation: parseFloat(data['meanTreatedStdDev']).toFixed(2)
       });
     }
 
@@ -91,11 +91,11 @@ export class JsonResultsVizComponent implements OnInit {
       const data = matchedCovariateData[covariate];
       this.matchedCovariateStatsRows.push({
         column: covariate,
-        meanControl: data['meanControl'],
-        meanTreated: data['meanTreated'],
-        meanDifference: data['meanDiff'],
-        controlStandardDeviation: data['meanControlStdDev'],
-        treatedStandardDeviation: data['meanTreatedStdDev']
+        meanControl: parseFloat(data['meanControl']).toFixed(2),
+        meanTreated: parseFloat(data['meanTreated']).toFixed(2),
+        meanDifference: parseFloat(data['meanDiff']).toFixed(2),
+        controlStandardDeviation: parseFloat(data['meanControlStdDev']).toFixed(2),
+        treatedStandardDeviation: parseFloat(data['meanTreatedStdDev']).toFixed(2)
       });
     }
 
@@ -146,13 +146,11 @@ export class JsonResultsVizComponent implements OnInit {
     ];
 
     // chart data for covariates
-    this.weightedAverageCovariates = Object.keys(this.data['ate']['matchedData']['binned_covariates'])
-      .concat(Object.keys(this.data['ate']['matchedData']['binary_covariates']));
+    this.weightedAverageCovariates = Object.keys(this.data['ate']['matchedData']['ordinal_covariates']);
     this.currentCovariate = this.weightedAverageCovariates[0];
     for (const covariate of this.weightedAverageCovariates) {
       this.weightedAverageCovariateData[covariate] = (
-            this.data['ate']['matchedData']['binary_covariates'][covariate] ||
-            this.data['ate']['matchedData']['binned_covariates'][covariate]
+            this.data['ate']['matchedData']['ordinal_covariates'][covariate]
           ).map(data => {
         const name = data['treatment'] === 1 ? 'Treated' : 'Control';
         const value = data['weighted_avg_outcome'];
@@ -165,12 +163,18 @@ export class JsonResultsVizComponent implements OnInit {
     return this.callParamData[param];
   }
 
+  public getCovariateAvgDifference(covariateData: any[]): number {
+    const controlAvg = covariateData[0].value;
+    const treatedAvg = covariateData[1].value;
+    return treatedAvg - controlAvg;
+  }
+
   public getPercentBalance(covariateData: any): number {
     const value1 = covariateData[0].value; // treated
     const value2 = covariateData[1].value; // control
-    const difference = Math.abs(value2 - value1);
+    const difference = Math.abs(value1 - value2);
     const avg = (value1 + value2) / 2;
-    return 100 - ((difference / avg) * 100);
+    return 100 - ((difference / value1) * 100);
   }
 
   public changeCovariate(change: MatSelectChange) {
@@ -188,9 +192,7 @@ export class JsonResultsVizComponent implements OnInit {
   public parseSampleSizeRows(data): any[] {
     const rows = [];
     const allDataSizes = data['allData']['dataSizes'];
-    console.log(allDataSizes);
     const matchedDataSizes = data['matchedData']['dataSizes'];
-    console.log(matchedDataSizes);
     const controlRow = {
       type: 'Control',
       all: allDataSizes['controlDataSize'],

@@ -13,13 +13,16 @@ def call_function(cursor, function_name, request_params, function_docs):
     param_list = []
     for param in doc['params']:
       data = request_params[param['name']]
-      type = param['type']
+      param_type = param['type']
       info_logger.info('data=%s', data)
-      if type is 'int':
+      info_logger.info('type=%s', param_type)
+      if param_type == 'int':
         data = int(data)
-      elif type is 'numeric':
+      elif param_type == 'int-arr':
+        data = [int(int_str) for int_str in data]
+      elif param_type == 'numeric':
         data = float(data)
-      elif data is 'null':
+      elif data == 'null':
         data = None
       param_list.append(data)
 

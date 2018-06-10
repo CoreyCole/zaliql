@@ -55,6 +55,10 @@
       [xAxisLabel]="'Treatment (' + pData('treatment') + ')'"
       [yAxisLabel]="'Average Outcome (' + pData('outcome') + ')'">
     </ngx-charts-bar-vertical-2d>
+    <h4>Avg Difference Before Matching</h4>
+    <p>{{ getCovariateAvgDifference(treatmentData[0].series) | number : '1.1-2' }}</p>
+    <h4>Weighted Avg Difference After Matching</h4>
+    <p>{{ getCovariateAvgDifference(treatmentData[1].series) | number : '1.1-2' }}</p>
   </div>
 </mat-card>
 
@@ -86,7 +90,7 @@
           (selectionChange)="changeCovariate($event)" 
           [value]="currentCovariate">
         <mat-option *ngFor="let covariate of weightedAverageCovariates" [value]="covariate">
-          {{ covariate }} ({{ getPercentBalance(weightedAverageCovariateData[covariate]) }}%)
+          {{ covariate }} ({{ getPercentBalance(weightedAverageCovariateData[covariate]) | number : '1.1-2' }}%)
         </mat-option>
       </mat-select>
     </span>
@@ -103,7 +107,7 @@
     [xAxisLabel]="'Treated vs Control (' + pData('treatment') + ')'"
     [yAxisLabel]="'Weighted Average (' + currentCovariate + ')'">
   </ngx-charts-bar-vertical>
-  <p>Balance: {{ getPercentBalance(weightedAverageCovariateData[currentCovariate]) }}%</p>
+  <p>Balance: {{ getPercentBalance(weightedAverageCovariateData[currentCovariate]) | number : '1.1-2' }}%</p>
 </mat-card>
 
 <mat-card class="datatable">

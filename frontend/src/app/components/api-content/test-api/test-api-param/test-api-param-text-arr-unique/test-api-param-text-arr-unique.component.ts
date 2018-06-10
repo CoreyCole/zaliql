@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
-  selector: 'zql-test-api-param-text-arr',
-  styleUrls: ['./test-api-param-text-arr.component.scss'],
+  selector: 'zql-test-api-param-text-arr-unique',
+  styleUrls: ['./test-api-param-text-arr-unique.component.scss'],
   template: `
   <mat-form-field>
     <input matInput
@@ -20,7 +20,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   </mat-chip-list>
   `
 })
-export class TestApiParamTextArrComponent implements OnInit {
+export class TestApiParamTextArrUniqueComponent implements OnInit {
   @Input() paramData;
   @Output() valuesUpdated: EventEmitter<string[]> = new EventEmitter<string[]>();
   public values: string[];
@@ -33,8 +33,10 @@ export class TestApiParamTextArrComponent implements OnInit {
   }
 
   public addValue(value: string) {
-    this.values.push(value);
-    this.valuesUpdated.emit(this.values);
+    if (this.values.indexOf(value) === -1) {
+      this.values.push(value);
+      this.valuesUpdated.emit(this.values);
+    }
   }
 
   public removeValue(value: string) {

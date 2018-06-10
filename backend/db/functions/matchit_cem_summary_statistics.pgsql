@@ -102,8 +102,8 @@ CREATE OR REPLACE FUNCTION ate_cem(
   treatment TEXT,               -- column name of the treatment of interest
   outcome TEXT,                 -- column name of the outcome of interest
   grouping_attribute TEXT,      -- compare ATE across specified groups (can be null)
-  binned_covariates_arr TEXT[], -- array of original binned covariate column names
-                                --  (column names AFTER discretization/binning)
+  ordinal_covariates_arr TEXT[], -- array of original ordinal covariate column names
+                                --  (column names BEFORE discretization/binning)
                                 --  can be empty array if no covariates were binned
   binary_covariates_arr TEXT[]  -- array of binary covariate column names
                                 --  can be empty array if no covairates were binary
@@ -172,8 +172,8 @@ BEGIN
   END IF;
 
   binned_covariates_result_arr := jsonb_build_object();
-  IF binned_covariates_arr IS NOT NULL THEN
-    FOREACH covariate IN ARRAY binned_covariates_arr LOOP
+  IF ordinal_covariates_arr IS NOT NULL THEN
+    FOREACH covariate IN ARRAY ordinal_covariates_arr LOOP
       PERFORM weighted_average_matchit_cem(matchit_cem_table, output_table, treatment, covariate, grouping_attribute);
       SELECT get_json_ate(output_table, covariate, grouping_attribute)
         INTO result_arr;
@@ -205,7 +205,7 @@ BEGIN
     'matchedData', jsonb_build_object(
       'treatment', matched_treatment_result_arr,
       'binary_covariates', matched_binary_covariates_result_arr,
-      'binned_covariates', binned_covariates_result_arr
+      'ordinal_covariates', binned_covariates_result_arr
     )
   );
 END;
@@ -418,11 +418,11 @@ BEGIN
   SELECT array_cat(binary_covariates_arr, binned_ordinal_covariates_arr)
     INTO matched_covariates_arr;
 
-  SELECT get_json_covariate_stats(binned_original_table, treatment, pre_matched_covariates_arr)
+  SELECT get_json_covariate_stats(binned_original_table, treatment, original_covariates_arr)
     INTO all_json;
-  SELECT get_json_covariate_stats(matchit_cem_table, treatment, matched_covariates_arr)
+  SELECT get_json_covariate_stats(matchit_cem_table, treatment, original_covariates_arr)
     INTO matched_json;
-  SELECT ate_cem(binned_original_table, matchit_cem_table, treatment, outcome, grouping_attribute, binned_ordinal_covariates_arr, binary_covariates_arr)
+  SELECT ate_cem(binned_original_table, matchit_cem_table, treatment, outcome, grouping_attribute, original_ordinal_covariates_arr, binary_covariates_arr)
     INTO ate_json;
   SELECT qq_cem(binned_original_table, matchit_cem_table, treatment, original_ordinal_covariates_arr, binned_ordinal_covariates_arr)
     INTO qq_json;

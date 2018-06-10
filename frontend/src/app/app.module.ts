@@ -85,6 +85,7 @@ import { TestApiParamColumnTextComponent } from './components/api-content/test-a
 import { TestApiParamColumnsTextArrComponent } from './components/api-content/test-api/test-api-param/test-api-param-columns-text-arr/test-api-param-columns-text-arr.component';
 import { TestApiParamTextComponent } from './components/api-content/test-api/test-api-param/test-api-param-text/test-api-param-text.component';
 import { TestApiParamTextArrComponent } from './components/api-content/test-api/test-api-param/test-api-param-text-arr/test-api-param-text-arr.component';
+import { TestApiParamTextArrUniqueComponent } from './components/api-content/test-api/test-api-param/test-api-param-text-arr-unique/test-api-param-text-arr-unique.component';
 import { TestApiParamColumnsTextArrArrComponent } from './components/api-content/test-api/test-api-param/test-api-param-columns-text-arr-arr/test-api-param-columns-text-arr-arr.component';
 
 // zql services
@@ -130,7 +131,8 @@ import { QqPlotComponent } from './components/api-content/qq-plot/qq-plot.compon
     JsonResultsComponent,
     JsonResultsVizComponent,
     TestApiParamColumnTextNullComponent,
-    QqPlotComponent
+    QqPlotComponent,
+    TestApiParamTextArrUniqueComponent
   ],
   imports: [
     BrowserModule,

@@ -10,28 +10,28 @@
           "name": "source_table",
           "description": "input table name",
           "type": "table-text",
-          "default": "flights_weather_demo"
+          "default": "flights_weather_sfo"
         },
         {
           "name": "target_columns",
           "description": "array of ordinal column names to bin",
           "type": "columns-text-arr",
           "default": {
-            "table": "flights_weather_demo",
-            "columns": ["vism", "wspdm"]
+            "table": "flights_weather_sfo",
+            "columns": ["wspdm", "vism", "precipm", "tempm"]
           }
         },
         {
           "name": "num_bins_arr",
           "description": "array of prescribed number of bins, correspond to target_columns",
           "type": "int-arr",
-          "default": [10, 9]
+          "default": [10, 15, 15, 20]
         },
         {
           "name": "output_table",
           "description": "output table name",
           "type": "text",
-          "default": "flights_weather_demo_binned"
+          "default": "flights_weather_sfo_binned"
         }
       ]
     },
@@ -45,14 +45,14 @@
           "name": "source_table",
           "description": "input table name",
           "type": "table-text",
-          "default": "flights_weather_demo_binned"
+          "default": "flights_weather_sfo_binned"
         },
         {
           "name": "primary_key",
           "description": "source table's primary key",
           "type": "column-text",
           "default": {
-            "table": "flights_weather_demo_binned",
+            "table": "flights_weather_sfo_binned",
             "column": "fid"
           }
         },
@@ -61,7 +61,7 @@
           "description": "treatment column name",
           "type": "column-text",
           "default": {
-            "table": "flights_weather_demo_binned",
+            "table": "flights_weather_sfo_binned",
             "column": "lowpressure"
           }
         },
@@ -70,15 +70,15 @@
           "description": "array of covariate column names. (all covariates are applied to all treatments)",
           "type": "columns-text-arr",
           "default": {
-            "table": "flights_weather_demo_binned",
-            "columns": ["vism_ew_binned_10", "wspdm_ew_binned_9", "thunder", "fog", "rain", "heavysnow"]
+            "table": "flights_weather_sfo_binned",
+            "columns": ["wspdm_ew_binned_10", "vism_ew_binned_15", "precipm_ew_binned_15", "tempm_ew_binned_20", "fog", "highwindspeed"]
           }
         },
         {
           "name": "output_table",
           "description": "output table name",
           "type": "text",
-          "default": "flights_weather_demo_matched"
+          "default": "flights_weather_sfo_matched"
         }
       ]
     },
@@ -92,14 +92,14 @@
           "name": "source_table",
           "description": "input table name",
           "type": "table-text",
-          "default": "flights_weather_demo"
+          "default": "flights_weather_sfo"
         },
         {
           "name": "primary_key",
           "description": "source table's primary key",
           "type": "column-text",
           "default": {
-            "table": "flights_weather_demo",
+            "table": "flights_weather_sfo",
             "column": "fid"
           }
         },
@@ -108,8 +108,8 @@
           "description": "array of treatment column names",
           "type": "columns-text-arr",
           "default": {
-            "table": "flights_weather_demo",
-            "columns": ["lowpressure", "rain"]
+            "table": "flights_weather_sfo",
+            "columns": ["lowpressure", "lowvisibility"]
           }
         },
         {
@@ -118,12 +118,12 @@
           "type": "columns-text-arr-arr",
           "default": [
             {
-              "table": "flights_weather_demo",
-              "columns": ["fog", "hail"]
+              "table": "flights_weather_sfo",
+              "columns": ["wspdm", "vism", "precipm", "tempm", "fog", "highwindspeed"]
             },
             {
-              "table": "flights_weather_demo",
-              "columns": ["fog", "hail"]
+              "table": "flights_weather_sfo",
+              "columns": ["wspdm", "vism", "precipm", "tempm", "fog", "highwindspeed"]
             }
           ]
         },
@@ -131,7 +131,7 @@
           "name": "output_table",
           "description": "output table name",
           "type": "text",
-          "default": "flights_weather_demo_matched"
+          "default": "flights_weather_sfo_matched"
         }
       ]
     },
@@ -145,14 +145,14 @@
           "name": "source_table_a",
           "description": "input table A name",
           "type": "table-text",
-          "default": "flights_demo"
+          "default": "flights_sfo"
         },
         {
           "name": "source_table_a_primary_key",
           "description": "source table A's primary key",
           "type": "column-text",
           "default": {
-            "table": "flights_demo",
+            "table": "flights_sfo",
             "column": "fid"
           }
         },
@@ -161,7 +161,7 @@
           "description": "source table A's foreign key",
           "type": "column-text",
           "default": {
-            "table": "flights_demo",
+            "table": "flights_sfo",
             "column": "wid"
           }
         },
@@ -170,7 +170,7 @@
           "description": "array of covariate column names in table A",
           "type": "columns-text-arr",
           "default": {
-            "table": "flights_demo",
+            "table": "flights_sfo",
             "columns": ["dest"]
           }
         },
@@ -178,14 +178,14 @@
           "name": "source_table_b",
           "description": "input table B name",
           "type": "table-text",
-          "default": "weather_demo"
+          "default": "weather_sfo"
         },
         {
           "name": "source_table_b_primary_key",
           "description": "source table B's primary key",
           "type": "column-text",
           "default": {
-            "table": "weather_demo",
+            "table": "weather_sfo",
             "column": "wid"
           }
         },
@@ -194,8 +194,8 @@
           "description": "array of covariate column names in table B",
           "type": "columns-text-arr",
           "default": {
-            "table": "weather_demo",
-            "columns": ["vism", "hum", "wspdm", "thunder", "fog", "hail"]
+            "table": "weather_sfo",
+            "columns": ["wspdm", "vism", "precipm", "tempm", "fog", "highwindspeed"]
           }
         },
         {
@@ -203,15 +203,15 @@
           "description": "treatment column name",
           "type": "column-text",
           "default": {
-            "table": "flights_weather_demo",
-            "column": "carrierid"
+            "table": "weather_sfo",
+            "column": "lowpressure"
           }
         },
         {
           "name": "output_table",
           "description": "output table name",
           "type": "text",
-          "default": "flights_weather_demo_matched"
+          "default": "flights_weather_sfo_matched"
         }
       ]
     },
@@ -225,14 +225,14 @@
           "name": "source_table",
           "description": "input table name",
           "type": "table-text",
-          "default": "flights_weather_demo"
+          "default": "flights_weather_sfo"
         },
         {
           "name": "primary_key",
           "description": "source table's primary key",
           "type": "column-text",
           "default": {
-            "table": "flights_weather_demo",
+            "table": "flights_weather_sfo",
             "column": "fid"
           }
         },
@@ -241,7 +241,7 @@
           "description": "treatment column name",
           "type": "column-text",
           "default": {
-            "table": "flights_weather_demo",
+            "table": "flights_weather_sfo",
             "column": "lowpressure"
           }
         },
@@ -250,8 +250,8 @@
           "description": "array of covariate column names (all covariates are applied to all treatments)",
           "type": "columns-text-arr",
           "default": {
-            "table": "flights_weather_demo",
-            "columns": ["vism", "hum", "wspdm", "thunder", "fog", "hail"]
+            "table": "flights_weather_sfo",
+            "columns": ["wspdm", "vism", "precipm", "tempm", "fog", "highwindspeed"]
           }
         },
         {
@@ -270,7 +270,7 @@
           "name": "output_table",
           "description": "output table name",
           "type": "text",
-          "default": "flights_weather_demo_matched"
+          "default": "flights_weather_sfo_matched"
         }
       ]
     },
@@ -284,20 +284,20 @@
           "name": "original_table",
           "description": "original input table name with binned columns",
           "type": "table-text",
-          "default": "flights_weather_demo_binned"
+          "default": "flights_weather_sfo_binned"
         },
         {
           "name": "matchit_cem_table",
           "description": "table name that was output by matchit_cem",
           "type": "table-text",
-          "default": "flights_weather_demo_matched"
+          "default": "flights_weather_sfo_matched"
         },
         {
           "name": "treatment",
           "description": "treatment column name",
           "type": "column-text",
           "default": {
-            "table": "flights_weather_demo",
+            "table": "flights_weather_sfo_matched",
             "column": "lowpressure"
           }
         },
@@ -306,7 +306,7 @@
           "description": "outcome column name",
           "type": "column-text",
           "default": {
-            "table": "flights_weather_demo",
+            "table": "flights_weather_sfo_matched",
             "column": "depdel15"
           }
         },
@@ -324,8 +324,8 @@
           "description": "array of all original covariate column names (column names BEFORE discretization/binning)",
           "type": "columns-text-arr",
           "default": {
-            "table": "flights_weather_demo",
-            "columns": ["vism", "wspdm", "thunder", "fog", "rain", "heavysnow"]
+            "table": "flights_weather_sfo_matched",
+            "columns": ["wspdm", "vism", "precipm", "tempm", "fog", "highwindspeed"]
           }
         },
         {
@@ -333,8 +333,8 @@
           "description": "array of original ordinal covariate column names (column names BEFORE discretization/binning)",
           "type": "columns-text-arr",
           "default": {
-            "table": "flights_weather_demo",
-            "columns": ["vism", "wspdm"]
+            "table": "flights_weather_sfo_matched",
+            "columns": ["wspdm", "vism", "precipm", "tempm"]
           }
         },
         {
@@ -342,8 +342,8 @@
           "description": "array of all binned ordinal covariate column names (column names AFTER discretization/binning) can be empty array if no covariates were ordinal",
           "type": "columns-text-arr",
           "default": {
-            "table": "flights_weather_demo",
-            "columns": ["vism_ew_binned_10", "wspdm_ew_binned_9"]
+            "table": "flights_weather_sfo_matched",
+            "columns": ["wspdm_ew_binned_10", "vism_ew_binned_15", "precipm_ew_binned_15", "tempm_ew_binned_20"]
           }
         }
       ]
