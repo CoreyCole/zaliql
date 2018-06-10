@@ -8,7 +8,7 @@ DROP TABLE IF EXISTS test_flight_all_treatments;
 
 -- test `multi_treatment_matchit()`
 SELECT multi_treatment_matchit(
-  'flights_weather_demo',
+  'flights_weather_sfo',
   'fid',
   ARRAY['lowpressure', 'rain'],
   ARRAY[

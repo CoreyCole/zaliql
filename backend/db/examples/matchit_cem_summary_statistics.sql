@@ -3,15 +3,15 @@ DROP TABLE IF EXISTS flights_weather_demo_binned;
 
 -- bin ordinal column `vism` into 10 bins of equal width
 SELECT bin_equal_width(
-  'flights_weather_demo',
+  'flights_weather_sfo',
   ARRAY['vism'],
   ARRAY[10],
-  'flights_weather_demo_binned'
+  'flights_weather_sfo_binned'
 );
 
 -- perform `matchit_cem()` on the binned data
 SELECT matchit_cem(
-  'flights_weather_demo_binned',
+  'flights_weather_sfo_binned',
   'fid',
   'lowpressure',
   ARRAY['vism_ew_binned_10', 'rain', 'fog'],
@@ -56,11 +56,11 @@ WITH Blocks AS
     (SELECT avg(fog) AS avg_outcome,
          subclass_id,
          lowpressure
-    FROM flights_weather_demo_matched
+    FROM flights_weather_sfo_matched
     GROUP BY  subclass_id, lowpressure), Weights AS 
     (SELECT cast(count(*) AS NUMERIC) / 8450 AS block_weight,
          subclass_id
-    FROM flights_weather_demo_matched
+    FROM flights_weather_sfo_matched
     GROUP BY  subclass_id)
 SELECT Blocks.lowpressure AS treatment,
          sum(avg_outcome * block_weight) AS weighted_avg_outcome
@@ -79,7 +79,7 @@ DROP TABLE test_flight_ate_cem;
 -- `weighted_average_matchit_cem()` & `get_json_ate()` are called internally
 -- test `ate_cem()`
 SELECT ate_cem(
-  'flights_weather_demo',
+  'flights_weather_sfo',
   'test_flight',
   'lowpressure',
   'depdel15',
@@ -88,7 +88,7 @@ SELECT ate_cem(
 );
 -- should work with NULL grouping_attribute
 SELECT ate_cem(
-  'flights_weather_demo',
+  'flights_weather_sfo',
   'test_flight',
   'lowpressure',
   'depdel15',
@@ -97,7 +97,7 @@ SELECT ate_cem(
 );
 -- should work with empty ordinal_covariates_arr
 SELECT ate_cem(
-  'flights_weather_demo',
+  'flights_weather_sfo',
   'test_flight',
   'lowpressure',
   'depdel15',
@@ -107,14 +107,14 @@ SELECT ate_cem(
 
 -- test `get_qq()`
 SELECT get_qq(
-  'flights_weather_demo',
+  'flights_weather_sfo',
   'lowpressure',
   'vism'
 );
 
 -- test `qq_cem()`
 SELECT qq_cem(
-  'flights_weather_demo',
+  'flights_weather_sfo',
   'test_flight',
   'lowpressure',
   ARRAY['vism']
@@ -122,7 +122,7 @@ SELECT qq_cem(
 
 -- test `matchit_cem_summary_statistics()`
 SELECT matchit_cem_summary_statistics(
-  'flights_weather_demo_binned',
+  'flights_weather_sfo_binned',
   'test_flight',
   'lowpressure',
   'depdel15',
@@ -133,4 +133,4 @@ SELECT matchit_cem_summary_statistics(
 );
 
 DROP TABLE test_flight;
-DROP TABLE flights_weather_demo_binned;
+DROP TABLE flights_weather_sfo_binned;

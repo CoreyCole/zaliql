@@ -2,13 +2,13 @@ DROP TABLE IF EXISTS test_flight;
 
 -- test `two_table_matchit()`
 SELECT two_table_matchit_cem(
-  'flights_demo',
+  'flights_sfo',
   'fid',
   'wid',
   ARRAY['dest'],
-  'weather_demo',
+  'weather_sfo',
   'wid',
-  ARRAY['vism', 'hum', 'wspdm', 'thunder', 'fog', 'hail'],
-  'carrierid',
-  'test_flight'
+  ARRAY['wspdm', 'vism', 'precipm', 'tempm', 'fog', 'highwindspeed'],
+  'lowpressure',
+  'flights_sfo_matched'
 );

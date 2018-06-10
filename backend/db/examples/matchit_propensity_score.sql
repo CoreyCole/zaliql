@@ -5,7 +5,7 @@ DROP TABLE IF EXISTS test_flight;
 
 -- test `matchit_propensity_score()`
 SELECT matchit_propensity_score(
-  'flights_weather_demo',
+  'flights_weather_sfo',
   'fid',
   'lowpressure',
   ARRAY['vism', 'hum', 'wspdm', 'thunder', 'fog', 'hail'],
@@ -24,7 +24,7 @@ SELECT unnest(array['intercept', 'hour', 'fog', 'hail']) as attribute,
        unnest(z_stats) as z_stat,
        unnest(p_values) as pvalue,
        unnest(odds_ratios) as odds_ratio
-FROM flights_weather_demo_test_flight_ps_logregr;
+FROM flights_weather_sfo_test_flight_ps_logregr;
 
 -- see summary of logistic regression training
-SELECT * FROM flights_weather_demo_test_flight_ps_logregr_summary;
+SELECT * FROM flights_weather_sfo_test_flight_ps_logregr_summary;

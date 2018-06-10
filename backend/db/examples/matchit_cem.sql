@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS test_flight;
 
 -- test `matchit_cem()`
 SELECT matchit_cem(
-  'flights_weather_demo',
+  'flights_weather_sfo',
   'fid',
   'lowpressure',
   ARRAY['hour', 'rain', 'fog'],
@@ -15,11 +15,11 @@ WITH subclasses AS
          hour AS hour_matched,
          rain AS rain_matched,
          fog AS fog_matched
-    FROM flights_weather_demo
+    FROM flights_weather_sfo
     GROUP BY  hour_matched, rain_matched, fog_matched
     HAVING count(DISTINCT lowpressure) = 2)
 SELECT *
-FROM subclasses, flights_weather_demo st
+FROM subclasses, flights_weather_sfo st
 WHERE subclasses.hour_matched = st.hour
         AND subclasses.rain_matched = st.rain
         AND subclasses.fog_matched = st.fog

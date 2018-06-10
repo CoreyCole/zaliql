@@ -4,21 +4,21 @@ DROP TABLE IF EXISTS test_flight;
 
 -- test `madlib.logregr_train()`
 SELECT madlib.logregr_train(
-  'flights_weather_demo',                                       -- source table
-  'test_flight_logregr',                                        -- output table
-  'depdel15',                                                   -- labels
-  'ARRAY[1, fog, hail, thunder, lowvisibility, highwindspeed]'  -- covariates
+  'flights_weather_sfo',                                       -- source table
+  'test_logregr',                                              -- output table
+  'depdel15',                                                  -- labels
+  'ARRAY[1, wspdm, vism, precipm, tempm, fog, highwindspeed]'  -- covariates
 );
 
 -- test `estimate_propensity_scores()`
 DROP TABLE test_flight_logregr;
 DROP TABLE test_flight_logregr_summary;
 SELECT estimate_propensity_scores(
-  'flights_weather_demo',
+  'flights_weather_sfo',
   'fid',
   'depdel15',
-  'ARRAY[1, fog, hail, thunder, lowvisibility, highwindspeed]',
-  'test_flight'
+  'ARRAY[1, wspdm, vism, precipm, tempm, fog, highwindspeed]',
+  'test_pp_output'
 );
 
 -- see all results of the logistic regression
