@@ -4,5 +4,38 @@
   prevTitle="Demo"
   nextUrl="/demo/naive-approach"
   nextTitle="Naive Approach">
-  <zql-grouped-vertical-bar-chart></zql-grouped-vertical-bar-chart>
+
+  <!-- original data -->
+  <mat-card>
+    <ngx-charts-bar-vertical
+      [view]="view"
+      [scheme]="colorScheme"
+      [results]="preMatchedAverages"
+      [xAxis]="true"
+      [yAxis]="true"
+      [legend]="false"
+      [showXAxisLabel]="true"
+      [showYAxisLabel]="true"
+      xAxisLabel="Control vs Treated"
+      yAxisLabel="Average Outcome (depdel15)">
+    </ngx-charts-bar-vertical>
+  </mat-card>
+
+  <span class="spacer"></span>
+
+  <!-- matched data -->
+  <mat-card>
+    <ngx-charts-bar-vertical
+      [view]="view"
+      [scheme]="colorScheme"
+      [results]="matchedAverages"
+      [xAxis]="true"
+      [yAxis]="true"
+      [legend]="false"
+      [showXAxisLabel]="true"
+      [showYAxisLabel]="true"
+      xAxisLabel="Control vs Treated"
+      yAxisLabel="Weighted Average Outcome (depdel15)">
+    </ngx-charts-bar-vertical>
+  </mat-card>
 </zql-demo-content>
