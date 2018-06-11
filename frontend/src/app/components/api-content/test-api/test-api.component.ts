@@ -26,6 +26,8 @@ import { FunctionParamUpdate } from '../../../models';
 export class TestApiComponent {
   @Input() functionData;
   @Output() paramUpdated: EventEmitter<FunctionParamUpdate> = new EventEmitter<FunctionParamUpdate>();
+  public results: any;
+  public error: any;
 
   constructor() {}
 
