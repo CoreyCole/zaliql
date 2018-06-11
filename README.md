@@ -32,7 +32,7 @@ docker ps -a
 
 ### Considerations
 - The motivation for the frontend client is to make it quick and easy to run a matchit calls in postgres and visualize the results
-  - If you'd like to run the postgres functions directly, you can see examples in `backennd/db/examples`
+  - If you'd like to run the postgres functions directly, you can see examples in `backend/db/examples`
 - The motivation for using docker is to make it seamless to get a local version of ZaliQL running for demonstration
   - However, databases inside docker do not scale to large datasets
   - To use ZaliQL at scale:
