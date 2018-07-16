@@ -7,7 +7,7 @@ import { ApiService } from '../../api.service';
 @Component({
   selector: 'zql-bin-equal-width',
   template: `
-  <div *ngIf="functionData | async as data">
+  <div *ngIf="functionData as data">
     <zql-api-content [functionData]="data">
       <textarea highlight-js [options]="{}" [lang]="'SQL'">
 CREATE OR REPLACE FUNCTION bin_equal_width(
@@ -29,7 +29,7 @@ SELECT bin_equal_width(
   </div>`
 })
 export class BinEqualWidthComponent implements OnInit {
-  public functionData: Observable<FunctionData>;
+  public functionData: FunctionData;
   public functionName = 'bin_equal_width';
 
   constructor(private api: ApiService) { }

@@ -7,7 +7,7 @@ import { ApiService } from '../../api.service';
 @Component({
   selector: 'zql-matchit-cem',
   template: `
-  <div *ngIf="functionData | async as data">
+  <div *ngIf="functionData as data">
     <zql-api-content [functionData]="data">
       <textarea highlight-js [options]="{}" [lang]="'SQL'">
 CREATE OR REPLACE FUNCTION matchit_cem(
@@ -32,7 +32,7 @@ SELECT matchit_cem(
   </div>`
 })
 export class MatchitCemComponent implements OnInit {
-  public functionData: Observable<FunctionData>;
+  public functionData: FunctionData;
   public functionName = 'matchit_cem';
 
   constructor(private api: ApiService) { }

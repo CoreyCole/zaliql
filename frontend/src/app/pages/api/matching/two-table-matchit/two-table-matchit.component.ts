@@ -7,7 +7,7 @@ import { ApiService } from '../../api.service';
 @Component({
   selector: 'zql-two-table-matchit',
   template: `
-  <div *ngIf="functionData | async as data">
+  <div *ngIf="functionData as data">
     <zql-api-content [functionData]="data">
       <textarea highlight-js [options]="{}" [lang]="'SQL'">
 CREATE OR REPLACE FUNCTION two_table_matchit_cem(
@@ -39,7 +39,7 @@ SELECT two_table_matchit_cem(
   </div>`
 })
 export class TwoTableMatchitComponent implements OnInit {
-  public functionData: Observable<FunctionData>;
+  public functionData: FunctionData;
   public functionName = 'two_table_matchit_cem';
 
   constructor(private api: ApiService) { }

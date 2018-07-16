@@ -7,18 +7,21 @@ import { map } from 'rxjs/operators';
 import { apiData } from './api.data';
 
 import { FunctionData } from '../../models';
+import { functionData } from './function-data';
 
 @Injectable()
 export class ApiService {
   public apiUrl: string;
   public functions;
   public resultData: any;
+  public functionData: any;
 
   constructor(private http: HttpClient) {
     this.apiUrl = apiData.apiUrl;
     this.functions = apiData.functions;
     const resultDataString = localStorage.getItem('resultData');
     this.resultData = resultDataString ? JSON.parse(resultDataString) : null;
+    this.functionData = functionData;
   }
 
   public setResultData(data: any) {
@@ -38,8 +41,8 @@ export class ApiService {
     );
   }
 
-  public getFunction(functionName: string): Observable<FunctionData> {
-    return this.http.get(`${this.apiUrl}/function/${functionName}`);
+  public getFunction(functionName: string): FunctionData {
+    return this.functionData[functionName];
   }
 
   public callFunction(functionName: string, functionParamData: { [paramName: string]: string | string[] | string[][] }): Observable<any> {

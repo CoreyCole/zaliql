@@ -8,7 +8,7 @@ import { ApiService } from '../../api.service';
   selector: 'zql-matchit-cem-summary-statistics',
   styleUrls: ['./matchit-cem-summary-statistics.component.scss'],
   template: `
-  <div *ngIf="functionData | async as data">
+  <div *ngIf="functionData as data">
     <zql-api-content [functionData]="data">
       <textarea highlight-js [options]="{}" [lang]="'SQL'">
 CREATE OR REPLACE FUNCTION matchit_cem_summary_statistics(
@@ -43,7 +43,7 @@ SELECT matchit_cem_summary_statistics(
   </div>`
 })
 export class MatchitCemSummaryStatisticsComponent implements OnInit {
-  public functionData: Observable<FunctionData>;
+  public functionData: FunctionData;
   public functionName = 'matchit_cem_summary_statistics';
 
   constructor(private api: ApiService) { }

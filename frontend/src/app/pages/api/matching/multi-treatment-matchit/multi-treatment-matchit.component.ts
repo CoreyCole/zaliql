@@ -7,7 +7,7 @@ import { ApiService } from '../../api.service';
 @Component({
   selector: 'zql-multi-treatment-matchit',
   template: `
-  <div *ngIf="functionData | async as data">
+  <div *ngIf="functionData as data">
     <zql-api-content [functionData]="data">
       <textarea highlight-js [options]="{}" [lang]="'SQL'">
 CREATE OR REPLACE FUNCTION multi_treatment_matchit_cem(
@@ -34,7 +34,7 @@ SELECT multi_treatment_matchit(
   </div>`
 })
 export class MultiTreatmentMatchitComponent implements OnInit {
-  public functionData: Observable<FunctionData>;
+  public functionData: FunctionData;
   public functionName = 'multi_treatment_matchit_cem';
 
   constructor(private api: ApiService) { }

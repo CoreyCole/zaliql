@@ -10,8 +10,12 @@ mat-card.figure {
   margin: 8px;
 }
 
-mat-card.content {
+mat-card.content, mat-card.fathers {
   margin: 8px;
+}
+
+mat-card.fathers {
+  padding: 0px;
 }
 
 mat-card-actions a {

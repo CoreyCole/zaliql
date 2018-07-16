@@ -42,13 +42,13 @@ const routes: Routes = [
     path: 'api', children:
       [
         {
-          path: 'preprocessing', children:
+          path: 'preprocessing', component: ApiComponent, children:
             [
               { path: 'bin_equal_width', component: BinEqualWidthComponent }
             ]
         },
         {
-          path: 'matching', children:
+          path: 'matching', component: ApiComponent, children:
             [
               { path: 'matchit_propensity_score', component: MatchitPsComponent },
               { path: 'matchit_cem', component: MatchitCemComponent },
@@ -57,7 +57,7 @@ const routes: Routes = [
             ]
         },
         {
-          path: 'analysis', children:
+          path: 'analysis', component: ApiComponent, children:
             [
               { path: 'matchit_cem_summary_statistics', component: MatchitCemSummaryStatisticsComponent }
             ]

@@ -7,7 +7,7 @@ import { ApiService } from '../../api.service';
 @Component({
   selector: 'zql-matchit-ps',
   template: `
-  <div *ngIf="functionData | async as data">
+  <div *ngIf="functionData as data">
     <zql-api-content [functionData]="data">
       <textarea highlight-js [options]="{}" [lang]="'SQL'">
 CREATE OR REPLACE FUNCTION matchit_propensity_score(
@@ -35,7 +35,7 @@ SELECT matchit_propensity_score(
   </div>`
 })
 export class MatchitPsComponent implements OnInit {
-  public functionData: Observable<FunctionData>;
+  public functionData: FunctionData;
   public functionName = 'matchit_propensity_score';
 
   constructor(private api: ApiService) { }
