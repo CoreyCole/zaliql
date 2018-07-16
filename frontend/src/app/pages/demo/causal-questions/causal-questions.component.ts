@@ -9,7 +9,7 @@ export class CausalQuestionsComponent implements OnInit {
   // chart config
   public view: any[] = [700, 400];
   public colorScheme = {
-    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
+    domain: ['#85759b', '#4b2e83', '#C7B42C', '#AAAAAA']
   };
 
   // original data

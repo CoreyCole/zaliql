@@ -5,6 +5,7 @@ import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { map, catchError } from 'rxjs/operators';
 
 // zql imports
+import { environment } from '../../../environments/environment';
 import { FunctionParamUpdate } from '../../models';
 import { ApiService } from '../../pages/api/api.service';
 
@@ -17,7 +18,7 @@ import { ApiService } from '../../pages/api/api.service';
       <span class="flex-span"></span>
       <span>{{ functionData.name }}</span>
       <span class="flex-span"></span>
-      <button mat-raised-button color="accent" type="button" *ngIf="!calling"
+      <button mat-raised-button color="accent" type="button" *ngIf="!prod && !calling"
         (click)="testFunction(functionData.name, functionParamData)">Test</button>
     </mat-toolbar>
   </div>
@@ -42,7 +43,7 @@ import { ApiService } from '../../pages/api/api.service';
       </mat-card-content>
     </mat-card>
   </div>
-  <zql-test-api
+  <zql-test-api *ngIf="!prod"
     [functionData]="functionData"
     (paramUpdated)="updateFunctionParams($event)">
   </zql-test-api>
@@ -56,6 +57,7 @@ export class ApiContentComponent implements AfterViewInit {
   public error: string;
   public jsonResults: boolean;
   public calling = false;
+  public prod = environment.production;
 
   constructor(
     private router: Router,

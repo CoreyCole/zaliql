@@ -7,43 +7,43 @@ export const navigationNodes: NavigationNode[] = [
     title: 'Home',
     tooltip: 'Home'
   },
-  {
-    url: '/demo-home',
-    title: 'Demo',
-    tooltip: 'Demo',
-    children: [
-      {
-        url: '/demo/causal-questions',
-        title: 'Causal Questions',
-        tooltip: 'Causal Questions'
-      },
-      {
-        url: '/demo/naive-approach',
-        title: 'ATE (Naive Approach)',
-        tooltip: 'ATE (Naive Approach)'
-      },
-      {
-        url: '/demo/confounding-variables',
-        title: 'Confounding Variables',
-        tooltip: 'Confounding Variables'
-      },
-      {
-        url: '/demo/adjusting-for-covariates',
-        title: 'Adjusting for Covariates',
-        tooltip: 'Adjusting for Covariates'
-      },
-      {
-        url: '/demo/checking-balance',
-        title: 'Checking Balance',
-        tooltip: 'Checking Balance'
-      },
-      {
-        url: '/demo/causal-answers',
-        title: 'Causal Answers',
-        tooltip: 'Causal Answers'
-      }
-    ]
-  },
+  // {
+  //   url: '/demo-home',
+  //   title: 'Demo',
+  //   tooltip: 'Demo',
+  //   children: [
+  //     {
+  //       url: '/demo/causal-questions',
+  //       title: 'Causal Questions',
+  //       tooltip: 'Causal Questions'
+  //     },
+  //     {
+  //       url: '/demo/naive-approach',
+  //       title: 'ATE (Naive Approach)',
+  //       tooltip: 'ATE (Naive Approach)'
+  //     },
+  //     {
+  //       url: '/demo/confounding-variables',
+  //       title: 'Confounding Variables',
+  //       tooltip: 'Confounding Variables'
+  //     },
+  //     {
+  //       url: '/demo/adjusting-for-covariates',
+  //       title: 'Adjusting for Covariates',
+  //       tooltip: 'Adjusting for Covariates'
+  //     },
+  //     {
+  //       url: '/demo/checking-balance',
+  //       title: 'Checking Balance',
+  //       tooltip: 'Checking Balance'
+  //     },
+  //     {
+  //       url: '/demo/causal-answers',
+  //       title: 'Causal Answers',
+  //       tooltip: 'Causal Answers'
+  //     }
+  //   ]
+  // },
   {
     url: '/api-home',
     title: 'API',

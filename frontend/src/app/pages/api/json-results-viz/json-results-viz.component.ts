@@ -12,7 +12,7 @@ export class JsonResultsVizComponent implements OnInit {
   public data: any;
   public view: any[] = [900, 400];
   public colorScheme = {
-    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
+    domain: ['#675d82', '#4b2e83', '#C7B42C', '#AAAAAA']
   };
   public sampleSizeColumns = [
     { name: 'Type' },

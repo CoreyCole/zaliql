@@ -7,7 +7,9 @@
     <div *ngIf="!isArray(pData(param))">
       <mat-list>
         <mat-list-item>
-          <mat-icon mat-list-icon>done</mat-icon>
+          <!-- <i class="material-icons" mat-list-icon>
+            done
+          </i> -->
           <h4 mat-line>{{ pData(param) }}</h4>
         </mat-list-item>
       </mat-list>
@@ -15,7 +17,9 @@
     <div *ngIf="isArray(pData(param))">
       <mat-list>
         <mat-list-item *ngFor="let val of pData(param)">
-          <mat-icon mat-list-icon>done</mat-icon>
+          <!-- <i class="material-icons" mat-list-icon>
+            done
+          </i> -->
           <h4 mat-line>{{ val }}</h4>
         </mat-list-item>
       </mat-list>
