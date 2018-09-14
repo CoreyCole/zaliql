@@ -114,3 +114,16 @@
     </a> -->
   </mat-card-actions>
 </mat-card>
+
+<mat-card class="content">
+  <mat-card-title>
+    ZaliQL Authors and Contributors
+  </mat-card-title>
+  <mat-list>
+    <mat-list-item *ngFor="let author of authors" (click)="mailTo(author.email)">
+      <i class="material-icons" mat-list-icon>done</i>
+      <h4 mat-line>{{ author.name }}</h4>
+      <span mat-line>{{ author.email }}</span>
+    </mat-list-item>
+  </mat-list>
+</mat-card>

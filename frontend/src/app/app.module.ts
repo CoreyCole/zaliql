@@ -19,7 +19,6 @@ import {
   MatCardModule,
   MatListModule,
   MatSlideToggleModule,
-  MatSidenav,
   MatSidenavModule,
   MatInputModule,
   MatSelectModule,
