@@ -4,6 +4,7 @@
   "description": "A SQL-Based Framework for Drawing Causal Inference from Big Data ([Paper](https://drive.google.com/file/d/0B5MQIp52G7ohc0NSSEl0V19yclk/view)) ### Table of Contents - [Demo](https://gitlab.cs.washington.edu/bsalimi/ZaliSQL#Demo) - [Preprocessing](https://gitlab.cs.washington.edu/bsalimi/ZaliSQL#Preprocessing) - [Matching](https://gitlab.cs.washington.edu/bsalimi/ZaliSQL#Matching) - [Analysis](https://gitlab.cs.washington.edu/bsalimi/ZaliSQL#Analysis)",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "docs": "node generate-docs.js",
     "docker": "docker-compose -f docker/docker-compose.yml up -d --build",
     "logs-python": "docker-compose -f docker/docker-compose.yml logs -t -f python",
     "logs-db": "docker-compose -f docker/docker-compose.yml logs -t -f db",
